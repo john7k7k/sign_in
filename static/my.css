@@ -1,0 +1,201 @@
+
+*{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    background-color: wheat;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#inner{
+    background-color: rgb(19, 15, 102);
+    padding: 20px;
+    margin: auto;
+    border-radius: 10%;
+    margin-top: 150px;
+    z-index: 99;
+    animation: fade 0.8s linear 0s 1;
+    overflow: hidden;
+}
+
+#inner1{
+    background-color: rgb(19, 15, 102);
+    padding: 20px;
+    margin: auto;
+    border-radius: 10%;
+    margin-top: 115px;
+    z-index: 9;
+    animation: fade 0.8s linear 0s 1;
+    display: none;
+}
+
+#inner2{
+    background-color: rgb(19, 15, 102);
+    padding: 20px;
+    margin: auto;
+    border-radius: 10%;
+    margin-top: 115px;
+    z-index: 10;
+    animation: fade 0.8s linear 0s 1;
+    display: none;
+}
+
+@keyframes fade{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+#sign-in,#reset2{
+    background-color: aqua;
+    margin-top: 30px;
+    width:100%;
+    text-align: center;
+    font-size: 100%;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#sign-up,#sign-up1{
+    background-color: rgb(235, 130, 130);
+    margin-top: 20px;
+    margin-left: 0px;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#sign-in:hover,#sign-up:hover,#sign-up1:hover,#reset2:hover{
+    cursor: pointer;
+    outline: solid yellow 2px;
+}
+
+#password,#username,#username2,#password1,#password2,#username1,#password_check1,#password_check2,#mail,#mail1{
+    font-size: 25px;
+}
+.clue{
+    font-size: 20px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+#username,#username1,#username2,#password1,#password2,#mail,#mail1{
+    margin-bottom: 20px;
+}
+
+#title,#title1,#title2{
+    color: aliceblue;
+    margin-bottom: 10px;
+}
+
+#sign-up-link:visited{
+    color: black;
+}
+
+#sign-up-link{
+    text-decoration: none;
+}
+
+#background{
+    width: 100%;
+    position:absolute;
+}
+
+#already1{
+    position: relative;
+    left: 100px;
+    color: aliceblue;
+}
+
+#login1{
+    text-decoration: underline;
+}
+
+#login1:hover{
+    cursor: pointer;
+}
+
+#login1:visited{
+    color: aliceblue;
+}
+
+#forget{
+    color: aliceblue;
+    text-align: right;
+    text-decoration: underline;
+}
+
+#forget:hover{
+    cursor: pointer;
+}
+
+#reset2{
+    margin-bottom: 10px;
+}
+
+#sign-in-link2{
+    float: right;
+    color: aliceblue;
+    position: relative;
+    top: -35px;
+    text-decoration: underline;
+}
+
+#sign-in-link2:hover{
+    cursor: pointer;
+}
+
+#logo{
+    position: absolute;
+    top: 24px;
+    left: 20px;
+    z-index: 15;
+    width: 90px;
+}
+
+#site-name{
+    z-index: 15;
+    font-size: 50px;
+    color: aliceblue;
+    font-weight: 1000;
+    text-shadow: 2px 2px 2px palevioletred;
+}
+
+#site-name-block{
+    background-color: pink;
+    border-radius: 20%;
+    padding: 0px 5px;
+    z-index: 15;
+    position: absolute;
+    top: 40px;
+    left: 120px;
+    outline:  solid 3px rgb(246, 243, 243);
+}
+
+#logined-block{
+    display: none;
+    z-index: 50;
+    font-size: 30px;
+    text-shadow: 2px 2px aliceblue;
+    position: absolute;
+    top:300px;
+    left: 600px;
+    font-weight: 700;
+}
+
+#logout{
+    text-decoration: underline;
+    color: blue;
+}
+
+#logout:hover{
+    cursor: pointer;
+}
