@@ -155,29 +155,31 @@ body{
 
 #logo{
     position: absolute;
-    top: 24px;
-    left: 20px;
+    top: 36px;
+    left: 30px;
     z-index: 15;
-    width: 90px;
+    width: 70px;
+    height: 70px;
+
 }
 
 #site-name{
     z-index: 15;
-    font-size: 50px;
+    font-size: 70px;
     color: aliceblue;
     font-weight: 1000;
-    text-shadow: 2px 2px 2px palevioletred;
+    text-shadow: 2px 2px 2px aqua;
 }
 
 #site-name-block{
-    background-color: pink;
+    
     border-radius: 20%;
     padding: 0px 5px;
     z-index: 15;
     position: absolute;
-    top: 40px;
-    left: 120px;
-    outline:  solid 3px rgb(246, 243, 243);
+    top: 30px;
+    left: 110px;
+
 }
 
 #logined-block{

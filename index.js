@@ -24,7 +24,7 @@ app.use(express.json())
 app.use(cors())
 app.use("/static", express.static('./static'));
 app.use("/media", express.static('./static/media'));
-
+/*
 client.on('connect', () => {
   console.log('已連接到MQTT');
   const topic = 'mytopic';
@@ -42,7 +42,7 @@ client.on('connect', () => {
 client.on('error', (err) => {
   console.error('MQTT連接錯誤:', err);
 });
-
+*/
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/static/my.html'));
 });
@@ -58,8 +58,8 @@ app.get('/api/sql/fish_data', (req, res) => {
   connection = mysql.createConnection({
     host: '20.89.131.34',
     port:3307,
-    user: 'lab314test',
-    password: '8Bs$hT3xNL1Y#SUpwL',
+    user: process.env.DB_SQL_USER,
+    password: process.env.DB_SQL_PASSWORD,
     database: 'lab314'
   });
   connection.query(query, (err, results) => {
@@ -78,7 +78,7 @@ app.post('/login_respond', function(req, res) {
   let response_data = "查無此帳號"
   for (let i = 0; i < list.length; i++) {
     if (req.body.account !== list[i].account) continue;
-    if (req.body.password !== md5(list[i].password + rand_value)) {
+    if (req.body.password !== list[i].password) {
       response_data = "密碼錯誤";
       break;
     }
@@ -149,4 +149,4 @@ function Account(username, mail, password) {
   this.password = password;
 }
 
-var list = [new Account("123", "ppp1244qqq@gmail.com", "15ff71b30cd92a064690c68988845f32")];
+var list = [new Account("123", "ppp1244qqq@gmail.com", "250cf8b51c773f3f8dc8b4be867a9a02")];

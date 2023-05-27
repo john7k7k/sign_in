@@ -22,7 +22,6 @@ var logined_block = document.getElementById("logined-block");
 var logout = document.getElementById("logout");
 var emailValid = (msg) => !/^[a-zA-Z0-9-_]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(msg);
 var fish_data = ''
-const salt = "jf%5f39k+5"
 
 sign_up.onclick = function() {
   sign_in_inner.style.display = "none";
@@ -63,7 +62,7 @@ sign_up1.onclick = async function() {
     const mail = mail1.value;
     const res = await axios({
       method: "post",
-      url: "https://signin.john7k7k.repl.co/sign_up",
+      url: "https://localhost/sign_up",
       data: {
         account,
         mail,
@@ -99,7 +98,7 @@ reset2.onclick = async function() {
     const mail = mail2.value;
     const res = await axios({
       method: "post",
-      url: "https://signin.john7k7k.repl.co/reset_response",
+      url: "/reset_response",
       data: {
         account,
         mail,
@@ -110,7 +109,7 @@ reset2.onclick = async function() {
       const code = prompt("請輸入驗證碼")
       let res2 = await axios({
         method: "post",
-        url: "https://signin.john7k7k.repl.co/reset_check_code",
+        url: "/reset_check_code",
         data: {
           code
         },
@@ -140,10 +139,10 @@ logout.onclick = function() {
 
 sign_in.onclick = async function() {
   const account = user.value;
-  let password = md5(passwordDom.value + salt);
+  let password = md5(passwordDom.value);
   const res = await axios({
     method: "post",
-    url: "https://signin.john7k7k.repl.co/login_respond",
+    url: "/login_respond",
     data: {
       account,
       password,
@@ -151,7 +150,7 @@ sign_in.onclick = async function() {
   });
   alert(res.data);
   if (res.data === "密碼錯誤" || res.data === "查無此帳號") return;
-  fetch('https://signin.john7k7k.repl.co/api/sql/fish_data')
+  await fetch('/api/sql/fish_data')
   .then(response => response.json())
   .then(data => fish_data = data)
   console.log(fish_data)
