@@ -183,12 +183,14 @@ body{
 #logined-block{
     display: none;
     z-index: 50;
-    font-size: 30px;
+    width:300px;
+    font-size: 20px;
     text-shadow: 2px 2px aliceblue;
     position: absolute;
     top:300px;
     left: 600px;
     font-weight: 700;
+    background-color:white;
 }
 
 #logout{

@@ -2,17 +2,21 @@ var user = document.getElementById("username");
 var passwordDom = document.getElementById("password");
 var sign_in = document.getElementById("sign-in");
 var sign_up = document.getElementById("sign-up");
+
 var sign_up1 = document.getElementById("sign-up1");
 var user1 = document.getElementById("username1");
 var password1 = document.getElementById("password1");
 var password_check1 = document.getElementById("password_check1");
 var login1 = document.getElementById("login1");
+
 var sign_in_inner = document.getElementById("inner");
 var sign_up_inner = document.getElementById("inner1");
 var forget_inner = document.getElementById("inner2");
+
 var forget_link = document.getElementById("forget");
 var sign_in_link2 = document.getElementById("sign-in-link2");
 var reset2 = document.getElementById("reset2");
+
 var user2 = document.getElementById("username2");
 var mail2 = document.getElementById("mail");
 var password2 = document.getElementById("password2");
@@ -20,9 +24,22 @@ var password_check2 = document.getElementById("password_check2");
 var mail1 = document.getElementById("mail1");
 var logined_block = document.getElementById("logined-block");
 var logout = document.getElementById("logout");
-var emailValid = (msg) => !/^[a-zA-Z0-9-_]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(msg);
 var fish_data = ''
+    
 const salt = "jf%5f39k+5"
+function Account(username, mail, password) {
+  this.user = username;
+  this.mail = mail;
+  this.password = password;
+}
+
+var list = [
+  new Account(
+    "manager",
+    "ppp1244qqq@gmail.com",
+    "f32cec0274cf44f6d096ce2597e75319"
+  ),
+];
 
 sign_up.onclick = function() {
   sign_in_inner.style.display = "none";
@@ -80,6 +97,9 @@ sign_up1.onclick = async function() {
   }
 };
 
+const emailValid = (msg) =>
+  !/^[a-zA-Z0-9-_]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(msg);
+
 reset2.onclick = async function() {
   if (!user2.value) {
     alert("帳號不得為空");
@@ -99,7 +119,7 @@ reset2.onclick = async function() {
     const mail = mail2.value;
     const res = await axios({
       method: "post",
-      url: "https://signin.john7k7k.repl.co/reset_response",
+      url: "https://signin.john7k7k.repl.co/reset",
       data: {
         account,
         mail,
@@ -110,7 +130,7 @@ reset2.onclick = async function() {
       const code = prompt("請輸入驗證碼")
       let res2 = await axios({
         method: "post",
-        url: "https://signin.john7k7k.repl.co/reset_check_code",
+        url: "https://signin.john7k7k.repl.co/reset2",
         data: {
           code
         },
@@ -141,9 +161,17 @@ logout.onclick = function() {
 sign_in.onclick = async function() {
   const account = user.value;
   let password = md5(passwordDom.value + salt);
+  const temporary = await axios({
+    method: "post",
+    url: "https://signin.john7k7k.repl.co/login_req",
+    data: {
+      account
+    }
+  })
+  password = md5(password + temporary.data);
   const res = await axios({
     method: "post",
-    url: "https://signin.john7k7k.repl.co/login_respond",
+    url: "https://signin.john7k7k.repl.co/post",
     data: {
       account,
       password,
@@ -151,7 +179,7 @@ sign_in.onclick = async function() {
   });
   alert(res.data);
   if (res.data === "密碼錯誤" || res.data === "查無此帳號") return;
-  fetch('https://signin.john7k7k.repl.co/api/sql/fish_data')
+  fetch('https://signin.john7k7k.repl.co/api/data')
   .then(response => response.json())
   .then(data => fish_data = data)
   console.log(fish_data)
@@ -160,6 +188,7 @@ sign_in.onclick = async function() {
     'id: ' + fish_data['0'].id + ', ' +
     '電量: ' + fish_data['0'].battery + ', ' +
     'err: ' + fish_data['0'].err
+  
   sign_in_inner.style.display = "none";
   logined_block.style.display = "block";
 };
