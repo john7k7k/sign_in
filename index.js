@@ -1,5 +1,5 @@
-const express = require('express');
-const app = express();
+const axios = require("axios")
+const app = require('express')();
 const cors = require('cors');
 const path = require('path');
 const nodemailer = require("nodemailer");
@@ -8,7 +8,11 @@ const mysql = require('mysql');
 const md5 = require('blueimp-md5')
 const mqtt = require('mqtt');
 const port = 80;
-const client = mqtt.connect('mqtt://localhost', {clientId: 'mqtt_publisher',});
+const mqtt_ip = 'mqtt://20.89.131.34:1884'
+const client = mqtt.connect(mqtt_ip, {
+    username: 'lab314',
+    password: 'lab314fish'
+});
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -16,33 +20,61 @@ const transporter = nodemailer.createTransport({
     pass: "ngywhkrdognvhxti"
   }
 });
+const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
+const accessToken = 'fyW2bnAJTjQd1yVMkWYIRK95lVTqldPWeZny7PKWWZA';
 var connection;
 var randCode, pos, mypass;
+
+function sendLineNotify(message) {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Authorization': `Bearer ${accessToken}`
+  };
+  const data = new URLSearchParams();
+  data.append('message', message);
+  return axios.post(lineNotifyEndpoint, data, { headers });
+}
+
+function Account(username, mail, password) {
+  this.account = username;
+  this.mail = mail;
+  this.password = password;
+}
+
+var list = [new Account("123", "ppp1244qqq@gmail.com", "250cf8b51c773f3f8dc8b4be867a9a02")];
 
 dotenv.config()
 app.use(express.json())
 app.use(cors())
 app.use("/static", express.static('./static'));
 app.use("/media", express.static('./static/media'));
-/*
+
 client.on('connect', () => {
   console.log('已連接到MQTT');
-  const topic = 'mytopic';
-  const message = 'Hello, MQTT!'; 
-  client.publish(topic, message, (err) => {
+  client.subscribe('Fish/info',(err) => {
     if (err) {
-      console.error('發布資訊失敗:', err);
+      console.error('訂閱資訊失敗:', err);
     } else {
-      console.log('資訊已發布:', message);
-      client.end(); 
+      console.log('資訊已訂閱');
     }
+  });
+});
+
+client.on('message', (topic, rec_message) => {
+  console.log('主題',topic,' 接收到: ', rec_message.toString());
+  sendLineNotify(rec_message.toString())
+  .then(() => {
+    console.log('Line Notify message sent successfully');
+  })
+  .catch((error) => {
+    console.error('Error sending Line Notify message:', error);
   });
 });
 
 client.on('error', (err) => {
   console.error('MQTT連接錯誤:', err);
 });
-*/
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/static/my.html'));
 });
@@ -51,7 +83,6 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-// 處理API請求，從資料庫中擷取資料
 app.get('/api/sql/fish_data', (req, res) => {
   const query = 'SELECT * FROM testForm2';
   // 執行資料庫查詢
@@ -142,11 +173,3 @@ app.post('/reset_check_code', function(req, res) {
   res.send("重設密碼失敗，查無此帳號");
   console.log("重設密碼失敗，查無此帳號")
 })
-
-function Account(username, mail, password) {
-  this.account = username;
-  this.mail = mail;
-  this.password = password;
-}
-
-var list = [new Account("123", "ppp1244qqq@gmail.com", "250cf8b51c773f3f8dc8b4be867a9a02")];
