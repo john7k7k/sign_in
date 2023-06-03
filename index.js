@@ -1,5 +1,6 @@
-const axios = require("axios")
-const app = require('express')();
+const express = require('express');
+const app = express();
+const fetch = require('node-fetch')
 const cors = require('cors');
 const path = require('path');
 const nodemailer = require("nodemailer");
@@ -30,9 +31,15 @@ function sendLineNotify(message) {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Authorization': `Bearer ${accessToken}`
   };
+
   const data = new URLSearchParams();
   data.append('message', message);
-  return axios.post(lineNotifyEndpoint, data, { headers });
+
+  return fetch(lineNotifyEndpoint, {
+    method: 'POST',
+    headers,
+    body: data
+  });
 }
 
 function Account(username, mail, password) {
