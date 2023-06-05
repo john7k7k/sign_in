@@ -185,7 +185,8 @@ app.post('/reset_check_code', function(req, res) {
 })
 
 function convert(message){
-  var data = ''
+  const date = new Date();
+  var data = date.toLocaleString();
   for(i in message){
     data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
   }
