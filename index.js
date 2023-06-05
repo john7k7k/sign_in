@@ -14,6 +14,13 @@ const client = mqtt.connect(mqtt_ip, {
     username: 'lab314',
     password: 'lab314fish'
 });
+const sql_data = {
+  host: '20.89.131.34',
+  port:3307,
+  user: process.env.DB_SQL_USER,
+  password: process.env.DB_SQL_PASSWORD,
+  database: 'lab314'
+}
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -23,7 +30,6 @@ const transporter = nodemailer.createTransport({
 });
 const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
 const accessToken = 'fyW2bnAJTjQd1yVMkWYIRK95lVTqldPWeZny7PKWWZA';
-var connection;
 var randCode, pos, mypass;
 
 function sendLineNotify(message) {
@@ -68,14 +74,17 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, rec_message) => {
-  console.log('主題',topic,' 接收到: ', rec_message.toString());
-  sendLineNotify(rec_message.toString())
+  json_data = JSON.parse(rec_message.toString())
+  console.log('主題',topic,' 接收到: ', json_data);
+  convert(json_data);
+  sendLineNotify(convert(json_data))
   .then(() => {
     console.log('Line Notify message sent successfully');
   })
   .catch((error) => {
     console.error('Error sending Line Notify message:', error);
   });
+  
 });
 
 client.on('error', (err) => {
@@ -93,13 +102,7 @@ app.listen(port, () => {
 app.get('/api/sql/fish_data', (req, res) => {
   const query = 'SELECT * FROM testForm2';
   // 執行資料庫查詢
-  connection = mysql.createConnection({
-    host: '20.89.131.34',
-    port:3307,
-    user: process.env.DB_SQL_USER,
-    password: process.env.DB_SQL_PASSWORD,
-    database: 'lab314'
-  });
+  const connection = mysql.createConnection(sql_data);
   connection.query(query, (err, results) => {
     if (err) {
       console.error('查詢資料庫時出錯:', err);
@@ -180,3 +183,12 @@ app.post('/reset_check_code', function(req, res) {
   res.send("重設密碼失敗，查無此帳號");
   console.log("重設密碼失敗，查無此帳號")
 })
+
+function convert(message){
+  var data = ''
+  for(i in message){
+    data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
+  }
+  console.log(data);
+  return data
+}

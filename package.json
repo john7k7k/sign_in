@@ -8,6 +8,7 @@
     "mongodb": "^4.13.0",
     "mqtt": "^4.3.7",
     "mysql": "^2.18.1",
+    "node-fetch": "^2.6.0",
     "nodemailer": "^6.8.0"
   },
   "devDependencies": {
@@ -17,5 +18,24 @@
     "@babel/preset-env": "^7.22.2",
     "@babel/preset-react": "^7.22.3",
     "vue-template-compiler": "^2.7.14"
-  }
+  },
+  "name": "web",
+  "description": "",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/john7k7k/sign_in.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/john7k7k/sign_in/issues"
+  },
+  "homepage": "https://github.com/john7k7k/sign_in#readme"
 }
