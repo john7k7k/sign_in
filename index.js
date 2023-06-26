@@ -1,52 +1,15 @@
 const express = require('express');
 const app = express();
-const fetch = require('node-fetch')
 const cors = require('cors');
 const path = require('path');
-const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
-const mysql = require('mysql');
 const md5 = require('blueimp-md5')
-const mqtt = require('mqtt');
-const port = 80;
-const mqtt_ip = 'mqtt://20.89.131.34:1884'
-const client = mqtt.connect(mqtt_ip, {
-    username: 'lab314',
-    password: 'lab314fish'
-});
-const sql_data = {
-  host: '20.89.131.34',
-  port:3307,
-  user: process.env.DB_SQL_USER,
-  password: process.env.DB_SQL_PASSWORD,
-  database: 'lab314'
-}
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "robot.send.auto.mail@gmail.com",
-    pass: "ngywhkrdognvhxti"
-  }
-});
-const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
-const accessToken = 'fyW2bnAJTjQd1yVMkWYIRK95lVTqldPWeZny7PKWWZA';
+const mysql = require('./sql');
+const mqttConnection = require('./mqtt')();
+const sendLineNotify = require('./lineNotify');
+const transporter = require('./nodeMailer')();
+
 var randCode, pos, mypass;
-
-function sendLineNotify(message) {
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': `Bearer ${accessToken}`
-  };
-
-  const data = new URLSearchParams();
-  data.append('message', message);
-
-  return fetch(lineNotifyEndpoint, {
-    method: 'POST',
-    headers,
-    body: data
-  });
-}
 
 function Account(username, mail, password) {
   this.account = username;
@@ -60,11 +23,14 @@ dotenv.config()
 app.use(express.json())
 app.use(cors())
 app.use("/static", express.static('./static'));
-app.use("/media", express.static('./static/media'));
+app.use("/login", express.static('./static/login'));
+app.use("/media", express.static('./static/login/media'));
 
-client.on('connect', () => {
+//mqtt處理
+
+mqttConnection.on('connect', () => {
   console.log('已連接到MQTT');
-  client.subscribe('Fish/info',(err) => {
+  mqttConnection.subscribe('Fish/info',(err) => {
     if (err) {
       console.error('訂閱資訊失敗:', err);
     } else {
@@ -73,45 +39,30 @@ client.on('connect', () => {
   });
 });
 
-client.on('message', (topic, rec_message) => {
-  json_data = JSON.parse(rec_message.toString())
-  console.log('主題',topic,' 接收到: ', json_data);
-  convert(json_data);
-  sendLineNotify(convert(json_data))
-  .then(() => {
-    console.log('Line Notify message sent successfully');
-  })
-  .catch((error) => {
-    console.error('Error sending Line Notify message:', error);
-  });
-  
+mqttConnection.on('message', (topic, rec_message) => { //接收到IOT端訊息
+  json_data = JSON.parse(rec_message.toString()); //parse資料
+  console.log('主題',topic,' 接收到: ', json_data); //印出資料
+  sendLineNotify(convert(json_data)); //傳送lineNotify
+  //sqlConnection = mysql(); //連接mysql
+  sqlConnection.updateFishesData(json_data); //更新sql資料
+  //sqlConnection.end(); //斷開sql連接
 });
 
-client.on('error', (err) => {
+mqttConnection.on('error', (err) => {
   console.error('MQTT連接錯誤:', err);
-});
+})
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/my.html'));
-});
-
+//監聽port
+const port = 80;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-app.get('/api/sql/fish_data', (req, res) => {
-  const query = 'SELECT * FROM testForm2';
-  // 執行資料庫查詢
-  const connection = mysql.createConnection(sql_data);
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('查詢資料庫時出錯:', err);
-      res.status(500).json({ error: '無法從資料庫中獲取資料' });
-    } else {
-      res.json(results);
-    }
-  });
-  connection.end()
+//前端API
+
+// 1. Login API
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/static/my.html'));
 });
 
 app.post('/login_respond', function(req, res) {
@@ -184,7 +135,41 @@ app.post('/reset_check_code', function(req, res) {
   console.log("重設密碼失敗，查無此帳號")
 })
 
-function convert(message){
+// 2. Fish Data API
+//此API可新增fish的data
+app.put('/sql/put/fish_data/:fish_json',  async (req, res) => {
+  const { fish_json } = req.params; //取得路由參數
+  fish_json = JSON.parse(fish_json); //轉換為json格式
+  //const sqlConnection = mysql();
+  await sqlConnection.updataFishesData(fish_json); //從SQL中取得所求的data
+  //sqlConnection.end();
+  res.send("設定成功");
+})
+const sqlConnection = require('./sql')();
+//此API可取得fish的table，路由參數fish_ids以逗號分隔多個id，例如: /sql/fish_data/IDs=23,24,26，
+app.get('/sql/get/fish_table/IDs=:fish_ids', async (req, res) => { 
+  const { fish_ids } = req.params; //取得路由參數
+  fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
+  console.log(fish_id_array);
+  //const sqlConnection = await mysql();
+  //await sqlConnection.buildFishesTable(fish_id_array);
+  const tables = await sqlConnection.getFishesTable(fish_id_array); //從SQL中取得所求的table
+  console.log(tables);
+  //sqlConnection.end();
+  res.send(tables);
+});
+
+//此API可取得fish的最新data
+app.get('/sql/get/fish_data/IDs=:fish_ids', async (req, res) => { 
+  const { fish_ids } = req.params; //取得路由參數
+  fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
+  //const sqlConnection = mysql();
+  const datas = await sqlConnection.getFishesData(fish_id_array); //從SQL中取得所求的data
+  //sqlConnection.end();
+  res.send(datas);
+});
+
+function convert(message){ //解析IOT端
   const date = new Date();
   var data = date.toLocaleString();
   for(i in message){
@@ -193,3 +178,4 @@ function convert(message){
   console.log(data);
   return data
 }
+
