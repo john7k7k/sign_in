@@ -8,6 +8,7 @@ const mysql = require('./sql');
 const mqttConnection = require('./mqtt')();
 const sendLineNotify = require('./lineNotify');
 const transporter = require('./nodeMailer')();
+const sqlConnection = require('./sql')();
 
 var randCode, pos, mypass;
 
@@ -30,21 +31,22 @@ app.use("/media", express.static('./static/login/media'));
 
 mqttConnection.on('connect', () => {
   console.log('已連接到MQTT');
-  mqttConnection.subscribe('Fish/info',(err) => {
+  mqttConnection.subscribe('Fish/info1',(err) => {
     if (err) {
-      console.error('訂閱資訊失敗:', err);
+      console.error('Fish/info1訂閱失敗:', err);
     } else {
-      console.log('資訊已訂閱');
+      console.log('Fish/info1已訂閱');
     }
   });
 });
 
-mqttConnection.on('message', (topic, rec_message) => { //接收到IOT端訊息
+mqttConnection.on('message',async (topic, rec_message) => { //接收到IOT端訊息
   json_data = JSON.parse(rec_message.toString()); //parse資料
-  console.log('主題',topic,' 接收到: ', json_data); //印出資料
-  sendLineNotify(convert(json_data)); //傳送lineNotify
+  console.log('主題',topic,', 時間: ',  (new Date()).toLocaleString()); //印出資料
+  //sendLineNotify(convert(json_data)); //傳送lineNotify
   //sqlConnection = mysql(); //連接mysql
-  sqlConnection.updateFishesData(json_data); //更新sql資料
+  await sqlConnection.updateFishesData(json_data); //更新sql資料
+  sqlConnection.showFishesTable();
   //sqlConnection.end(); //斷開sql連接
 });
 
@@ -145,16 +147,15 @@ app.put('/sql/put/fish_data/:fish_json',  async (req, res) => {
   //sqlConnection.end();
   res.send("設定成功");
 })
-const sqlConnection = require('./sql')();
+
+
 //此API可取得fish的table，路由參數fish_ids以逗號分隔多個id，例如: /sql/fish_data/IDs=23,24,26，
 app.get('/sql/get/fish_table/IDs=:fish_ids', async (req, res) => { 
   const { fish_ids } = req.params; //取得路由參數
   fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
   console.log(fish_id_array);
   //const sqlConnection = await mysql();
-  //await sqlConnection.buildFishesTable(fish_id_array);
-  const tables = await sqlConnection.getFishesTable(fish_id_array); //從SQL中取得所求的table
-  console.log(tables);
+  let tables = await sqlConnection.getFishesTable(fish_id_array) //從SQL中取得所求的table
   //sqlConnection.end();
   res.send(tables);
 });
@@ -175,7 +176,7 @@ function convert(message){ //解析IOT端
   for(i in message){
     data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
   }
-  console.log(data);
+  //console.log(data);
   return data
 }
 

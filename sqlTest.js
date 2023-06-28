@@ -7,9 +7,9 @@ const connection = require('./sql')();
         '24':{'time': 6,'bc': 45, 'err': 7, 'active': 1},
         '25':{'time': 7,'bc': 48, 'err': 7, 'active': 1}
     })
-    await connection.showFishesTable()
-    //await connection.deleteFishesTable(['23','24','25'])
     //await connection.showFishesTable()
+    await connection.deleteFishesTable(['23','24','25','2355'])
+    await connection.showFishesTable(['23','24','25','2355'])
     connection.end();
 })(connection);
 

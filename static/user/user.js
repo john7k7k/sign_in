@@ -5,7 +5,7 @@ const input = document.getElementById('myInput');
 form.addEventListener('submit', function(event) {
   event.preventDefault(); 
   const inputValue = input.value; 
-  alert('s');
+  alert('查詢成功');
   fetch(` http://127.0.0.1:80/sql/get/fish_table/IDs=${inputValue}`,{
     method: 'GET',
     headers: {

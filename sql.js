@@ -6,7 +6,8 @@ const createConnection = require('mysql').createConnection ;
 const connectionMap = {};
 var fishIdArray = []
 
-module.exports = function (sql_data = {
+
+module.exports = function(sql_data = {
         host: 'localhost',
         port:3306,
         user: 'root',
@@ -126,9 +127,9 @@ module.exports = function (sql_data = {
     }
     connection.getFishesTable = async function(fish_id_array = fishIdArray){
         return new Promise(async (reslove, reject)=>{
-            var result = [];
+            var result = {};
             for(var fish_id of fish_id_array){
-                result.push(await connection.getFishTable(fish_id))
+                result[`${fish_id}`] = (await connection.getFishTable(fish_id))
             }
             reslove(result)
         })
@@ -158,6 +159,6 @@ module.exports = function (sql_data = {
             reslove(json_results);
         })
     }
-    return connection;
+   return connection;
 //})
 }

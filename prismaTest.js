@@ -3,7 +3,6 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-// 使用Prisma客户端执行数据库操作
 (async (prisma)=>{
     await prisma.FishMap.create({
         data: {
