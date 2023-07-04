@@ -1,0 +1,23 @@
+POST http://localhost/api1/fish_color/
+Content-Type: application/json
+
+{
+    "fishColor": {
+        "33":{
+            "led1": {"r": 158, "g": 70, "b": 28, "w": 0},
+            "led2": {"r": 15, "g": 70, "b": 28, "w": 4},
+            "led3": {"r": 158, "g": 70, "b": 28, "w": 0}
+        },
+        "36":{
+            "led1": {"r": 18, "g": 70, "b": 28, "w": 1},
+            "led2": {"r": 18, "g": 70, "b": 28, "w": 0},
+            "led3": {"r": 58, "g": 70, "b": 28, "w": 0}
+        }
+    }
+}
+
+###
+GET http://localhost/api1/fish_history_data/21.24.25/1.2.3
+
+###
+GET http://localhost/api1/fish_table/24.25

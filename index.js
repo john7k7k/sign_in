@@ -4,11 +4,10 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require("dotenv");
 const md5 = require('blueimp-md5')
-const mysql = require('./sql');
-const mqttConnection = require('./mqtt')();
-const sendLineNotify = require('./lineNotify');
-const transporter = require('./nodeMailer')();
-const sqlConnection = require('./sql')();
+const mqttConnection = require('./my_modules/mqtt')();
+const sendLineNotify = require('./my_modules/lineNotify');
+const transporter = require('./my_modules/nodeMailer')();
+const sqlConnection = require('./my_modules/sql')();
 
 var randCode, pos, mypass;
 
@@ -44,10 +43,8 @@ mqttConnection.on('message',async (topic, rec_message) => { //接收到IOT端訊
   json_data = JSON.parse(rec_message.toString()); //parse資料
   console.log('主題',topic,', 時間: ',  (new Date()).toLocaleString()); //印出資料
   //sendLineNotify(convert(json_data)); //傳送lineNotify
-  //sqlConnection = mysql(); //連接mysql
   await sqlConnection.updateFishesData(json_data); //更新sql資料
   sqlConnection.showFishesTable();
-  //sqlConnection.end(); //斷開sql連接
 });
 
 mqttConnection.on('error', (err) => {
@@ -64,7 +61,7 @@ app.listen(port, () => {
 
 // 1. Login API
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/my.html'));
+  res.sendFile(path.join(__dirname, '/static/login/my.html'));
 });
 
 app.post('/login_respond', function(req, res) {
@@ -139,36 +136,47 @@ app.post('/reset_check_code', function(req, res) {
 
 // 2. Fish Data API
 //此API可新增fish的data
-app.put('/sql/put/fish_data/:fish_json',  async (req, res) => {
-  const { fish_json } = req.params; //取得路由參數
+app.post('/api1/fish_data/',  async (req, res) => {
+  const { fish_json } = req.body.fishData; //取得參數
   fish_json = JSON.parse(fish_json); //轉換為json格式
-  //const sqlConnection = mysql();
   await sqlConnection.updataFishesData(fish_json); //從SQL中取得所求的data
-  //sqlConnection.end();
   res.send("設定成功");
 })
 
-
 //此API可取得fish的table，路由參數fish_ids以逗號分隔多個id，例如: /sql/fish_data/IDs=23,24,26，
-app.get('/sql/get/fish_table/IDs=:fish_ids', async (req, res) => { 
+app.get('/api1/fish_table/:fish_ids', async (req, res) => { 
   const { fish_ids } = req.params; //取得路由參數
   fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
   console.log(fish_id_array);
-  //const sqlConnection = await mysql();
   let tables = await sqlConnection.getFishesTable(fish_id_array) //從SQL中取得所求的table
-  //sqlConnection.end();
   res.send(tables);
 });
 
 //此API可取得fish的最新data
-app.get('/sql/get/fish_data/IDs=:fish_ids', async (req, res) => { 
+app.get('/api1/fish_data/:fish_ids', async (req, res) => { 
   const { fish_ids } = req.params; //取得路由參數
   fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
-  //const sqlConnection = mysql();
   const datas = await sqlConnection.getFishesData(fish_id_array); //從SQL中取得所求的data
-  //sqlConnection.end();
   res.send(datas);
 });
+
+//此API可取得fish的指定版本data
+app.get('/api1/fish_history_data/:fish_ids/:fish_versions', async (req, res) => { 
+  let { fish_ids, fish_versions } = req.params; //取得路由參數
+  fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
+  fish_versions = fish_versions.match(/(\d+)/g); //將路由參數轉為version陣列
+  const datas = await sqlConnection.getFishesData(fish_id_array,fish_versions); //從SQL中取得所求的data
+  res.send(datas);
+});
+
+//此API可設定fish的LED Color
+app.post('/api1/fish_color/', async (req, res) => {
+  const { fishColor } = req.body; //取得參數
+  const fish_string = JSON.stringify(fishColor); //轉換為json格式
+  mqttConnection.publish('Fish/set1',fish_string);
+  console.log(fish_string);
+  res.send("設定成功");
+})
 
 function convert(message){ //解析IOT端
   const date = new Date();
@@ -179,4 +187,3 @@ function convert(message){ //解析IOT端
   //console.log(data);
   return data
 }
-

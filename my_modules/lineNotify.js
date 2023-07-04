@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
+require("dotenv").config();
 
 const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
-const accessToken = 'fyW2bnAJTjQd1yVMkWYIRK95lVTqldPWeZny7PKWWZA';
+const accessToken = process.env.DB_LINE_TOKEN;
 
 module.exports = (message) => {
   const headers = {

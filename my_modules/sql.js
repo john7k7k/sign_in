@@ -4,17 +4,16 @@
 
 const createConnection = require('mysql').createConnection ;
 const connectionMap = {};
-var fishIdArray = []
-
+var fishIdArray = [];
+require("dotenv").config();
 
 module.exports = function(sql_data = {
-        host: 'localhost',
-        port:3306,
-        user: 'root',
-        password: 'Aa777266794',
-        database: 'sys'
-    }){
-//return new Promise(async (reslove, reject)=>{        
+        host: process.env.DB_SQL_HOST,
+        port: process.env.DB_SQL_PORT,
+        user: process.env.DB_SQL_USER,
+        password: process.env.DB_SQL_PASSWORD,
+        database: process.env.DB_SQL_DATABASE
+    }){      
     const connection = createConnection(sql_data);
     connection.connect((err)=>{
         if(err) throw err
@@ -93,9 +92,13 @@ module.exports = function(sql_data = {
             reslove(console.table(await connection.getFishTable(fish_id)));
         })
     }
-    connection.getFishData = async function(fish_id){
-        return new Promise((reslove, reject)=>{
-            this.query(`SELECT * FROM ID${fish_id} ORDER BY version DESC LIMIT 1`, (err, results) => {
+    connection.getFishData = async function(fish_id, fish_versoion = -1){
+        let query = ''
+        if(fish_versoion === -1) query = `SELECT * FROM ID${fish_id} ORDER BY version DESC LIMIT 1`
+        else query = `SELECT * FROM ID${fish_id} WHERE version = ${fish_versoion} LIMIT 1` ///
+        return new Promise(async (reslove, reject)=>{
+            await connection.buildFishTable(fish_id)
+            this.query(query, (err, results) => {
                 if (err) {
                     console.error('Error retrieving last record:', err);
                     return;
@@ -103,9 +106,8 @@ module.exports = function(sql_data = {
                 if (results.length > 0) {
                     reslove(results[0])
                 } else {
-                    console.log('Table is empty.');
-                }
-                ;
+                    reslove(`Data(version ${fish_versoion}) is empty.`);
+                };
             });
         })
     }
@@ -150,15 +152,20 @@ module.exports = function(sql_data = {
            reslove();
         })
     }
-    connection.getFishesData = async function(fish_id_array = fishIdArray){
+    connection.getFishesData = async function(fish_id_array = fishIdArray, fish_versions = -1){
         return new Promise(async (reslove, reject)=>{
             const json_results = {}
-            for(fish_id of fish_id_array){
-                json_results[`${fish_id}`] = await connection.getFishData(fish_id);
-            }
+            if (fish_versions === -1)
+                for(fish_id of fish_id_array){
+                    json_results[`${fish_id}`] = await connection.getFishData(fish_id);
+                }
+            else 
+                for(index in fish_id_array){
+                    json_results[`${fish_id_array[index]}`] = await connection.getFishData(fish_id_array[index],fish_versions[index]);
+                }
+            //console.log(json_results);
             reslove(json_results);
         })
     }
    return connection;
-//})
 }

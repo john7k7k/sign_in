@@ -1,4 +1,5 @@
-const connection = require('./sql')();
+const connection = require('./my_modules/sql')();
+require("dotenv").config();
 (async (connection)=>{
     //await connection.deleteFishesTable(['23','24','25'])
     await connection.buildFishesTable(['23','24','25'])
@@ -8,8 +9,9 @@ const connection = require('./sql')();
         '25':{'time': 7,'bc': 48, 'err': 7, 'active': 1}
     })
     //await connection.showFishesTable()
-    await connection.deleteFishesTable(['23','24','25','2355'])
-    await connection.showFishesTable(['23','24','25','2355'])
+    //await connection.deleteFishesTable(['23','24','25','2355'])
+    await connection.showFishesTable(['24','25'])
+    console.log(await connection.getFishesData(['24','25'],versions = [1,3]))
     connection.end();
 })(connection);
 
