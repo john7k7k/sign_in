@@ -22,6 +22,7 @@ var logined_block = document.getElementById("logined-block");
 var logout = document.getElementById("logout");
 var emailValid = (msg) => !/^[a-zA-Z0-9-_]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(msg);
 var fish_data = ''
+let salt = 'kowkoww151s5ww'
 
 sign_up.onclick = function() {
   sign_in_inner.style.display = "none";
@@ -62,7 +63,7 @@ sign_up1.onclick = async function() {
     const mail = mail1.value;
     const res = await axios({
       method: "post",
-      url: "https://localhost/sign_up",
+      url: "http://localhost/sign_up",
       data: {
         account,
         mail,
@@ -139,7 +140,7 @@ logout.onclick = function() {
 
 sign_in.onclick = async function() {
   const account = user.value;
-  let password = md5(passwordDom.value);
+  let password = md5(passwordDom.value + salt);
   const res = await axios({
     method: "post",
     url: "/login_respond",
@@ -148,19 +149,10 @@ sign_in.onclick = async function() {
       password,
     },
   });
-  alert(res.data);
-  if (res.data === "密碼錯誤" || res.data === "查無此帳號") return;
-  await fetch('/api/sql/fish_data')
-  .then(response => response.json())
-  .then(data => fish_data = data)
-  console.log(fish_data)
-  logined_block.firstElementChild.innerHTML = 
-    '紀錄時間: ' + fish_data['0'].time + '</br>' +
-    'id: ' + fish_data['0'].id + ', ' +
-    '電量: ' + fish_data['0'].battery + ', ' +
-    'err: ' + fish_data['0'].err
-  sign_in_inner.style.display = "none";
-  logined_block.style.display = "block";
+  //console.log(res)
+  //alert(res.data);
+
+  window.location.href = `http://localhost/?token=${res.data.token}`;
 };
 
 function md5(string) {

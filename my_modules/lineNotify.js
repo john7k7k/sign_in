@@ -17,7 +17,8 @@ module.exports = (message) => {
     method: 'POST',
     headers,
     body: data
-  }).then(() => {
+  }).then((res) => {
+    if(res == 200)
     console.log('Line Notify message sent successfully');
   })
   .catch((error) => {

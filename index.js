@@ -3,7 +3,8 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const dotenv = require("dotenv");
-const md5 = require('blueimp-md5')
+const md5 = require('blueimp-md5');
+const jwt = require('jsonwebtoken');
 const mqttConnection = require('./my_modules/mqtt')();
 const sendLineNotify = require('./my_modules/lineNotify');
 const transporter = require('./my_modules/nodeMailer')();
@@ -16,8 +17,8 @@ function Account(username, mail, password) {
   this.mail = mail;
   this.password = password;
 }
-
-var list = [new Account("123", "ppp1244qqq@gmail.com", "250cf8b51c773f3f8dc8b4be867a9a02")];
+let tokens = new Object();
+var list = [new Account("123", "ppp1244qqq@gmail.com", "735434cae08df8e591c1549da88c6d87")];
 
 dotenv.config()
 app.use(express.json())
@@ -25,6 +26,12 @@ app.use(cors())
 app.use("/static", express.static('./static'));
 app.use("/login", express.static('./static/login'));
 app.use("/media", express.static('./static/login/media'));
+
+app.use("/distjs", express.static('./static/dist/js/'));
+app.use("/distfonts", express.static('./static/dist/fonts/'));
+app.use("/distcss", express.static('./static/dist/css/'));
+app.use("/dist", express.static('./static/dist/'));
+
 
 //mqtt處理
 
@@ -60,9 +67,22 @@ app.listen(port, () => {
 //前端API
 
 // 1. Login API
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/login/my.html'));
+app.get('/login', function(req, res) {
+  res.sendFile(path.join(__dirname, './static/login/my.html'));
 });
+
+app.get('/about', function(req, res) {
+  const { token } = req.query;
+  console.log(token);
+  jwt.verify(token, process.env.DB_JWTKEY, (err, payload) => {
+    if (err) {
+      res.sendStatus(403);
+      console.log(err);
+    }
+    else res.sendFile(path.join(__dirname, '/static/dist/idex.html'));
+  })
+});
+
 
 app.post('/login_respond', function(req, res) {
   console.log(req.body);
@@ -71,12 +91,22 @@ app.post('/login_respond', function(req, res) {
     if (req.body.account !== list[i].account) continue;
     if (req.body.password !== list[i].password) {
       response_data = "密碼錯誤";
-      break;
+      res.sendStatus(403);
+      return;
     }
     response_data = "登入成功 帳號: " + req.body.account
+    console.log(response_data)
+    jwt.sign(
+      { username: req.body.account },
+      process.env.DB_JWTKEY,
+      {expiresIn: '300s'},
+      (err, token) => {
+        res.json({username: req.body.account,token})
+      }
+    )
+    return;
   }
-  console.log(response_data)
-  res.send(response_data);
+  res.sendStatus(404);
 });
 
 app.post('/sign_up', function(req, res) {
@@ -133,6 +163,21 @@ app.post('/reset_check_code', function(req, res) {
   res.send("重設密碼失敗，查無此帳號");
   console.log("重設密碼失敗，查無此帳號")
 })
+
+app.get('/', function(req, res) { //test
+  /*
+  const headers = req.headers;
+  const token = headers['authorization']?.split(' ')[1];*/
+  const { token } = req.query;
+  console.log(token);
+  jwt.verify(token, process.env.DB_JWTKEY, (err, payload) => {
+    if (err) {
+      res.sendStatus(403);
+      console.log(err);
+    }
+    else res.sendFile(path.join(__dirname, '/static/dist/idex.html'));
+  })
+});
 
 // 2. Fish Data API
 //此API可新增fish的data

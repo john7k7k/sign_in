@@ -21,3 +21,8 @@ GET http://localhost/api1/fish_history_data/21.24.25/1.2.3
 
 ###
 GET http://localhost/api1/fish_table/24.25
+
+###
+GET http://localhost:3000/protected
+Content-Type: application/json
+#Authorization:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImV4YW1wbGV1c2VyIn0sImlhdCI6MTY4ODU2NzQ4NywiZXhwIjoxNjg4NTcxMDg3fQ.OaQjWWXCZGWBG_6Q5FqxVdEshxk1T1yIHLCxoJ0cW3w
