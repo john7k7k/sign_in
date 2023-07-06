@@ -167,5 +167,83 @@ module.exports = function(sql_data = {
             reslove(json_results);
         })
     }
+    connection.buildUserTable = async function (){
+        return new Promise(async (reslove, reject)=>{
+                const createTableQuery = `CREATE TABLE IF NOT EXISTS USER(
+                    userID INT AUTO_INCREMENT PRIMARY KEY,
+                    username VARCHAR(255),
+                    email VARCHAR(255),
+                    passcode VARCHAR(255)
+                )`;/*active INT,
+                    lastLoginedTime INT,
+                    registrationTime INT*/
+                this.query(createTableQuery, (err, result) => {
+                    if (err) reject(err);
+                    else {
+                        reslove(result)
+                    }
+                });
+            }
+        )
+    }
+    connection.createUser = async function (user_data){
+        return new Promise((reslove, reject)=>{
+            this.query(`INSERT INTO USER SET ?`, user_data, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.getUserData = async function(user_id){
+        return new Promise(async (reslove, reject)=>{
+            this.query(`SELECT * FROM USER WHERE userID = ${user_id} LIMIT 1`, (err, results) => {
+                if (err) {
+                    console.error('Error retrieving last record:', err);
+                    return;
+                }
+                if (results.length > 0) {
+                    reslove(results[0])
+                } else {
+                    reslove(`user ${user_id}) is empty.`);
+                };
+            });
+        })
+    }
+    connection.deleteUser = async function (user_id){
+        const deleteQuery = `DELETE FROM USER WHERE userID = ${user_id}`;
+        return new Promise(()=>{
+            connection.query(deleteQuery, idToDelete, (err, result) => {
+                if (err) throw err;
+            });
+        })
+    }
+    connection.getUserTable = async function(){
+        return new Promise((reslove, reject)=>{
+            this.query(`SELECT * FROM USER`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    //console.log(`Table(${fish_id}) get successfully!`);
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.showUserTable = async function(){
+        return new Promise(async (reslove, reject)=>{
+            reslove(console.table(await connection.getUserTable()));
+        })
+    }
+    connection.revisePasscode = async function(username, new_passcode){
+        return new Promise((reslove, reject)=>{
+            this.query(`UPDATE USER SET passcode = '${new_passcode}' WHERE username = ${username}`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
+        })
+    }
    return connection;
 }

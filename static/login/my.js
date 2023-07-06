@@ -63,7 +63,7 @@ sign_up1.onclick = async function() {
     const mail = mail1.value;
     const res = await axios({
       method: "post",
-      url: "http://localhost/sign_up",
+      url: "/sign_up",
       data: {
         account,
         mail,
@@ -112,6 +112,8 @@ reset2.onclick = async function() {
         method: "post",
         url: "/reset_check_code",
         data: {
+          account,
+          password,
           code
         },
       });
@@ -149,9 +151,6 @@ sign_in.onclick = async function() {
       password,
     },
   });
-  //console.log(res)
-  //alert(res.data);
-
   window.location.href = `http://localhost/?token=${res.data.token}`;
 };
 

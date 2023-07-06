@@ -1,5 +1,6 @@
 const connection = require('./my_modules/sql')();
 require("dotenv").config();
+/*
 (async (connection)=>{
     //await connection.deleteFishesTable(['23','24','25'])
     await connection.buildFishesTable(['23','24','25'])
@@ -14,4 +15,10 @@ require("dotenv").config();
     console.log(await connection.getFishesData(['24','25'],versions = [1,3]))
     connection.end();
 })(connection);
+*/
 
+(async (connection)=>{
+    connection.showUserTable()
+    console.log(await connection.getUserData(1))
+    connection.end();
+})(connection);
