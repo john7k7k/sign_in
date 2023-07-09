@@ -64,7 +64,6 @@ app.listen(port, () => {
 app.get('/login', function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
-
 app.get('/static/dist/login', function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
@@ -72,7 +71,6 @@ app.get('/static/dist/login', function(req, res) {
 app.get('/home', verifyTokenBy('URL'), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 })
-
 app.get('/static/dist/home', verifyTokenBy('Cookie'), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 })
@@ -93,10 +91,13 @@ app.post('/api1/login_respond', async function(req, res) {
     jwt.sign(
       { username: req.body.account },
       process.env.DB_JWTKEY,
-      {expiresIn: '1800s'},
+      {expiresIn: '900s'},
       (err, token) => {
-        res.json({username: req.body.account,token})
+        res.json({username: req.body.account,token});
+        console.log("b");
         res.cookie('token', token,{maxAge:900000,httpOnly:true});
+        console.log("c");
+        console.log(token);
         res.redirect('/static/dist/home');
       }
     )
