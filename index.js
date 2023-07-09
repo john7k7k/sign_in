@@ -22,6 +22,7 @@ let randCode = getRand();
   app.use("/distcss", express.static('./static/dist/css/'));
   app.use("/dist", express.static('./static/dist/'));
 })(app)
+
 sqlConnection.buildUserTable();
 
 //mqtt處理
@@ -59,10 +60,10 @@ app.listen(port, () => {
 
 // 1. Login API
 app.get('/login', function(req, res) {
-  res.sendFile(path.join(__dirname, './static/login/my.html'));
+  res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
 
-app.post('/login_respond', async function(req, res) {
+app.post('/api1/login_respond', async function(req, res) {
   console.log(req.body);
   const userTable = await sqlConnection.getUserTable();
   for (let i = 0; i < userTable.length; i++) {
@@ -74,7 +75,7 @@ app.post('/login_respond', async function(req, res) {
     jwt.sign(
       { username: req.body.account },
       process.env.DB_JWTKEY,
-      {expiresIn: '300s'},
+      {expiresIn: '1800s'},
       (err, token) => {
         res.json({username: req.body.account,token})
       }
@@ -85,7 +86,7 @@ app.post('/login_respond', async function(req, res) {
   console.log("無帳號")
 });
 
-app.post('/sign_up',async function(req, res) {
+app.post('/api1/sign_up',async function(req, res) {
   const userTable = await sqlConnection.getUserTable();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.account === userTable[i].username) {
@@ -96,12 +97,14 @@ app.post('/sign_up',async function(req, res) {
   sqlConnection.createUser({
     username: req.body.account,
     email: req.body.mail,
-    passcode: md5(req.body.password)
+    passcode: md5(req.body.password),
+    registrationTime: (new Date).getTime(),
+    level: 1
   })
   res.sendStatus(200); //註冊成功
 })
 
-app.post('/reset_response',async function(req, res) {
+app.post('/api1/reset_response',async function(req, res) {
   const userTable = await sqlConnection.getUserTable();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.account !== userTable[i].username) continue;
@@ -111,8 +114,8 @@ app.post('/reset_response',async function(req, res) {
       return;
     }
     randCode = getRand();
-    let mailOption = {
-      from: "robot.send.auto.mail@gmail.com",
+    const mailOption = {
+      from: process.env.DB_GMAIL_ACCOUNT,
       to: req.body.mail,
       subject: "重設密碼驗證",
       text: "你的驗證碼是" + randCode
@@ -121,41 +124,59 @@ app.post('/reset_response',async function(req, res) {
       if (error) console.log(error);
       else console.log("sent" + info.response)
     })
-    res.send("10");
+    res.sendStatus(200);
     console.log("驗證中");
     return;
   }
-  res.send("重設密碼失敗，查無此帳號");
+  res.sendStatus(403);
   console.log("重設密碼失敗，查無此帳號")
 })
 
-app.post('/reset_check_code', function(req, res) {
+app.post('/api1/reset_check_code', function(req, res) {
   console.log(req.body)
   if (req.body.code === randCode) {
     sqlConnection.revisePasscode(req.body.account,md5(req.body.password))
-    res.send("重設密碼成功");
+    res.sendStatus(200);
     console.log("重設密碼成功");
     randCode = getRand();
     return;
   }
-  res.send("重設密碼失敗，驗證碼錯誤");
+  res.sendStatus(403);
   console.log("重設密碼失敗，驗證碼錯誤")
 })
 
-app.get('/', verifyTokenBy('URL'), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/idex.html'));
+app.post('/api1/logout/', verifyTokenBy('Header'),  async (req, res) => {
+  res.sendStatus(200);
 })
 
-app.get('/about', verifyTokenBy('URL'), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/idex.html'));
+app.post('/api1/delete_user/', verifyTokenBy('Header'),  async (req, res) => {
+  sqlConnection.deleteUser(req.payload.username,basis = 'username');
+  res.sendStatus(200);
+})
+
+app.get('/home', verifyTokenBy('URL'), function(req, res) {
+  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
+})
+
+app.get('/Fishdatas', verifyTokenBy('URL'), function(req, res) {
+  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
+});
+
+app.get('/api1/account/init/', verifyTokenBy('Header'), async (req, res) => { 
+  const resData = {
+    userData: await sqlConnection.getUserData(req.payload.username, basis = 'username'),
+    fishesID: await sqlConnection.getFishesID()
+  }
+  resData.userData.passcode = undefined;
+  res.send(resData)
 });
 
 // 2. Fish Data API
+
 //此API可新增fish的data
 app.post('/api1/fish_data/', verifyTokenBy('Header'),  async (req, res) => {
-  const { fish_json } = req.body.fishData; //取得參數
-  fish_json = JSON.parse(fish_json); //轉換為json格式
-  await sqlConnection.updateFishesData(fish_json); //從SQL中取得所求的data
+  const { fishData } = req.body; //取得參數
+  await sqlConnection.updateFishesData(fishData); //從SQL中更新所求的data
   res.send("設定成功");
 })
 
@@ -214,7 +235,10 @@ function verifyTokenBy(method = 'URL'){
         res.sendStatus(403);
         console.log(err);
       }
-      else next();
+      else {
+        req.payload = payload;
+        next();
+      }
     })
   }
 }

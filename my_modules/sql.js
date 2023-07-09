@@ -26,7 +26,7 @@ module.exports = function(sql_data = {
                 fishIdArray.push(fish_id);
                 const createTableQuery = `CREATE TABLE IF NOT EXISTS ID${fish_id} (
                     version INT AUTO_INCREMENT PRIMARY KEY,
-                    time INT,
+                    time BIGINT,
                     bc INT,
                     err INT,
                     active INT
@@ -75,9 +75,9 @@ module.exports = function(sql_data = {
         })
     }
     connection.getFishTable = async function(fish_id){
-        return new Promise((reslove, reject)=>{
-            connection.buildFishTable(fish_id);
-            this.query(`SELECT * FROM ID${fish_id}`, (err, result) => {
+        return new Promise(async (reslove, reject)=>{
+            await connection.buildFishTable(fish_id);
+            connection.query(`SELECT * FROM ID${fish_id}`, (err, result) => {
                 if (err) reject(err);
                 else {
                     //console.log(`Table(${fish_id}) get successfully!`);
@@ -173,7 +173,9 @@ module.exports = function(sql_data = {
                     userID INT AUTO_INCREMENT PRIMARY KEY,
                     username VARCHAR(255),
                     email VARCHAR(255),
-                    passcode VARCHAR(255)
+                    passcode VARCHAR(255),
+                    registrationTime BIGINT,
+                    level INT
                 )`;/*active INT,
                     lastLoginedTime INT,
                     registrationTime INT*/
@@ -196,9 +198,9 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.getUserData = async function(user_id){
+    connection.getUserData = async function(value, basis = 'userID'){
         return new Promise(async (reslove, reject)=>{
-            this.query(`SELECT * FROM USER WHERE userID = ${user_id} LIMIT 1`, (err, results) => {
+            this.query(`SELECT * FROM USER WHERE ${basis} = ${value} LIMIT 1`, (err, results) => {
                 if (err) {
                     console.error('Error retrieving last record:', err);
                     return;
@@ -211,10 +213,10 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.deleteUser = async function (user_id){
-        const deleteQuery = `DELETE FROM USER WHERE userID = ${user_id}`;
+    connection.deleteUser = async function (value, basis = 'userID'){
+        const deleteQuery = `DELETE FROM USER WHERE ${basis} = ${value}`;
         return new Promise(()=>{
-            connection.query(deleteQuery, idToDelete, (err, result) => {
+            connection.query(deleteQuery, (err, result) => {
                 if (err) throw err;
             });
         })
@@ -243,6 +245,21 @@ module.exports = function(sql_data = {
                     reslove(result)
                 }
             });
+        })
+    }
+    connection.deleteUserTable = async function (){
+        return new Promise((reslove, reject)=>{
+            this.query(`DROP TABLE IF EXISTS USER`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.getFishesID =  connection.deleteUserTable = async function (){
+        return new Promise((reslove, reject)=>{
+            reslove(fishIdArray)
         })
     }
    return connection;

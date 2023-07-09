@@ -18,7 +18,10 @@ require("dotenv").config();
 */
 
 (async (connection)=>{
-    connection.showUserTable()
-    console.log(await connection.getUserData(1))
+    connection.deleteUser(12,basis = 'username')
+    connection.deleteUser(1234,basis = 'username')
+    await connection.deleteFishesTable(['23','24','25','2355'])
+    await connection.showUserTable();
+    await connection.showFishesTable(['23','24','25','2355']);
     connection.end();
 })(connection);
