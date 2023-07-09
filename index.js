@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
 const dotenv = require("dotenv").config();
@@ -14,6 +15,7 @@ let randCode = getRand();
 ((app) => { //init app
   app.use(express.json())
   app.use(cors())
+  app.use(cookieParser())
   app.use("/static", express.static('./static'));
   app.use("/login", express.static('./static/login'));
   app.use("/media", express.static('./static/login/media'));
@@ -63,6 +65,22 @@ app.get('/login', function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
 
+app.get('/static/dist/login', function(req, res) {
+  res.sendFile(path.join(__dirname, './static/dist/index.html'));
+});
+
+app.get('/home', verifyTokenBy('URL'), function(req, res) {
+  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
+})
+
+app.get('/static/dist/home', verifyTokenBy('Cookie'), function(req, res) {
+  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
+})
+
+app.get('/static/dist/Fishdatas', verifyTokenBy('Cookie'), function(req, res) {
+  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
+});
+
 app.post('/api1/login_respond', async function(req, res) {
   console.log(req.body);
   const userTable = await sqlConnection.getUserTable();
@@ -78,11 +96,13 @@ app.post('/api1/login_respond', async function(req, res) {
       {expiresIn: '1800s'},
       (err, token) => {
         res.json({username: req.body.account,token})
+        res.cookie('token', token,{maxAge:900000,httpOnly:true});
+        res.redirect('/static/dist/home');
       }
     )
-    return;
+    return
   }
-  res.sendStatus(404); //
+  res.sendStatus(403); //
   console.log("無帳號")
 });
 
@@ -154,14 +174,6 @@ app.post('/api1/delete_user/', verifyTokenBy('Header'),  async (req, res) => {
   res.sendStatus(200);
 })
 
-app.get('/home', verifyTokenBy('URL'), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
-})
-
-app.get('/Fishdatas', verifyTokenBy('URL'), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
-});
-
 app.get('/api1/account/init/', verifyTokenBy('Header'), async (req, res) => { 
   const resData = {
     userData: await sqlConnection.getUserData(req.payload.username, basis = 'username'),
@@ -229,7 +241,8 @@ function verifyTokenBy(method = 'URL'){
   return (req, res, next) => {
     let token = '';
     if(method === 'URL') token = req.query.token;
-    else if(method === 'Header') token = req.headers['authorization']?.split(' ')[1];
+    else if(method === 'Header') token = req.headers['authorization'].split(' ')[1];
+    else if(method === 'Cookie') token = req.cookies.token;
     jwt.verify(token, process.env.DB_JWTKEY, (err, payload) => {
       if (err) {
         res.sendStatus(403);

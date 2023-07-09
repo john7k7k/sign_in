@@ -74,6 +74,16 @@ module.exports = function(sql_data = {
             });
         })
     }
+    connection.deleteUserTable = async function (fish_id){
+        return new Promise((reslove, reject)=>{
+            this.query(`DROP TABLE IF EXISTS USER`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
+        })
+    }
     connection.getFishTable = async function(fish_id){
         return new Promise(async (reslove, reject)=>{
             await connection.buildFishTable(fish_id);
@@ -247,7 +257,7 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.deleteUserTable = async function (){
+    connection.deleteUserTables = async function (){
         return new Promise((reslove, reject)=>{
             this.query(`DROP TABLE IF EXISTS USER`, (err, result) => {
                 if (err) reject(err);
