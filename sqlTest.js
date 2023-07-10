@@ -18,15 +18,15 @@ require("dotenv").config();
 */
 
 (async (connection)=>{
-    //await connection.deleteFishesTable(['23','24','25','2355'])
-    await connection.deleteUseclsrTables();
-    //await connection.buildUserTable();
     /*
     await connection.createUser({
         username: 'a',
-        level: 2
+        email: 'm@gmail.com',
+        passcode: 'p',
+        registrationTime: (new Date).getTime(),
+        level: 1
     });*/
+    await connection.deleteUser(3, basis = 'userID')
     await connection.showUserTable();
-    //await connection.showFishesTable(['23','24','25','2355']);
     connection.end();
 })(connection);

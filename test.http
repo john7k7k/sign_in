@@ -1,8 +1,9 @@
 POST http://localhost/api1/login_respond/
+Content-Type: application/json
 
 {
-    "acount":"123",
-    "password": "615626626hunini"
+    "account":"123",
+    "password": "735434cae08df8e591c1549da88c6d87"
 }
 
 ###
@@ -15,7 +16,7 @@ GET http://localhost/api1/fish_table/24.25
 ###
 POST http://localhost/api1/fish_data/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4ODkwMjY5MiwiZXhwIjoxNjg4OTA0NDkyfQ.sLlfOoJ2EG8XgpP4cQnCeqpst3DpbpQ7oHiFcPEGaVw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4ODk3ODk5MCwiZXhwIjoxNjg4OTc5ODkwfQ.TLpE1kDaYWdioI8wkQY2Y-CF7ZshyIX542Z4hYN776s
 
 {
     "fishData": {
@@ -30,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://localhost/api1/fish_color/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4ODkwMjY5MiwiZXhwIjoxNjg4OTA0NDkyfQ.sLlfOoJ2EG8XgpP4cQnCeqpst3DpbpQ7oHiFcPEGaVw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4ODk3OTA0MiwiZXhwIjoxNjg4OTc5OTQyfQ.kgb8M6X6QASqQ-Nyj2vhLnh2dPlajlFxlmHVncOR7Rw
 
 {
     "fishColor": {
@@ -44,3 +45,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
         }
     }
 }
+###
+GET http://localhost/api1/account/init
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4ODk3OTA0MiwiZXhwIjoxNjg4OTc5OTQyfQ.kgb8M6X6QASqQ-Nyj2vhLnh2dPlajlFxlmHVncOR7Rw

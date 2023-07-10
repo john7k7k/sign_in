@@ -210,7 +210,7 @@ module.exports = function(sql_data = {
     }
     connection.getUserData = async function(value, basis = 'userID'){
         return new Promise(async (reslove, reject)=>{
-            this.query(`SELECT * FROM USER WHERE ${basis} = ${value} LIMIT 1`, (err, results) => {
+            this.query(`SELECT * FROM USER WHERE ${basis} = '${value}' LIMIT 1`, (err, results) => {
                 if (err) {
                     console.error('Error retrieving last record:', err);
                     return;
@@ -224,11 +224,12 @@ module.exports = function(sql_data = {
         })
     }
     connection.deleteUser = async function (value, basis = 'userID'){
-        const deleteQuery = `DELETE FROM USER WHERE ${basis} = ${value}`;
-        return new Promise(()=>{
+        const deleteQuery = `DELETE FROM USER WHERE ${basis} = '${value}'`;
+        return new Promise((reslove, reject)=>{
             connection.query(deleteQuery, (err, result) => {
                 if (err) throw err;
             });
+            reslove();
         })
     }
     connection.getUserTable = async function(){
@@ -270,6 +271,16 @@ module.exports = function(sql_data = {
     connection.getFishesID =  connection.deleteUserTable = async function (){
         return new Promise((reslove, reject)=>{
             reslove(fishIdArray)
+        })
+    }
+    connection.reviseUserLevel = async function(username, new_level){
+        return new Promise((reslove, reject)=>{
+            this.query(`UPDATE USER SET level = '${new_level}' WHERE username = '${username}'`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
         })
     }
    return connection;

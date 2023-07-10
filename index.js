@@ -53,7 +53,7 @@ mqttConnection.on('error', (err) => {
 })
 
 //監聽port
-const port = 80;
+const port = 443;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
@@ -68,14 +68,14 @@ app.get('/static/dist/login', function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
 
-app.get('/home', verifyTokenBy('URL'), function(req, res) {
+app.get('/home', verifyTokenBy('URL')(), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 })
-app.get('/static/dist/home', verifyTokenBy('Cookie'), function(req, res) {
+app.get('/static/dist/home', verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 })
 
-app.get('/static/dist/Fishdatas', verifyTokenBy('Cookie'), function(req, res) {
+app.get('/static/dist/Fishdatas', verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 });
 
@@ -94,10 +94,7 @@ app.post('/api1/login_respond', async function(req, res) {
       {expiresIn: '900s'},
       (err, token) => {
         res.json({username: req.body.account,token});
-        console.log("b");
         res.cookie('token', token,{maxAge:900000,httpOnly:true});
-        console.log("c");
-        console.log(token);
         res.redirect('/static/dist/home');
       }
     )
@@ -156,7 +153,7 @@ app.post('/api1/reset_response',async function(req, res) {
 app.post('/api1/reset_check_code', function(req, res) {
   console.log(req.body)
   if (req.body.code === randCode) {
-    sqlConnection.revisePasscode(req.body.account,md5(req.body.password))
+    sqlConnection.revisePasscode(req.body.account, md5(req.body.password))
     res.sendStatus(200);
     console.log("重設密碼成功");
     randCode = getRand();
@@ -166,16 +163,16 @@ app.post('/api1/reset_check_code', function(req, res) {
   console.log("重設密碼失敗，驗證碼錯誤")
 })
 
-app.post('/api1/logout/', verifyTokenBy('Header'),  async (req, res) => {
+app.post('/api1/logout/', verifyTokenBy('Header')(),  async (req, res) => {
   res.sendStatus(200);
 })
 
-app.post('/api1/delete_user/', verifyTokenBy('Header'),  async (req, res) => {
-  sqlConnection.deleteUser(req.payload.username,basis = 'username');
+app.post('/api1/delete_user/', verifyTokenBy('Header')(),  async (req, res) => {
+  sqlConnection.deleteUser(req.payload.username, basis = 'username');
   res.sendStatus(200);
 })
 
-app.get('/api1/account/init/', verifyTokenBy('Header'), async (req, res) => { 
+app.get('/api1/account/init/', verifyTokenBy('Header')(), async (req, res) => { 
   const resData = {
     userData: await sqlConnection.getUserData(req.payload.username, basis = 'username'),
     fishesID: await sqlConnection.getFishesID()
@@ -184,26 +181,34 @@ app.get('/api1/account/init/', verifyTokenBy('Header'), async (req, res) => {
   res.send(resData)
 });
 
+app.get('/api1/allUserData', verifyTokenBy('Header')(3), async (req, res) => { 
+  res.send(await sqlConnection.getUserTable());
+});
+
+app.post('/api1/reviseLevel', verifyTokenBy('Header')(3), async (req, res) => { 
+  sqlConnection.reviseUserLevel(req.body.username, req.body.newLevel);
+  res.sendStatus(200);
+});
+
 // 2. Fish Data API
 
 //此API可新增fish的data
-app.post('/api1/fish_data/', verifyTokenBy('Header'),  async (req, res) => {
+app.post('/api1/fish_data/', verifyTokenBy('Header')(2),  async (req, res) => {
   const { fishData } = req.body; //取得參數
   await sqlConnection.updateFishesData(fishData); //從SQL中更新所求的data
   res.send("設定成功");
 })
 
 //此API可取得fish的table，路由參數fish_ids以逗號分隔多個id，例如: /sql/fish_data/IDs=23,24,26，
-app.get('/api1/fish_table/:fish_ids', verifyTokenBy('Header'), async (req, res) => { 
+app.get('/api1/fish_table/:fish_ids', verifyTokenBy('Header')(), async (req, res) => { 
   const { fish_ids } = req.params; //取得路由參數
-  fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
-  console.log(fish_id_array);
-  let tables = await sqlConnection.getFishesTable(fish_id_array) //從SQL中取得所求的table
+  const fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
+  const tables = await sqlConnection.getFishesTable(fish_id_array) //從SQL中取得所求的table
   res.send(tables);
 });
 
 //此API可取得fish的最新data
-app.get('/api1/fish_data/:fish_ids', verifyTokenBy('Header'), async (req, res) => { 
+app.get('/api1/fish_data/:fish_ids', verifyTokenBy('Header')(), async (req, res) => { 
   const { fish_ids } = req.params; //取得路由參數
   fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
   const datas = await sqlConnection.getFishesData(fish_id_array); //從SQL中取得所求的data
@@ -211,21 +216,20 @@ app.get('/api1/fish_data/:fish_ids', verifyTokenBy('Header'), async (req, res) =
 });
 
 //此API可取得fish的指定版本data
-app.get('/api1/fish_history_data/:fish_ids/:fish_versions', verifyTokenBy('Header'), async (req, res) => { 
+app.get('/api1/fish_history_data/:fish_ids/:fish_versions', verifyTokenBy('Header')(), async (req, res) => { 
   let { fish_ids, fish_versions } = req.params; //取得路由參數
-  fish_id_array = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
+  fish_ids = fish_ids.match(/(\d+)/g); //將路由參數轉為id陣列
   fish_versions = fish_versions.match(/(\d+)/g); //將路由參數轉為version陣列
-  const datas = await sqlConnection.getFishesData(fish_id_array,fish_versions); //從SQL中取得所求的data
-  res.send(datas);
+  res.send(await sqlConnection.getFishesData(fish_ids ,fish_versions)) //從SQL中取得所求的data
 });
 
 //此API可設定fish的LED Color
-app.post('/api1/fish_color/', verifyTokenBy('Header'), async (req, res) => {
+app.post('/api1/fish_color/', verifyTokenBy('Header')(2), async (req, res) => {
   const { fishColor } = req.body; //取得參數
   const fish_string = JSON.stringify(fishColor); //轉換為json格式
   mqttConnection.publish('Fish/set1',fish_string);
   console.log(fish_string);
-  res.send("設定成功");
+  res.sendStatus(200);
 })
 
 function convert(message){ //解析IOT端
@@ -234,26 +238,29 @@ function convert(message){ //解析IOT端
   for(i in message){
     data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
   }
-  //console.log(data);
   return data
 }
 
-function verifyTokenBy(method = 'URL'){
-  return (req, res, next) => {
-    let token = '';
-    if(method === 'URL') token = req.query.token;
-    else if(method === 'Header') token = req.headers['authorization'].split(' ')[1];
-    else if(method === 'Cookie') token = req.cookies.token;
-    jwt.verify(token, process.env.DB_JWTKEY, (err, payload) => {
-      if (err) {
-        res.sendStatus(403);
-        console.log(err);
-      }
-      else {
+function verifyTokenBy(tokenFrom = 'URL'){
+  return (threshold = 1) => {
+    return (req, res, next) => {
+      let token = '';
+      if(tokenFrom === 'URL') token = req.query.token;
+      else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
+      else if(tokenFrom === 'Cookie') token = req.cookies.token;
+      jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
+        if (err) {
+          res.sendStatus(403);
+          console.log(err);
+          return;
+        }
         req.payload = payload;
-        next();
-      }
-    })
+        if(threshold === 1) next();
+        const { level } = await sqlConnection.getUserData(payload.username, basis = 'username');
+        if(level < threshold) res.sendStatus(403);
+        else next();
+      })
+    }
   }
 }
 
