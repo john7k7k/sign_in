@@ -121,57 +121,57 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.buildFishesTable = async function(fish_id_array){
+    connection.buildFishesTable = async function(fish_id_array, section = '001'){
         return new Promise(async (reslove, reject)=>{
             for(var fish_id of fish_id_array){
-                await connection.buildFishTable(fish_id)
+                await connection.buildFishTable(section + fish_id)
             }
             reslove()
         })
     }
-    connection.deleteFishesTable = async function(fish_id_array = fishIdArray){
+    connection.deleteFishesTable = async function(fish_id_array = fishIdArray,section = '001'){
         return new Promise(async (reslove, reject)=>{
             for(var fish_id of fish_id_array){
-                await connection.deleteFishTable(fish_id)
+                await connection.deleteFishTable(section + fish_id)
             }
             reslove()
         })
     }
-    connection.getFishesTable = async function(fish_id_array = fishIdArray){
+    connection.getFishesTable = async function(fish_id_array = fishIdArray,section = '001'){
         return new Promise(async (reslove, reject)=>{
             var result = {};
             for(var fish_id of fish_id_array){
-                result[`${fish_id}`] = (await connection.getFishTable(fish_id))
+                result[`${fish_id}`] = (await connection.getFishTable(section + fish_id))
             }
             reslove(result)
         })
     }
-    connection.updateFishesData = async function(fish_json){
+    connection.updateFishesData = async function(fish_json, section = '001'){
         return new Promise(async (reslove, reject)=>{
             for(var fish_id of Object.keys(fish_json)){
-                await connection.updateFishData(fish_id,fish_json[fish_id])
+                await connection.updateFishData(section + fish_id,fish_json[fish_id])
             }
             reslove()
         })
     }
-    connection.showFishesTable = async function(fish_id_array = fishIdArray){
+    connection.showFishesTable = async function(fish_id_array = fishIdArray, section = '001'){
         return new Promise(async (reslove, reject)=>{
             for(fish_id of fish_id_array){
-                await connection.showFishTable(fish_id);
+                await connection.showFishTable(section + fish_id);
             }
            reslove();
         })
     }
-    connection.getFishesData = async function(fish_id_array = fishIdArray, fish_versions = -1){
+    connection.getFishesData = async function(fish_id_array = fishIdArray,section = '001', fish_versions = -1){
         return new Promise(async (reslove, reject)=>{
             const json_results = {}
             if (fish_versions === -1)
                 for(fish_id of fish_id_array){
-                    json_results[`${fish_id}`] = await connection.getFishData(fish_id);
+                    json_results[`${fish_id}`] = await connection.getFishData(section + fish_id);
                 }
             else 
                 for(index in fish_id_array){
-                    json_results[`${fish_id_array[index]}`] = await connection.getFishData(fish_id_array[index],fish_versions[index]);
+                    json_results[`${fish_id_array[index]}`] = await connection.getFishData(section + fish_id_array[index],fish_versions[index]);
                 }
             //console.log(json_results);
             reslove(json_results);
@@ -185,7 +185,8 @@ module.exports = function(sql_data = {
                     email VARCHAR(255),
                     passcode VARCHAR(255),
                     registrationTime BIGINT,
-                    level INT
+                    level INT,
+                    section VARCHAR(3)
                 )`;/*active INT,
                     lastLoginedTime INT,
                     registrationTime INT*/
@@ -218,7 +219,7 @@ module.exports = function(sql_data = {
                 if (results.length > 0) {
                     reslove(results[0])
                 } else {
-                    reslove(`user ${user_id}) is empty.`);
+                    reslove(`user ${value}) is empty.`);
                 };
             });
         })
@@ -232,9 +233,12 @@ module.exports = function(sql_data = {
             reslove();
         })
     }
-    connection.getUserTable = async function(){
+    connection.getUserTable = async function(section = '001'){
         return new Promise((reslove, reject)=>{
-            this.query(`SELECT * FROM USER`, (err, result) => {
+            let query = '';
+            if(section === '001') query = `SELECT * FROM USER`;
+            else query = `SELECT * FROM USER WHERE section = '${section}'`;
+            this.query(query, (err, result) => {
                 if (err) reject(err);
                 else {
                     //console.log(`Table(${fish_id}) get successfully!`);
@@ -243,9 +247,9 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.showUserTable = async function(){
+    connection.showUserTable = async function(section = '001'){
         return new Promise(async (reslove, reject)=>{
-            reslove(console.table(await connection.getUserTable()));
+            reslove(console.table(await connection.getUserTable(section)));
         })
     }
     connection.revisePasscode = async function(username, new_passcode){
@@ -268,7 +272,7 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.getFishesID =  connection.deleteUserTable = async function (){
+    connection.getFishesID = async function (){
         return new Promise((reslove, reject)=>{
             reslove(fishIdArray)
         })
@@ -276,6 +280,16 @@ module.exports = function(sql_data = {
     connection.reviseUserLevel = async function(username, new_level){
         return new Promise((reslove, reject)=>{
             this.query(`UPDATE USER SET level = '${new_level}' WHERE username = '${username}'`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.reviseUserSection = async function(username, new_section){
+        return new Promise((reslove, reject)=>{
+            this.query(`UPDATE USER SET section = '${new_section}' WHERE username = '${username}'`, (err, result) => {
                 if (err) reject(err);
                 else {
                     reslove(result)

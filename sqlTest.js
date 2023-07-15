@@ -26,7 +26,7 @@ require("dotenv").config();
         registrationTime: (new Date).getTime(),
         level: 1
     });*/
-    await connection.deleteUser(3, basis = 'userID')
+    //await connection.deleteUserTables()
     await connection.showUserTable();
     connection.end();
 })(connection);

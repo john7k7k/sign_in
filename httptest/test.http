@@ -1,0 +1,84 @@
+POST http://localhost/api/v1/account/sign_up
+Content-Type: application/json
+
+{
+    "username": "123",
+    "mail": "ppp1244qqq@gmail.com",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
+POST http://localhost/api/v1/account/login
+Content-Type: application/json
+
+{
+    "username": "123",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+
+###
+POST http://localhost/api/v1/account/delete_user
+Content-Type: application/json
+Authorization: Bearer _token
+
+###
+GET http://localhost/api/v1/account
+Content-Type: application/json
+Authorization: Bearer _token
+
+###
+GET http://localhost/api/v1/account/list
+Content-Type: application/json
+Authorization: Bearer _token
+
+###
+POST http://localhost/api/v1/account/revise/level
+Content-Type: application/json
+Authorization: Bearer _token
+
+{
+    "username": "123",
+    "newLevel": 20
+}
+###
+POST http://localhost/api/v1/account/revise/section
+Content-Type: application/json
+Authorization: Bearer _token
+
+{
+    "username": "123",
+    "newSection": "002"
+}
+###
+POST http://localhost/api/v1/fish/data/?section=001
+Content-Type: application/json
+Authorization: Bearer _token
+
+{
+    "fishData": {
+        "23": {"bc": 20, "err": 2,"active":0},
+        "24": {"bc": 20, "err": 2,"active":0}
+    }
+}
+
+###
+GET http://localhost/api/v1/fish/table/?section=001
+Content-Type: application/json
+Authorization: Bearer _token
+
+###
+GET http://localhost/api/v1/fish/data/?section=001&fishesID=23,24
+Content-Type: application/json
+Authorization: Bearer _token
+###
+GET http://localhost/api/v1/fish/history_data/?section=001&fishesID=23,24&version=1,2
+Content-Type: application/json
+Authorization: Bearer _token
+###
+POST http://localhost/api/v1/fish/control/?section=001
+Content-Type: application/json
+Authorization: Bearer _token
+
+{
+    "username": "123",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
