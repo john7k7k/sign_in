@@ -42,10 +42,13 @@ mqttConnection.on('connect', () => {
 });
 
 mqttConnection.on('message',async (topic, rec_message) => { //接收到IOT端訊息
-  json_data = JSON.parse(rec_message.toString()); //parse資料
+  const json_data = JSON.parse(rec_message.toString()); //parse資料
   console.log('主題',topic,', 時間: ',  (new Date()).toLocaleString()); //印出資料
   //sendLineNotify(convert(json_data)); //傳送lineNotify
-  await sqlConnection.updateFishesData(json_data); //更新sql資料
+  const topicInfo = topicDecode(topic);
+  const fish_object = {};
+  fish_object[topicInfo.section] = json_data;
+  await sqlConnection.updateFishesData(fish_object); //更新sql資料
   sqlConnection.showFishesTable();
 });
 
@@ -216,46 +219,80 @@ app.post(`/${API_VERSION}/account/revise/section`, verifyTokenBy('Header')(10), 
 
 //此API可新增fish的data
 app.post(`/${API_VERSION}/fish/data/`, verifyTokenBy('Header')(40),  async (req, res) => {
-  const { fishData } = req.body; //取得參數
-  const { section } = req.query;
-  await sqlConnection.updateFishesData(fishData, section); //從SQL中更新所求的data
-  res.send("設定成功");
+  try{
+    const { fishData } = req.body; //取得參數
+    const { section } = req.query;
+    if(fishData===undefined||section===undefined){
+      res.sendStatus(403);
+      return;
+    }
+    const fish_object = {};
+    fish_object[section] = fishData;
+    await sqlConnection.updateFishesData(fish_object); //從SQL中更新所求的data
+    await sqlConnection.showFishesTable(sqlConnection.getFishesID());
+    res.sendStatus(200);
+  }
+  catch{res.sendStatus(403);}
 })
 
 //此API可取得fish的table，路由參數fish_ids以逗號分隔多個id，例如: /sql/fish_data/IDs=23,24,26，
 app.get(`/${API_VERSION}/fish/table/`, verifyTokenBy('Header')(50), async (req, res) => { 
-  const { fishesID, section } = req.query; //取得路由參數
-  const fish_id_array = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
-  const tables = await sqlConnection.getFishesTable(fish_id_array, section) //從SQL中取得所求的table
-  res.send(tables);
+  try{
+    const { fishesID, section } = req.query; //取得路由參數
+    const fish_id_array = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
+    const fish_object = {};
+    fish_object[section] = fish_id_array;
+    const tables = await sqlConnection.getFishesTable(fish_object) //從SQL中取得所求的table
+    res.send(tables);
+  }
+  catch{res.sendStatus(403);}
 });
 
 //此API可取得fish的最新data
 app.get(`/${API_VERSION}/fish/data/`, verifyTokenBy('Header')(50), async (req, res) => { 
-  const { fishesID, section } = req.params; //取得路由參數
-  fish_id_array = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
-  const datas = await sqlConnection.getFishesData(fish_id_array, section); //從SQL中取得所求的data
-  res.send(datas);
+  try{
+    const { fishesID, section } = req.query; //取得路由參數
+    fish_id_array = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
+    const fish_object = {};
+    fish_object[section] = fish_id_array;
+    const datas = await sqlConnection.getFishesData(fish_object); //從SQL中取得所求的data
+    res.send(datas);
+  }
+  catch{res.sendStatus(403);}
 });
 
 //此API可取得fish的指定版本data
 app.get(`/${API_VERSION}/fish/history_data/`, verifyTokenBy('Header')(50), async (req, res) => { 
-  let { fishesID, section, fish_versions } = req.query; //取得路由參數
-  fishesID = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
-  fish_versions = fish_versions.match(/(\d+)/g); //將路由參數轉為version陣列
-  res.send(await sqlConnection.getFishesData(fishesID , section, fish_versions)) //從SQL中取得所求的data
+  try{
+    let { fishesID, section, versions } = req.query; //取得路由參數
+    fishesID = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
+    versions = versions.match(/(\d+)/g); //將路由參數轉為version陣列
+    const fish_object = {};
+    for(let i = 0; i < fishesID.length; i++){
+      if(fish_object[section]===undefined) fish_object[section]={};
+      fish_object[section][fishesID[i]] =versions[i];
+    }
+    const datas = await sqlConnection.getFishesData(fish_object,history=true); //從SQL中取得所求的data
+    res.send(datas) //從SQL中取得所求的data
+  }
+  catch{res.sendStatus(403);}
 });
 
 //此API可控制fish (LED,action,mode)
 app.post(`/${API_VERSION}/fish/control/`, verifyTokenBy('Header')(60), async (req, res) => {
-  const { fishControl } = req.body; //取得參數
-  const { section } = req.query;
-  for(key in fishControl){
-    const fish_string = JSON.stringify(fishControl[key]); //轉換為json字串
-    mqttConnection.publish('Fish/set/' + section + '/' + key,fish_string);
+  try{
+    const { fishControl } = req.body; //取得參數
+    const { section } = req.query;
+
+    for(key in fishControl){
+      const fish_string = JSON.stringify(fishControl[key]); //轉換為json字串
+      mqttConnection.publish('Fish/set/' + sectionDecode(section) + '/' + key,fish_string);
+      console.log('Fish/set/' + sectionDecode(section) + '/' + key);
+      console.log(fish_string);
+    }
+    res.sendStatus(200);
   }
-  console.log(fish_string);
-  res.sendStatus(200);
+  catch{res.sendStatus(403);}
 })
 
 function convert(message){ //解析IOT端
@@ -301,4 +338,36 @@ function getRand(){
     randomString += randomDigit.toString();
   }
   return randomString;
+}
+
+function topicDecode(topic){
+  const topicArray = topic.split('/');
+  return {
+    main: topicArray[0],
+    type: topicArray[1],
+    section: sectionEecode(topicArray[2]),
+    command: topicArray[3]
+  }
+}
+
+function sectionEecode(section_name){
+  switch(section_name){
+    case 'ntut':
+      return '002'
+    case 'nmmst':
+      return '003'
+    case 'twincn':
+      return '004'
+  }
+}
+
+function sectionDecode(section_name){
+  switch(section_name){
+    case '002':
+      return 'ntut'
+    case '003':
+      return 'nmmst'
+    case '004':
+      return 'twincn'
+  }
 }

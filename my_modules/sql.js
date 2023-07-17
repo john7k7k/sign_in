@@ -3,8 +3,8 @@
  */
 
 const createConnection = require('mysql').createConnection ;
-const connectionMap = {};
 var fishIdArray = [];
+var fishIdObject = {};
 require("dotenv").config();
 
 module.exports = function(sql_data = {
@@ -19,32 +19,29 @@ module.exports = function(sql_data = {
         if(err) throw err
         console.log("connected sql")
     })
-    connection.buildFishTable = async function (fish_id){
-        return new Promise(async (reslove, reject)=>{
-            if(fishIdArray.includes(fish_id)) reslove('');
-            else {
-                fishIdArray.push(fish_id);
-                const createTableQuery = `CREATE TABLE IF NOT EXISTS ID${fish_id} (
-                    version INT AUTO_INCREMENT PRIMARY KEY,
-                    time BIGINT,
-                    bc INT,
-                    err INT,
-                    active INT
-                )`;
-                this.query(createTableQuery, (err, result) => {
-                    if (err) reject(err);
-                    else {
-                        reslove(result)
-                        //console.log(`Table(${fish_id}) created`);
-                    }
-                });
-            }
+    connection.buildFishUIDTable = async function (){
+        return new Promise((reslove, reject)=>{
+            const createTableQuery = `CREATE TABLE IF NOT EXISTS FishUID (
+                num INT AUTO_INCREMENT PRIMARY KEY,
+                fishUID VARCHAR(10)
+            )`;
+            this.query(createTableQuery, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
         })
     }
-    connection.updateFishData = async function (fish_id,fish_data){
-        await connection.buildFishTable(fish_id)
-        return new Promise((reslove, reject)=>{
-            this.query(`INSERT INTO ID${fish_id} SET ?`, fish_data, (err, result) => {
+    connection.newFishUID = async function (newfishUID){
+        return new Promise(async(reslove, reject)=>{
+            for(const {fishUID} of await connection.getFishUIDTable()){
+                if(fishUID === newfishUID){
+                   reslove('fail');
+                   return;
+                }
+            }
+            this.query(`INSERT INTO FishUID SET ?`, {fishUID:newfishUID}, (err, result) => {
                 if (err) reject(err);
                 else {
                     reslove(result)
@@ -53,41 +50,10 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.deleteFishData = async function (fish_id){
-        const deleteQuery = `DELETE FROM ID${fish_id} WHERE id = (SELECT MAX(id) FROM ${fish_id})`;
-        return new Promise(()=>{
-            connection.query(deleteQuery, idToDelete, (err, result) => {
-                if (err) throw err;
-                //console.log(`Table(${fish_id}) data deleted`);
-            });
-        })
-    }
-    connection.deleteFishTable = async function (fish_id){
-        return new Promise((reslove, reject)=>{
-            this.query(`DROP TABLE IF EXISTS ID${fish_id}`, (err, result) => {
-                if (err) reject(err);
-                else {
-                    fishIdArray = fishIdArray.filter((element) => element != fish_id)
-                    //console.log(`Table(${fish_id}) deleted`);
-                    reslove(result)
-                }
-            });
-        })
-    }
-    connection.deleteUserTable = async function (fish_id){
-        return new Promise((reslove, reject)=>{
-            this.query(`DROP TABLE IF EXISTS USER`, (err, result) => {
-                if (err) reject(err);
-                else {
-                    reslove(result)
-                }
-            });
-        })
-    }
-    connection.getFishTable = async function(fish_id){
+    connection.getFishUIDTable = async function (){
         return new Promise(async (reslove, reject)=>{
-            await connection.buildFishTable(fish_id);
-            connection.query(`SELECT * FROM ID${fish_id}`, (err, result) => {
+            await connection.buildFishUIDTable();
+            connection.query(`SELECT * FROM FishUID`, (err, result) => {
                 if (err) reject(err);
                 else {
                     //console.log(`Table(${fish_id}) get successfully!`);
@@ -96,18 +62,131 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.showFishTable = async function(fish_id){
+    connection.getFishUIDArray = async function (){
         return new Promise(async (reslove, reject)=>{
-            console.log(`FishID ${fish_id}:`)
-            reslove(console.table(await connection.getFishTable(fish_id)));
+            const UIDArray = [];
+            for(uid of await connection.getFishUIDTable()){
+                UIDArray.push(uid.fishUID)
+            }
+            reslove(UIDArray)
         })
     }
-    connection.getFishData = async function(fish_id, fish_versoion = -1){
-        let query = ''
-        if(fish_versoion === -1) query = `SELECT * FROM ID${fish_id} ORDER BY version DESC LIMIT 1`
-        else query = `SELECT * FROM ID${fish_id} WHERE version = ${fish_versoion} LIMIT 1` ///
+    connection.deleteFishUIDTable = async function (){
+        return new Promise((reslove, reject)=>{
+            this.query(`DROP TABLE IF EXISTS FishUID`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    //console.log(`Table(${fish_id}) deleted`);
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.deleteFishUID = async function (fish_UID){
+        const deleteQuery = `DELETE FROM FishUID WHERE fishUID = ${fish_UID}`;
+        return new Promise((reslove, reject)=>{
+            this.query(deleteQuery, (err, result) => {
+                if (err) reject(err);
+                else {
+                    //console.log(`Table(${fish_id}) deleted`);
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.deleteFishesUID = async function (fish_UID_array = connection.getFishUIDArray()){
+        return new Promise((reslove, reject)=>{
+            for(fish_UID of fish_UID_array)
+                connection.deleteFishUID(fish_UID);
+            reslove()
+        })
+    }
+    connection.getFishesID = async function (){
         return new Promise(async (reslove, reject)=>{
-            await connection.buildFishTable(fish_id)
+            const data = {}
+            for(const {fishUID} of await connection.getFishUIDTable()){
+                if(data[fishUID.slice(0,3)] == undefined) data[fishUID.slice(0,3)] = [];
+                data[fishUID.slice(0,3)].push(fishUID.slice(3));
+            }
+            reslove(data)
+        })
+    }
+    //
+    connection.buildFishTable = async function (fish_id,section = '001'){
+        return new Promise(async (reslove, reject)=>{
+            await connection.newFishUID(section+fish_id);
+            const createTableQuery = `CREATE TABLE IF NOT EXISTS ID${section+fish_id} (
+                version INT AUTO_INCREMENT PRIMARY KEY,
+                time BIGINT,
+                bc INT,
+                err INT,
+                active INT
+            )`;
+            this.query(createTableQuery, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                    //console.log(`Table(${fish_id}) created`);
+                }
+            });
+        })
+    }
+    connection.updateFishData = async function (fish_id,section = '001',fish_data){
+        await connection.buildFishTable(fish_id,section);
+        return new Promise((reslove, reject)=>{
+            this.query(`INSERT INTO ID${section+fish_id} SET ?`, fish_data, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                    //console.log(`Table(${fish_id}) updated`);
+                }
+            });
+        })
+    }
+    connection.deleteFishData = async function (fish_id,section = '001'){
+        const deleteQuery = `DELETE FROM ID${section+fish_id} WHERE id = (SELECT MAX(id) FROM ${section+fish_id})`;
+        return new Promise(()=>{
+            connection.query(deleteQuery, idToDelete, (err, result) => {
+                if (err) throw err;
+                //console.log(`Table(${fish_id}) data deleted`);
+            });
+        })
+    }
+    connection.deleteFishTable = async function (fish_id,section = '001'){
+        return new Promise((reslove, reject)=>{
+            this.query(`DROP TABLE IF EXISTS ID${section+fish_id}`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    connection.deleteFishUID(section+fish_id);
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.getFishTable = async function(fish_id,section = '001'){
+        return new Promise(async (reslove, reject)=>{
+            await connection.buildFishTable(fish_id,section);
+            connection.query(`SELECT * FROM ID${section+fish_id}`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    //console.log(`Table(${fish_id}) get successfully!`);
+                    reslove(result)
+                }
+            });
+        })
+    }
+    connection.showFishTable = async function(fish_id,section = '001'){
+        return new Promise(async (reslove, reject)=>{
+            console.log(`FishUID ${section+fish_id}:`)
+            reslove(console.table(await connection.getFishTable(fish_id,section)));
+        })
+    }
+    connection.getFishData = async function(fish_id,section = '001', fish_versoion = -1){
+        let query = ''
+        if(fish_versoion === -1) query = `SELECT * FROM ID${section+fish_id} ORDER BY version DESC LIMIT 1`
+        else query = `SELECT * FROM ID${section+fish_id} WHERE version = ${fish_versoion} LIMIT 1` ///
+        return new Promise(async (reslove, reject)=>{
+            await connection.buildFishTable(fish_id,section)
             this.query(query, (err, results) => {
                 if (err) {
                     console.error('Error retrieving last record:', err);
@@ -121,59 +200,72 @@ module.exports = function(sql_data = {
             });
         })
     }
-    connection.buildFishesTable = async function(fish_id_array, section = '001'){
+    connection.buildFishesTable = async function(fish_id_object){
         return new Promise(async (reslove, reject)=>{
-            for(var fish_id of fish_id_array){
-                await connection.buildFishTable(section + fish_id)
+            for(fish_section in fish_id_object){
+                for(fish_id of fish_id_object[fish_section])
+                    connection.buildFishTable(fish_id,fish_section);
             }
             reslove()
         })
     }
-    connection.deleteFishesTable = async function(fish_id_array = fishIdArray,section = '001'){
+    connection.deleteFishesTable = async function(fish_id_object){
         return new Promise(async (reslove, reject)=>{
-            for(var fish_id of fish_id_array){
-                await connection.deleteFishTable(section + fish_id)
+            for(fish_section in fish_id_object){
+                for(fish_id of fish_id_object[fish_section])
+                    connection.deleteFishTable(fish_id,fish_section);
             }
             reslove()
         })
     }
-    connection.getFishesTable = async function(fish_id_array = fishIdArray,section = '001'){
+    connection.getFishesTable = async function(fish_id_object){
         return new Promise(async (reslove, reject)=>{
             var result = {};
-            for(var fish_id of fish_id_array){
-                result[`${fish_id}`] = (await connection.getFishTable(section + fish_id))
-            }
-            reslove(result)
+            for(fish_section in fish_id_object)
+                for(fish_id of fish_id_object[fish_section]){
+                    if(result[fish_section]===undefined) result[fish_section]={};
+                    result[fish_section][`${fish_id}`] = (await connection.getFishTable(fish_id,fish_section));
+                }
+                reslove(result)
         })
     }
-    connection.updateFishesData = async function(fish_json, section = '001'){
+    connection.updateFishesData = async function(fish_id_object){
         return new Promise(async (reslove, reject)=>{
-            for(var fish_id of Object.keys(fish_json)){
-                await connection.updateFishData(section + fish_id,fish_json[fish_id])
+            for(fish_section in fish_id_object){
+                for(fish_id in fish_id_object[fish_section]){
+                    fish_id_object[fish_section][fish_id].time = (new Date()).getTime();
+                    connection.updateFishData(fish_id,fish_section,fish_id_object[fish_section][fish_id]);
+                }
             }
             reslove()
         })
     }
-    connection.showFishesTable = async function(fish_id_array = fishIdArray, section = '001'){
+    connection.showFishesTable = async function(fish_id_object){
         return new Promise(async (reslove, reject)=>{
-            for(fish_id of fish_id_array){
-                await connection.showFishTable(section + fish_id);
+            for(fish_section in fish_id_object){
+                for(fish_id of fish_id_object[fish_section])
+                    await connection.showFishTable(fish_id,fish_section);
             }
            reslove();
         })
     }
-    connection.getFishesData = async function(fish_id_array = fishIdArray,section = '001', fish_versions = -1){
+    connection.getFishesData = async function(fish_id_object,history=false){
         return new Promise(async (reslove, reject)=>{
-            const json_results = {}
-            if (fish_versions === -1)
-                for(fish_id of fish_id_array){
-                    json_results[`${fish_id}`] = await connection.getFishData(section + fish_id);
+            const json_results = {};
+            if(history){
+                for(fish_section in fish_id_object)
+                for(fish_id in fish_id_object[fish_section]){
+                    if(json_results[fish_section]===undefined) json_results[fish_section]={};
+                    json_results[fish_section][fish_id] = await connection.getFishData(fish_id,fish_section,fish_id_object[fish_section][fish_id])
                 }
-            else 
-                for(index in fish_id_array){
-                    json_results[`${fish_id_array[index]}`] = await connection.getFishData(section + fish_id_array[index],fish_versions[index]);
+            }
+            else{
+                for(fish_section in fish_id_object)
+                for(fish_id of fish_id_object[fish_section]){
+                    if(json_results[fish_section]===undefined) json_results[fish_section]={};
+                    json_results[fish_section][fish_id] = await connection.getFishData(fish_id,fish_section)
                 }
-            //console.log(json_results);
+            }
             reslove(json_results);
         })
     }
@@ -219,7 +311,7 @@ module.exports = function(sql_data = {
                 if (results.length > 0) {
                     reslove(results[0])
                 } else {
-                    reslove(`user ${value}) is empty.`);
+                    reslove(`user ${value} is empty.`);
                 };
             });
         })
@@ -234,10 +326,11 @@ module.exports = function(sql_data = {
         })
     }
     connection.getUserTable = async function(section = '001'){
-        return new Promise((reslove, reject)=>{
+        return new Promise(async (reslove, reject)=>{
             let query = '';
             if(section === '001') query = `SELECT * FROM USER`;
-            else query = `SELECT * FROM USER WHERE section = '${section}'`;
+            else query = `SELECT * FROM USER WHERE section = '${section}'` ;
+            await connection.buildUserTable();
             this.query(query, (err, result) => {
                 if (err) reject(err);
                 else {
@@ -270,11 +363,6 @@ module.exports = function(sql_data = {
                     reslove(result)
                 }
             });
-        })
-    }
-    connection.getFishesID = async function (){
-        return new Promise((reslove, reject)=>{
-            reslove(fishIdArray)
         })
     }
     connection.reviseUserLevel = async function(username, new_level){
