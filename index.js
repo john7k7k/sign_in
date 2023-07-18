@@ -68,18 +68,11 @@ app.listen(port, () => {
 app.get('/login', function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
-app.get('/static/dist/login', function(req, res) {
+app.get(/\/static\/dist\/(?:login|SignUp)/, function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
 
-app.get('/home', verifyTokenBy('URL')(), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
-})
-app.get('/static/dist/home', verifyTokenBy('Cookie')(), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
-})
-
-app.get('/static/dist/Fishdatas', verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/\/static\/dist\/(?:Fishdatas|EditDatas|UserData|home)/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 });
 
@@ -101,9 +94,12 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
       async (err, token) => {
         resData  = await sqlConnection.getUserData(req.body.username,basis = 'username');
         resData.passcode = undefined;
+        let fishesID = {};
+        if(resData.section === '001') fishesID = await sqlConnection.getFishesID();
+        else fishesID[resData.section] = (await sqlConnection.getFishesID())[resData.section];
         res.json({
           ...resData,
-          fishesID: await sqlConnection.getFishesID(),
+          fishesID,
           token,
         });
       }
