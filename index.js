@@ -95,8 +95,8 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
         resData  = await sqlConnection.getUserData(req.body.username,basis = 'username');
         resData.passcode = undefined;
         let fishesID = {};
-        if(resData.section === '001') fishesID = await sqlConnection.getFishesID();
-        else fishesID[resData.section] = (await sqlConnection.getFishesID())[resData.section];
+        if(resData.section === '001') fishesID = await sqlConnection.getFishesActive();
+        else fishesID[resData.section] = (await sqlConnection.getFishesActive())[resData.section];
         res.json({
           ...resData,
           fishesID,
@@ -124,7 +124,7 @@ app.post(`/${API_VERSION}/account/sign_up`,async function(req, res) {
     passcode: md5(req.body.password),
     registrationTime: (new Date).getTime(),
     level: 10,
-    section: '001'
+    section: req.body.section
   })
   res.sendStatus(200); //註冊成功
 })
@@ -180,12 +180,14 @@ app.post(`/${API_VERSION}/account/delete_user`, verifyTokenBy('Header')(),  asyn
 })
 
 app.get(`/${API_VERSION}/account/`, verifyTokenBy('Header')(), async (req, res) => { 
-  const resData = {
-    userData: await sqlConnection.getUserData(req.payload.username, basis = 'username'),
-    fishesID: await sqlConnection.getFishesID()
-  }
-  resData.userData.passcode = undefined;
-  res.send(resData)
+  let userData = await sqlConnection.getUserData(req.payload.username, basis = 'username');
+  let fishesID = {};
+  if(userData.section === '001') fishesID = await sqlConnection.getFishesActive();
+  else fishesID[userData.section] = (await sqlConnection.getFishesActive())[userData.section];
+  console.log(fishesID)
+  const resData = {...userData, fishesID};
+  resData.passcode = undefined;
+  res.json(resData)
 });
 
 app. get(`/${API_VERSION}/account/list`, verifyTokenBy('Header')(20), async (req, res) => { 

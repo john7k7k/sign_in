@@ -1,13 +1,14 @@
-POST http://20.89.131.34:443/api/v1/account/sign_up
+POST http://localhost/api/v1/account/sign_up
 Content-Type: application/json
 
 {
     "username": "1234",
     "mail": "ppp1244qqq@gmail.com",
-    "password": "735434cae08df8e591c1549da88c6d87"
+    "password": "735434cae08df8e591c1549da88c6d87",
+    "section": "002"
 }
 ###
-POST http://20.89.131.34:443/api/v1/account/login
+POST http://localhost/api/v1/account/login
 Content-Type: application/json
 
 {
@@ -16,22 +17,22 @@ Content-Type: application/json
 }
 
 ###
-POST http://20.89.131.34:443/api/v1/account/delete_user
+POST http://localhost/api/v1/account/delete_user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk2Nzg1OTcsImV4cCI6MTY4OTY4NzU5N30.HjkbdyE5IX_DsO0uLz7d9ONBBC9-CyrYgLNqOlStKwc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk2OTMyMTUsImV4cCI6MTY4OTcwMjIxNX0.BjfGYyGdLWENgcNYRCWpesrPBb2IK2URxpmJIYfo0B0
 
 ###
-GET http://20.89.131.34:443/api/v1/account
+GET http://localhost/api/v1/account
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk2Nzc4NDQsImV4cCI6MTY4OTY4Njg0NH0.RmBsd_m3yzoSjXUGWSChNNZY-J7iAawcWfgBN7iExA0
 
 ###
-GET http://20.89.131.34:443/api/v1/account/list/?section=001
+GET http://localhost/api/v1/account/list/?section=001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTYwNzI0NSwiZXhwIjoxNjg5NjE2MjQ1fQ.is5lEmDiIS5bchMngOkj-iH36gAYPt5D9xaygNk6sc0
 
 ###
-POST http://20.89.131.34:443/api/v1/account/revise/level
+POST http://localhost/api/v1/account/revise/level
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTU3NjcxMSwiZXhwIjoxNjg5NTg1NzExfQ.o2Qkwc517JswPvqFpNy4knB6rVCNZPEYiUsa4Zq_PnE
 
@@ -40,7 +41,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newLevel": 10
 }
 ###
-POST http://20.89.131.34:443/api/v1/account/revise/section
+POST http://localhost/api/v1/account/revise/section
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTU3NjcxMSwiZXhwIjoxNjg5NTg1NzExfQ.o2Qkwc517JswPvqFpNy4knB6rVCNZPEYiUsa4Zq_PnE
 
@@ -49,7 +50,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newSection": "001"
 }
 ###
-POST http://20.89.131.34:443/api/v1/fish/data/?section=002
+POST http://localhost/api/v1/fish/data/?section=002
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk2NzY5MDUsImV4cCI6MTY4OTY4NTkwNX0.N44WHcZLYO5j4QSvs4ZgL_0Crqh8xYPcxWTAFqf84h8
 
@@ -61,23 +62,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-GET http://20.89.131.34:443/api/v1/fish/table/?section=001&fishesID=23,24
+GET http://localhost/api/v1/fish/table/?section=001&fishesID=23,24
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTY3NjMwNiwiZXhwIjoxNjg5Njg1MzA2fQ.XnkpiKaALzMbzuAhQsUFWXQTs8RsEX6sPv4PHMihdUI
 
 
 ###
-GET http://20.89.131.34:443/api/v1/fish/data/?section=001&fishesID=23,24
+GET http://localhost/api/v1/fish/data/?section=001&fishesID=23,24
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTYwNzI0NSwiZXhwIjoxNjg5NjE2MjQ1fQ.is5lEmDiIS5bchMngOkj-iH36gAYPt5D9xaygNk6sc0
 
 ###
-GET http://20.89.131.34:443/api/v1/fish/history_data/?section=001&fishesID=23,24&versions=1,2
+GET http://localhost/api/v1/fish/history_data/?section=001&fishesID=23,24&versions=1,2
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTU5MDUwNiwiZXhwIjoxNjg5NTk5NTA2fQ.zQAxxAz6HHnXpNi1UVr2k3sOylDbravFiRc7nmRTT4s
 
 ###
-POST http://20.89.131.34:443/api/v1/fish/control/?section=003
+POST http://localhost/api/v1/fish/control/?section=003
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk2Nzc4NDQsImV4cCI6MTY4OTY4Njg0NH0.RmBsd_m3yzoSjXUGWSChNNZY-J7iAawcWfgBN7iExA0
 

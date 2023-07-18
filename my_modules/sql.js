@@ -385,5 +385,16 @@ module.exports = function(sql_data = {
             });
         })
     }
+    connection.getFishesActive = async function(username, new_section){
+        return new Promise(async (reslove, reject)=>{
+            const data = {};
+            const fishesData = await connection.getFishesData(await connection.getFishesID())
+            for(const {fishUID} of await connection.getFishUIDTable()){
+                if(data[fishUID.slice(0,3)] == undefined) data[fishUID.slice(0,3)] = {};
+                data[fishUID.slice(0,3)][fishUID.slice(3)] = fishesData[fishUID.slice(0,3)][fishUID.slice(3)].active
+            }
+            reslove(data)
+        })
+    }
    return connection;
 }
