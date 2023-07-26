@@ -1,0 +1,40 @@
+POST http://localhost/api/v1/account/sign_up
+Content-Type: application/json
+
+{
+    "username": "1234",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
+POST http://localhost/api/v1/account/login
+Content-Type: application/json
+
+{
+    "username": "1234",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
+GET http://localhost/api/v1/account/list/?section=002
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk0MDAxNzIsImV4cCI6MTY4OTQwOTE3Mn0.J87xOC1yEYUibY4GNbP0LIY9zoAeoEDyvzmn8KqnajI
+
+###
+POST http://localhost/api/v1/account/revise/level
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk0MDAwNjUsImV4cCI6MTY4OTQwOTA2NX0.toGJtc1CA-FDUnXSkC6Ic-EUfurNPg42IirIjUrdXoA.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTM5OTY2NiwiZXhwIjoxNjg5NDA4NjY2fQ.Ebg1LOB0CpcUMm06KmcaNmM5Cub_9yxtmJ1TA22abVY
+{
+    "username": "123",
+    "newLevel": 20
+}
+###
+GET http://localhost/api/v1/account
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk0MDAwNjUsImV4cCI6MTY4OTQwOTA2NX0.toGJtc1CA-FDUnXSkC6Ic-EUfurNPg42IirIjUrdXoA.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTM5OTY2NiwiZXhwIjoxNjg5NDA4NjY2fQ.Ebg1LOB0CpcUMm06KmcaNmM5Cub_9yxtmJ1TA22abVY
+###
+POST http://localhost/api/v1/account/revise/section
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2ODk0MDAwNjUsImV4cCI6MTY4OTQwOTA2NX0.toGJtc1CA-FDUnXSkC6Ic-EUfurNPg42IirIjUrdXoA.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTM5OTY2NiwiZXhwIjoxNjg5NDA4NjY2fQ.Ebg1LOB0CpcUMm06KmcaNmM5Cub_9yxtmJ1TA22abVY
+{
+    "username": "123",
+    "newSection": "002"
+}

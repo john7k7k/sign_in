@@ -1,0 +1,16 @@
+POST http://localhost/api/v1/account/sign_up
+Content-Type: application/json
+
+{
+    "username": "abcd",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
+POST http://localhost/api/v1/account/login
+Content-Type: application/json
+
+{
+    "username": "abcd",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
