@@ -85,7 +85,7 @@ app.get(/\/static\/dist\/(?:login|SignUp)/, function(req, res) {
   res.sendFile(path.join(__dirname, './static/dist/index.html'));
 });
 
-app.get(/\/static\/dist\/(?:Fishdatas|EditDatas|UserData|home)/, verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/\/static\/dist\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '/static/dist/index.html'));
 });
 
@@ -415,7 +415,7 @@ async function mqttProcess(topic,mqtt_data){
     default :
       const topicInfo = topicDecode(topic);
       const fish_object = {};
-      fish_object[topicInfo.section] = json_data;
+      fish_object[topicInfo.section] = mqtt_data;
       await sqlConnection.updateFishesData(fish_object); //更新sql資料
       sqlConnection.showFishesTable();
     break;
