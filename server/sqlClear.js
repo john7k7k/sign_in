@@ -9,5 +9,6 @@ require("dotenv").config();
     await connection.showUserTable();
     await connection.showVideoTable();
     await connection.showFishesTable(await connection.getFishesID());
+    
     connection.end();
 })(connection);

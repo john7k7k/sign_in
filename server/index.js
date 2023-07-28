@@ -4,6 +4,7 @@ const multer = require('multer');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs')
 const dotenv = require("dotenv").config();
 const md5 = require('blueimp-md5');
 const jwt = require('jsonwebtoken');
@@ -15,33 +16,29 @@ const API_VERSION = 'api/v1'
 const upload = multer({ 
   storage: multer.diskStorage({
     destination(req, file, cb) {
-      // 設定影片上傳的目錄
-      cb(null, 'uploads/');
+      cb(null, 'uploads/videos'); // 設定影片上傳的目錄
     },
     filename(req, file, cb) {
-      // 設定影片的檔名
-      cb(null, Date.now() + '-' + file.originalname);
+      cb(null, req.query.video_uid+'.mp4'); // 設定影片的檔名
     }
   })
 });
 let randCode = getRand();
-const sub_topics = ['Fish/info/ntut','Fish/alarm/ntut'];
+const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut'];
 
 ((app,sqlConnection) => { //init app, sql
   app.use(express.json())
   app.use(cors())
   app.use(cookieParser())
-  app.use("/static", express.static('./static'));
-  app.use("/login", express.static('./static/login'));
-  app.use("/media", express.static('./static/login/media'));
-  app.use("/distjs", express.static('./static/dist/js/'));
-  app.use("/distfonts", express.static('./static/dist/fonts/'));
-  app.use("/distcss", express.static('./static/dist/css/'));
-  app.use("/dist", express.static('./static/dist/'));
+  app.use("/public", express.static('../public'));
+  app.use("/img", express.static('../public/img'));
+  app.use("/js", express.static('../public/js/'));
+  app.use("/fonts", express.static('../public/fonts/'));
+  app.use("/css", express.static('../public/css/'));
+  app.use("/index", express.static('../public/'));
   sqlConnection.buildVideoTable();
+  sqlConnection.buildUserTable();
 })(app,sqlConnection)
-
-sqlConnection.buildUserTable();
 
 //mqtt處理
 
@@ -78,15 +75,16 @@ app.listen(port, () => {
 //前端
 
 //1. 頁面
-app.get('/login', function(req, res) {
-  res.sendFile(path.join(__dirname, './static/dist/index.html'));
-});
-app.get(/\/static\/dist\/(?:login|SignUp)/, function(req, res) {
-  res.sendFile(path.join(__dirname, './static/dist/index.html'));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/static\/dist\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, verifyTokenBy('Cookie')(), function(req, res) {
-  res.sendFile(path.join(__dirname, '/static/dist/index.html'));
+app.get(/\/(?:login|SignUp)/, function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, verifyTokenBy('Cookie')(), function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // 2. 帳號 API
@@ -108,11 +106,16 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
         resData  = await sqlConnection.getUserData(req.body.username,basis = 'username');
         resData.passcode = undefined;
         let fishesID = {};
-        if(resData.section === '001') fishesID = await sqlConnection.getFishesActive();
+        let videoTime = await sqlConnection.getVideosData(resData.section);
+        console.log(videoTime)
+        if(resData.section === '001') {
+          fishesID = await sqlConnection.getFishesActive();
+        }
         else fishesID[resData.section] = (await sqlConnection.getFishesActive())[resData.section];
         res.json({
           ...resData,
           fishesID,
+          videoTime,
           token,
         });
       }
@@ -308,7 +311,7 @@ app.post(`/${API_VERSION}/fish/control/`, verifyTokenBy('Header')(60), async (re
 
 // 3. 影片API
 // 定義路由處理影片上傳請求
-app.post('/api/v1/video/upload/', upload.single('video'), (req, res) => {
+app.post(`/${API_VERSION}/video/upload/`, upload.single('video'), (req, res) => {
   // 獲取上傳的影片檔案資訊
   const { file } = req;
   const { video_uid } = req.query;
@@ -318,8 +321,14 @@ app.post('/api/v1/video/upload/', upload.single('video'), (req, res) => {
   return res.status(200).send('Video uploaded successfully.');
 });
 
-app.get('/api/v1/video/', verifyTokenBy('Header')(20), (req, res) => {
-  
+app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
+  const { video_uid, section } = req.query;
+  /*
+  mqttConnection.publish(`Fish/video/${sectionDecode(section)}/get`,video_uid,()=>{
+   
+  })*/
+  const filePath = `uploads/videos/${video_uid + '.mp4'}`;
+  sendVideo(res,filePath);
 });
 
 function convert(message){ //解析IOT端
@@ -383,7 +392,7 @@ function sectionEncode(section_name){
       return '002'
     case 'nmmst':
       return '003'
-    case 'twincn':
+    case 'pmp':
       return '004'
   }
 }
@@ -395,22 +404,21 @@ function sectionDecode(section_name){
     case '003':
       return 'nmmst'
     case '004':
-      return 'twincn'
+      return 'pmp'
   }
 }
 
 async function mqttProcess(topic,mqtt_data){
   switch(topic){
     case "Fish/alarm/ntut":
-      console.log(mqtt_data)
-      sqlConnection.updateVideo({
+      const video_data = {
         videoUID: mqtt_data.video_uid,
-        date: mqtt_data.date,
+        time: mqtt_data.date,
         section: sectionEncode(topic.split('/')[2]),
         fishID: Object.keys(mqtt_data.content)[0],
         status: mqtt_data.content[Object.keys(mqtt_data.content)[0]]
-      })
-
+      }
+      sqlConnection.updateVideo(video_data)
     break;
     default :
       const topicInfo = topicDecode(topic);
@@ -420,4 +428,17 @@ async function mqttProcess(topic,mqtt_data){
       sqlConnection.showFishesTable();
     break;
   }
+}
+
+function sendVideo(res,videoPath) {
+  fs.stat(videoPath, (err, stats) => {
+    if (!err) {
+      res.sendFile(path.resolve(videoPath),()=>{
+        fs.unlink(filePath,()=>{});
+      })
+    }
+    else{
+      setTimeout(()=>sendVideo(res,videoPath),300)
+    }
+  });
 }

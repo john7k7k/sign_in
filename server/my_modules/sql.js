@@ -401,7 +401,7 @@ module.exports = function(sql_data = {
         return new Promise(async (reslove, reject)=>{
                 const createTableQuery = `CREATE TABLE IF NOT EXISTS Video(
                     videoUID INT PRIMARY KEY,
-                    date VARCHAR(30),
+                    time BIGINT,
                     section VARCHAR(10),
                     fishID INT,
                     status INT
@@ -427,6 +427,21 @@ module.exports = function(sql_data = {
                     reslove(result)
                 }
             });
+        })
+    }
+    connection.getVideosData = async function(section = '001'){
+        return new Promise(async (reslove, reject)=>{
+            const videoTable = await connection.getVideoTable(section);
+            const videoTime = {};
+            for(video_data of videoTable){
+                if(section !== '001' && section !== video_data.section) continue;
+                if(videoTime[video_data.section] === undefined) videoTime[video_data.section] = {};
+                videoTime[video_data.section][video_data.videoUID] = {
+                    time: video_data.time,
+                    err: video_data.status
+                }
+            }
+            reslove(videoTime)
         })
     }
     connection.showVideoTable = async function(section = '001'){

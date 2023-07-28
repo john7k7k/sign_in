@@ -6,14 +6,7 @@ require("dotenv").config();
     console.table(await connection.getFishUIDTable())
     await connection.showFishesTable(await connection.getFishesID());
     await connection.showUserTable();
-    /*
-    await connection.updateVideo({
-        videoUID: 3,
-        date: '2020/1/2 15:03:54',
-        section: '001',
-        fishID: 25,
-        status: 2
-    })*/
-    //await connection.showVideoTable();
+    await connection.showVideoTable();
+    console.log(await connection.getVideoTable());
     connection.end();
 })(connection);
