@@ -112,7 +112,7 @@ export default {
               if(res.status == 200){
                 alert("登出成功")
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`http://localhost:8080/`); 
+                window.location.replace(`http://localhost/`); 
               }
               else
               alert("登出失敗")

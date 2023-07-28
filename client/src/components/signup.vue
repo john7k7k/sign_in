@@ -63,7 +63,7 @@
       data: () => ({
         form: false,
         email:null,
-        account: null,
+        username: null,
         password: null,
         token:'',
         loading: false,
@@ -83,7 +83,7 @@
           axios.post(
             "http://20.89.131.34:443/api/v1/account/sign_up",
             {
-              "account":this.account,
+              "username":this.username,
               "mail":this.email,
               "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString() ///註冊時未加密
             },

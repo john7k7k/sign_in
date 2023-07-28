@@ -148,7 +148,7 @@
                 const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 localStorage.setItem("registrationTime",formattedDate)
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`http://localhost:8080/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
+                window.location.replace(`http://localhost/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
                 //localStorage.getItem("fish")
                 //JSON.parse
               }
