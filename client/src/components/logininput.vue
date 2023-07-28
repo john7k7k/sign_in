@@ -154,7 +154,7 @@
                 const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 localStorage.setItem("registrationTime",formattedDate)
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`http://20.89.131.34:443/static/dist/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
+                window.location.replace(`http://20.89.131.34:443/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
               }
               else
               alert("登入失敗")
