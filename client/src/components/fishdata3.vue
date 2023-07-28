@@ -33,7 +33,7 @@
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>新增魚資料</v-toolbar-title>
+          <v-toolbar-title>新增資料</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn variant="text" @click="newdatas"> 新增 </v-btn>
@@ -94,32 +94,77 @@
                   <v-card-actions>
                   <div class="text-black mx-1">電量:</div>
                   
-                    <div class="ma-1 pa-1  bg-deep-orange-lighten-2">
+                    <div class="ma-1 pa-1 " :style="{ backgroundColor: fish.color }">
                       <div class="font-weight-medium text-grey-darken-5">
                         {{fish.bc}}
                       </div>
                     </div></v-card-actions>
                     <v-card-actions> 
-                  <div class="text-black mx-1 ">錯誤:</div>
-                  <div class="ma-1 pa-1  bg-deep-orange-lighten-2">
-                      <div class="font-weight-medium text-grey-darken-5">
-                        {{fish.erro}}
+                  <div class="text-black mx-1 ">錯誤量:</div>
+                  <div class="ma-1 pa-1  ">
+                      <div class="text-red " >
+                      <v-dialog
+    v-model="fish.dialogerr"
+    width="600"
+    :scrim="false"
+    transition="dialog-bottom-transition"
+  >
+    <template v-slot:activator="{ props }">
+      <v-btn
+        :icon="`mdi-numeric`"
+        border
+        height="30"
+        width="30"
+        v-bind="props"
+        class="text-decoration-underline"
+        @click="ErroVideo(fish.id)"
+      >{{fish.errornum}}</v-btn>
+    </template>
+    <v-card>
+      <v-table fixed-header height="300px">
+        <thead>
+          <tr>
+            <th class="text-left">時間</th>
+            <th class="text-">錯誤</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
+            <td>{{ item.time }}</td>
+            <td>{{ item.error }}</td>
+          </tr>
+        </tbody>
+      </v-table>
+      <v-card-actions class="d-flex justify-space-between">
+  <v-select v-model="SelectTime" :items="Errortimes" class="flex-grow-1"></v-select>
+  <v-btn
+    prepend-icon="mdi mdi-magnify"
+    class="ml-3 mb-2 bg-grey"
+    to="/EditDatas"
+  >查詢</v-btn>
+</v-card-actions>
+      <v-card-actions>
+        <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
                       </div>
                     </div></v-card-actions
                   >
   
                   <v-card-actions>
-            <v-btn prepend-icon="mdi-square-edit-outline"
-                      class="ms-2 bg-black"
-                      variant="outlined"
-                      route to = "/EditDatas"
-                      size="small" v-bind="props"> 開始編輯 </v-btn>
+                    <v-btn prepend-icon="mdi-square-edit-outline"
+                    class="ms-2 bg-black"
+                    variant="outlined"
+                    route to = "/EditDatas"
+                    size="small"  @click="editFish(fish.id, $event)"> 編輯 </v-btn>
                   </v-card-actions>
                 </div>
   
                 <v-avatar class="ma-3 " size="150" rounded="0">
                   <v-img
-                    class="my-5"
+                    class=" mt-6 pt-3"
                     
                     src="../assets/1.png"
                   ></v-img>
@@ -162,13 +207,16 @@
           NewBc:null,
           NewErro:null,
           SelectActive:null,
+          SelectTime:"請選擇想要查詢的影片時段",
+          Errortimes:{},
           time: localStorage.getItem('NewTime'),
           active:[
               "功能正常-待機中",
               "活動中",
               "維修中"
           ],
-          
+          errnum:[],
+          FishErrors: [],
         }
       },
       methods:{
@@ -184,7 +232,7 @@
   }
   
           axios.post(
-              "http://20.89.131.34:443/api/v1/fish/data/?section=001",{
+              "http://20.89.131.34:443/api/v1/fish/data/?section=003",{
                 "fishData": {
                   [this.NewId] : {"bc": this.NewBc, "err": this.NewErro,"active":TranActive(this.SelectActive)},
       }
@@ -215,28 +263,35 @@
           },
           RefreshFishDatas(){
             if(this.FishId != null){
-              const fish1Data = localStorage.getItem("fish21");
+              const fish1Data = localStorage.getItem("fish31");
               const parsedFish1Data = JSON.parse(fish1Data);
               this.FishId = parsedFish1Data
-              const fish0Data = localStorage.getItem("fish20");
+              const fish0Data = localStorage.getItem("fish30");
               const parsedFish0Data = JSON.parse(fish0Data);
               this.FishId.push(...parsedFish0Data)
-              const fish2Data = localStorage.getItem("fish22");
+              const fish2Data = localStorage.getItem("fish32");
               const parsedFish2Data = JSON.parse(fish2Data);
               this.FishId.push(...parsedFish2Data)
               this.FishId = this.FishId.map((str) => {
                 const num = parseInt(str, 10);
                 return isNaN(num) ? 0 : num; 
               });
-              alert(this.FishId)
-              this.bc = localStorage.getItem("NewBc").split(',').map(Number);
-              this.err = localStorage.getItem("NewErro").split(',').map(Number);
-              this.FishActive = localStorage.getItem("NewActive").split(',').map(Number);
+              const bcData = localStorage.getItem("NewBc3");
+              const errData = localStorage.getItem("NewErro3");
+              const fishActiveData = localStorage.getItem("NewActive3");
+              if (bcData && errData && fishActiveData) {
+                this.bc = bcData.split(',').map(Number);
+                this.err = errData.split(',').map(Number);
+                this.FishActive = fishActiveData.split(',').map(Number);
+              }
               this.datas = this.FishId.map((id, index) => ({
                 id: id,
                 bc: this.bc[index] + '%',
-                erro: this.err[index] === 0 ? '無錯誤' : this.err[index],
-                active: this.FishActive[index]
+                error: this.err[index],
+                active: this.FishActive[index],
+                color: this.getColor(this.bc[index]),
+                errornum:this.countNumbersInString(this.err[index]),
+                dialogerr: false,
               }));
   
             }else{
@@ -252,9 +307,91 @@
             this.FishActive.push(active);
           });
       },
-          
-          
-        
+      getColor(bcValue) {
+        if (bcValue >= 80) {
+          return '#69F0AE'; 
+        } else if (bcValue >= 50 && bcValue < 80) {
+          return '#1E88E5'; 
+        }else if (bcValue >= 20 && bcValue < 50) {
+          return '#FFFF8D'; 
+        } else {
+          return '#EF5350'; 
+        }
+      },
+
+        countNumbersInString(input) {
+          if (input === 0) {
+            return 0;
+          }
+          const inputStr = input.toString();
+          const numbersArray = inputStr.match(/\d+/g);
+          if (!numbersArray) {
+           return 0;
+          }
+          return numbersArray.length;
+          },
+
+        editFish(fishId, event) {
+          event.stopPropagation();
+          const index = this.FishId.indexOf(fishId)
+          localStorage.setItem("EditId", fishId);
+          localStorage.setItem("EditBc", this.bc[index]);
+          localStorage.setItem("EditErr", this.err[index]);
+          localStorage.setItem("EditActive", this.active[index]);
+        },
+
+      ErroVideo(fishId) {
+        const index = this.datas.findIndex((fish) => fish.id === fishId);
+        if (index !== -1) {
+          this.datas[index].dialogerr = true;
+          const errorMapping = {
+              "0" : "無錯誤",
+              "1" : "AGUE電量傳送異常 量測",
+              "2" : "GAGUE電量接收異常",
+              "3" : "GAGUE電流傳送異常",
+              "4" : "GAGUE電流接收異常",
+              "5" : "CHARGER電流上限設至失敗 充電",
+              "6" : "CHARGER看門狗鎖定失敗",
+              "7" : "CHARGER看門狗解鎖失敗",
+              "8" : "PMIC設置錯誤 供電",
+              "9" : "重心馬達做動異常 重心",
+              "10" : "第一關節輸入電壓異常 關節",
+              "11" : "第一關節溫度過高",
+              "12" : "第一關節編碼器異常",
+              "13" : "第一關節電擊異常",
+              "14" : "第一關節過載",
+              "15" : "第二關節輸入電壓異常",
+              "16" : "第二關節溫度過高",
+              "17" : "第二關節編碼器異常",
+              "18" : "第二關節電擊異常",
+              "19" : "第二關節過載",
+              "20" : "第一關節通訊中斷",
+              "21" : "第二關節通訊中斷",
+              "22" : "雙關節通訊中斷",
+              "23" : "第一關節電源線不穩",
+              "24" : "第二關節電源線不穩"
+          };
+          const errorData = {
+            time: this.time,
+            error: errorMapping[this.err[index]],
+          };
+          if (!this.FishErrors[fishId]) {
+            this.FishErrors[fishId] = []; 
+          }
+          if (this.FishErrors[fishId].length === 0 || this.FishErrors[fishId][this.FishErrors[fishId].length - 1].time !== this.time) {
+            this.FishErrors[fishId].push(errorData);
+            if(this.FishErrors[fishId][this.FishErrors[fishId].length - 1].error !== "無錯誤"){
+              if (!this.Errortimes[fishId]) {
+                  this.Errortimes[fishId] = [];
+              }
+              this.Errortimes[fishId].push(this.time);
+              }
+          }
+        }
+      },
+    getFishErrorsById(fishId) {
+      return this.FishErrors[fishId] 
+    },
       },
       
       computed: {

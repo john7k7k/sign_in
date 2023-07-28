@@ -79,14 +79,14 @@ export default {
     RefreshDatas() {
       this.links[1].text = 0; 
       this.links[2].text = 0; 
-      const fish1Data = localStorage.getItem("fish11");
+      const fish1Data = localStorage.getItem("fish21");
       const parsedFish1Data = JSON.parse(fish1Data);
       this.FishId = parsedFish1Data
       const FishIdNow = this.FishId.length
-      const fish0Data = localStorage.getItem("fish10");
+      const fish0Data = localStorage.getItem("fish20");
       const parsedFish0Data = JSON.parse(fish0Data);
       this.FishId.push(...parsedFish0Data)
-      const fish2Data = localStorage.getItem("fish12");
+      const fish2Data = localStorage.getItem("fish22");
       const parsedFish2Data = JSON.parse(fish2Data);
       this.FishId.push(...parsedFish2Data)
       this.FishId = this.FishId.map((str) => {
@@ -107,7 +107,7 @@ export default {
         this.err = [];
         this.active = [];
         axios.get(
-            "http://20.89.131.34:443/api/v1/fish/data/?section=001&fishesID="+this.FishId,{
+            "http://20.89.131.34:443/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -115,19 +115,19 @@ export default {
           )
           .then(res=> {
               console.log(res);
-              const responseData = JSON.stringify(res.data["001"]);
+              const responseData = JSON.stringify(res.data["002"]);
               const parsedResponseData = JSON.parse(responseData);
-              const responseTime = parsedResponseData["23"]["time"];
-                const timestamp = responseTime
-                const date = new Date(timestamp);
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1; 
-                const day = date.getDate();
-                const hours = date.getHours();
-                const minutes = date.getMinutes();
-                const seconds = date.getSeconds();
-                const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-                localStorage.setItem("NewTime",formattedDate)
+              const responseTime = parsedResponseData[this.FishId[0]]["time"];
+              const timestamp = responseTime
+              const date = new Date(timestamp);
+              const year = date.getFullYear();
+              const month = date.getMonth() + 1; 
+              const day = date.getDate();
+              const hours = date.getHours();
+              const minutes = date.getMinutes();
+              const seconds = date.getSeconds();
+              const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+              localStorage.setItem("NewTime",formattedDate)
               this.processData(this.FishId, parsedResponseData);
               for (let i = 0; i < FishIdNow; i++) {
               if (this.bc[i] < "30") this.links[1].text += 1;
@@ -137,9 +137,9 @@ export default {
             }
             this.links[0].text = this.active.filter((a) => a === 1).length;
             this.links[3].text = this.active.filter((a) => a === 2).length;
-            localStorage.setItem("NewBc", this.bc);
-            localStorage.setItem("NewErro", this.err);
-            localStorage.setItem("NewActive", this.active);
+            localStorage.setItem("NewBc2", this.bc);
+            localStorage.setItem("NewErro2", this.err);
+            localStorage.setItem("NewActive2", this.active);
           })
           .catch(err=> {
               console.log(err);

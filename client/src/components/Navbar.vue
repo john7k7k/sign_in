@@ -3,12 +3,12 @@
     <v-toolbar
       dark
       prominent
-      image="https://img.freepik.com/free-vector/ocean-sea-waves-ripples-water-background_1017-37268.jpg?size=626&ext=jpg&ga=GA1.1.688371840.1688498556&semt=sph"
+      color="light-blue-lighten-3"
     >
       
       <v-avatar>
         <v-img
-          src="https://t4.ftcdn.net/jpg/01/73/60/69/360_F_173606977_WI9CdsvldESpEuyoeRSfuq7SaiBOFZFc.jpg"
+          src="../assets/nabarlogo.png"
           alt="logo"
         ></v-img>
       </v-avatar>
@@ -112,7 +112,7 @@ export default {
               if(res.status == 200){
                 alert("登出成功")
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`http://localhost/`); 
+                window.location.replace(`http://20.89.131.34:443/`); 
               }
               else
               alert("登出失敗")
@@ -137,5 +137,8 @@ export default {
     .dialog-bottom-transition-leave-active {
       transition: transform 0.2s ease-in-out;
     }
+
+    
   </style>
+
 

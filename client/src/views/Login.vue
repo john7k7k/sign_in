@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <loginnavbar class="loginnavbar-bg"></loginnavbar>
-    <div class="v-application__wrap">
+    <div class="v-application__wrap" style="height: 100%;">
       <h1 class="text-center mr-15 text2">
         仿生魚監控站
       </h1>
@@ -36,12 +36,13 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
-  height: 100%;
+  height:100%;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  overflow-y: hidden
 }
 .loginnavbar-bg {
   height: 100px; 
@@ -78,6 +79,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  overflow-y: hidden
 }
 }
 

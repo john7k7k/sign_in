@@ -79,14 +79,14 @@ export default {
     RefreshDatas3() {
       this.links[1].text = 0; 
       this.links[2].text = 0; 
-      const fish1Data = localStorage.getItem("fish21");
+      const fish1Data = localStorage.getItem("fish31");
       const parsedFish1Data = JSON.parse(fish1Data);
       this.FishId = parsedFish1Data
       const FishIdNow = this.FishId.length
-      const fish0Data = localStorage.getItem("fish20");
+      const fish0Data = localStorage.getItem("fish30");
       const parsedFish0Data = JSON.parse(fish0Data);
       this.FishId.push(...parsedFish0Data)
-      const fish2Data = localStorage.getItem("fish22");
+      const fish2Data = localStorage.getItem("fish32");
       const parsedFish2Data = JSON.parse(fish2Data);
       this.FishId.push(...parsedFish2Data)
       this.FishId = this.FishId.map((str) => {
@@ -107,7 +107,7 @@ export default {
         this.err = [];
         this.active = [];
         axios.get(
-            "http://20.89.131.34:443/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
+            "http://20.89.131.34:443/api/v1/fish/data/?section=003&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -115,9 +115,9 @@ export default {
           )
           .then(res=> {
               console.log(res);
-              const responseData = JSON.stringify(res.data["002"]);
+              const responseData = JSON.stringify(res.data["003"]);
               const parsedResponseData = JSON.parse(responseData);
-              const responseTime = parsedResponseData["25"]["time"];
+              const responseTime = parsedResponseData[this.FishId[0]]["time"];
                 const timestamp = responseTime
                 const date = new Date(timestamp);
                 const year = date.getFullYear();
@@ -137,9 +137,9 @@ export default {
             }
             this.links[0].text = this.active.filter((a) => a === 1).length;
             this.links[3].text = this.active.filter((a) => a === 2).length;
-            localStorage.setItem("NewBc2", this.bc);
-            localStorage.setItem("NewErro2", this.err);
-            localStorage.setItem("NewActive2", this.active);
+            localStorage.setItem("NewBc3", this.bc);
+            localStorage.setItem("NewErro3", this.err);
+            localStorage.setItem("NewActive3", this.active);
           })
           .catch(err=> {
               console.log(err);

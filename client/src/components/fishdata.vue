@@ -14,6 +14,71 @@
         <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between"> 紀錄時間: {{ time }}
           <div>
             <v-dialog
+    v-model="dialogControl"
+    width="500"
+    :scrim="false"
+    :persistent="true"
+    transition="dialog-bottom-transition"
+  >
+    <template v-slot:activator="{ props }">
+      <v-btn
+        color="purple-darken-2 mr-2"
+        icon="mdi mdi-gamepad-variant"
+        size="small"
+        v-bind="props"
+      >
+      </v-btn>
+    </template>
+    <v-card color="black">
+      <div class="text-center mt-2" ><h2>仿生魚控制</h2></div>
+      <v-divider color="grey-lighten-5" :thickness="3" class="mt-1"></v-divider>
+      <v-row class="mt-3">
+  <v-col>
+    <div class="d-flex flex-column align-center">
+      <h4>ID</h4>
+      <v-divider width="50" class="border-opacity-100"
+  color="yellow" :thickness="4"></v-divider>
+      <v-select :items="FishId" v-model="controlFishId"></v-select>
+    </div>
+  </v-col>
+  <v-col>
+    <div class="d-flex flex-column align-center">
+      <h4>模式</h4>
+      <v-divider width="50" class="border-opacity-100"
+  color="blue" :thickness="4"></v-divider>
+      <v-select :items="models"></v-select>
+    </div>
+  </v-col>
+</v-row>
+      <v-card-actions class="d-flex justify-center">
+        <v-btn color="blue"  icon="mdi mdi-arrow-up-drop-circle-outline" size="x-large" width="100" height="100" @click="ControlFish('up')"></v-btn>
+      </v-card-actions>
+      <v-card-actions>
+        <v-row > 
+          <v-col class="d-flex justify-center align-center">
+            <v-btn color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="x-large" width="80" height="80" @click="ControlFish('left')"></v-btn>
+          </v-col>
+          <v-col class="d-flex justify-center align-center">
+            <v-btn color="white" icon="mdi mdi-gesture-tap" size="x-large" width="80" height="80" @click="ControlFish('')"></v-btn>
+          </v-col>
+          <v-col class="d-flex justify-center align-center">
+            <v-btn color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="x-large" width="80" height="80" @click="ControlFish('right')"></v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+      <v-card-actions class="d-flex justify-center">
+        <v-btn color="blue"  icon="mdi mdi-arrow-down-drop-circle-outline" size="x-large" width="100" height="100" @click="ControlFish('down')"></v-btn>
+      </v-card-actions>
+
+      <v-card-actions>
+        <v-btn color="white" block @click="dialogControl = false">關閉</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+
+
+            <v-dialog
     v-model="dialog"
     width="1024"
     :scrim="false"
@@ -21,7 +86,7 @@
   >
     <template v-slot:activator="{ props }">
       <v-btn
-        color="purple-darken-2 mr-2"
+        color="light-blue-darken-4 mr-2"
         icon="mdi mdi-plus-thick"
         size="small"
         v-bind="props"
@@ -33,7 +98,7 @@
         <v-btn icon dark @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title>新增魚資料</v-toolbar-title>
+        <v-toolbar-title>新增資料</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn variant="text" @click="newdatas"> 新增 </v-btn>
@@ -137,11 +202,10 @@
         </tbody>
       </v-table>
       <v-card-actions class="d-flex justify-space-between">
-  <v-select v-model="SelectTime" :items="Errortimes" class="flex-grow-1"></v-select>
+  <v-select v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
   <v-btn
     prepend-icon="mdi mdi-magnify"
     class="ml-3 mb-2 bg-grey"
-    to="/EditDatas"
   >查詢</v-btn>
 </v-card-actions>
       <v-card-actions>
@@ -206,7 +270,7 @@ function TranActive(active) {
         NewErro:null,
         SelectActive:null,
         SelectTime:"請選擇想要查詢的影片時段",
-        Errortimes:[],
+        Errortimes:{},
         time: localStorage.getItem('NewTime'),
         active:[
             "功能正常-待機中",
@@ -215,6 +279,14 @@ function TranActive(active) {
         ],
         errnum:[],
         FishErrors: [],
+        dialogControl:false,
+        models:[
+          "自動",
+          "急速",
+          "急速悠游",
+          "沿牆",
+        ],
+        controlFishId:null,
       }
     },
     methods:{
@@ -230,7 +302,7 @@ function TranActive(active) {
 }
 
         axios.post(
-            "http://20.89.131.34:443/api/v1/fish/data/?section=001",{
+            "http://20.89.131.34:443/api/v1/fish/data/?section=002",{
               "fishData": {
                 [this.NewId] : {"bc": this.NewBc, "err": this.NewErro,"active":TranActive(this.SelectActive)},
     }
@@ -261,23 +333,27 @@ function TranActive(active) {
         },
         RefreshFishDatas(){
           if(this.FishId != null){
-            const fish1Data = localStorage.getItem("fish11");
+            const fish1Data = localStorage.getItem("fish21");
             const parsedFish1Data = JSON.parse(fish1Data);
             this.FishId = parsedFish1Data
-            const fish0Data = localStorage.getItem("fish10");
+            const fish0Data = localStorage.getItem("fish20");
             const parsedFish0Data = JSON.parse(fish0Data);
             this.FishId.push(...parsedFish0Data)
-            const fish2Data = localStorage.getItem("fish12");
+            const fish2Data = localStorage.getItem("fish22");
             const parsedFish2Data = JSON.parse(fish2Data);
             this.FishId.push(...parsedFish2Data)
             this.FishId = this.FishId.map((str) => {
               const num = parseInt(str, 10);
               return isNaN(num) ? 0 : num; 
             });
-            
-            this.bc = localStorage.getItem("NewBc").split(',').map(Number);
-            this.err = localStorage.getItem("NewErro").split(',').map(Number);
-            this.FishActive = localStorage.getItem("NewActive").split(',').map(Number);
+            const bcData = localStorage.getItem("NewBc2");
+            const errData = localStorage.getItem("NewErro2");
+            const fishActiveData = localStorage.getItem("NewActive2");
+            if (bcData && errData && fishActiveData) {
+                this.bc = bcData.split(',').map(Number);
+                this.err = errData.split(',').map(Number);
+                this.FishActive = fishActiveData.split(',').map(Number);
+            }
             this.datas = this.FishId.map((id, index) => ({
               id: id,
               bc: this.bc[index] + '%',
@@ -305,7 +381,9 @@ function TranActive(active) {
     getColor(bcValue) {
     if (bcValue >= 80) {
       return '#69F0AE'; 
-    } else if (bcValue >= 30 && bcValue < 80) {
+    } else if (bcValue >= 50 && bcValue < 80) {
+      return '#1E88E5'; 
+    }else if (bcValue >= 20 && bcValue < 50) {
       return '#FFFF8D'; 
     } else {
       return '#EF5350'; 
@@ -335,7 +413,7 @@ function TranActive(active) {
 
     ErroVideo(fishId) {
       const index = this.datas.findIndex((fish) => fish.id === fishId);
-      if (index !== -1) {
+      if (index !== -1 ) {
         this.datas[index].dialogerr = true;
         const errorMapping = {
             "0" : "無錯誤",
@@ -371,13 +449,62 @@ function TranActive(active) {
         if (!this.FishErrors[fishId]) {
           this.FishErrors[fishId] = []; 
         }
-        this.FishErrors[fishId].push(errorData);
-        this.Errortimes.push(this.time)
+        if (this.FishErrors[fishId].length === 0 || this.FishErrors[fishId][this.FishErrors[fishId].length - 1].time !== this.time) {
+          this.FishErrors[fishId].push(errorData);
+          if(this.FishErrors[fishId][this.FishErrors[fishId].length - 1].error !== "無錯誤"){
+            if (!this.Errortimes[fishId]) {
+                this.Errortimes[fishId] = [];
+            }
+            this.Errortimes[fishId].push(this.time);
+            }
+        }
       }
     },
     getFishErrorsById(fishId) {
       return this.FishErrors[fishId] 
     },
+    ControlFish(move) {
+      const cookies = document.cookie.split("; ");
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].split("=");
+          if (cookie[0] === "token") {
+          const token = cookie[1];
+          this.token = token;
+          break;
+            }
+          }
+
+        axios.post(
+                "http://20.89.131.34:443/api/v1/fish/control/",{
+                  "fishControl":{
+            "led":{
+            },
+            "action":{
+                [this.controlFishId]:move
+            },
+            "mode":{
+                
+            }
+        }
+            },{
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                alert("可以開始控制")
+              }
+              else
+              alert("控制失敗")
+          })
+          .catch(err=> {
+              console.log(err);
+              alert('控制失敗');
+          })
+        },
         
         
       
@@ -405,5 +532,9 @@ function TranActive(active) {
     .dialog-bottom-transition-leave-active {
       transition: transform 0.2s ease-in-out;
     }
+
+    .align-center {
+  align-items: center;
+}
 
   </style>

@@ -2,7 +2,7 @@
     <v-toolbar prominent>
       <template v-slot:prepend> 
       <v-img
-        src="https://cnc.ntut.edu.tw/var/file/4/1004/img/1544/Taipei-Tech-Logo.png"
+        src="../assets/NTUT-Logo.png"
         alt="logo"
         width="70"
         

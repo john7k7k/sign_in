@@ -63,7 +63,7 @@
       data: () => ({
         form: false,
         email:null,
-        username: null,
+        account: null,
         password: null,
         token:'',
         loading: false,
@@ -83,9 +83,9 @@
           axios.post(
             "http://20.89.131.34:443/api/v1/account/sign_up",
             {
-              "username":this.username,
+              "username":this.account,
               "mail":this.email,
-              "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString() ///註冊時未加密
+              "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString() 
             },
           )
           .then(res=> {
@@ -93,7 +93,7 @@
               if(res.status == '200'){
                   alert("註冊成功!\n3秒後將會自動返回登入頁面..");
                   setTimeout(() => (this.loading = false), 2000)
-                  window.location.replace("/login"); //括號內加上+res.data.token
+                  window.location.replace("/"); //括號內加上+res.data.token
               }else alert("註冊失敗!請再刷新螢幕重新註冊一次")
           })
           .catch(err=> {

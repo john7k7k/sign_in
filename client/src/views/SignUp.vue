@@ -44,6 +44,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  overflow-y: hidden
 }
 loginnavbar-bg {
   height: 100px; 
@@ -78,6 +79,7 @@ loginnavbar-bg {
   left: 0;
   right: 0;
   bottom: 0;
+  overflow-y: hidden
 }
 }
 

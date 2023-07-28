@@ -1,7 +1,6 @@
 <script>
 import axios from 'axios';
-
-  function hexToRGBA(hex) {
+function hexToRGBA(hex) {
     hex = hex.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
@@ -12,6 +11,18 @@ import axios from 'axios';
   }
   return `"r":${r},"g":${g},"b":${b},"a":${alpha}`;
 }
+function TranActive(active) {
+  if (active == "功能正常-待機中") {
+    return 0;
+  } else if (active === "活動中") {
+    return 1;
+  } else if (active === "維修中") {
+    return 2;
+  } else {
+    return -1;
+  }
+}
+
     export default {
       data() {
         return {
@@ -48,8 +59,8 @@ import axios from 'axios';
           const token = cookie[1];
           this.token = token;
           break;
-  }
-}
+            }
+          }
 
         axios.post(
             "http://20.89.131.34:443/api/v1/fish/control/",{
@@ -90,19 +101,50 @@ import axios from 'axios';
           })
         },
         ChangeDatas(){
-          if(this.afterEditId == null){
-              this.afterEditId = this.FishId
-          }
           if(this.afterEditBc == null){
             this.afterEditBc = this.FishBc
           }
           if(this.afterEditErr == null){
             this.afterEditErr = this.FishErr
           }
-          alert(this.selectactive)
-          alert(this.afterEditId)
-          alert(this.afterEditBc)
-          alert(this.afterEditErr)
+          const cookies = document.cookie.split("; ");
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].split("=");
+              if (cookie[0] === "token") {
+              const token = cookie[1];
+              this.token = token;
+              break;
+            }
+          }
+
+          axios.post(
+            "http://20.89.131.34:443/api/v1/fish/data/?section=001",{
+              "fishData": {
+                [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
+    }
+            },{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.dialog = false
+                alert("編輯成功")
+              }
+              else{
+                this.dialog = false
+              alert("編輯失敗")
+              }
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              alert('編輯失敗');
+          })
     }
         
         
@@ -137,7 +179,7 @@ import axios from 'axios';
             
             <v-row class="d-flex justify-space-around">
                <v-col>
-                  <v-list-item title="ID">
+                  <v-list-item title="ID:">
                     <v-text-field title="ID:" :label="FishId" :placeholder="FishId" v-model="afterEditId"></v-text-field>
                   </v-list-item>
                </v-col>
