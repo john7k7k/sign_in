@@ -93,7 +93,7 @@
               if(res.status == '200'){
                   alert("註冊成功!\n3秒後將會自動返回登入頁面..");
                   setTimeout(() => (this.loading = false), 2000)
-                  window.location.replace("/"); //括號內加上+res.data.token
+                  window.location.replace(`http://20.89.131.34:443/home`); //括號內加上+res.data.token
               }else alert("註冊失敗!請再刷新螢幕重新註冊一次")
           })
           .catch(err=> {
