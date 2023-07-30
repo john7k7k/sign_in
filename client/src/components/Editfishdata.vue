@@ -169,7 +169,7 @@ function TranActive(active) {
             <v-btn icon dark  route to ="/Fishdatas-Section1">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>編輯魚資料</v-toolbar-title>
+            <v-toolbar-title>編輯資料</v-toolbar-title>
             <v-spacer Hidden only on xs></v-spacer>
             <v-toolbar-items>
               <v-btn variant="text" @click="ChangeDatas"> 儲存 </v-btn>
@@ -180,12 +180,12 @@ function TranActive(active) {
             <v-row class="d-flex justify-space-around">
                <v-col>
                   <v-list-item title="ID:">
-                    <v-text-field title="ID:" :label="FishId" :placeholder="FishId" v-model="afterEditId"></v-text-field>
+                    <v-text-field title="ID:"  :label="FishId" v-model="afterEditId" :readonly="true" ></v-text-field>
                   </v-list-item>
                </v-col>
                <v-col>
                   <v-list-item title="電量:" >
-                    <v-text-field  :label="FishBc" :placeholder="FishBc" v-model="afterEditBc"></v-text-field>
+                    <v-text-field   :placeholder="FishBc" v-model="afterEditBc" :readonly="true"></v-text-field>
                   </v-list-item>
                </v-col>
             </v-row>
@@ -195,7 +195,7 @@ function TranActive(active) {
             <v-row class="d-flex justify-space-around">
                <v-col>
                   <v-list-item title="錯誤:" >
-                      <v-text-field  :label="FishErr" :placeholder="FishErr" v-model="afterEditErr"></v-text-field>
+                      <v-text-field  :placeholder="FishErr" v-model="afterEditErr" :readonly="true"></v-text-field>
                   </v-list-item>
                </v-col>
                <v-col>

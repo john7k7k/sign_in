@@ -5,11 +5,11 @@
           <v-img
             class="align-end text-white"
             height="200"
-            src="https://rovmaker.com/wp-content/uploads/2022/08/robotic-fish-national-museum-of-marine-science-and-technology20220713-4-scaled.webp"
+            src="../assets/total3bg.png"
             cover
           >
           
-            <v-card-title class="d-flex align-center justify-space-between text-black">海科館魚池
+            <v-card-title class="d-flex align-center justify-space-between text-white">海科館魚池
               
               <v-btn   color="green" icon="mdi-refresh" size="small"></v-btn>
             </v-card-title>
@@ -150,7 +150,7 @@ export default {
       }
     },
   },
-  created() {
+  mounted() {
     this.RefreshDatas3();
   },
 };

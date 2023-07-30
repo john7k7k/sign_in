@@ -3,7 +3,7 @@
     <v-toolbar
       dark
       prominent
-      color="light-blue-lighten-3"
+      color="cyan-lighten-3"
     >
       
       <v-avatar>
@@ -16,8 +16,11 @@
 
       <v-spacer Hidden only on xs></v-spacer>
 
-      <v-btn icon>
+      <v-btn v-show="false" icon>
         <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+      <v-btn  icon  @click="routehome">
+        <v-icon color="black">mdi-home</v-icon>
       </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-toolbar>
@@ -35,6 +38,7 @@
 
       <v-list density="compact" nav >
         <v-list-item
+          v-show="false"
           prepend-icon="mdi-home"
           title="主頁"
           value="home"
@@ -45,6 +49,18 @@
             title="個人資料設定"
             value="about"
             route to = "/UserData"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi mdi-clipboard-text-search-outline"
+            title="北科仿生魚資料"
+            value="data"
+            route to = "/Fishdatas-Section1"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi mdi-clipboard-text-search-outline"
+            title="海科仿生魚資料"
+            value="data"
+            route to = "/Fishdatas-Section2"
           ></v-list-item>
         <v-list-item
           prepend-icon="mdi-export"
@@ -122,6 +138,9 @@ export default {
               this.loading = false;
               alert('登出失敗');
           })
+    },
+    routehome() {
+      this.$router.push('/home');
     }
   },
   computed: {
@@ -138,6 +157,7 @@ export default {
       transition: transform 0.2s ease-in-out;
     }
 
+    
     
   </style>
 
