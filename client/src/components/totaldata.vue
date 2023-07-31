@@ -267,7 +267,9 @@ export default {
     }
   },
   mounted() {
-    this.RefreshDatas();
+    setTimeout(() => {
+      this.RefreshDatas();
+    }, 500);
   },
 };
 </script>
