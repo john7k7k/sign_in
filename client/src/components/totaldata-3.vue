@@ -6,12 +6,13 @@
             class="align-end text-white"
             height="200"
             src="../assets/total3bg.png"
+            @click="routefishdata"
             cover
           >
           
             <v-card-title class="d-flex align-center justify-space-between text-white">海科館魚池
               
-              <v-btn   color="green" icon="mdi-refresh" size="small"></v-btn>
+              <v-btn   color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
             </v-card-title>
             
             
@@ -21,7 +22,7 @@
             <div>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " route to = "/Fishdatas-Section2" ></v-btn>
+              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " route to = "/Fishdatas-Section2" @click="SaveIndividualData(n.level)"></v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
@@ -34,6 +35,19 @@
                 <v-sheet class="ma-2 text-h4">{{n.text}}</v-sheet> 
               </v-col>
             </v-row>
+            <v-row  no-gutters>
+              <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(4)" route to = "/Fishdatas-Section1"
+                  >{{needchargenum}}條魚需充電</v-btn>
+              </v-col>
+            </v-row>
+            <v-row  no-gutters>
+              <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2" >
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(5)" route to = "/Fishdatas-Section1"
+                  >{{needfixnum}}條魚有錯誤</v-btn>
+              </v-col>
+            </v-row>
+
           </div>
           </v-card-text>
         </v-card>
@@ -48,16 +62,18 @@ export default {
   data() {
     return {
       FishId: [],
+      FishId2num:null,
+      needchargenum:0,
+      needfixnum:0,
       bc: [],
       err: [],
       active: [],
       token:null,
       time: localStorage.getItem('NewTime'),
       links: [
-        { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中" },
-        { icon: 'mdi-battery-charging-10', text: 0, color: 'orange', textname: "需充電" },
-        { icon: 'mdi-alert', text: 0, color: 'red-darken-1', textname: "有錯誤" },
-        { icon: 'mdi-wrench', text: 0, color: 'black', textname: "維修中" },
+      { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
+      { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
+      { icon: 'mdi-wrench', text: 0, color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
       ],
       computed: {
         cols() {
@@ -118,25 +134,32 @@ export default {
               const responseData = JSON.stringify(res.data["003"]);
               const parsedResponseData = JSON.parse(responseData);
               const responseTime = parsedResponseData[this.FishId[0]]["time"];
-                const timestamp = responseTime
-                const date = new Date(timestamp);
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1; 
-                const day = date.getDate();
-                const hours = date.getHours();
-                const minutes = date.getMinutes();
-                const seconds = date.getSeconds();
-                const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-                localStorage.setItem("NewTime",formattedDate)
+              const timestamp = responseTime
+              const date = new Date(timestamp);
+              const year = date.getFullYear();
+              const month = date.getMonth() + 1; 
+              const day = date.getDate();
+              const hours = date.getHours();
+              const minutes = date.getMinutes();
+              const seconds = date.getSeconds();
+              const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+              localStorage.setItem("NewTime",formattedDate)
               this.processData(this.FishId, parsedResponseData);
               for (let i = 0; i < FishIdNow; i++) {
-              if (this.bc[i] < "30") this.links[1].text += 1;
+              if (this.bc[i] < "30") this.needchargenum += 1;
             }
             for (let i = 0; i < FishIdNow; i++) {
-              if (this.err[i] !== 0) this.links[2].text += 1;
+              if (this.err[i] !== 0) this.needfixnum += 1;
+            }
+            if(this.needchargenum !== 0){
+              this.links[0].alertbcbutton = true
+            }
+            if(this.needfixnum !== 0){
+              this.links[0].alerterrbutton = true
             }
             this.links[0].text = this.active.filter((a) => a === 1).length;
-            this.links[3].text = this.active.filter((a) => a === 2).length;
+            this.links[1].text = this.active.filter((a) => a === 0).length;
+            this.links[2].text = this.active.filter((a) => a === 2).length;
             localStorage.setItem("NewBc3", this.bc);
             localStorage.setItem("NewErro3", this.err);
             localStorage.setItem("NewActive3", this.active);
@@ -149,6 +172,72 @@ export default {
         alert("無資料");
       }
     },
+    routefishdata(){
+      this.$router.push('/Fishdatas-Section2');
+    },
+    SaveIndividualData(level){
+      const fish1Data = localStorage.getItem("fish31");
+      const parsedFish1Data = JSON.parse(fish1Data);
+      this.FishId = parsedFish1Data
+      const FishId1num = this.FishId.length
+      const bcdatas = this.bc.slice(0, FishId1num);
+      const errdatas = this.err.slice(0, FishId1num);
+      const activedatas = this.active.slice(0, FishId1num);
+      if(level === 1){
+        localStorage.setItem("NewId3",this.FishId)
+        localStorage.setItem("NewBc3", bcdatas);
+        localStorage.setItem("NewErro3", errdatas);
+        localStorage.setItem("NewActive3", activedatas);
+      }  else if (level === 2){
+        const fish0Data = localStorage.getItem("fish30");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data)
+        const active0 = this.active.filter(value => value < 1);
+        const active0index = active0.map((value) => this.active.indexOf(value));
+        const idResult = active0index.map(index => this.FishId[index]);
+        const bcResult = active0index.map(index => this.bc[index]);
+        const errResult = active0index.map(index => this.err[index]);
+        localStorage.setItem("NewId3",idResult)
+        localStorage.setItem("NewBc3", bcResult);
+        localStorage.setItem("NewErro3", errResult);
+        localStorage.setItem("NewActive3", active0);
+      }else if(level === 4){
+        const needcharge = bcdatas.filter(value => value < 20);
+        const needchargeindex = needcharge.map((value) => bcdatas.indexOf(value));
+        const idbcResult = needchargeindex.map(index => this.FishId[index]);
+        const errbcResult = needchargeindex.map(index => errdatas[index]);
+        const activebcResult = needchargeindex.map(index => activedatas[index]);
+        localStorage.setItem("NewId3",idbcResult)
+        localStorage.setItem("NewBc3", needcharge);
+        localStorage.setItem("NewErro3", errbcResult);
+        localStorage.setItem("NewActive3", activebcResult);
+      }else if(level === 5){
+        const needfix = errdatas.filter(value => value > 0);
+        const needfixindex = needfix.map((value) => errdatas.indexOf(value));
+        const idErrResult = needfixindex.map(index => this.FishId[index]);
+        const bcErrResult = needfixindex.map(index => bcdatas[index]);
+        const activeErrResult = needfixindex.map(index => activedatas[index]);
+        localStorage.setItem("NewId3",idErrResult)
+        localStorage.setItem("NewBc3", bcErrResult);
+        localStorage.setItem("NewErro3", needfix);
+        localStorage.setItem("NewActive3", activeErrResult);
+      } else{
+        const fish2Data = localStorage.getItem("fish32");
+        const parsedFish2Data = JSON.parse(fish2Data);
+        this.FishId.push(...parsedFish2Data)
+        const fixing = this.active.filter(value => value > 1);
+        const fixindex = fixing.map((value) => this.active.indexOf(value));
+        const idResult = fixindex.map(index => this.FishId[index]);
+        const bcResult = fixindex.map(index => this.bc[index]);
+        const errResult = fixindex.map(index => this.err[index]);
+        localStorage.setItem("NewId3",idResult)
+        localStorage.setItem("NewBc3", bcResult);
+        localStorage.setItem("NewErro3", errResult);
+        localStorage.setItem("NewActive3", fixing);
+      }
+      
+    },
+
   },
   mounted() {
     this.RefreshDatas3();

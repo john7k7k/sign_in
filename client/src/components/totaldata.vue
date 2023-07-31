@@ -6,6 +6,7 @@
             class="align-end text-white"
             height="200"
             src="../assets/totalbg.jpg"
+            @click="routefishdata"
             cover
           >
           
@@ -34,6 +35,18 @@
                 <v-sheet class="ma-2 text-h4">{{n.text}}</v-sheet> 
               </v-col>
             </v-row>
+            <v-row  no-gutters>
+              <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(4)" route to = "/Fishdatas-Section1"
+                  >{{needchargenum}}條魚需充電</v-btn>
+              </v-col>
+            </v-row>
+            <v-row  no-gutters>
+              <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2" >
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(5)" route to = "/Fishdatas-Section1"
+                  >{{needfixnum}}條魚有錯誤</v-btn>
+              </v-col>
+            </v-row>
           </div>
           </v-card-text>
         </v-card>
@@ -51,16 +64,17 @@ export default {
       password:localStorage.getItem('password'),
       FishId: [],
       FishId2num:null,
+      needchargenum:0,
+      needfixnum:0,
       bc: [],
       err: [],
       active: [],
       token:null,
       time: localStorage.getItem('NewTime'),
-      links: [
-        { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1},
-        { icon: 'mdi-battery-charging-10', text: 0, color: 'orange', textname: "需充電",level:2},
-        { icon: 'mdi-alert', text: 0, color: 'red-darken-1', textname: "有錯誤",level:3},
-        { icon: 'mdi-wrench', text: 0, color: 'black', textname: "維修中",level:4},
+      links: [ 
+        { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi-wrench', text: 0, color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
       ],
       computed: {
         cols() {
@@ -134,13 +148,20 @@ export default {
               localStorage.setItem("NewTime",formattedDate)
               this.processData(this.FishId, parsedResponseData);
               for (let i = 0; i < FishIdNow; i++) {
-              if (this.bc[i] < "30") this.links[1].text += 1;
+              if (this.bc[i] < "20") this.needchargenum += 1;
             }
             for (let i = 0; i < FishIdNow; i++) {
-              if (this.err[i] !== 0) this.links[2].text += 1;
+              if (this.err[i] !== 0) this.needfixnum += 1;
+            }
+            if(this.needchargenum !== 0){
+              this.links[0].alertbcbutton = true
+            }
+            if(this.needfixnum !== 0){
+              this.links[0].alerterrbutton = true
             }
             this.links[0].text = this.active.filter((a) => a === 1).length;
-            this.links[3].text = this.active.filter((a) => a === 2).length;
+            this.links[1].text = this.active.filter((a) => a === 0).length;
+            this.links[2].text = this.active.filter((a) => a === 2).length;
             localStorage.setItem("NewId2",this.FishId)
             localStorage.setItem("NewBc2", this.bc);
             localStorage.setItem("NewErro2", this.err);
@@ -168,7 +189,20 @@ export default {
         localStorage.setItem("NewBc2", bcdatas);
         localStorage.setItem("NewErro2", errdatas);
         localStorage.setItem("NewActive2", activedatas);
-      } else if(level === 2){
+      }  else if (level === 2){
+        const fish0Data = localStorage.getItem("fish20");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data)
+        const active0 = this.active.filter(value => value < 1);
+        const active0index = active0.map((value) => this.active.indexOf(value));
+        const idResult = active0index.map(index => this.FishId[index]);
+        const bcResult = active0index.map(index => this.bc[index]);
+        const errResult = active0index.map(index => this.err[index]);
+        localStorage.setItem("NewId2",idResult)
+        localStorage.setItem("NewBc2", bcResult);
+        localStorage.setItem("NewErro2", errResult);
+        localStorage.setItem("NewActive2", active0);
+      }else if(level === 4){
         const needcharge = bcdatas.filter(value => value < 20);
         const needchargeindex = needcharge.map((value) => bcdatas.indexOf(value));
         const idbcResult = needchargeindex.map(index => this.FishId[index]);
@@ -178,7 +212,7 @@ export default {
         localStorage.setItem("NewBc2", needcharge);
         localStorage.setItem("NewErro2", errbcResult);
         localStorage.setItem("NewActive2", activebcResult);
-      } else if(level === 3){
+      }else if(level === 5){
         const needfix = errdatas.filter(value => value > 0);
         const needfixindex = needfix.map((value) => errdatas.indexOf(value));
         const idErrResult = needfixindex.map(index => this.FishId[index]);
@@ -189,9 +223,6 @@ export default {
         localStorage.setItem("NewErro2", needfix);
         localStorage.setItem("NewActive2", activeErrResult);
       } else{
-        const fish0Data = localStorage.getItem("fish20");
-        const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data)
         const fish2Data = localStorage.getItem("fish22");
         const parsedFish2Data = JSON.parse(fish2Data);
         this.FishId.push(...parsedFish2Data)
@@ -264,6 +295,9 @@ export default {
           .catch(err=> {
               console.log(err);
           })
+    },
+    routefishdata(){
+      this.$router.push('/Fishdatas-Section1');
     }
   },
   mounted() {

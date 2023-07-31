@@ -12,15 +12,12 @@
           alt="logo"
         ></v-img>
       </v-avatar>
-      <v-toolbar-title class="font-weight-black">仿生魚監控站</v-toolbar-title>
+      <v-toolbar-title ><v-btn class="font-weight-black" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
 
       <v-spacer Hidden only on xs></v-spacer>
 
       <v-btn v-show="false" icon>
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-btn  icon  @click="routehome">
-        <v-icon color="black">mdi-home</v-icon>
       </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-toolbar>
