@@ -67,7 +67,7 @@ mqttConnection.on('error', (err) => {
 })
 
 //監聽port
-const port = 80;
+const port = 443;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
