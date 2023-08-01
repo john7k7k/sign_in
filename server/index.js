@@ -8,8 +8,10 @@ const fs = require('fs')
 const dotenv = require("dotenv").config();
 const md5 = require('blueimp-md5');
 const jwt = require('jsonwebtoken');
+
+const sectionProcess = require('my_moudules/section')();
 const mqttConnection = require('./my_modules/mqtt')();
-const sendLineNotify = require('./my_modules/lineNotify');
+const lineNotify = require('./my_modules/lineNotify')();
 const transporter = require('./my_modules/nodeMailer')();
 const sqlConnection = require('./my_modules/sql')();
 const API_VERSION = 'api/v1'
@@ -58,7 +60,6 @@ mqttConnection.on('connect', () => {
 mqttConnection.on('message',async (topic, rec_message) => { //接收到IOT端訊息
   const json_data = JSON.parse(rec_message.toString()); //parse資料
   console.log('主題',topic,', 時間: ',  (new Date()).toLocaleString()); //印出資料
-  //sendLineNotify(convert(json_data)); //傳送lineNotify
   mqttProcess(topic,json_data);
 });
 
@@ -299,8 +300,8 @@ app.post(`/${API_VERSION}/fish/control/`, verifyTokenBy('Header')(60), async (re
     const { section } = req.query;
     for(key in fishControl){
       const fish_string = JSON.stringify(fishControl[key]); //轉換為json字串
-      mqttConnection.publish('Fish/set/' + sectionDecode(section) + '/' + key,fish_string);
-      console.log('Fish/set/' + sectionDecode(section) + '/' + key);
+      mqttConnection.publish('Fish/set/' + sectionProcess.decode(section) + '/' + key,fish_string);
+      console.log('Fish/set/' + sectionProcess.decode(section) + '/' + key);
       console.log(fish_string);
     }
     res.sendStatus(200);
@@ -324,21 +325,14 @@ app.post(`/${API_VERSION}/video/upload/`, upload.single('video'), (req, res) => 
 app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   const { video_uid, section } = req.query;
   /*
-  mqttConnection.publish(`Fish/video/${sectionDecode(section)}/get`,video_uid,()=>{
+  mqttConnection.publish(`Fish/video/${sectionProcess.decode(section)}/get`,video_uid,()=>{
    
   })*/
   const filePath = `uploads/videos/${video_uid + '.mp4'}`;
   sendVideo(res,filePath);
 });
 
-function convert(message){ //解析IOT端
-  const date = new Date();
-  var data = date.toLocaleString();
-  for(i in message){
-    data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
-  }
-  return data
-}
+
 
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
@@ -381,30 +375,8 @@ function topicDecode(topic){
   return {
     main: topicArray[0],
     type: topicArray[1],
-    section: sectionEncode(topicArray[2]),
+    section: sectionProcess.encode(topicArray[2]),
     command: topicArray[3]
-  }
-}
-
-function sectionEncode(section_name){
-  switch(section_name){
-    case 'ntut':
-      return '002'
-    case 'nmmst':
-      return '003'
-    case 'pmp':
-      return '004'
-  }
-}
-
-function sectionDecode(section_name){
-  switch(section_name){
-    case '002':
-      return 'ntut'
-    case '003':
-      return 'nmmst'
-    case '004':
-      return 'pmp'
   }
 }
 
@@ -414,18 +386,18 @@ async function mqttProcess(topic,mqtt_data){
       const video_data = {
         videoUID: mqtt_data.video_uid,
         time: mqtt_data.date,
-        section: sectionEncode(topic.split('/')[2]),
+        section: sectionProcess.encode(topic.split('/')[2]),
         fishID: Object.keys(mqtt_data.content)[0],
         status: mqtt_data.content[Object.keys(mqtt_data.content)[0]]
       }
       sqlConnection.updateVideo(video_data)
+      lineNotify.send(mqtt_data,sectionInfo = topic.split('/')[2], decode = lineNotify.decodeFishesAlarm)
     break;
     default :
       const topicInfo = topicDecode(topic);
       const fish_object = {};
       fish_object[topicInfo.section] = mqtt_data;
       await sqlConnection.updateFishesData(fish_object); //更新sql資料
-      if(!mqtt_data.active) sendLineNotify(convert(mqtt_data))
       sqlConnection.showFishesTable();
     break;
   }
