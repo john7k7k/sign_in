@@ -9,7 +9,7 @@ const dotenv = require("dotenv").config();
 const md5 = require('blueimp-md5');
 const jwt = require('jsonwebtoken');
 
-const sectionProcess = require('my_moudules/section')();
+const sectionProcess = require('./my_modules/section')();
 const mqttConnection = require('./my_modules/mqtt')();
 const lineNotify = require('./my_modules/lineNotify')();
 const transporter = require('./my_modules/nodeMailer')();
@@ -385,10 +385,10 @@ async function mqttProcess(topic,mqtt_data){
     case "Fish/alarm/ntut":
       const video_data = {
         videoUID: mqtt_data.video_uid,
-        time: mqtt_data.date,
+        time: mqtt_data.time,
         section: sectionProcess.encode(topic.split('/')[2]),
-        fishID: Object.keys(mqtt_data.content)[0],
-        status: mqtt_data.content[Object.keys(mqtt_data.content)[0]]
+        fishID: Object.keys(mqtt_data)[0],
+        status: mqtt_data[Object.keys(mqtt_data)[0]]
       }
       sqlConnection.updateVideo(video_data)
       lineNotify.send(mqtt_data,sectionInfo = topic.split('/')[2], decode = lineNotify.decodeFishesAlarm)

@@ -28,7 +28,8 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   }
   lineNotify.decodeFishesInfo = (message) => { //解析IOT端
     const date = new Date();
-    var data = date.toLocaleString();
+    var data = '(Info)\n'
+    data += date.toLocaleString();
     for(i in message){
       data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
     }
@@ -36,10 +37,12 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   }
   lineNotify.decodeFishesAlarm = (message) => { //解析IOT端
     const date = new Date();
-    var data = date.toLocaleString();
+    var data = '(Alarm)\n'
+    data += date.toLocaleString();
     data+='\n'+'id: '+Object.keys(message)[0]+', '+'status: '+message[Object.keys(message)[0]]
     return data
   }
+  return lineNotify;
 }
 
 
