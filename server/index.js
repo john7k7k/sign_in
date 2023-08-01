@@ -425,6 +425,7 @@ async function mqttProcess(topic,mqtt_data){
       const fish_object = {};
       fish_object[topicInfo.section] = mqtt_data;
       await sqlConnection.updateFishesData(fish_object); //更新sql資料
+      if(!mqtt_data.active) sendLineNotify(convert(mqtt_data))
       sqlConnection.showFishesTable();
     break;
   }
