@@ -5,7 +5,7 @@
           <v-img
             class="align-end text-white"
             height="100"
-            src="https://rovmaker.com/wp-content/uploads/2022/08/robotic-fish-national-museum-of-marine-science-and-technology20220713-4-scaled.webp"
+            src="../assets/total3bg.png"
             cover
           >
           <v-card-title class="d-flex align-center justify-space-between">海科魚池
@@ -337,7 +337,13 @@
           localStorage.setItem("EditId", fishId);
           localStorage.setItem("EditBc", this.bc[index]);
           localStorage.setItem("EditErr", this.err[index]);
-          localStorage.setItem("EditActive", this.active[index]);
+          if(this.datas[index].active === 0){
+            localStorage.setItem("EditActive", this.active[0]);
+          } else if(this.datas[index].active === 1){
+            localStorage.setItem("EditActive", this.active[1]);
+          } else{
+            localStorage.setItem("EditActive", this.active[2]);
+          }
         },
 
       ErroVideo(fishId) {

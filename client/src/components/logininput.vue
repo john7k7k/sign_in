@@ -90,6 +90,8 @@
           const hashedPassword = CryptoJS.MD5(saltedPassword).toString();
           if (!this.form) return
           this.loading = true
+          localStorage.setItem("username",this.account)
+          localStorage.setItem("password",hashedPassword)
           axios.post(
             "http://20.89.131.34:443/api/v1/account/login",
             {

@@ -5,7 +5,7 @@
         <v-img
           class="align-end text-white"
           height="100"
-          src="https://news-data.pts.org.tw/media/125928/cover.jpg"
+          src="../assets/totalbg.jpg"
           cover
         >
         <v-card-title class="d-flex align-center justify-space-between">北科魚池
@@ -149,9 +149,8 @@
       <v-row  no-gutters style="height: 80px" class="d-flex align-content-start  flex-wrap ">
         <v-col v-for="fish in datas" :key="fish" :cols="cols" class="d-flex align-content-start  flex-wrap ">
           <v-card
-            class="pa-2 ma-2 mx-auto "
+            class="pa-2 ma-2 mx-auto cardbg "
             cover
-            image="https://img.freepik.com/premium-vector/seamless-ocean-bottom-underwater-coral-reef-silhouette-with-sea-plants-fish-seaweed-flat-seascape-with-undersea-life-vector-pattern-landscape-with-sand-deep-water-nature_102902-4648.jpg?size=626&ext=jpg&ga=GA1.1.688371840.1688498556&semt=sph"
             width="320"          
             >
             <div class="d-flex flex-no-wrap justify-space-between">
@@ -269,7 +268,7 @@ function TranActive(active) {
         NewBc:null,
         NewErro:null,
         SelectActive:null,
-        SelectTime:"請選擇想要查詢的影片時段",
+        SelectTime:"請選擇想要查詢的錯誤影片時段",
         Errortimes:{},
         time: localStorage.getItem('NewTime'),
         active:[
@@ -333,23 +332,12 @@ function TranActive(active) {
         },
         RefreshFishDatas(){
           if(this.FishId != null){
-            const fish1Data = localStorage.getItem("fish21");
-            const parsedFish1Data = JSON.parse(fish1Data);
-            this.FishId = parsedFish1Data
-            const fish0Data = localStorage.getItem("fish20");
-            const parsedFish0Data = JSON.parse(fish0Data);
-            this.FishId.push(...parsedFish0Data)
-            const fish2Data = localStorage.getItem("fish22");
-            const parsedFish2Data = JSON.parse(fish2Data);
-            this.FishId.push(...parsedFish2Data)
-            this.FishId = this.FishId.map((str) => {
-              const num = parseInt(str, 10);
-              return isNaN(num) ? 0 : num; 
-            });
+            const iddata = localStorage.getItem("NewId2");
             const bcData = localStorage.getItem("NewBc2");
             const errData = localStorage.getItem("NewErro2");
             const fishActiveData = localStorage.getItem("NewActive2");
-            if (bcData && errData && fishActiveData) {
+            if (bcData && errData && fishActiveData && iddata) {
+                this.FishId = iddata.split(',').map(Number);
                 this.bc = bcData.split(',').map(Number);
                 this.err = errData.split(',').map(Number);
                 this.FishActive = fishActiveData.split(',').map(Number);
@@ -408,7 +396,14 @@ function TranActive(active) {
       localStorage.setItem("EditId", fishId);
       localStorage.setItem("EditBc", this.bc[index]);
       localStorage.setItem("EditErr", this.err[index]);
-      localStorage.setItem("EditActive", this.active[index]);
+      if(this.datas[index].active === 0){
+        localStorage.setItem("EditActive", this.active[0]);
+      } else if(this.datas[index].active === 1){
+        localStorage.setItem("EditActive", this.active[1]);
+      } else{
+        localStorage.setItem("EditActive", this.active[2]);
+      }
+      
     },
 
     ErroVideo(fishId) {
@@ -536,5 +531,11 @@ function TranActive(active) {
     .align-center {
   align-items: center;
 }
+
+  .cardbg{
+    background-image: url('../assets/card.png');
+    background-size: cover;
+    background-position: center;
+  }
 
   </style>

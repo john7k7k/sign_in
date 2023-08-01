@@ -3,7 +3,7 @@
     <v-toolbar
       dark
       prominent
-      color="light-blue-lighten-3"
+      color="cyan-lighten-3"
     >
       
       <v-avatar>
@@ -12,11 +12,11 @@
           alt="logo"
         ></v-img>
       </v-avatar>
-      <v-toolbar-title class="font-weight-black">仿生魚監控站</v-toolbar-title>
+      <v-toolbar-title ><v-btn class="font-weight-black" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
 
       <v-spacer Hidden only on xs></v-spacer>
 
-      <v-btn icon>
+      <v-btn v-show="false" icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -35,6 +35,7 @@
 
       <v-list density="compact" nav >
         <v-list-item
+          v-show="false"
           prepend-icon="mdi-home"
           title="主頁"
           value="home"
@@ -45,6 +46,18 @@
             title="個人資料設定"
             value="about"
             route to = "/UserData"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi mdi-clipboard-text-search-outline"
+            title="北科仿生魚資料"
+            value="data"
+            route to = "/Fishdatas-Section1"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi mdi-clipboard-text-search-outline"
+            title="海科仿生魚資料"
+            value="data"
+            route to = "/Fishdatas-Section2"
           ></v-list-item>
         <v-list-item
           prepend-icon="mdi-export"
@@ -122,6 +135,9 @@ export default {
               this.loading = false;
               alert('登出失敗');
           })
+    },
+    routehome() {
+      this.$router.push('/home');
     }
   },
   computed: {
@@ -138,6 +154,7 @@ export default {
       transition: transform 0.2s ease-in-out;
     }
 
+    
     
   </style>
 

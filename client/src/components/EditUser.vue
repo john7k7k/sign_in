@@ -32,7 +32,7 @@
             <v-list-item class="ml-4 mr-auto mt-5 font-weight-black"
               >註冊時間</v-list-item
             >
-            <v-list-item class="mt-5 mr-8 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-10 text-center flex-grow-1">
               <t4>{{ registrationTime }}</t4>
             </v-list-item>
           </v-row>
@@ -41,11 +41,12 @@
             <v-list-item class="ml-4 mr-auto mt-5 font-weight-black"
               >權限</v-list-item
             >
-            <v-list-item class="mt-5 mr-4 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-14 text-center flex-grow-1">
               <t4>{{ level }}</t4>
             </v-list-item>
             <v-list-item class="mt-5">
               <v-btn
+                v-show="false"
                 color="white"
                 icon="mdi-square-edit-outline"
                 size="small"
@@ -57,11 +58,12 @@
             <v-list-item class="ml-4 mr-auto mt-5 font-weight-black"
               >所屬區域</v-list-item
             >
-            <v-list-item class="mt-5 mr-16 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-16 pr-14 text-center flex-grow-1">
               <t4>{{ section }}</t4>
             </v-list-item>
             <v-list-item class="mt-5">
               <v-btn
+                v-show="false"
                 color="white"
                 icon="mdi-square-edit-outline"
                 size="small"
