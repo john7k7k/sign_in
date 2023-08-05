@@ -478,5 +478,15 @@ module.exports = function(sql_data = {
             });
         })
     }
+    connection.showStatus = async function (){
+        return new Promise((reslove, reject)=>{
+            this.query(`SHOW STATUS`, (err, result) => {
+                if (err) reject(err);
+                else {
+                    reslove(result)
+                }
+            });
+        })
+    }
    return connection;
 }
