@@ -92,7 +92,7 @@ app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, v
 
 app.post(`/${API_VERSION}/account/login`, async function(req, res) {
   console.log(req.body);
-  const userTable = await sqlConnection.getUserTable();
+  const userTable = await sqlConnection.userTable.get();
   for (let i = 0; i < userTable.length; i++) {
     if (req.body.username !== userTable[i].username) continue;
     if(md5(req.body.password) !== userTable[i].passcode){
@@ -104,10 +104,10 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
       process.env.DB_JWTKEY,
       {expiresIn: '9000s'},
       async (err, token) => {
-        resData  = await sqlConnection.getUserData(req.body.username,basis = 'username');
+        resData  = (await sqlConnection.userTable.get('username', conditions = [req.body.username,]))[0];
         resData.passcode = undefined;
         let fishesID = {};
-        let videoTime = await sqlConnection.getVideosData(resData.section);
+        let videoTime = (await sqlConnection.fishTable.video.get('section', conditions = [resData.section,]))[0];
         console.log(videoTime)
         if(resData.section === '001') {
           fishesID = await sqlConnection.getFishesActive();
@@ -324,10 +324,9 @@ app.post(`/${API_VERSION}/video/upload/`, upload.single('video'), (req, res) => 
 
 app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   const { video_uid, section } = req.query;
-  /*
   mqttConnection.publish(`Fish/video/${sectionProcess.code.decode(section)}/get`,video_uid,()=>{
    
-  })*/
+  })
   const filePath = `uploads/videos/${video_uid + '.mp4'}`;
   sendVideo(res,filePath);
 });
@@ -336,27 +335,32 @@ app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
 
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
-    return (req, res, next) => {
-      let token = '';
-      if(tokenFrom === 'URL') token = req.query.token;
-      else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
-      else if(tokenFrom === 'Cookie') token = req.cookies.token;
-      jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
-        if (err) {
-          res.sendStatus(403);
-          console.log(err);
-          return;
-        }
-        req.payload = payload;
-        if(threshold === 0) {
-          next();
-          return;
-        }
-        const { level, section } = await sqlConnection.getUserData(payload.username, basis = 'username');
-        if(level > threshold) res.sendStatus(403);
-        else if(section !== req.query.section && section !== '001') res.sendStatus(403);
-        else next();
-      })
+    try{
+      return (req, res, next) => {
+        let token = '';
+        if(tokenFrom === 'URL') token = req.query.token;
+        else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
+        else if(tokenFrom === 'Cookie') token = req.cookies.token;
+        jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
+          if (err) {
+            res.sendStatus(403);
+            console.log(err);
+            return;
+          }
+          req.payload = payload;
+          if(threshold === 0) {
+            next();
+            return;
+          }
+          const { level, section } = await sqlConnection.getUserData(payload.username, basis = 'username');
+          if(level > threshold) res.sendStatus(403);
+          else if(section !== req.query.section && section !== '001') res.sendStatus(403);
+          else next();
+        })
+      }
+    }
+    catch{
+      res.sendStatus(404)
     }
   }
 }

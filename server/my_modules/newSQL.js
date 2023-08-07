@@ -1,7 +1,7 @@
 const { createConnection } = require('mysql');
 require("dotenv").config();
 
-module.exports = async function (sql_data = {
+module.exports = function (sql_data = {
     host: process.env.DB_SQL_HOST,
     port: process.env.DB_SQL_PORT,
     user: process.env.DB_SQL_USER,
@@ -15,7 +15,7 @@ module.exports = async function (sql_data = {
         console.log("connected sql")
     })
 
-    connection.createTable = async function (tableName, columns) {
+    connection.createTable = function (tableName, columns) {
         init();
         function init(){
             let createTableQuery = `CREATE TABLE IF NOT EXISTS ${tableName}(`
@@ -117,35 +117,37 @@ module.exports = async function (sql_data = {
             }
         }
     }
-    connection.createFishTable = async function () {
-        const fishTable = await connection.createTable('FISH', {
+    connection.createFishTable = function () {
+        const fishTable = connection.createTable('FISH', {
             num: 'INT AUTO_INCREMENT PRIMARY KEY',
             fishUID: 'VARCHAR(10)'
         });
-        fishTable.video =  await connection.createTable('VIDEO', {
+        fishTable.video = connection.createTable('VIDEO', {
             videoUID: 'INT PRIMARY KEY',
             time: 'BIGINT',
             section: 'VARCHAR(10)',
             fishID: 'INT',
             status: 'INT'
         });
-        fishTable.error = await connection.createTable('ERROR',{
+        fishTable.error = connection.createTable('ERROR',{
             errorID: 'INT AUTO_INCREMENT PRIMARY KEY',
             fishUID: 'VARCHAR(10)',
             errorCode: 'INT',
             time: 'BIGINT'
         })
         fishTable.fishesUID = [];
-        for(const { fishUID } of await fishTable.get()){
-            fishTable.fishesUID.push(fishUID)
-            fishTable[fishUID] = await connection.createTable(tableName = 'FISH' + fishUID, columns = {
-                version: 'INT AUTO_INCREMENT PRIMARY KEY',
-                time: 'BIGINT',
-                bc: 'INT',
-                err: 'INT',
-                active: 'INT'
-            });
-        }
+        (async (fishTable, connection) =>{
+            for(const { fishUID } of await fishTable.get()){
+                fishTable.fishesUID.push(fishUID)
+                fishTable[fishUID] = connection.createTable(tableName = 'FISH' + fishUID, columns = {
+                    version: 'INT AUTO_INCREMENT PRIMARY KEY',
+                    time: 'BIGINT',
+                    bc: 'INT',
+                    err: 'INT',
+                    active: 'INT'
+                });
+            }
+        })(fishTable, connection);
 
         const { insert, remove, show } = fishTable;
         fishTable.insert = async function(data){
@@ -191,7 +193,7 @@ module.exports = async function (sql_data = {
         await connection.fishTable.showDetail(showMethod = showMethod);
     }
 
-    connection.userTable = await connection.createTable('USER', {
+    connection.userTable = connection.createTable('USER', {
         userID: 'INT AUTO_INCREMENT PRIMARY KEY',
         username: 'VARCHAR(255)',
         email: 'VARCHAR(255)',
@@ -200,7 +202,7 @@ module.exports = async function (sql_data = {
         level: 'INT',
         section: 'VARCHAR(3)'
     });
-    connection.fishTable = await connection.createFishTable();
+    connection.fishTable = connection.createFishTable();
 
-    return connection
+    return connection;
 }

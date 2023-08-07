@@ -81,9 +81,9 @@ module.exports = function(sql_data = {
         })
     }
     connection.deleteFishUID = async function (fish_UID){
-        const deleteQuery = `DELETE FROM FishUID WHERE fishUID = ${fish_UID}`;
+        const deleteQuery = `DELETE FROM FishUID WHERE fishUID = ?`;
         return new Promise((reslove, reject)=>{
-            this.query(deleteQuery, (err, result) => {
+            this.query(deleteQuery, fish_UID, (err, result) => {
                 if (err) reject(err);
                 else {
                     //console.log(`Table(${fish_id}) deleted`);
