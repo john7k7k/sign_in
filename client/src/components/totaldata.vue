@@ -12,12 +12,15 @@
           
             <v-card-title class="d-flex align-center justify-space-between">北科魚池
               
-              <v-btn   color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+              
             </v-card-title>
             
             
           </v-img> 
-            <v-card-subtitle class="pt-1"> 紀錄時間:{{ time }} </v-card-subtitle>
+            <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between"> 紀錄時間:{{ time }} 
+              <v-btn   color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+            </v-card-subtitle>
+            
           <v-card-text>
             <div>
             <v-row  no-gutters>
@@ -194,7 +197,11 @@ export default {
         const parsedFish0Data = JSON.parse(fish0Data);
         this.FishId.push(...parsedFish0Data)
         const active0 = this.active.filter(value => value < 1);
-        const active0index = active0.map((value) => this.active.indexOf(value));
+        const active0index = this.active.map((value, index) => {
+          if (value === 0) {
+            return index;
+          }
+        }).filter(index => index !== undefined);
         const idResult = active0index.map(index => this.FishId[index]);
         const bcResult = active0index.map(index => this.bc[index]);
         const errResult = active0index.map(index => this.err[index]);
@@ -227,7 +234,11 @@ export default {
         const parsedFish2Data = JSON.parse(fish2Data);
         this.FishId.push(...parsedFish2Data)
         const fixing = this.active.filter(value => value > 1);
-        const fixindex = fixing.map((value) => this.active.indexOf(value));
+        const fixindex = this.active.map((value, index) => {
+          if (value === 2) {
+            return index;
+          }
+        }).filter(index => index !== undefined);
         const idResult = fixindex.map(index => this.FishId[index]);
         const bcResult = fixindex.map(index => this.bc[index]);
         const errResult = fixindex.map(index => this.err[index]);
@@ -303,7 +314,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.RefreshDatas();
-    }, 500);
+    }, 300);
   },
 };
 </script>

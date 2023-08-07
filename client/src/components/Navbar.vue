@@ -49,15 +49,15 @@
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi mdi-clipboard-text-search-outline"
-            title="北科仿生魚資料"
+            title="仿生魚資料清單"
             value="data"
-            route to = "/Fishdatas-Section1"
+            route to = "/FishDataList"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi mdi-clipboard-text-search-outline"
-            title="海科仿生魚資料"
-            value="data"
-            route to = "/Fishdatas-Section2"
+            title="帳號資料清單"
+            value="accountdata"
+            route to = "/AccountList"
           ></v-list-item>
         <v-list-item
           prepend-icon="mdi-export"
