@@ -216,7 +216,7 @@
               @click="searchvideo"
             >查詢</v-btn>
             <div v-if="videoUrl">
-      <video controls>
+      <video controls id="videoPlayer" ref="videoPlayer">
         <source :src="videoUrl" type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -413,7 +413,7 @@ function TranActive(active) {
     }
   },
   bellshowfunction(err,active){
-    if(err !== 0 && active === 1 ){
+    if( active === 1 ){
       return true
     }else{
       return false
@@ -513,17 +513,14 @@ axios.get(
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
-          responseType: 'arraybuffer', // 設定responseType為arraybuffer
+          responseType: 'blob', 
         }
       )
       .then(res => {
-        // 將ArrayBuffer轉換成Uint8Array
-        const uint8Array = new Uint8Array(res.data);
-        // 建立Base64編碼的字串
-        const base64Video = btoa(String.fromCharCode.apply(null, uint8Array));
-        // 建立data URL並設定為影片播放器的src
-        this.videoUrl = `data:video/mp4;base64,${base64Video}`;
-        console.log(this.videoUrl)
+        const blob = new Blob([res.data], { type: 'video/mp4' });
+          const videoURL = URL.createObjectURL(blob);
+          this.$refs.videoPlayer.src = videoURL; 
+          this.$refs.videoPlayer.play(); 
       })
       .catch(err => {
         console.log(err);
@@ -589,6 +586,9 @@ axios.get(
         return lg ? 4 : sm ? 12 :12
       },
     },
+    mounted() {
+    this.searchvideo();
+  },
     created() {
     this.RefreshFishDatas();
   },
