@@ -386,7 +386,7 @@ function topicDecode(topic){
 
 async function mqttProcess(topic,mqtt_data){
   switch(topic){
-    case "Fish/alarm/ntut":
+    case "Fish/alarm/ntut/t":
       const video_data = {
         videoUID: mqtt_data.video_uid,
         time: mqtt_data.time,
