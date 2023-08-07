@@ -335,35 +335,35 @@ app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
 
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
-    try{
-      return (req, res, next) => {
-        let token = '';
+    return (req, res, next) => {
+      let token = '';
+      try{
         if(tokenFrom === 'URL') token = req.query.token;
         else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
         else if(tokenFrom === 'Cookie') token = req.cookies.token;
-        jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
-          if (err) {
-            res.sendStatus(403);
-            console.log(err);
-            return;
-          }
-          req.payload = payload;
-          if(threshold === 0) {
-            next();
-            return;
-          }
-          const { level, section } = await sqlConnection.getUserData(payload.username, basis = 'username');
-          if(level > threshold) res.sendStatus(403);
-          else if(section !== req.query.section && section !== '001') res.sendStatus(403);
-          else next();
-        })
+      }catch{
+        res.sendStatus(403)
       }
-    }
-    catch{
-      res.sendStatus(404)
+      jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
+        if (err) {
+          res.sendStatus(403);
+          console.log(err);
+          return;
+        }
+        req.payload = payload;
+        if(threshold === 0) {
+          next();
+          return;
+        }
+        const { level, section } = await sqlConnection.getUserData(payload.username, basis = 'username');
+        if(level > threshold) res.sendStatus(403);
+        else if(section !== req.query.section && section !== '001') res.sendStatus(403);
+        else next();
+      })
     }
   }
 }
+
 
 function getRand(){
   let randomString = '';
