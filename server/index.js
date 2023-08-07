@@ -26,7 +26,7 @@ const upload = multer({
   })
 });
 let randCode = getRand();
-const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut','Fish/alarm/nmmst','Fish/alarm/pmp'];
+const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut/t','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
 ((app,sqlConnection) => { //init app, sql
   app.use(express.json())
@@ -300,8 +300,8 @@ app.post(`/${API_VERSION}/fish/control/`, verifyTokenBy('Header')(60), async (re
     const { section } = req.query;
     for(key in fishControl){
       const fish_string = JSON.stringify(fishControl[key]); //轉換為json字串
-      mqttConnection.publish('Fish/set/' + sectionProcess.decode(section) + '/' + key,fish_string);
-      console.log('Fish/set/' + sectionProcess.decode(section) + '/' + key);
+      mqttConnection.publish('Fish/set/' + sectionProcess.code.decode(section) + '/' + key,fish_string);
+      console.log('Fish/set/' + sectionProcess.code.decode(section) + '/' + key);
       console.log(fish_string);
     }
     res.sendStatus(200);
@@ -325,7 +325,7 @@ app.post(`/${API_VERSION}/video/upload/`, upload.single('video'), (req, res) => 
 app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   const { video_uid, section } = req.query;
   /*
-  mqttConnection.publish(`Fish/video/${sectionProcess.decode(section)}/get`,video_uid,()=>{
+  mqttConnection.publish(`Fish/video/${sectionProcess.code.decode(section)}/get`,video_uid,()=>{
    
   })*/
   const filePath = `uploads/videos/${video_uid + '.mp4'}`;
@@ -375,25 +375,27 @@ function topicDecode(topic){
   return {
     main: topicArray[0],
     type: topicArray[1],
-    section: sectionProcess.encode(topicArray[2]),
+    section: sectionProcess.code.encode(topicArray[2]),
     command: topicArray[3]
   }
 }
 
 async function mqttProcess(topic,mqtt_data){
   switch(topic){
-    case "Fish/alarm/ntut":
+    case "Fish/alarm/ntut/t":
       const video_data = {
         videoUID: mqtt_data.video_uid,
         time: mqtt_data.time,
-        section: sectionProcess.encode(topic.split('/')[2]),
+        section: sectionProcess.code.encode(topic.split('/')[2]),
         fishID: Object.keys(mqtt_data)[0],
         status: mqtt_data[Object.keys(mqtt_data)[0]]
       }
       sqlConnection.updateVideo(video_data)
-      lineNotify.send(mqtt_data,sectionInfo = topic.split('/')[2], decode = lineNotify.decodeFishesAlarm)
+      mqtt_data.section = topic.split('/')[2];
+      lineNotify.send(mqtt_data, decode = lineNotify.decodeFishesAlarm);
     break;
     default :
+      delete mqtt_data.time
       const topicInfo = topicDecode(topic);
       const fish_object = {};
       fish_object[topicInfo.section] = mqtt_data;

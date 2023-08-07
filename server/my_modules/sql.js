@@ -3,8 +3,6 @@
  */
 
 const createConnection = require('mysql').createConnection ;
-var fishIdArray = [];
-var fishIdObject = {};
 require("dotenv").config();
 
 module.exports = function(sql_data = {
@@ -483,7 +481,7 @@ module.exports = function(sql_data = {
             this.query(`SHOW STATUS`, (err, result) => {
                 if (err) reject(err);
                 else {
-                    reslove(result)
+                    console.log(result)
                 }
             });
         })

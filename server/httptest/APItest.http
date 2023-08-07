@@ -1,18 +1,18 @@
-POST http://localhost/api/v1/account/sign_up
+POST http://localhost:443/api/v1/account/sign_up
 Content-Type: application/json
 
 {
-    "username": "123",
-    "mail": "ppp1244qqq@gmail.com",
+    "username": "Jack",
+    "mail": "jack2563@gmail.com",
     "password": "735434cae08df8e591c1549da88c6d87",
-    "section": "001"
+    "section": "002"
 }
 ###
-POST http://20.89.131.34:443/api/v1/account/login
+POST http://localhost:443/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "123",
+    "username": "Jason",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 
@@ -32,21 +32,21 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MDczODA5MywiZXhwIjoxNjkwNzQ3MDkzfQ.KcJdJFcTQ9dT9sep5yupT4WUd1kBWnqe2bHeLQ4LIT0
 
 ###
-POST http://localhost/api/v1/account/revise/level
+POST http://localhost:443/api/v1/account/revise/level
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTY3Njg3MywiZXhwIjoxNjg5Njg1ODczfQ.EZdLSK3aHNYaYQHVkzSqI23cETZERKu5jCikgIsnfJU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikphc29uIiwiaWF0IjoxNjkxMjQ3NTEyLCJleHAiOjE2OTEyNTY1MTJ9.WDOy_45zpPCpO5YEEUiEM1_a3Lb8ETI5ajl1KTjLZEI
 
 {
-    "username": "1234",
-    "newLevel": 20
+    "username": "Jack",
+    "newLevel": 30
 }
 ###
-POST http://localhost/api/v1/account/revise/section
+POST http://localhost:443/api/v1/account/revise/section
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY4OTY4MjI1OSwiZXhwIjoxNjg5NjkxMjU5fQ.NsdJOPbW5GyqovUWosWgNP2nps8GXY0tHEws29DJ3is
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikphc29uIiwiaWF0IjoxNjkxMjQ3NTEyLCJleHAiOjE2OTEyNTY1MTJ9.WDOy_45zpPCpO5YEEUiEM1_a3Lb8ETI5ajl1KTjLZEI
 
 {
-    "username": "1234",
+    "username": "jack",
     "newSection": "002"
 }
 ###
