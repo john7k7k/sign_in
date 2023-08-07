@@ -586,9 +586,6 @@ axios.get(
         return lg ? 4 : sm ? 12 :12
       },
     },
-    mounted() {
-    this.searchvideo();
-  },
     created() {
     this.RefreshFishDatas();
   },
