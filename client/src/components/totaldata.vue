@@ -17,9 +17,12 @@
             
             
           </v-img> 
-            <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between"> 紀錄時間:{{ time }} 
-              <v-btn   color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
-            </v-card-subtitle>
+          <div class="d-flex align-center justify-space-between">
+            <v-card-subtitle class="pt-1 pb-1 "> 紀錄時間:{{ time }} </v-card-subtitle>
+              <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+          </div>
+            
+            
             
           <v-card-text>
             <div>

@@ -180,12 +180,12 @@ function TranActive(active) {
             <v-row class="d-flex justify-space-around">
                <v-col>
                   <v-list-item title="ID:">
-                    <v-text-field title="ID:"  :label="FishId" v-model="afterEditId" :readonly="true" ></v-text-field>
+                    <v-text-field title="ID:"   :readonly="true" >{{ FishId }}</v-text-field>
                   </v-list-item>
                </v-col>
                <v-col>
                   <v-list-item title="電量:" >
-                    <v-text-field   :placeholder="FishBc" v-model="afterEditBc" :readonly="true"></v-text-field>
+                    <v-text-field    :readonly="true">{{ FishBc }}</v-text-field>
                   </v-list-item>
                </v-col>
             </v-row>
@@ -195,15 +195,12 @@ function TranActive(active) {
             <v-row class="d-flex justify-space-around">
                <v-col>
                   <v-list-item title="錯誤:" >
-                      <v-text-field  :placeholder="FishErr" v-model="afterEditErr" :readonly="true"></v-text-field>
+                      <v-text-field   :readonly="true">{{ FishErr }}</v-text-field>
                   </v-list-item>
                </v-col>
                <v-col>
                   <v-list-item title="狀態:" >
-                    <v-select
-        v-model="selectactive"
-        :items="active"
-      ></v-select>
+                    <v-text-field    :readonly="true" >{{ selectactive }}</v-text-field>
                   </v-list-item>
                </v-col>
             </v-row>

@@ -1,7 +1,7 @@
+const sql =  require('./my_modules/newSQL');
+const sqlConnection = sql();
 
-(async ()=>{
-    const sql =  require('./my_modules/newSQL');
-    sqlConnection = await sql()
+(async (sqlConnection)=>{
     /*await sqlConnection.userTable.insert({
         username: 'jack',
         email: 'ppp1244qqq@gmail.com',
@@ -13,8 +13,6 @@
     await sqlConnection.fishTable.insert({
         fishUID: '00223'
     })
-    //await sqlConnection.userTable.remove();
-    //await sqlConnection.fishTable.remove(['00223'])
-    //await sqlConnection.fishTable['00223'].show()
+
     await sqlConnection.showAll();
-})();
+})(sqlConnection);

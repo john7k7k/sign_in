@@ -10,14 +10,17 @@
             cover
           >
           
-            <v-card-title class="d-flex align-center justify-space-between text-white">海科館魚池
+            <v-card-title class=" text-white">海科館魚池
               
-              <v-btn   color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+              
             </v-card-title>
             
             
           </v-img> 
-            <v-card-subtitle class="pt-1"> 紀錄時間: </v-card-subtitle>
+            <div class="d-flex align-center justify-space-between">
+              <v-card-subtitle class="pt-1"> 紀錄時間: </v-card-subtitle>
+            <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+            </div>
           <v-card-text>
             <div>
             <v-row  no-gutters>
