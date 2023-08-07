@@ -92,7 +92,7 @@ app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, v
 
 app.post(`/${API_VERSION}/account/login`, async function(req, res) {
   console.log(req.body);
-  const userTable = await sqlConnection.userTable.get();
+  const userTable = await sqlConnection.getUserTable();
   for (let i = 0; i < userTable.length; i++) {
     if (req.body.username !== userTable[i].username) continue;
     if(md5(req.body.password) !== userTable[i].passcode){
@@ -104,10 +104,10 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
       process.env.DB_JWTKEY,
       {expiresIn: '9000s'},
       async (err, token) => {
-        resData  = (await sqlConnection.userTable.get('username', conditions = [req.body.username,]))[0];
+        resData  = await sqlConnection.getUserData(req.body.username,basis = 'username');
         resData.passcode = undefined;
         let fishesID = {};
-        let videoTime = (await sqlConnection.fishTable.video.get('section', conditions = [resData.section,]))[0];
+        let videoTime = await sqlConnection.getVideosData(resData.section);
         console.log(videoTime)
         if(resData.section === '001') {
           fishesID = await sqlConnection.getFishesActive();
@@ -341,10 +341,10 @@ function verifyTokenBy(tokenFrom = 'URL'){
         if(tokenFrom === 'URL') token = req.query.token;
         else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
         else if(tokenFrom === 'Cookie') token = req.cookies.token;
-      }catch{
+      }
+      catch{
         res.sendStatus(403);
       }
-
       jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
         if (err) {
           res.sendStatus(403);
@@ -364,7 +364,6 @@ function verifyTokenBy(tokenFrom = 'URL'){
     }
   }
 }
-
 
 function getRand(){
   let randomString = '';
