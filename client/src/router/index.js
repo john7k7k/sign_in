@@ -5,6 +5,8 @@ import Nav from  '../views/Nav.vue'
 import UserData from '../views/UserData.vue'
 import editdatas from '../views/Editdatas.vue'
 import Fishdatas3 from '../views/FishdataView3.vue'
+import Accountlist from '../views/AccountList.vue'
+import FishDatalist from '../views/FishDatalist.vue'
 const routes = [
   {
     name: "Nav",
@@ -35,6 +37,16 @@ const routes = [
       name: "editdatas",
       path: "/EditDatas", 
       component: editdatas
+    },
+    {
+      name: "Accountlist",
+      path: "/AccountList", 
+      component: Accountlist
+    },
+    {
+      name: "FishDatalist",
+      path: "/FishDataList", 
+      component: FishDatalist
     },
    ]
   },

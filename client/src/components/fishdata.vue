@@ -11,8 +11,8 @@
         <v-card-title class="d-flex align-center justify-space-between">北科魚池
             </v-card-title>
         </v-img>
-        <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between"> 紀錄時間: {{ time }}
-          <div>
+        <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between "> 紀錄時間:{{ time }}
+          <div >
             <v-dialog
     v-model="dialogControl"
     width="500"
@@ -22,7 +22,7 @@
   >
     <template v-slot:activator="{ props }">
       <v-btn
-        color="purple-darken-2 mr-2"
+        color="purple-darken-2 mr-1"
         icon="mdi mdi-gamepad-variant"
         size="small"
         v-bind="props"
@@ -51,23 +51,23 @@
   </v-col>
 </v-row>
       <v-card-actions class="d-flex justify-center">
-        <v-btn color="blue"  icon="mdi mdi-arrow-up-drop-circle-outline" size="x-large" width="100" height="100" @click="ControlFish('up')"></v-btn>
+        <v-btn color="blue"  icon="mdi mdi-arrow-up-drop-circle-outline" size="x-large" width="100" height="100" ></v-btn>
       </v-card-actions>
       <v-card-actions>
         <v-row > 
           <v-col class="d-flex justify-center align-center">
-            <v-btn color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="x-large" width="80" height="80" @click="ControlFish('left')"></v-btn>
+            <v-btn color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="x-large" width="80" height="80" ></v-btn>
           </v-col>
           <v-col class="d-flex justify-center align-center">
             <v-btn color="white" icon="mdi mdi-gesture-tap" size="x-large" width="80" height="80" @click="ControlFish('')"></v-btn>
           </v-col>
           <v-col class="d-flex justify-center align-center">
-            <v-btn color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="x-large" width="80" height="80" @click="ControlFish('right')"></v-btn>
+            <v-btn color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="x-large" width="80" height="80" ></v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
       <v-card-actions class="d-flex justify-center">
-        <v-btn color="blue"  icon="mdi mdi-arrow-down-drop-circle-outline" size="x-large" width="100" height="100" @click="ControlFish('down')"></v-btn>
+        <v-btn color="blue"  icon="mdi mdi-arrow-down-drop-circle-outline" size="x-large" width="100" height="100" ></v-btn>
       </v-card-actions>
 
       <v-card-actions>
@@ -86,7 +86,8 @@
   >
     <template v-slot:activator="{ props }">
       <v-btn
-        color="light-blue-darken-4 mr-2"
+        v-show="false"
+        color="light-blue-darken-4 mr-1"
         icon="mdi mdi-plus-thick"
         size="small"
         v-bind="props"
@@ -155,7 +156,7 @@
             >
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
-                <v-card-title class="text-h5">ID:{{fish.id}}</v-card-title>
+                <v-card-title class="text-h5 ">ID:{{fish.id}}</v-card-title>
                 <v-card-actions>
                 <div class="text-black mx-1" >電量:</div>
                 
@@ -165,72 +166,80 @@
                     </div>
                   </div></v-card-actions>
                   <v-card-actions> 
-                <div class="text-black mx-1 ">錯誤量:</div>
-                <div class="ma-1 pa-1">
-                    <div class="text-red " >
-                      <v-dialog
-    v-model="fish.dialogerr"
-    width="600"
-    :scrim="false"
-    transition="dialog-bottom-transition"
-  >
-    <template v-slot:activator="{ props }">
-      <v-btn
-        :icon="`mdi-numeric`"
-        border
-        height="30"
-        width="30"
-        v-bind="props"
-        class="text-decoration-underline"
-        @click="ErroVideo(fish.id)"
-      >{{fish.errornum}}</v-btn>
-    </template>
-    <v-card>
-      <v-table fixed-header height="300px">
-        <thead>
-          <tr>
-            <th class="text-left">時間</th>
-            <th class="text-">錯誤</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
-            <td>{{ item.time }}</td>
-            <td>{{ item.error }}</td>
-          </tr>
-        </tbody>
-      </v-table>
-      <v-card-actions class="d-flex justify-space-between">
-  <v-select v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
-  <v-btn
-    prepend-icon="mdi mdi-magnify"
-    class="ml-3 mb-2 bg-grey"
-  >查詢</v-btn>
-</v-card-actions>
-      <v-card-actions>
-        <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-                    </div>
-                  </div></v-card-actions>
+                <div class="text-black mx-1 ">狀態:  {{ fish.activeword }}</div>
+                </v-card-actions>
                 <v-card-actions>
           <v-btn prepend-icon="mdi-square-edit-outline"
                     class="ms-2 bg-black"
                     variant="outlined"
                     route to = "/EditDatas"
                     size="small"  @click="editFish(fish.id, $event)"> 編輯 </v-btn>
-                    
+                    <div class="ma-1 pa-1">
+                              <div  >
+                                <v-dialog
+              v-model="fish.dialogerr"
+              width="600"
+              :scrim="false"
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-show="fish.bellshow"
+                  icon="mdi mdi-bell-ring"
+                  width="30"
+                  height="30"
+                  v-bind="props"
+                  @click="ErroVideo(fish.id)"
+                  color="red"
+                ></v-btn>
+              </template>
+              <v-card>
+                <v-table fixed-header height="300px">
+                  <thead>
+                    <tr>
+                      <th class="text-left">時間</th>
+                      <th class="text-">錯誤</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
+                      <td>{{ item.time }}</td>
+                      <td>{{ item.error }}</td>
+                    </tr>
+                  </tbody>
+                </v-table>
+                <v-card-actions class="d-flex justify-space-between">
+            <v-select v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
+            <v-btn
+              prepend-icon="mdi mdi-magnify"
+              class="ml-3 mb-2 bg-grey"
+              @click="searchvideo"
+            >查詢</v-btn>
+            <div v-if="videoUrl">
+      <video controls>
+        <source :src="videoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+          </v-card-actions>
+                <v-card-actions>
+                  <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+                              </div>
+                  </div>
                 </v-card-actions>
               </div>
-
-              <v-avatar class="ma-3 " size="150" rounded="0">
-                <v-img
-                  class=" mt-6 pt-3"
-                  
-                  src="../assets/1.png"
-                ></v-img>
-              </v-avatar>
+              <v-avatar class="ma-3" size="150" rounded="0" style="position: relative;">
+                <v-img class="mt-6 pt-3" src="../assets/1.png"></v-img>
+                <v-btn
+                  icon="mdi-numeric-null"
+                  height="10"
+                  width="10"
+                  :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum), position: 'absolute', top: '0', left: '95%', transform: 'translateX(-50%)' }"
+                ></v-btn>
+            </v-avatar>
             </div>
           </v-card>
         </v-col>
@@ -286,6 +295,8 @@ function TranActive(active) {
           "沿牆",
         ],
         controlFishId:null,
+        videoData: null,
+        videoUrl: null
       }
     },
     methods:{
@@ -350,6 +361,8 @@ function TranActive(active) {
               color: this.getColor(this.bc[index]),
               errornum:this.countNumbersInString(this.err[index]),
               dialogerr: false,
+              bellshow: this.bellshowfunction(this.err[index],this.FishActive[index]),
+              activeword: this.getactiveword(this.FishActive[index],this.err[index])
             }));
             
           }else{
@@ -368,13 +381,42 @@ function TranActive(active) {
 
     getColor(bcValue) {
     if (bcValue >= 80) {
-      return '#69F0AE'; 
+      return ''; 
     } else if (bcValue >= 50 && bcValue < 80) {
-      return '#1E88E5'; 
+      return ''; 
     }else if (bcValue >= 20 && bcValue < 50) {
       return '#FFFF8D'; 
     } else {
       return '#EF5350'; 
+    }
+  },
+  geterrcolor(active,errnum){
+    if(active === 2){
+      return '#BDBDBD';
+    }else if (active === 0){
+      return '#FFA726';
+    }else if (errnum > 0 ){
+      return '#E53935';
+    }else {
+      return '#00E676';
+    }
+  },
+  getactiveword(active,err){
+    if(active === 2){
+      return '維修中'
+    }else if (active === 0){
+      return '待機中'
+    }else if (err !== 0 ){
+      return '有錯誤'
+    }else {
+      return '游動中'
+    }
+  },
+  bellshowfunction(err,active){
+    if(err !== 0 && active === 1 ){
+      return true
+    }else{
+      return false
     }
   },
   countNumbersInString(input) {
@@ -454,6 +496,38 @@ function TranActive(active) {
             }
         }
       }
+    },
+    searchvideo(){
+      const cookies = document.cookie.split("; ");
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].split("=");
+          if (cookie[0] === "token") {
+          const token = cookie[1];
+          this.token = token;
+          break;
+  }
+}
+axios.get(
+        "http://20.89.131.34:443/api/v1/video/?video_uid=0021",
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+          responseType: 'arraybuffer', // 設定responseType為arraybuffer
+        }
+      )
+      .then(res => {
+        // 將ArrayBuffer轉換成Uint8Array
+        const uint8Array = new Uint8Array(res.data);
+        // 建立Base64編碼的字串
+        const base64Video = btoa(String.fromCharCode.apply(null, uint8Array));
+        // 建立data URL並設定為影片播放器的src
+        this.videoUrl = `data:video/mp4;base64,${base64Video}`;
+        console.log(this.videoUrl)
+      })
+      .catch(err => {
+        console.log(err);
+      });
     },
     getFishErrorsById(fishId) {
       return this.FishErrors[fishId] 
@@ -537,5 +611,8 @@ function TranActive(active) {
     background-size: cover;
     background-position: center;
   }
+  
 
+
+  
   </style>

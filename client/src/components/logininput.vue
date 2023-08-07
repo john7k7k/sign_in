@@ -168,7 +168,7 @@
           })
         },
         required (v) {
-        return !!v || 'Field is required'
+        return !!v || '此區為必填區域'
       },
         
       }

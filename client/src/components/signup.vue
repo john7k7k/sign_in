@@ -1,7 +1,7 @@
 <template>
     <v-container>
       
-      <v-card class="mx-auto px-6 py-8 " max-width="344" color="deep-purple-darken-4">
+      <v-card class="mx-auto px-6 py-8 " max-width="344" color="white">
         <v-form
           v-model="form"
           @submit.prevent="onSubmit"
@@ -19,7 +19,7 @@
           <v-text-field
             v-model="email"
             :readonly="loading"
-            :rules="[required]"
+            :rules="[required,emailRule]"
             clearable
             label="Email"
             placeholder="Enter your Email"
@@ -35,7 +35,7 @@
           ></v-text-field>
 
           <v-select v-model="SelectSection" :items="section" density="comfortable"
-      label="選擇區域"></v-select>
+      label="選擇區域" :rules="[required]"></v-select>
   
           <br>
   
@@ -78,14 +78,14 @@
         onSubmit () {
           if (!this.form) return
           this.loading = true
-  
           
-          axios.post(
+            axios.post(
             "http://20.89.131.34:443/api/v1/account/sign_up",
             {
               "username":this.account,
               "mail":this.email,
-              "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString() 
+              "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString(),
+              "section":this.SelectSection,
             },
           )
           .then(res=> {
@@ -104,8 +104,11 @@
           })
         },
         required (v) {
-          return !!v || 'Field is required'
+          return v !== null && v.trim() !== '' || '此區為必填區域'
         },
+        emailRule(v) {
+  return /.+@.+\..+/.test(v) || 'Email 格式不正確';
+}
       }
     }
   </script>
