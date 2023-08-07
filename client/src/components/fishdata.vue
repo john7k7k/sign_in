@@ -413,7 +413,7 @@ function TranActive(active) {
     }
   },
   bellshowfunction(err,active){
-    if( active === 1 ){
+    if(err !== 0 && active === 1 ){
       return true
     }else{
       return false
