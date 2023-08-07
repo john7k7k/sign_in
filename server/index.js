@@ -337,9 +337,14 @@ function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
     return (req, res, next) => {
       let token = '';
-      if(tokenFrom === 'URL') token = req.query.token;
-      else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
-      else if(tokenFrom === 'Cookie') token = req.cookies.token;
+      try{
+        if(tokenFrom === 'URL') token = req.query.token;
+        else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
+        else if(tokenFrom === 'Cookie') token = req.cookies.token;
+      }catch{
+        res.sendStatus(403);
+      }
+
       jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
         if (err) {
           res.sendStatus(403);
