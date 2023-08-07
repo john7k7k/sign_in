@@ -1,31 +1,22 @@
+const infoMap = require('./infoMap');
+const jsonFile = require('./jsonFile')
+
 module.exports = () => {
-    let section = {}
-    section.encode = function (section_name){
-        switch(section_name){
-            case 'ntut':
-                return '002'
-            case 'nmmst':
-                return '003'
-            case 'pmp':
-                return '004'
-            default:
-                return section_name;
-        }
+    const fishError = jsonFile('./file/fishError.json');
+    return{
+        code: infoMap(
+            ['ntut','nmmst','pmp'],
+            ['002','003','004']
+        ),
+        chinese: infoMap(
+            ['ntut','nmmst','pmp'],
+            ['北科','海科','先鋒']
+        ),
+        error: infoMap(
+            ['魚關機了', ...Object.values(fishError)],
+            [-1, ...Object.keys(fishError).map(Number)]
+        )
     }
-  
-    section.decode = function (section_code){
-        switch(section_code){
-            case '002':
-                return 'ntut'
-            case '003':
-                return 'nmmst'
-            case '004':
-                return 'pmp'
-            default:
-                return section_code
-        }
-    }
-    return section
 }
 
   

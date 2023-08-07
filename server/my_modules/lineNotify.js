@@ -1,18 +1,19 @@
 const fetch = require('node-fetch');
+const sectionProcess = require('./section')();
 require("dotenv").config();
 
 const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
 
 module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   let lineNotify = {};
-  lineNotify.send = (message,sectionInfo = '北科魚池',decode = (mes)=>mes) => {
+  lineNotify.send = (message,decode = (mes)=>mes) => {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Bearer ${accessToken}`
     };
   
     const data = new URLSearchParams();
-    data.append('message', sectionInfo +':\n' + decode(message));
+    data.append('message', decode(message));
   
     return fetch(lineNotifyEndpoint, {
       method: 'POST',
@@ -36,11 +37,12 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
     return data
   }
   lineNotify.decodeFishesAlarm = (message) => { //解析IOT端
-    const date = new Date();
-    var data = '(Alarm)\n'
-    data += date.toLocaleString();
-    data+='\n'+'id: '+Object.keys(message)[0]+', '+'status: '+message[Object.keys(message)[0]]
-    return data
+    return `
+      標題: 錯誤警報
+      區域: ${sectionProcess.chinese.encode(message.section)}
+      魚ID: ${Object.keys(message)[0]}
+      時間: ${(new Date()).toLocaleString(undefined,{hour12:false})} (GMT+0800)
+      錯誤內容: ${sectionProcess.error.decode(Object.values(message)[0])}`
   }
   return lineNotify;
 }
