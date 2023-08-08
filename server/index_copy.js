@@ -26,7 +26,7 @@ const upload = multer({
   })
 });
 let randCode = getRand();
-const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut','Fish/alarm/nmmst','Fish/alarm/pmp'];
+const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut/t','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
 ((app,sqlConnection) => { //init app, sql
   app.use(express.json())

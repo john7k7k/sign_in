@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const sectionProcess = require('./section')();
+const { DateTime } =  require('luxon')
 require("dotenv").config();
 
 const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
@@ -41,7 +42,7 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
       標題: 錯誤警報
       區域: ${sectionProcess.chinese.encode(message.section)}
       魚ID: ${Object.keys(message)[0]}
-      時間: ${(new Date()).toLocaleString(undefined,{hour12:false})} (GMT+0800)
+      時間: ${(DateTime.now()).setZone('Asia/Taipei').toFormat('yyyy/M/d HH:mm:ss')} (GMT+0800)
       錯誤內容: ${sectionProcess.error.decode(Object.values(message)[0])}`
   }
   return lineNotify;

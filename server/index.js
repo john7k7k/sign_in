@@ -25,6 +25,9 @@ const upload = multer({
     }
   })
 });
+
+
+
 let randCode = getRand();
 const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
@@ -330,8 +333,6 @@ app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   const filePath = `uploads/videos/${video_uid + '.mp4'}`;
   sendVideo(res,filePath);
 });
-
-
 
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
