@@ -172,7 +172,7 @@ function TranActive(active) {
             <v-toolbar-title>編輯資料</v-toolbar-title>
             <v-spacer Hidden only on xs></v-spacer>
             <v-toolbar-items>
-              <v-btn variant="text" @click="ChangeDatas"> 儲存 </v-btn>
+              <v-btn v-show="false" variant="text" @click="ChangeDatas"> 儲存 </v-btn>
             </v-toolbar-items>
           </v-toolbar>
             <v-list-subheader class="mx-4">基本資料</v-list-subheader>

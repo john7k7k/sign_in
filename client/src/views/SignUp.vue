@@ -1,8 +1,8 @@
 <template>
     <div class="signup" >
-      <loginnavbar class="loginnavbar-bg"></loginnavbar>
+      <signinnavbar class="signinnavbar-bg"></signinnavbar>
       <div class="v-application__wrap">
-      <h1 class="text-center my-3 textsignup">
+      <h1 class="text-center my-1 textsignup">
       註冊
       </h1>
       <v-row class="mt-2">
@@ -20,11 +20,11 @@
   
   
   // Components
-  import loginnavbar from '@/components/loginnavbar.vue';
+  import signinnavbar from '@/components/signinnavbar.vue';
   import signupinput from '@/components/signup.vue';
   export default {
     name: 'signup',
-    components: {loginnavbar,signupinput },
+    components: {signinnavbar,signupinput },
     data: () => ({
       //
     }),
@@ -46,7 +46,7 @@
   bottom: 0;
   overflow-y: hidden
 }
-loginnavbar-bg {
+.signinnavbar-bg {
   height: 100px; 
   background-color: rgba(0, 0, 0, 0); 
 }

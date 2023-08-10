@@ -25,11 +25,14 @@
             placeholder="Enter your Email"
           ></v-text-field>
           
+          
           <v-text-field
+          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="visible ? 'text' : 'password'"
             v-model="password"
             :readonly="loading"
             :rules="[required]"
-            clearable
+            @click:append-inner="visible = !visible"
             label="密碼"
             placeholder="Enter your password"
           ></v-text-field>
@@ -72,6 +75,7 @@
           "海科"
         ],
         SelectSection:null,
+        visible: false,
       }),
   
       methods: {
@@ -93,7 +97,7 @@
               if(res.status == '200'){
                   alert("註冊成功!\n3秒後將會自動返回登入頁面..");
                   setTimeout(() => (this.loading = false), 2000)
-                  window.location.replace(`http://20.89.131.34:443/home`); //括號內加上+res.data.token
+                  window.location.replace(`http://20.89.131.34:443/`); //括號內加上+res.data.token
               }else alert("註冊失敗!請再刷新螢幕重新註冊一次")
           })
           .catch(err=> {

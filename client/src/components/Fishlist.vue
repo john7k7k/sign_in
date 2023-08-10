@@ -1,31 +1,46 @@
 <template>
     <v-container>
     <div class="d-flex justify-center"><h2>仿生魚清單</h2></div>
-    <div class="section1 mt-4"><h4>北科</h4></div>
-    <v-card class="mx-auto mt-2" max-width="600" v-for="id in FishId" :key="id">
-    <div class="d-flex align-center justify-space-between pl-4" >
-      <h3>ID:{{ id }}</h3>
-      <v-card-actions>
-        <v-btn
-          :icon="fishdatas[id]?.show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-          @click="toggleShow(id)"
-        ></v-btn>
-      </v-card-actions>
-    </div>
-
-    <v-expand-transition>
-      <div v-show="fishdatas[id]?.show" >
-        <v-divider></v-divider>
-
-        <v-card-text v-for="fish in fishdatas[id]" :key="fish">
-          <div>版本: {{ fish.version }} &nbsp; 時間: {{ formatDate(fish.time) }}  &nbsp; 錯誤:{{ fish.err }} &nbsp; 狀態:{{fish.active}}</div>
-          <v-divider class="ma-2"></v-divider>
-          
-        </v-card-text>
-      </div>
-    </v-expand-transition>
-  </v-card>
+    
+    
     </v-container>
+    <v-text-field
+        v-model="searchId"
+        append-icon="mdi-magnify"
+        label="搜尋ID"
+        hide-details
+        class="mb-2"
+        style="width: 200px;"
+      ></v-text-field>   
+      <div class="mt-4"><h3>北科</h3></div>
+    <Table  :border="true" :columns="columns" :data="filteredData">
+    <template #id="{ row }">
+      <strong>{{ row.id }}</strong>
+    </template>
+    <template #action="{ row: { id } }">
+      <v-btn prepend-icon="mdi-square-edit-outline"
+          color="light-blue-lighten-3" @click="fishdatas[id].show = true"> 編輯 </v-btn>
+
+    <v-dialog v-model="fishdatas[id].show" width="auto">
+      <v-card>
+        <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
+        <v-card-text v-for="fish in fishdatas[id]" :key="fish">
+          
+          <div>
+            版本: {{ fish.version }} &nbsp; 時間: {{ formatDate(fish.time) }}
+            &nbsp; 錯誤:{{ fish.err }} &nbsp; 狀態:{{fish.active}}
+          </div>
+          <v-divider class="ma-2"></v-divider>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="fishdatas[id].show = false"
+            >關閉</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    </template>
+  </Table>
   </template>
   
   <script>
@@ -40,13 +55,51 @@ import axios from 'axios';
             FishId: [],
             fishdatas:[],
             version:[],
+            lastdatas:[],
+            time:[],
+            columns: [
+                    {
+                        title: 'ID',
+                        slot: 'id'
+                    },
+                    {
+                        title: '版本',
+                        key: 'version'
+                    },
+                    {
+                        title: '更新時間',
+                        key: 'time'
+                    },
+                    {
+                        title: '編輯',
+                        slot: 'action',
+                        width: 150,
+                        align: 'center'
+                    }
+                ],
+            data: [],
+            searchId:'',
+            dialog: false,
         }
       },
+      computed: {
+    filteredData() {
+        if (!this.searchId) {
+          return this.data;
+        } else {
+          return this.data.filter(item => {
+            const itemId = item.id.toString(); 
+            return itemId.includes(this.searchId.toLowerCase());
+          });
+        }
+      }
+  },
       methods: {
       processData(ids, data) {
         ids.forEach((id) => {
-        const { version } = data[id];
+        const { version,time } = data[id];
         this.version.push(version);
+        this.time.push(time);
             });
         },
       accountdata(){
@@ -95,6 +148,17 @@ import axios from 'axios';
             this.fishdatas[id] = reversedLastFive;
             this.fishdatas[id].show = false;
             }
+            for (const id in res.data['002']) {
+              const dataArray = res.data['002'][id];
+              const { version,time } = dataArray[dataArray.length-1];
+              this.version.push(version);
+              this.time.push(time);
+            }
+            this.data = this.FishId.map((item,index) => ({
+              id: this.FishId[index],
+              version: this.version[index],
+              time: this.formatDate(this.time[index])
+            }));
           })
           .catch(err=> {
               console.log(err);
@@ -199,7 +263,13 @@ import axios from 'axios';
     const seconds = dateObj.getSeconds();
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
+  },
+  show2 (index) {
+                alert(index)
+            },
+  remove (index) {
+                this.data.splice(index, 1);
+            }
     },
     
     

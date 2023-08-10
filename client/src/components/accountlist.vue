@@ -1,43 +1,11 @@
 <template>
     <v-container>
-    <div class="d-flex justify-center"><h2>帳號清單</h2></div>
-    <div class="section1 mt-4"><h4>全區</h4></div>
-    <v-card class="mx-auto mt-2" max-width="600" v-for="user in userdatas" :key="user">
-    <div class="d-flex align-center justify-space-between pl-4" >
-      <h3>{{user.username}}</h3>
-      <v-card-actions>
-        <v-btn
-          :icon="user.show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-          @click="toggleShow(user.userID-1)"
-        ></v-btn>
-      </v-card-actions>
-    </div>
-
-    <v-expand-transition>
-      <div v-show="user.show">
-        <v-divider></v-divider>
-
-        <v-card-text>
-          <div>Email: {{ user.email }}</div>
-          <v-divider class="ma-3"></v-divider>
-          <div class="d-flex align-center justify-space-between">權限等級: {{ user.level }} <v-btn
-                color="white"
-                icon="mdi-square-edit-outline"
-                size="small"
-              ></v-btn></div>
-          <v-divider class="ma-3"></v-divider>
-          <div class="d-flex align-center justify-space-between">所屬區域: {{ user.section }} <v-btn
-                color="white"
-                icon="mdi-square-edit-outline"
-                size="small"
-              ></v-btn></div>
-          <v-divider class="ma-3"></v-divider>
-          <div>註冊時間: {{ user.registrationTime }}</div>
-        </v-card-text>
-      </div>
-    </v-expand-transition>
-  </v-card>
+    <div class="d-flex justify-center mt-3"><h2>帳號清單</h2></div>
+    
+    
     </v-container>
+    <div class="mt-4 mb-2"><h4>全區</h4></div>
+    <Table :columns="columns" :data="data"></Table>
   </template>
   
   <script>
@@ -49,6 +17,32 @@ import axios from 'axios';
             userdatas:[],
             token:null,
             show: false,
+            columns: [
+                        {
+                      type: 'expand',
+                      width: 50,
+                      render: (h, { row: { email, registrationTime } }) => {
+                        return h('div', [
+                            h('div', 'email: ' + email),
+                            h('div', '註冊時間: ' + registrationTime)
+                          ]);
+                      }
+                    },
+                    {
+                        title: '使用者名稱',
+                        key: 'name'
+                    },
+                    {
+                        title: '權限等級',
+                        key: 'level',
+          
+                    },
+                    {
+                        title: '所屬區域',
+                        key: 'section'
+                    },
+                ],
+                data: [],
         }
       },
       methods: {
@@ -84,6 +78,15 @@ import axios from 'axios';
                 }
                 this.userdatas.push(newData)
             }
+            this.data = res.data.map(item => ({
+              email: item.email,
+              level: item.level,
+              passcode: item.passcode,
+              registrationTime: this.formatDate(item.registrationTime),
+              section: item.section,
+              userID: item.userID,
+              name: item.username
+            }));
               })
           .catch(err=> {
               console.log(err);
@@ -93,6 +96,20 @@ import axios from 'axios';
       toggleShow(index) {
       this.userdatas[index].show = !this.userdatas[index].show
     },
+    formatDate(timestamp) {
+    const dateObj = new Date(timestamp);
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+    const seconds = dateObj.getSeconds();
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  },
+  editRow(row) {
+      console.log('编辑行：', row);
+    }
     },
     
     
