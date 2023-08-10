@@ -101,11 +101,8 @@ import axios from 'axios';
     const year = dateObj.getFullYear();
     const month = dateObj.getMonth() + 1;
     const day = dateObj.getDate();
-    const hours = dateObj.getHours();
-    const minutes = dateObj.getMinutes();
-    const seconds = dateObj.getSeconds();
 
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day}`;
   },
   editRow(row) {
       console.log('编辑行：', row);
