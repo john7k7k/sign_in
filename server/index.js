@@ -336,11 +336,12 @@ app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (re
   try{
     const { fishesID } = req.body; //取得參數
     const { section } = req.query;
-    if(!fishData||!section){
+    console.log(fishesID)
+    if(!section){
       res.sendStatus(403);
       return;
     }
-    sqlConnection.deleteFishesTable({ section: fishesID })
+    sqlConnection.deleteFishesTable({ [section]: fishesID })
     res.sendStatus(200);
   }
   catch{res.sendStatus(403);}
