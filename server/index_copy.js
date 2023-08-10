@@ -25,11 +25,8 @@ const upload = multer({
     }
   })
 });
-
-
-
 let randCode = getRand();
-const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut','Fish/alarm/nmmst','Fish/alarm/pmp'];
+const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut/t','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
 ((app,sqlConnection) => { //init app, sql
   app.use(express.json())
@@ -334,6 +331,8 @@ app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   sendVideo(res,filePath);
 });
 
+
+
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
     return (req, res, next) => {
@@ -387,7 +386,7 @@ function topicDecode(topic){
 
 async function mqttProcess(topic,mqtt_data){
   switch(topic){
-    case "Fish/alarm/ntut":
+    case "Fish/alarm/ntut/t":
       const video_data = {
         videoUID: mqtt_data.video_uid,
         time: mqtt_data.time,

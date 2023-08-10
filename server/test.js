@@ -1,5 +1,3 @@
-const jsonFile = require('./my_modules/jsonFile');
-(async ()=>{
-    const fishError = jsonFile('./file/fishError.json')
-    console.log(Object.keys(fishError).map(Number))
-})()
+
+const { DateTime } =  require('luxon')
+console.log((DateTime.now()).setZone('Asia/Taipei').toFormat('yyyy/M/d HH:mm:ss'))
