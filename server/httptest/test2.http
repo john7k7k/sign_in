@@ -12,7 +12,7 @@ POST http://localhost:443/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "Jason",
+    "username": "123",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 
@@ -58,9 +58,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikphc
     "newSection": "002"
 }
 ###
-POST http://localhost:443/api/v1/fish/data/?section=003
+POST http://localhost:443/api/v1/fish/data/?section=002
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTY4MDA2MCwiZXhwIjoxNjkxNjg5MDYwfQ.tB10ciKPIhbEoIMe95K4ATFVGeIDb1enk99JKHAh_tc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTY5MTM4MCwiZXhwIjoxNjkxNzAwMzgwfQ.CY22_GrIAntPR_w42Y7EszjfArJA1uq6KMvHow7S3PE
 
 {
     "fishData": {
