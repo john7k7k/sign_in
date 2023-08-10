@@ -87,7 +87,7 @@ app.get(/\/(?:login|SignUp)/, function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home|FishDataList)/, verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home|FishDataList|AccountList)/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
