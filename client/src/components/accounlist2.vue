@@ -1,42 +1,6 @@
 <template>
-    <v-container>
-    <div class="section1 mt-4"><h4>北科</h4></div>
-    <v-card class="mx-auto mt-2" max-width="600" v-for="user in userdatas" :key="user">
-    <div class="d-flex align-center justify-space-between pl-4" >
-      <h3>{{user.username}}</h3>
-      <v-card-actions>
-        <v-btn
-          :icon="user.show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-          @click="toggleShow(user.userID-1)"
-        ></v-btn>
-      </v-card-actions>
-    </div>
-
-    <v-expand-transition>
-      <div v-show="user.show">
-        <v-divider></v-divider>
-
-        <v-card-text>
-          <div>Email: {{ user.email }}</div>
-          <v-divider class="ma-3"></v-divider>
-          <div class="d-flex align-center justify-space-between">權限等級: {{ user.level }} <v-btn
-                color="white"
-                icon="mdi-square-edit-outline"
-                size="small"
-              ></v-btn></div>
-          <v-divider class="ma-3"></v-divider>
-          <div class="d-flex align-center justify-space-between">所屬區域: {{ user.section }} <v-btn
-                color="white"
-                icon="mdi-square-edit-outline"
-                size="small"
-              ></v-btn></div>
-          <v-divider class="ma-3"></v-divider>
-          <div>註冊時間: {{ user.registrationTime }}</div>
-        </v-card-text>
-      </div>
-    </v-expand-transition>
-  </v-card>
-    </v-container>
+    <div class="mt-4 mb-2"><h4>北科</h4></div>
+    <Table :columns="columns" :data="data"></Table>
   </template>
   
   <script>
@@ -48,6 +12,31 @@ import axios from 'axios';
             userdatas:[],
             token:null,
             show: false,
+            columns: [
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, { row: { name, age } }) => {
+                            return h('div', name + '-' + age)
+                        }
+                    },
+                    {
+                        title: '使用者名稱',
+                        key: 'name'
+                    },
+                    {
+                        title: '權限等級',
+                        key: 'level'
+                    },
+                    {
+                        title: '所屬區域',
+                        key: 'section'
+                    }
+                ],
+                data: [],
+            username:[],
+            level:[],
+            section:[],
         }
       },
       methods: {
@@ -73,7 +62,7 @@ import axios from 'axios';
               for(const obj of res.data){
                 const {email,level,registrationTime,section,username,userID} = obj;
                 const newData = {
-                    username,
+                    name:username,
                     email,
                     level,
                     registrationTime,
@@ -83,6 +72,16 @@ import axios from 'axios';
                 }
                 this.userdatas.push(newData)
             }
+            this.data = res.data.map(item => ({
+              email: item.email,
+              level: 10,
+              passcode: item.passcode,
+              registrationTime: item.registrationTime,
+              section: "001",
+              userID: item.userID,
+              name: item.username
+            }));
+            
               })
           .catch(err=> {
               console.log(err);
