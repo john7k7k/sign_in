@@ -10,7 +10,7 @@ import FishDatalist from '../views/FishDatalist.vue'
 const routes = [
   {
     name: "Nav",
-    path: "/home",
+    path: "/",
     component: Nav ,
     children:[
     {

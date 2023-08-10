@@ -23,7 +23,7 @@
             <v-list-item class="ml-4 mt-5 mr-auto font-weight-black"
               >Email</v-list-item
             >
-            <v-list-item class="mt-5 ml-9 text-center flex-grow-1">
+            <v-list-item class="mt-5 ml-4 text-center flex-grow-1">
               <t4>{{ email }}</t4>
             </v-list-item>
           </v-row>
@@ -41,7 +41,7 @@
             <v-list-item class="ml-4 mr-auto mt-5 font-weight-black"
               >權限</v-list-item
             >
-            <v-list-item class="mt-5 mr-14 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-13 text-center flex-grow-1">
               <t4>{{ level }}</t4>
             </v-list-item>
             <v-list-item class="mt-5">
@@ -58,7 +58,7 @@
             <v-list-item class="ml-4 mr-auto mt-5 font-weight-black"
               >所屬區域</v-list-item
             >
-            <v-list-item class="mt-5 mr-16 pr-14 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-14 pr-14 text-center flex-grow-1">
               <t4>{{ section }}</t4>
             </v-list-item>
             <v-list-item class="mt-5">

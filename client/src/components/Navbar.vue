@@ -35,10 +35,9 @@
 
       <v-list density="compact" nav >
         <v-list-item
-          v-show="false"
           prepend-icon="mdi-home"
           title="主頁"
-          value="home"
+          value="home1"
           route to = "/home"
         ></v-list-item>
           <v-list-item
