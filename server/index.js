@@ -130,7 +130,7 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
   console.log("無帳號")
 });
 
-app.post(`/${API_VERSION}/account/sign_up`,async function(req, res) {
+app.post(`/${API_VERSION}/account/sign_up`, verifyUserData(),async function(req, res) {
   const userTable = await sqlConnection.getUserTable();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.username === userTable[i].username) {
@@ -211,16 +211,36 @@ app.get(`/${API_VERSION}/account/`, verifyTokenBy('Header')(), async (req, res) 
 });
 
 app.get(`/${API_VERSION}/account/list`, verifyTokenBy('Header')(20), async (req, res) => { 
-  res.send(await sqlConnection.getUserTable(req.query.section));
+  const resData = await sqlConnection.getUserTable(req.query.section);
+  for(let userData of resData){
+    userData.passcode = undefined;
+  }
+  res.send(resData);
 });
 
-app.post(`/${API_VERSION}/account/revise/level`, verifyTokenBy('Header')(20), async (req, res) => { 
-  const adminLevel = (await sqlConnection.getUserData(req.payload.username,basis = 'username')).level
-  if(req.body.newLevel < adminLevel){
+app.post(`/${API_VERSION}/account/remove_user`, verifyTokenBy('Header')(20), async (req, res) => { 
+  const { adminLevel, adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
+  const { userLevel, userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
+  if(userLevel < adminLevel){
     res.sendStatus(403);
     return;
   }
-  if((await sqlConnection.getUserData(req.body.username,basis = 'username')).level < adminLevel){
+  if(adminSection !== '001' && userSection !== adminSection){
+    res.sendStatus(403);
+    return;
+  }
+  sqlConnection.deleteUser(req.body.username, basis = 'username');
+  res.sendStatus(200);
+});
+
+app.post(`/${API_VERSION}/account/revise/level`, verifyTokenBy('Header')(20), async (req, res) => { 
+  const { adminLevel, adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
+  const { userLevel, userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
+  if(req.body.newLevel < adminLevel || userLevel < adminLevel){
+    res.sendStatus(403);
+    return;
+  }
+  if(adminSection !== '001' && userSection !== adminSection){
     res.sendStatus(403);
     return;
   }
@@ -307,6 +327,21 @@ app.post(`/${API_VERSION}/fish/control/`, verifyTokenBy('Header')(60), async (re
       console.log('Fish/set/' + sectionProcess.code.decode(section) + '/' + key);
       console.log(fish_string);
     }
+    res.sendStatus(200);
+  }
+  catch{res.sendStatus(403);}
+})
+
+app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (req, res) => {
+  try{
+    const { fishesID } = req.body; //取得參數
+    const { section } = req.query;
+    console.log(fishesID)
+    if(!section){
+      res.sendStatus(403);
+      return;
+    }
+    sqlConnection.deleteFishesTable({ [section]: fishesID })
     res.sendStatus(200);
   }
   catch{res.sendStatus(403);}
@@ -421,4 +456,13 @@ function sendVideo(res,videoPath) {
       setTimeout(()=>sendVideo(res,videoPath),300)
     }
   });
+}
+
+function verifyUserData(){
+  return (req, res, next) => {
+    const { username, mail, password, section} = req.body;
+    if(! (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(mail))) res.sendStatus(403)
+    else if(! (username && mail && password && section)) res.sendStatus(403);
+    else next();
+  }
 }

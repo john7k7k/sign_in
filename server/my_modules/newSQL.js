@@ -1,3 +1,41 @@
+/**
+ * 
+ * @param {*} sql_data
+ * 
+ *   @function createTable
+ *      @param {string} tableName
+ *      @param {*} columns - {(columnName:  columnType <string>)...}
+ * 
+ *   @function createTable
+ * 
+ *   @member {createTable()} fishTable 
+
+ *      @method get
+ *          @param {string} key
+ *          @param {Array} conditions - [condition <string|number> ... ]
+ *      @method insert
+ *          @param {*} data - {(columnName:  columnValue <string|number>)...}
+ *      @method remove
+ *      @method show
+ *      @method update
+ *      @method showDetail
+ * 
+ *   @member {createFishTable()} userTable 
+ *      @member {*} fishTable
+ *      @member {*} video
+ *      @member {*} error
+ *      @member {Array} fishesUID
+ *      @method get
+ *      @method insert
+ *      @method remove
+ *      @method show
+ *      @method update
+ *      @method showDetail
+ * 
+ *   @method showAll
+ *      @param {function} [showMethod = console.table]
+*/
+
 const { createConnection } = require('mysql');
 require("dotenv").config();
 
@@ -188,10 +226,7 @@ module.exports = function (sql_data = {
 
         return fishTable;
     }
-    connection.showAll = async function (showMethod = console.table){
-        await connection.userTable.show(showMethod = showMethod);
-        await connection.fishTable.showDetail(showMethod = showMethod);
-    }
+    
 
     connection.userTable = connection.createTable('USER', {
         userID: 'INT AUTO_INCREMENT PRIMARY KEY',
@@ -204,5 +239,9 @@ module.exports = function (sql_data = {
     });
     connection.fishTable = connection.createFishTable();
 
+    connection.showAll = async function (showMethod = console.table){
+        await connection.userTable.show(showMethod = showMethod);
+        await connection.fishTable.showDetail(showMethod = showMethod);
+    }
     return connection;
 }
