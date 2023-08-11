@@ -187,15 +187,15 @@
         const bcdatas = this.bc.slice(0, FishId1num);
         const errdatas = this.err.slice(0, FishId1num);
         const activedatas = this.active.slice(0, FishId1num);
-        const fish0Data = localStorage.getItem("fish30");
-        const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data)
         if(level === 1){
           localStorage.setItem("NewId3",this.FishId)
           localStorage.setItem("NewBc3", bcdatas);
           localStorage.setItem("NewErro3", errdatas);
           localStorage.setItem("NewActive3", activedatas);
         }  else if (level === 2){
+          const fish0Data = localStorage.getItem("fish30");
+          const parsedFish0Data = JSON.parse(fish0Data);
+          this.FishId.push(...parsedFish0Data)
           const active0 = this.active.filter(value => value < 1);
           const active0index = this.active.map((value, index) => {
             if (value === 0) {
@@ -230,6 +230,9 @@
           localStorage.setItem("NewErro3", needfix);
           localStorage.setItem("NewActive3", activeErrResult);
         } else{
+          const fish0Data = localStorage.getItem("fish30");
+          const parsedFish0Data = JSON.parse(fish0Data);
+          this.FishId.push(...parsedFish0Data)
           const fish2Data = localStorage.getItem("fish32");
           const parsedFish2Data = JSON.parse(fish2Data);
           this.FishId.push(...parsedFish2Data)

@@ -189,15 +189,16 @@ export default {
       const bcdatas = this.bc.slice(0, FishId1num);
       const errdatas = this.err.slice(0, FishId1num);
       const activedatas = this.active.slice(0, FishId1num);
-      const fish0Data = localStorage.getItem("fish20");
-      const parsedFish0Data = JSON.parse(fish0Data);
-      this.FishId.push(...parsedFish0Data)
+      
       if(level === 1){
         localStorage.setItem("NewId2",this.FishId)
         localStorage.setItem("NewBc2", bcdatas);
         localStorage.setItem("NewErro2", errdatas);
         localStorage.setItem("NewActive2", activedatas);
       }  else if (level === 2){
+        const fish0Data = localStorage.getItem("fish20");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data)
         const active0 = this.active.filter(value => value < 1);
         const active0index = this.active.map((value, index) => {
           if (value === 0) {
@@ -232,6 +233,9 @@ export default {
         localStorage.setItem("NewErro2", needfix);
         localStorage.setItem("NewActive2", activeErrResult);
       } else{
+        const fish0Data = localStorage.getItem("fish20");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data)
         const fish2Data = localStorage.getItem("fish22");
         const parsedFish2Data = JSON.parse(fish2Data);
         this.FishId.push(...parsedFish2Data)
