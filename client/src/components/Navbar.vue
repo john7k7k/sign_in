@@ -88,7 +88,8 @@ export default {
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" }
-      ]
+      ],
+      IP:process.env.VUE_APP_IP,
     }
   },
   methods: {
@@ -112,7 +113,7 @@ export default {
   }
 }
       axios.post(
-            "http://20.89.131.34:443/api/v1/account/logout",{},{
+            "http://"+this.IP+"/api/v1/account/logout",{},{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -124,7 +125,7 @@ export default {
               if(res.status == 200){
                 alert("登出成功")
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`http://20.89.131.34:443/`); 
+                window.location.replace(`/`); 
               }
               else
               alert("登出失敗")

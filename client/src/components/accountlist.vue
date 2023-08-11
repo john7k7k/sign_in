@@ -43,6 +43,7 @@ import axios from 'axios';
                     },
                 ],
                 data: [],
+                IP:process.env.VUE_APP_IP,
         }
       },
       methods: {
@@ -57,7 +58,7 @@ import axios from 'axios';
             }
         }
         axios.get(
-            "http://20.89.131.34:443/api/v1/account/list/?section=001",{
+            "http://"+this.IP+"/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -83,7 +84,7 @@ import axios from 'axios';
               level: item.level,
               passcode: item.passcode,
               registrationTime: this.formatDate(item.registrationTime),
-              section: item.section,
+              section: this.TranSection(item.section),
               userID: item.userID,
               name: item.username
             }));
@@ -104,9 +105,19 @@ import axios from 'axios';
 
     return `${year}-${month}-${day}`;
   },
-  editRow(row) {
-      console.log('编辑行：', row);
-    }
+  TranSection(section) {
+        if (section == "001") {
+          return "全區";
+        } else if(section == "002"){
+          return "北科";
+        } 
+        else if(section == "003"){
+          return "海科";
+        }else{
+          return section
+        }
+      },
+
     },
     
     

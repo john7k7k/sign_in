@@ -66,8 +66,6 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      account:localStorage.getItem('username'),
-      password:localStorage.getItem('password'),
       FishId: [],
       FishId2num:null,
       needchargenum:0,
@@ -88,6 +86,7 @@ export default {
           return lg ? 3 : sm ? 3 : 3;
         },
       },
+      IP:process.env.VUE_APP_IP,
     };
   },
   methods: {
@@ -126,12 +125,12 @@ export default {
           break;
           }
         }
-      if (fish1Data != null) {
+      if (this.FishId != null) {
         this.bc = [];
         this.err = [];
         this.active = [];
         axios.get(
-            "http://20.89.131.34:443/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
+            "http://"+this.IP+"/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -190,15 +189,15 @@ export default {
       const bcdatas = this.bc.slice(0, FishId1num);
       const errdatas = this.err.slice(0, FishId1num);
       const activedatas = this.active.slice(0, FishId1num);
+      const fish0Data = localStorage.getItem("fish20");
+      const parsedFish0Data = JSON.parse(fish0Data);
+      this.FishId.push(...parsedFish0Data)
       if(level === 1){
         localStorage.setItem("NewId2",this.FishId)
         localStorage.setItem("NewBc2", bcdatas);
         localStorage.setItem("NewErro2", errdatas);
         localStorage.setItem("NewActive2", activedatas);
       }  else if (level === 2){
-        const fish0Data = localStorage.getItem("fish20");
-        const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data)
         const active0 = this.active.filter(value => value < 1);
         const active0index = this.active.map((value, index) => {
           if (value === 0) {
@@ -254,12 +253,12 @@ export default {
     },
 
     loadnewdata(){
-      axios.post(
-            "http://20.89.131.34:443/api/v1/account/login",
-            {
-              "username":this.account,
-              "password":this.password
-            },
+      axios.get(
+            "http://"+this.IP+"/api/v1/account",{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
           )
           .then(res=> {
               console.log(res);

@@ -80,6 +80,7 @@ import axios from 'axios';
             data: [],
             searchId:'',
             dialog: false,
+            IP:process.env.VUE_APP_IP,
         }
       },
       computed: {
@@ -129,7 +130,7 @@ import axios from 'axios';
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "http://20.89.131.34:443/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+            "http://"+this.IP+"/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -164,7 +165,7 @@ import axios from 'axios';
               console.log(err);
           })
         axios.get(
-            "http://20.89.131.34:443/api/v1/account/list/?section=001",{
+            "http://"+this.IP+"/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -198,7 +199,7 @@ import axios from 'axios';
 
     loadnewdata(){
       axios.post(
-            "http://20.89.131.34:443/api/v1/account/login",
+            "http://"+this.IP+"/api/v1/account/login",
             {
               "username":this.account,
               "password":this.password

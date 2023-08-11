@@ -37,6 +37,7 @@ import axios from 'axios';
             username:[],
             level:[],
             section:[],
+            IP:process.env.VUE_APP_IP,
         }
       },
       methods: {
@@ -51,7 +52,7 @@ import axios from 'axios';
             }
         }
         axios.get(
-            "http://20.89.131.34:443/api/v1/account/list/?section=002",{
+            "http://"+this.IP+"/api/v1/account/list/?section=002",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }

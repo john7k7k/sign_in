@@ -43,6 +43,7 @@ function TranActive(active) {
             "活動中",
             "維修中"
         ],
+        IP:process.env.VUE_APP_IP,
         
         }
       },
@@ -63,7 +64,7 @@ function TranActive(active) {
           }
 
         axios.post(
-            "http://20.89.131.34:443/api/v1/fish/control/",{
+            "http://"+this.IP+"/api/v1/fish/control/",{
               "fishControl":{
         "led":{
             [this.FishId]:{
@@ -118,7 +119,7 @@ function TranActive(active) {
           }
 
           axios.post(
-            "http://20.89.131.34:443/api/v1/fish/data/?section=001",{
+            "http://"+this.IP+"/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }
