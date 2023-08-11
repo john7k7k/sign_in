@@ -83,7 +83,7 @@ export default {
       userimage: "",
       username: localStorage.getItem('UserName'),
       level: 30,
-      token:null,
+      token:localStorage.getItem('token'),
       links: [
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" },
@@ -103,17 +103,8 @@ export default {
       }
     },
     logout(){
-      const cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-  }
-}
       axios.post(
-            "http://"+this.IP+"/api/v1/account/logout",{},{
+            "/api/v1/account/logout",{},{
     headers: {
       Authorization: `Bearer ${this.token}`
     }

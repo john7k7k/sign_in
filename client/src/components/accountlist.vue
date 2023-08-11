@@ -15,7 +15,7 @@ import axios from 'axios';
       data() {
         return {
             userdatas:[],
-            token:null,
+            token:localStorage.getItem('token'),
             show: false,
             columns: [
                         {
@@ -48,17 +48,8 @@ import axios from 'axios';
       },
       methods: {
       accountdata(){
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].split("=");
-            if (cookie[0] === "token") {
-            const token = cookie[1];
-            this.token = token;
-            break;
-            }
-        }
         axios.get(
-            "http://"+this.IP+"/api/v1/account/list/?section=001",{
+            "/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }

@@ -73,7 +73,7 @@ export default {
       bc: [],
       err: [],
       active: [],
-      token:null,
+      token:localStorage.getItem('token'),
       time: localStorage.getItem('NewTime'),
       links: [ 
         { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
@@ -116,21 +116,13 @@ export default {
               const num = parseInt(str, 10);
               return isNaN(num) ? 0 : num; 
             });
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-          }
-        }
+      
       if (this.FishId != null) {
         this.bc = [];
         this.err = [];
         this.active = [];
         axios.get(
-            "http://"+this.IP+"/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
+            "/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -167,6 +159,9 @@ export default {
             this.links[0].text = this.active.filter((a) => a === 1).length;
             this.links[1].text = this.active.filter((a) => a === 0).length;
             this.links[2].text = this.active.filter((a) => a === 2).length;
+            if(this.links[0].text ===0 && this.links[1].text === 0 && this.links[2].text == 0){
+              this.RefreshDatas();
+            }
             localStorage.setItem("NewId2",this.FishId)
             localStorage.setItem("NewBc2", this.bc);
             localStorage.setItem("NewErro2", this.err);
@@ -258,7 +253,7 @@ export default {
 
     loadnewdata(){
       axios.get(
-            "http://"+this.IP+"/api/v1/account",{
+            "/api/v1/account",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -272,10 +267,6 @@ export default {
                 const fish20Values = [];
                 const fish21Values = [];
                 const fish22Values = [];
-                const fish002Data = res.data.fishesID["003"];
-                const fish30Values = [];
-                const fish31Values = [];
-                const fish32Values = [];
                 if( Object.hasOwn(res.data.fishesID,"002")){
                   Object.entries(fish001Data).forEach(([key, value]) => {
                     if (value === 1) {
@@ -287,26 +278,12 @@ export default {
                     }
                   });
                 }
-
-                if(Object.hasOwn(res.data.fishesID,"003")){
-                  
-                  Object.entries(fish002Data).forEach(([key, value]) => {
-                    if (value === 1) {
-                      fish31Values.push(key)
-                    } else if (value === 2) {
-                      fish32Values.push(key)
-                    } else {
-                      fish30Values.push(key)
-                    }
-                  });
-                }
                 localStorage.setItem("fish20", JSON.stringify(fish20Values));
                 localStorage.setItem("fish21", JSON.stringify(fish21Values));
                 localStorage.setItem("fish22", JSON.stringify(fish22Values));
-                localStorage.setItem("fish30", JSON.stringify(fish30Values));
-                localStorage.setItem("fish31", JSON.stringify(fish31Values));
-                localStorage.setItem("fish32", JSON.stringify(fish32Values));
-                this.RefreshDatas()
+                setTimeout(() => {
+                    this.RefreshDatas();
+                  }, 200);
               }
           })
           .catch(err=> {
@@ -318,9 +295,7 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.RefreshDatas();
-    }, 300);
+    this.loadnewdata();
   },
 };
 </script>

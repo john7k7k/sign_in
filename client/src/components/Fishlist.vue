@@ -50,7 +50,7 @@ import axios from 'axios';
       data() {
         return {
             userdatas:[],
-            token:null,
+            token:localStorage.getItem('token'),
             show: false,
             FishId: [],
             fishdatas:[],
@@ -104,15 +104,6 @@ import axios from 'axios';
             });
         },
       accountdata(){
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].split("=");
-            if (cookie[0] === "token") {
-            const token = cookie[1];
-            this.token = token;
-            break;
-            }
-        }
         this.loadnewdata();
         const fish1Data = localStorage.getItem("fish21");
         const parsedFish1Data = JSON.parse(fish1Data);
@@ -130,7 +121,7 @@ import axios from 'axios';
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "http://"+this.IP+"/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+            "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -165,7 +156,7 @@ import axios from 'axios';
               console.log(err);
           })
         axios.get(
-            "http://"+this.IP+"/api/v1/account/list/?section=001",{
+            "/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -199,7 +190,7 @@ import axios from 'axios';
 
     loadnewdata(){
       axios.post(
-            "http://"+this.IP+"/api/v1/account/login",
+            "/api/v1/account/login",
             {
               "username":this.account,
               "password":this.password

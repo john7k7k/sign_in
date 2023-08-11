@@ -30,7 +30,7 @@ function TranActive(active) {
         FishBc: localStorage.getItem("EditBc"),
         FishErr: localStorage.getItem("EditErr"),
         FishActive: localStorage.getItem("EditActive"),
-        token:null,
+        token:localStorage.getItem('token'),
         selectcolor:null,
         selectactive:localStorage.getItem("EditActive"),
         afterEditId:null,
@@ -53,18 +53,8 @@ function TranActive(active) {
         for (let i = 0; i < 5; i++){
           rgbaColor[i] = hexToRGBA(this.pickers[i])
         }
-        const cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-            }
-          }
-
         axios.post(
-            "http://"+this.IP+"/api/v1/fish/control/",{
+            "/api/v1/fish/control/",{
               "fishControl":{
         "led":{
             [this.FishId]:{
@@ -108,18 +98,8 @@ function TranActive(active) {
           if(this.afterEditErr == null){
             this.afterEditErr = this.FishErr
           }
-          const cookies = document.cookie.split("; ");
-          for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].split("=");
-              if (cookie[0] === "token") {
-              const token = cookie[1];
-              this.token = token;
-              break;
-            }
-          }
-
           axios.post(
-            "http://"+this.IP+"/api/v1/fish/data/?section=001",{
+            "/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }

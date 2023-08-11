@@ -85,7 +85,7 @@
           this.loading = true
           
             axios.post(
-            "http://"+this.IP+"/api/v1/account/sign_up",
+            "/api/v1/account/sign_up",
             {
               "username":this.account,
               "mail":this.email,

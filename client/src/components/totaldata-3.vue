@@ -71,7 +71,7 @@
         bc: [],
         err: [],
         active: [],
-        token:null,
+        token:localStorage.getItem('token'),
         time: localStorage.getItem('NewTime'),
         links: [ 
           { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
@@ -114,21 +114,12 @@
                 const num = parseInt(str, 10);
                 return isNaN(num) ? 0 : num; 
               });
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].split("=");
-            if (cookie[0] === "token") {
-            const token = cookie[1];
-            this.token = token;
-            break;
-            }
-          }
         if (this.FishId != null) {
           this.bc = [];
           this.err = [];
           this.active = [];
           axios.get(
-              "http://"+this.IP+"/api/v1/fish/data/?section=003&fishesID="+this.FishId,{
+              "/api/v1/fish/data/?section=003&fishesID="+this.FishId,{
       headers: {
         Authorization: `Bearer ${this.token}`
       }
@@ -165,6 +156,9 @@
               this.links[0].text = this.active.filter((a) => a === 1).length;
               this.links[1].text = this.active.filter((a) => a === 0).length;
               this.links[2].text = this.active.filter((a) => a === 2).length;
+              if(this.links[0].text ===0 && this.links[1].text === 0 && this.links[2].text == 0){
+              this.RefreshDatas();
+            }
               localStorage.setItem("NewId3",this.FishId)
               localStorage.setItem("NewBc3", this.bc);
               localStorage.setItem("NewErro3", this.err);
@@ -255,7 +249,7 @@
   
       loadnewdata(){
         axios.get(
-              "http://"+this.IP+"/api/v1/account",{
+              "/api/v1/account",{
       headers: {
         Authorization: `Bearer ${this.token}`
       }
@@ -284,7 +278,10 @@
                   localStorage.setItem("fish30", JSON.stringify(fish30Values));
                   localStorage.setItem("fish31", JSON.stringify(fish31Values));
                   localStorage.setItem("fish32", JSON.stringify(fish32Values));
-                  this.RefreshDatas()
+                  setTimeout(() => {
+                    this.RefreshDatas();
+                  }, 220);
+                  
                 }
             })
             .catch(err=> {
@@ -296,9 +293,7 @@
       }
     },
     mounted() {
-      setTimeout(() => {
-        this.RefreshDatas();
-      }, 400);
+      this.loadnewdata();
     },
   };
   </script>
