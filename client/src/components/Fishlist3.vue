@@ -116,7 +116,7 @@ import axios from 'axios';
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "/api/v1/fish/table/?section=003&fishesID="+this.FishId,{
+                    "http://"+this.IP+"/api/v1/fish/table/?section=003&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -165,7 +165,7 @@ import axios from 'axios';
   },
   loadnewdata(){
         axios.get(
-          "/api/v1/account",{
+            "http://"+this.IP+"/api/v1/account",{
       headers: {
         Authorization: `Bearer ${this.token}`
       }
