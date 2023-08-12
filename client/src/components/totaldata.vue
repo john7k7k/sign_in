@@ -263,7 +263,6 @@ export default {
               console.log(res);
               this.loading = false;
               if(res.status == 200){
-                const fish0Data = res.data.fishesID["001"]
                 const fish001Data = res.data.fishesID["002"];
                 const fish20Values = [];
                 const fish21Values = [];
@@ -279,13 +278,12 @@ export default {
                     }
                   });
                 }
-                localStorage.setItem("fish0", JSON.stringify(fish0Data));
                 localStorage.setItem("fish20", JSON.stringify(fish20Values));
                 localStorage.setItem("fish21", JSON.stringify(fish21Values));
                 localStorage.setItem("fish22", JSON.stringify(fish22Values));
                 setTimeout(() => {
                     this.RefreshDatas();
-                  }, 300);
+                  }, 400);
               }
           })
           .catch(err=> {
