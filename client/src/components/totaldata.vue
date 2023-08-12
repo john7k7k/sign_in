@@ -285,7 +285,7 @@ export default {
                 localStorage.setItem("fish22", JSON.stringify(fish22Values));
                 setTimeout(() => {
                     this.RefreshDatas();
-                  }, 200);
+                  }, 300);
               }
           })
           .catch(err=> {

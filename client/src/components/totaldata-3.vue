@@ -280,7 +280,7 @@
                   localStorage.setItem("fish32", JSON.stringify(fish32Values));
                   setTimeout(() => {
                     this.RefreshDatas();
-                  }, 220);
+                  }, 320);
                   
                 }
             })
