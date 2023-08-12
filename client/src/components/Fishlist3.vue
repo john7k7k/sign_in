@@ -1,18 +1,13 @@
 <template>
-    <v-container>
-    <div class="d-flex justify-center"><h2>仿生魚清單</h2></div>
-    
-    
-    </v-container>
     <v-text-field
         v-model="searchId"
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
-        class="mb-2"
+        class="mb-2 mt-4"
         style="width: 200px;"
       ></v-text-field>   
-      <div class="mt-4"><h3>全區</h3></div>
+      <div class="mt-4"><h3>海科</h3></div>
     <Table  :border="true" :columns="columns" :data="filteredData">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
@@ -104,16 +99,24 @@ import axios from 'axios';
             });
         },
       accountdata(){
-        const fish1Data = localStorage.getItem("fish0");
+        this.loadnewdata();
+        const fish1Data = localStorage.getItem("fish31");
         const parsedFish1Data = JSON.parse(fish1Data);
         this.FishId = parsedFish1Data
+        const fish0Data = localStorage.getItem("fish30");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data)
+        this.FishId2num = this.FishId.length
+        const fish2Data = localStorage.getItem("fish32");
+        const parsedFish2Data = JSON.parse(fish2Data);
+        this.FishId.push(...parsedFish2Data)
         this.FishId = this.FishId.map((str) => {
                 const num = parseInt(str, 10);
                 return isNaN(num) ? 0 : num; 
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "/api/v1/fish/table/?section=001&fishesID="+this.FishId,{
+            "/api/v1/fish/table/?section=003&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -122,8 +125,8 @@ import axios from 'axios';
           .then(res=> {
             console.log(res);
             this.fishdatas = {};
-            for (const id in res.data['001']) {
-            const dataArray = res.data['001'][id];
+            for (const id in res.data['003']) {
+            const dataArray = res.data['003'][id];
             if (!this.fishdatas[id]) {
                 this.fishdatas[id] = [];
             }
@@ -132,8 +135,8 @@ import axios from 'axios';
             this.fishdatas[id] = reversedLastFive;
             this.fishdatas[id].show = false;
             }
-            for (const id in res.data['001']) {
-              const dataArray = res.data['001'][id];
+            for (const id in res.data['003']) {
+              const dataArray = res.data['003'][id];
               const { version,time } = dataArray[dataArray.length-1];
               this.version.push(version);
               this.time.push(time);
@@ -147,6 +150,7 @@ import axios from 'axios';
           .catch(err=> {
               console.log(err);
           })
+        
       },
     toggleShow(index) {
       this.fishdatas[index].show = !this.fishdatas[index].show
@@ -159,6 +163,43 @@ import axios from 'axios';
 
     return `${year}-${month}-${day}`;
   },
+  loadnewdata(){
+        axios.get(
+          "/api/v1/account",{
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
+    }
+            )
+            .then(res=> {
+                console.log(res);
+                this.loading = false;
+                if(res.status == 200){
+                  const fish002Data = res.data.fishesID["003"];
+                  const fish30Values = [];
+                  const fish31Values = [];
+                  const fish32Values = [];
+                  if(Object.hasOwn(res.data.fishesID,"003")){
+                    
+                    Object.entries(fish002Data).forEach(([key, value]) => {
+                      if (value === 1) {
+                        fish31Values.push(key)
+                      } else if (value === 2) {
+                        fish32Values.push(key)
+                      } else {
+                        fish30Values.push(key)
+                      }
+                    });
+                  }
+                  localStorage.setItem("fish30", JSON.stringify(fish30Values));
+                  localStorage.setItem("fish31", JSON.stringify(fish31Values));
+                  localStorage.setItem("fish32", JSON.stringify(fish32Values));
+                }
+            })
+            .catch(err=> {
+                console.log(err);
+            })
+      },
     },
     
     

@@ -5,7 +5,7 @@
     
     </v-container>
     <div class="mt-4 mb-2"><h4>全區</h4></div>
-    <Table :columns="columns" :data="data"></Table>
+    <Table :columns="columns" :data="dataWithFallback"></Table>
   </template>
   
   <script>
@@ -22,10 +22,14 @@ import axios from 'axios';
                       type: 'expand',
                       width: 50,
                       render: (h, { row: { email, registrationTime } }) => {
-                        return h('div', [
+                        if (this.data.length > 0) {
+                            return h('div', [
                             h('div', 'email: ' + email),
                             h('div', '註冊時間: ' + registrationTime)
                           ]);
+                          } else {
+                            return null;
+                          }
                       }
                     },
                     {
@@ -44,8 +48,18 @@ import axios from 'axios';
                 ],
                 data: [],
                 IP:process.env.VUE_APP_IP,
+                fallbackRow: {
+              name: '',
+              level: '無資料',
+              section: '',
+            }
         }
       },
+      computed: {
+        dataWithFallback() {
+          return this.data.length > 0 ? this.data : [this.fallbackRow];
+        }
+  },
       methods: {
       accountdata(){
         axios.get(
@@ -72,7 +86,7 @@ import axios from 'axios';
             }
             this.data = res.data.map(item => ({
               email: item.email,
-              level: item.level,
+              level: this.Tranlevel(item.level),
               passcode: item.passcode,
               registrationTime: this.formatDate(item.registrationTime),
               section: this.TranSection(item.section),
@@ -106,6 +120,13 @@ import axios from 'axios';
           return "海科";
         }else{
           return section
+        }
+      },
+      Tranlevel(level){
+        if (level < 30) {
+          return "管理者"
+        } else {
+          return "遊客"
         }
       },
 

@@ -93,7 +93,7 @@
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            "/api/v1/account/login",
+            "http://"+this.IP+"/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword

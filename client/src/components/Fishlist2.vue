@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+  <v-container>
     <div class="d-flex justify-center"><h2>仿生魚清單</h2></div>
     
     
@@ -9,10 +9,10 @@
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
-        class="mb-2"
+        class="mb-2 mt-4"
         style="width: 200px;"
       ></v-text-field>   
-      <div class="mt-4"><h3>全區</h3></div>
+      <div class="mt-4"><h3>北科</h3></div>
     <Table  :border="true" :columns="columns" :data="filteredData">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
@@ -81,6 +81,11 @@ import axios from 'axios';
             searchId:'',
             dialog: false,
             IP:process.env.VUE_APP_IP,
+            fallbackRow: {
+            id: '',
+            version: '無資料',
+            time: '',
+          }
         }
       },
       computed: {
@@ -104,16 +109,24 @@ import axios from 'axios';
             });
         },
       accountdata(){
-        const fish1Data = localStorage.getItem("fish0");
+        this.loadnewdata();
+        const fish1Data = localStorage.getItem("fish21");
         const parsedFish1Data = JSON.parse(fish1Data);
         this.FishId = parsedFish1Data
+        const fish0Data = localStorage.getItem("fish20");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data)
+        this.FishId2num = this.FishId.length
+        const fish2Data = localStorage.getItem("fish22");
+        const parsedFish2Data = JSON.parse(fish2Data);
+        this.FishId.push(...parsedFish2Data)
         this.FishId = this.FishId.map((str) => {
                 const num = parseInt(str, 10);
                 return isNaN(num) ? 0 : num; 
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "/api/v1/fish/table/?section=001&fishesID="+this.FishId,{
+            "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -122,8 +135,8 @@ import axios from 'axios';
           .then(res=> {
             console.log(res);
             this.fishdatas = {};
-            for (const id in res.data['001']) {
-            const dataArray = res.data['001'][id];
+            for (const id in res.data['002']) {
+            const dataArray = res.data['002'][id];
             if (!this.fishdatas[id]) {
                 this.fishdatas[id] = [];
             }
@@ -132,8 +145,8 @@ import axios from 'axios';
             this.fishdatas[id] = reversedLastFive;
             this.fishdatas[id].show = false;
             }
-            for (const id in res.data['001']) {
-              const dataArray = res.data['001'][id];
+            for (const id in res.data['002']) {
+              const dataArray = res.data['002'][id];
               const { version,time } = dataArray[dataArray.length-1];
               this.version.push(version);
               this.time.push(time);
@@ -147,6 +160,7 @@ import axios from 'axios';
           .catch(err=> {
               console.log(err);
           })
+        
       },
     toggleShow(index) {
       this.fishdatas[index].show = !this.fishdatas[index].show
@@ -159,6 +173,42 @@ import axios from 'axios';
 
     return `${year}-${month}-${day}`;
   },
+  loadnewdata(){
+      axios.get(
+        "/api/v1/account",{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
+          )
+          .then(res=> {
+              console.log(res);
+              this.loading = false;
+              if(res.status == 200){
+                const fish001Data = res.data.fishesID["002"];
+                const fish20Values = [];
+                const fish21Values = [];
+                const fish22Values = [];
+                if( Object.hasOwn(res.data.fishesID,"002")){
+                  Object.entries(fish001Data).forEach(([key, value]) => {
+                    if (value === 1) {
+                      fish21Values.push(key);
+                    } else if (value === 2) {
+                      fish22Values.push(key)
+                    } else {
+                      fish20Values.push(key)
+                    }
+                  });
+                }
+                localStorage.setItem("fish20", JSON.stringify(fish20Values));
+                localStorage.setItem("fish21", JSON.stringify(fish21Values));
+                localStorage.setItem("fish22", JSON.stringify(fish22Values));
+              }
+          })
+          .catch(err=> {
+              console.log(err);
+          })
+    },
     },
     
     

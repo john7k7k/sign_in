@@ -12,7 +12,7 @@
           alt="logo"
         ></v-img>
       </v-avatar>
-      <v-toolbar-title ><v-btn class="font-weight-black" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
+      <v-toolbar-title ><v-btn class="font-weight-black" value="home1" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
 
       <v-spacer Hidden only on xs></v-spacer>
 
@@ -38,6 +38,7 @@
           prepend-icon="mdi-home"
           title="主頁"
           value="home1"
+          ref="homeItem"
           route to = "/home"
         ></v-list-item>
           <v-list-item
@@ -128,8 +129,10 @@ export default {
           })
     },
     routehome() {
+      this.$refs.homeItem.$el.click();
       this.$router.push('/home');
-    }
+      
+    },
   },
   computed: {
     userLevelText() {

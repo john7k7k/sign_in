@@ -119,7 +119,7 @@
           this.err = [];
           this.active = [];
           axios.get(
-              "/api/v1/fish/data/?section=003&fishesID="+this.FishId,{
+            "/api/v1/fish/data/?section=003&fishesID="+this.FishId,{
       headers: {
         Authorization: `Bearer ${this.token}`
       }
@@ -249,7 +249,7 @@
   
       loadnewdata(){
         axios.get(
-              "/api/v1/account",{
+          "/api/v1/account",{
       headers: {
         Authorization: `Bearer ${this.token}`
       }
