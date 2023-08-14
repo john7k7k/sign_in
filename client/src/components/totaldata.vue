@@ -74,7 +74,7 @@ export default {
       err: [],
       active: [],
       token:localStorage.getItem('token'),
-      time: null,
+      time: localStorage.getItem("NewTime"),
       links: [ 
         { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
         { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
@@ -98,8 +98,7 @@ export default {
       this.active.push(active);
         });
     },
-    RefreshDatas() {
-      this.loadnewdata();
+    loaddata(){
       this.links[1].text = 0; 
       this.links[2].text = 0; 
       const fish1Data = localStorage.getItem("fish21");
@@ -117,35 +116,10 @@ export default {
               const num = parseInt(str, 10);
               return isNaN(num) ? 0 : num; 
             });
-      
       if (this.FishId != null) {
-        this.bc = [];
-        this.err = [];
-        this.active = [];
-        axios.get(
-          "/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-              console.log(res);
-              const responseData = JSON.stringify(res.data["002"]);
-              const parsedResponseData = JSON.parse(responseData);
-              const responseTime = parsedResponseData[this.FishId[0]]["time"];
-              const timestamp = responseTime
-              const date = new Date(timestamp);
-              const year = date.getFullYear();
-              const month = date.getMonth() + 1; 
-              const day = date.getDate();
-              const hours = date.getHours();
-              const minutes = date.getMinutes();
-              const seconds = date.getSeconds();
-              const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-              this.time = formattedDate
-              localStorage.setItem("NewTime",formattedDate)
-              this.processData(this.FishId, parsedResponseData);
+              this.bc = localStorage.getItem("totalBc2");
+              this.err = localStorage.getItem("totalErro2");
+              this.active = localStorage.getItem("totalActive2");
               for (let i = 0; i < FishIdNow; i++) {
               if (this.bc[i] < "20") this.needchargenum += 1;
             }
@@ -161,22 +135,97 @@ export default {
             this.links[0].text = this.active.filter((a) => a === 1).length;
             this.links[1].text = this.active.filter((a) => a === 0).length;
             this.links[2].text = this.active.filter((a) => a === 2).length;
-            if(this.links[0].text ===0 && this.links[1].text === 0 && this.links[2].text == 0){
-              this.RefreshDatas();
-            }
             localStorage.setItem("NewId2",this.FishId)
             localStorage.setItem("NewBc2", this.bc);
             localStorage.setItem("NewErro2", this.err);
             localStorage.setItem("NewActive2", this.active);
-          })
-          .catch(err=> {
-              console.log(err);
-          })
         
       } else {
         alert("無資料");
       }
     },
+    async RefreshDatas() {
+  try {
+    this.loadnewdata();
+    this.links[1].text = 0;
+    this.links[2].text = 0;
+    const fish1Data = localStorage.getItem("fish21");
+    const parsedFish1Data = JSON.parse(fish1Data);
+    this.FishId = parsedFish1Data;
+    const FishIdNow = this.FishId.length;
+    const fish0Data = localStorage.getItem("fish20");
+    const parsedFish0Data = JSON.parse(fish0Data);
+    this.FishId.push(...parsedFish0Data);
+    this.FishId2num = this.FishId.length;
+    const fish2Data = localStorage.getItem("fish22");
+    const parsedFish2Data = JSON.parse(fish2Data);
+    this.FishId.push(...parsedFish2Data);
+    this.FishId = this.FishId.map((str) => {
+      const num = parseInt(str, 10);
+      return isNaN(num) ? 0 : num;
+    });
+
+    if (this.FishId != null) {
+      this.bc = [];
+      this.err = [];
+      this.active = [];
+      
+      const response = await axios.get(
+        "/api/v1/fish/data/?section=002&fishesID=" + this.FishId,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
+      
+      console.log(response);
+      const responseData = JSON.stringify(response.data["002"]);
+      const parsedResponseData = JSON.parse(responseData);
+      const currentTime = new Date();
+      const year = currentTime.getFullYear();
+      const month = String(currentTime.getMonth() + 1).padStart(2, '0');
+      const day = String(currentTime.getDate()).padStart(2, '0');
+      const hours = String(currentTime.getHours()).padStart(2, '0');
+      const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+      const seconds = String(currentTime.getSeconds()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      this.time = formattedDate;
+      localStorage.setItem("NewTime", formattedDate);
+      this.processData(this.FishId, parsedResponseData);
+      
+      for (let i = 0; i < FishIdNow; i++) {
+        if (this.bc[i] < "20") this.needchargenum += 1;
+      }
+      for (let i = 0; i < FishIdNow; i++) {
+        if (this.err[i] !== 0) this.needfixnum += 1;
+      }
+      if (this.needchargenum !== 0) {
+        this.links[0].alertbcbutton = true;
+      }
+      if (this.needfixnum !== 0) {
+        this.links[0].alerterrbutton = true;
+      }
+      
+      this.links[0].text = this.active.filter((a) => a === 1).length;
+      this.links[1].text = this.active.filter((a) => a === 0).length;
+      this.links[2].text = this.active.filter((a) => a === 2).length;
+      
+      if (this.links[0].text === 0 && this.links[1].text === 0 && this.links[2].text == 0) {
+        await this.RefreshDatas();
+      }
+      
+      localStorage.setItem("NewId2", this.FishId);
+      localStorage.setItem("NewBc2", this.bc);
+      localStorage.setItem("NewErro2", this.err);
+      localStorage.setItem("NewActive2", this.active);
+    } else {
+      alert("無資料");
+    }
+  } catch (error) {
+    console.error('Error in RefreshDatas:', error);
+  }
+},
     SaveIndividualData(level){
       const fish1Data = localStorage.getItem("fish21");
       const parsedFish1Data = JSON.parse(fish1Data);
@@ -254,7 +303,7 @@ export default {
 
     loadnewdata(){
       axios.get(
-        "/api/v1/account",{
+       "/api/v1/account",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -262,7 +311,6 @@ export default {
           )
           .then(res=> {
               console.log(res);
-              this.loading = false;
               if(res.status == 200){
                 const fish001Data = res.data.fishesID["002"];
                 const fish20Values = [];
@@ -292,8 +340,9 @@ export default {
       this.$router.push('/ntut/fish');
     }
   },
-  mounted() {
-    this.RefreshDatas();
+  async created() {
+      await  this.RefreshDatas();
+    
   },
 };
 </script>

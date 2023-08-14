@@ -6,25 +6,46 @@
     </v-container>
     <div class="mt-4 mb-2"><h4>全區</h4></div>
     <Table :columns="columns" :data="dataWithFallback">
-      <template #action="{ index }">
-            <Button  type="primary" size="small" style="margin-right: 5px" @click="show2(index)">編輯</Button>
-            <Button  type="error" size="small" @click="remove(index)">刪除</Button>
+      <template #level="{row, index }">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow.showbtn"  icon="md-create"  size="small" @click="changelevel(index)"></Button></p>
+            
+        </template>
+        <template #section="{row, index }">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow.showbtn" icon="md-create" size="small" @click="changesection(index)"></Button></p>
+            
+        </template>
+      <template #action="{row, index }">
+            <Button v-show="fallbackRow.showbtn" type="error" size="small" @click="remove(row.name,index,1)">刪除</Button>
         </template>
     </Table>
 
     <div class="mt-4 mb-2"><h4>北科</h4></div>
   <Table :columns="columns" :data="dataWithFallback2">
-    <template #action="{ index }">
-            <Button  type="primary" size="small" style="margin-right: 5px" @click="show2(index)">編輯</Button>
-            <Button  type="error" size="small" @click="remove(index)">刪除</Button>
+    <template #level="{row, index }">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow2.showbtn" icon="md-create"  size="small" @click="remove(row.name,index,1)"></Button></p>
+            
+        </template>
+        <template #section="{row, index }">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow2.showbtn" icon="md-create" size="small" @click="remove(row.name,index,1)"></Button></p>
+            
+        </template>
+    <template #action="{row, index }">
+            <Button v-show="fallbackRow2.showbtn" type="error" size="small" @click="remove(row.name,index,2)">刪除</Button>
         </template>
   </Table>
 
   <div class="mt-4 mb-2"><h4>海科</h4></div>
   <Table :columns="columns" :data="dataWithFallback3">
-    <template #action="{ index }">
-            <Button v-show="fallbackRow.showbtn" type="primary" size="small" style="margin-right: 5px" @click="show2(index)">編輯</Button>
-            <Button v-show="fallbackRow.showbtn" type="error" size="small" @click="remove(index)">刪除</Button>
+    <template #level="{row, index }">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="remove(row.name,index,1)"></Button></p>
+            
+        </template>
+        <template #section="{row, index }">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="remove(row.name,index,1)"></Button></p>
+            
+        </template>
+    <template #action="{row, index }">
+            <Button v-show="fallbackRow3.showbtn" type="error" size="small" @click="remove(row.name,index,3)">刪除</Button>
         </template>
   </Table>
   </template>
@@ -39,37 +60,35 @@ import axios from 'axios';
             token:localStorage.getItem('token'),
             show: false,
             columns: [
-                        {
-                      type: 'expand',
-                      width: 50,
-                      render: (h, { row: { email, registrationTime } }) => {
-                        if (this.data.length > 0) {
-                            return h('div', [
-                            h('div', 'email: ' + email),
-                            h('div', '註冊時間: ' + registrationTime)
-                          ]);
-                          } else {
-                            return null;
-                          }
-                      }
-                    },
                     {
                         title: '使用者名稱',
                         key: 'name'
                     },
                     {
-                        title: '權限等級',
-                        key: 'level',
+                        title: 'Email',
+                        key: 'email',
           
                     },
                     {
-                        title: '所屬區域',
-                        key: 'section'
+                        title: '權限',
+                        slot: 'level',
+                        width: 250,
+                        align: 'left'
                     },
                     {
-                        title: '編輯',
+                        title: '所屬區域',
+                        slot: 'section',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '註冊時間',
+                        key: 'registrationTime'
+                    },
+                    {
+                        title: ' ',
                         slot: 'action',
-                        width: 150,
+                        width: 100,
                         align: 'center'
                     }
                 ],
@@ -82,6 +101,18 @@ import axios from 'axios';
               level: '無資料',
               section: '',
               showbtn:false,
+            },
+            fallbackRow2: {
+              name: '',
+              level: '無資料',
+              section: '',
+              showbtn:false,
+            },
+            fallbackRow3: {
+              name: '',
+              level: '無資料',
+              section: '',
+              showbtn:false,
             }
         }
       },
@@ -90,10 +121,10 @@ import axios from 'axios';
           return this.data.length > 0 ? this.data : [this.fallbackRow];
         },
         dataWithFallback2() {
-          return this.data.length > 0 ? this.data2 : [this.fallbackRow];
+          return this.data2.length > 0 ? this.data2 : [this.fallbackRow2];
         },
         dataWithFallback3() {
-          return this.data.length > 0 ? this.data3 : [this.fallbackRow];
+          return this.data3.length > 0 ? this.data3 : [this.fallbackRow3];
         }
   },
       methods: {
@@ -155,6 +186,15 @@ import axios from 'axios';
                     name: item.username
                   });
                 }
+                if(this.data.length > 0){
+                  this.fallbackRow.showbtn = true
+                }
+                if(this.data2.length > 0){
+                  this.fallbackRow2.showbtn = true
+                }
+                if(this.data3.length > 0){
+                  this.fallbackRow3.showbtn = true
+                }
               });
               })
           .catch(err=> {
@@ -192,11 +232,11 @@ import axios from 'axios';
           return "遊客"
         }
       },
-      remove(index){
+      remove(username,index,num){
         axios.post(
             "/api/v1/account/remove_user",
             {
-              "username":this.data[index].name,
+              "username":username,
             },
             {
           headers: {
@@ -207,7 +247,14 @@ import axios from 'axios';
           .then(res=> {
               console.log(res);
               alert('刪除成功');
-              this.data.splice(index, 1);
+              if(num === 1){
+                this.data.splice(index, 1);
+              }else if (num === 2){
+                this.data2.splice(index, 1);
+              }else{
+                this.data3.splice(index, 1);
+              }
+              location.reload();
           })
           .catch(err=> {
               console.log(err);
@@ -215,9 +262,11 @@ import axios from 'axios';
               alert('刪除失敗');
           })
       },
-      show2(index){
-        alert(index)
-        
+      changelevel(index){
+        console.log(index)
+      },
+      changesection(index){
+        console.log(index)
       }
 
     },

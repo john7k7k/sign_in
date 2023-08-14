@@ -23,7 +23,7 @@
             <v-list-item class="ml-4 mt-5 mr-auto font-weight-black"
               >Email</v-list-item
             >
-            <v-list-item class="mt-5 ml-4 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-2 text-center flex-grow-1">
               <t4>{{ email }}</t4>
             </v-list-item>
           </v-row>

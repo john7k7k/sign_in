@@ -78,65 +78,7 @@
 
 
 
-            <v-dialog
-    v-model="dialog"
-    width="1024"
-    :scrim="false"
-    transition="dialog-bottom-transition"
-  >
-    <template v-slot:activator="{ props }">
-      <v-btn
-        v-show="false"
-        color="light-blue-darken-4 mr-1"
-        icon="mdi mdi-plus-thick"
-        size="small"
-        v-bind="props"
-      >
-      </v-btn>
-    </template>
-    <v-card>
-      <v-toolbar dark color="blue-accent-1">
-        <v-btn icon dark @click="dialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title>新增資料</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn variant="text" @click="newdatas"> 新增 </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-      <v-list-subheader class="mx-4">基本資料</v-list-subheader>
-
-      <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="ID">
-            <v-text-field
-              v-model="NewId"
-              title="ID:"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="電量(%):">
-            <v-text-field v-model="NewBc" ></v-text-field>
-          </v-list-item>
-        </v-col>
-      </v-row>
-
-      <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="錯誤:">
-            <v-text-field v-model="NewErro" ></v-text-field>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="狀態:">
-            <v-select v-model="SelectActive" :items="active"></v-select>
-          </v-list-item>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-dialog>
+            
             <v-btn   color="green-darken-4" icon="mdi mdi-update" size="small" @click="RefreshFishDatas" ></v-btn>
           </div>
           
@@ -249,17 +191,7 @@
 </template>
 <script>
 import axios from 'axios'
-function TranActive(active) {
-  if (active == "功能正常-待機中") {
-    return 0;
-  } else if (active === "活動中") {
-    return 1;
-  } else if (active === "維修中") {
-    return 2;
-  } else {
-    return -1;
-  }
-}
+
   export default {
     data() {
       return {
@@ -280,11 +212,7 @@ function TranActive(active) {
         SelectTime:"請選擇想要查詢的錯誤影片時段",
         Errortimes:{},
         time: localStorage.getItem('NewTime'),
-        active:[
-            "功能正常-待機中",
-            "活動中",
-            "維修中"
-        ],
+        
         errnum:[],
         FishErrors: [],
         dialogControl:false,
@@ -301,37 +229,7 @@ function TranActive(active) {
       }
     },
     methods:{
-      newdatas () {
-        axios.post(
-            "/api/v1/fish/data/?section=002",{
-              "fishData": {
-                [this.NewId] : {"bc": this.NewBc, "err": this.NewErro,"active":TranActive(this.SelectActive)},
-    }
-            },{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-              console.log(res);
-              if(res.status == 200){
-                this.dialog = false
-                alert("新增成功")
-              }
-              else{
-                this.dialog = false
-              alert("新增失敗")
-              }
-              
-          })
-          .catch(err=> {
-              console.log(err);
-              this.dialog = false
-              alert('新增失敗');
-          })
-
-        },
+      
         RefreshFishDatas(){
           if(this.FishId != null){
             const iddata = localStorage.getItem("NewId2");

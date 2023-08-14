@@ -1,42 +1,46 @@
-<script setup>
-import Test from '../components/404test.vue'
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="../assets/deadfish.svg" width="200" height="200" />
+    <img class="logo" src="@/assets/deadfish.svg" width="200" height="200" />
   </header>
-
-  <main>
-    <Test />
-  </main>
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
+    <div class="center">
+      <h1>404</h1>
+      <h3>
+        似乎發生了某些問題
+        <p></p>
+        <a href="https://aifish.cc/login">-->回首頁</a>
+      </h3>
+    </div>
+  </template>
+  
+<style>
+  .logo {
   display: block;
   margin: 0 auto 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
   }
 
-  .logo {
-    margin: 0 8rem 0 0;
+  h1 {
+    font-weight: 500;
+    font-size: 10rem;
+    position: relative;
   }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  
+  h3 {
+    font-size: 1.8rem;
   }
-}
+  
+  .center h1,
+  .center h3 {
+    text-align: center;
+  }
+  @media (min-width: 1024px) {
+    header {
+      display: flex;
+      place-items: center;
+      padding-right: 50%;
+      margin: 0 8rem 0 0;
+    }
+    .logo {
+      margin: 0 8rem 0 0;
+    }
+  }
 </style>

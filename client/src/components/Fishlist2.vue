@@ -4,23 +4,80 @@
     
     
     </v-container>
-    <v-text-field
+    
+        <div style="display: grid; grid-template-columns: 1fr auto;">
+      <v-text-field
         v-model="searchId"
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
         class="mb-2 mt-4"
         style="width: 200px;"
-      ></v-text-field>   
+      ></v-text-field>
+    
+      <v-dialog
+    v-model="dialognew"
+    width="1024"
+    :scrim="false"
+    transition="dialog-bottom-transition"
+  >
+    <template v-slot:activator="{ props }">
+      <Button class="mr-8 mt-6"
+        color="light-blue-darken-4 mr-1"
+        size="large"
+        v-bind="props" type="primary"  >新增</Button>
+    </template>
+    <v-card>
+      <v-toolbar dark color="blue-accent-1">
+        <v-btn icon dark @click="dialognew = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>新增仿生魚</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn variant="text" @click="newdatas"> 新增 </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+      <v-list-subheader class="mx-4">基本資料</v-list-subheader>
+
+      <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="ID">
+            <v-text-field
+              v-model="NewId"
+              title="ID:"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="電量(%):">
+            <v-text-field v-model="NewBc" ></v-text-field>
+          </v-list-item>
+        </v-col>
+      </v-row>
+
+      <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="區域:">
+            <v-select v-model="SelectSection" :items="sectionword"></v-select>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="狀態:">
+            <v-select v-model="SelectActive" :items="activeword"></v-select>
+          </v-list-item>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-dialog> 
+</div> 
       <div class="mt-4"><h3>北科</h3></div>
     <Table  :border="true" :columns="columns" :data="filteredData">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
     </template>
-    <template #action="{ row: { id } }">
-      <v-btn prepend-icon="mdi-square-edit-outline"
-          color="light-blue-lighten-3" @click="fishdatas[id].show = true"> 編輯 </v-btn>
-
+    <template #action="{ row: { id },index }">
+    <Button  type="primary" size="small" @click="fishdatas[id].show = true" class="mr-2">編輯</Button>
     <v-dialog v-model="fishdatas[id].show" width="auto">
       <v-card>
         <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
@@ -39,13 +96,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Button  type="error" size="small" @click="remove(id,index)">刪除</Button>
     </template>
   </Table>
   </template>
   
   <script>
 import axios from 'axios';
-
+function TranActive(active) {
+  if (active == "功能正常-待機中") {
+    return 0;
+  } else if (active === "活動中") {
+    return 1;
+  } else if (active === "維修中") {
+    return 2;
+  } else {
+    return -1;
+  }
+}
     export default {
       data() {
         return {
@@ -85,7 +153,21 @@ import axios from 'axios';
             id: '',
             version: '無資料',
             time: '',
-          }
+            },
+            dialognew:false,
+            NewId:null,
+            NewBc:null,
+            NewErro:null,
+            SelectSection:null,
+            SelectActive:null,
+            activeword:[
+            "功能正常-待機中",
+            "活動中",
+            "維修中"
+        ],
+            sectionword:[
+              "北科","海科"
+            ]
         }
       },
       computed: {
@@ -101,6 +183,44 @@ import axios from 'axios';
       }
   },
       methods: {
+        newdatas () {
+        let sectioncode = "";
+        if(this.SelectSection === "北科"){
+          sectioncode = "002";
+        }else{
+          sectioncode = "002";
+        }
+        axios.post(
+            "/api/v1/fish/data/?section="+sectioncode,{
+              "fishData": {
+                [this.NewId] : {"bc": this.NewBc, "err": 0,"active":TranActive(this.SelectActive)},
+    }
+            },{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.dialognew = false
+                alert("新增成功")
+                location.reload();
+              }
+              else{
+                this.dialog = false
+              alert("新增失敗")
+              }
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              alert('新增失敗');
+          })
+
+        },
       processData(ids, data) {
         ids.forEach((id) => {
         const { version,time } = data[id];
@@ -175,7 +295,7 @@ import axios from 'axios';
   },
   loadnewdata(){
       axios.get(
-        "http://"+this.IP+"/api/v1/account",{
+        "/api/v1/account",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -209,6 +329,30 @@ import axios from 'axios';
               console.log(err);
           })
     },
+    remove(id,index){
+        axios.post(
+          "/api/v1/fish/delete/?section=002",
+            {
+              "fishesID":[id.toString()],
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(res=> {
+              console.log(res);
+              alert('刪除成功');
+              this.data.splice(index, 1);
+              location.reload();
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              alert('刪除失敗');
+          })
+      },
     },
     
     
