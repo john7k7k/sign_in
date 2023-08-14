@@ -12,7 +12,7 @@
           alt="logo"
         ></v-img>
       </v-avatar>
-      <v-toolbar-title ><v-btn class="font-weight-black" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
+      <v-toolbar-title ><v-btn class="font-weight-black" value="home1" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
 
       <v-spacer Hidden only on xs></v-spacer>
 
@@ -38,25 +38,26 @@
           prepend-icon="mdi-home"
           title="主頁"
           value="home1"
+          ref="homeItem"
           route to = "/home"
         ></v-list-item>
           <v-list-item
             prepend-icon="mdi-square-edit-outline"
             title="個人資料設定"
             value="about"
-            route to = "/UserData"
+            route to = "/user"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="仿生魚資料清單"
             value="data"
-            route to = "/FishDataList"
+            route to = "/fish/list"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="帳號資料清單"
             value="accountdata"
-            route to = "/AccountList"
+            route to = "/account/list"
           ></v-list-item>
         <v-list-item
           prepend-icon="mdi-export"
@@ -83,7 +84,7 @@ export default {
       userimage: "",
       username: localStorage.getItem('UserName'),
       level: 30,
-      token:null,
+      token:localStorage.getItem('token'),
       links: [
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" },
@@ -103,17 +104,8 @@ export default {
       }
     },
     logout(){
-      const cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-  }
-}
       axios.post(
-            "http://"+this.IP+"/api/v1/account/logout",{},{
+            "/api/v1/account/logout",{},{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -125,7 +117,7 @@ export default {
               if(res.status == 200){
                 alert("登出成功")
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`/`); 
+                window.location.replace(`/login`); 
               }
               else
               alert("登出失敗")
@@ -137,8 +129,10 @@ export default {
           })
     },
     routehome() {
+      this.$refs.homeItem.$el.click();
       this.$router.push('/home');
-    }
+      
+    },
   },
   computed: {
     userLevelText() {

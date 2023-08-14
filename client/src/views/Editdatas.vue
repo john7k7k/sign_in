@@ -6,7 +6,7 @@
   </template>
   
   <script>
-import Editfishdata from '@/components/Editfishdata.vue';
+import Editfishdata from '@/components/Editfishdata2.vue';
   
   // Components
   

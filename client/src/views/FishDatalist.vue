@@ -1,16 +1,15 @@
 <template>
     <div class="FishDatalist">
-        <Fishlist></Fishlist>
+        <Fishlist2></Fishlist2>
     </div>
   
   </template>
   
   <script>
-  import Fishlist from '@/components/Fishlist.vue';
-  
+  import Fishlist2 from '@/components/Fishlist2.vue';
   export default {
     name: 'FishDatalist',
-    components: {Fishlist },
+    components: {Fishlist2},
     data: () => ({
       //
     }),

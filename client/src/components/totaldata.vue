@@ -19,7 +19,7 @@
           </v-img> 
           <div class="d-flex align-center justify-space-between">
             <v-card-subtitle class="pt-1 pb-1 "> 紀錄時間:{{ time }} </v-card-subtitle>
-              <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+              <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="RefreshDatas"></v-btn>
           </div>
             
             
@@ -28,7 +28,7 @@
             <div>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " route to = "/Fishdatas-Section1" @click="SaveIndividualData(n.level)"></v-btn>
+              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " route to = "/ntut/fish" @click="SaveIndividualData(n.level)"></v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
@@ -43,13 +43,13 @@
             </v-row>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
-                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(4)" route to = "/Fishdatas-Section1"
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(4)" route to = "/ntut/fish"
                   >{{needchargenum}}條魚需充電</v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2" >
-                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(5)" route to = "/Fishdatas-Section1"
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(5)" route to = "/ntut/fish"
                   >{{needfixnum}}條魚有錯誤</v-btn>
               </v-col>
             </v-row>
@@ -73,8 +73,8 @@ export default {
       bc: [],
       err: [],
       active: [],
-      token:null,
-      time: localStorage.getItem('NewTime'),
+      token:localStorage.getItem('token'),
+      time: null,
       links: [ 
         { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
         { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
@@ -99,6 +99,7 @@ export default {
         });
     },
     RefreshDatas() {
+      this.loadnewdata();
       this.links[1].text = 0; 
       this.links[2].text = 0; 
       const fish1Data = localStorage.getItem("fish21");
@@ -116,21 +117,13 @@ export default {
               const num = parseInt(str, 10);
               return isNaN(num) ? 0 : num; 
             });
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-          }
-        }
+      
       if (this.FishId != null) {
         this.bc = [];
         this.err = [];
         this.active = [];
         axios.get(
-            "http://"+this.IP+"/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
+          "/api/v1/fish/data/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -150,6 +143,7 @@ export default {
               const minutes = date.getMinutes();
               const seconds = date.getSeconds();
               const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+              this.time = formattedDate
               localStorage.setItem("NewTime",formattedDate)
               this.processData(this.FishId, parsedResponseData);
               for (let i = 0; i < FishIdNow; i++) {
@@ -167,11 +161,13 @@ export default {
             this.links[0].text = this.active.filter((a) => a === 1).length;
             this.links[1].text = this.active.filter((a) => a === 0).length;
             this.links[2].text = this.active.filter((a) => a === 2).length;
+            if(this.links[0].text ===0 && this.links[1].text === 0 && this.links[2].text == 0){
+              this.RefreshDatas();
+            }
             localStorage.setItem("NewId2",this.FishId)
             localStorage.setItem("NewBc2", this.bc);
             localStorage.setItem("NewErro2", this.err);
             localStorage.setItem("NewActive2", this.active);
-            
           })
           .catch(err=> {
               console.log(err);
@@ -258,7 +254,7 @@ export default {
 
     loadnewdata(){
       axios.get(
-            "http://"+this.IP+"/api/v1/account",{
+        "/api/v1/account",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -272,10 +268,6 @@ export default {
                 const fish20Values = [];
                 const fish21Values = [];
                 const fish22Values = [];
-                const fish002Data = res.data.fishesID["003"];
-                const fish30Values = [];
-                const fish31Values = [];
-                const fish32Values = [];
                 if( Object.hasOwn(res.data.fishesID,"002")){
                   Object.entries(fish001Data).forEach(([key, value]) => {
                     if (value === 1) {
@@ -287,26 +279,9 @@ export default {
                     }
                   });
                 }
-
-                if(Object.hasOwn(res.data.fishesID,"003")){
-                  
-                  Object.entries(fish002Data).forEach(([key, value]) => {
-                    if (value === 1) {
-                      fish31Values.push(key)
-                    } else if (value === 2) {
-                      fish32Values.push(key)
-                    } else {
-                      fish30Values.push(key)
-                    }
-                  });
-                }
                 localStorage.setItem("fish20", JSON.stringify(fish20Values));
                 localStorage.setItem("fish21", JSON.stringify(fish21Values));
                 localStorage.setItem("fish22", JSON.stringify(fish22Values));
-                localStorage.setItem("fish30", JSON.stringify(fish30Values));
-                localStorage.setItem("fish31", JSON.stringify(fish31Values));
-                localStorage.setItem("fish32", JSON.stringify(fish32Values));
-                this.RefreshDatas()
               }
           })
           .catch(err=> {
@@ -314,13 +289,11 @@ export default {
           })
     },
     routefishdata(){
-      this.$router.push('/Fishdatas-Section1');
+      this.$router.push('/ntut/fish');
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.RefreshDatas();
-    }, 300);
+    this.RefreshDatas();
   },
 };
 </script>

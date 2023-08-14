@@ -161,7 +161,7 @@
                 <div class="text-black mx-1" >電量:</div>
                 
                   <div class="ma-1 pa-1  " :style="{ backgroundColor: fish.color }">
-                    <div class="font-weight-medium text-grey-darken-5">
+                    <div class="font-weight-medium text-black">
                       {{fish.bc}}
                     </div>
                   </div></v-card-actions>
@@ -172,7 +172,7 @@
           <v-btn prepend-icon="mdi-square-edit-outline"
                     class="ms-2 bg-black"
                     variant="outlined"
-                    route to = "/EditDatas"
+                    route to = "/ntut/fish/edit"
                     size="small"  @click="editFish(fish.id, $event)"> 編輯 </v-btn>
                     <div class="ma-1 pa-1">
                               <div  >
@@ -263,7 +263,7 @@ function TranActive(active) {
   export default {
     data() {
       return {
-        token:null,
+        token:localStorage.getItem('token'),
         FishId:[],
         bc: [],
         err: [],
@@ -302,18 +302,8 @@ function TranActive(active) {
     },
     methods:{
       newdatas () {
-        const cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-  }
-}
-
         axios.post(
-            "http://"+this.IP+"/api/v1/fish/data/?section=002",{
+            "/api/v1/fish/data/?section=002",{
               "fishData": {
                 [this.NewId] : {"bc": this.NewBc, "err": this.NewErro,"active":TranActive(this.SelectActive)},
     }
@@ -499,17 +489,8 @@ function TranActive(active) {
       }
     },
     searchvideo(){
-      const cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-  }
-}
 axios.get(
-        "http://"+this.IP+"/api/v1/video/?video_uid=0021",
+        "/api/v1/video/?video_uid=0021",
         {
           headers: {
             Authorization: `Bearer ${this.token}`,
@@ -531,18 +512,8 @@ axios.get(
       return this.FishErrors[fishId] 
     },
     ControlFish(move) {
-      const cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].split("=");
-          if (cookie[0] === "token") {
-          const token = cookie[1];
-          this.token = token;
-          break;
-            }
-          }
-
         axios.post(
-                "http://"+this.IP+"/api/v1/fish/control/",{
+                "/api/v1/fish/control/",{
                   "fishControl":{
             "led":{
             },

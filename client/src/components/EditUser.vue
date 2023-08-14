@@ -84,7 +84,8 @@
             email: localStorage.getItem('UserEmail'),
             level: localStorage.getItem('UserLevel'),
             section:localStorage.getItem('UserSection'),
-            registrationTime: localStorage.getItem('registrationTime')
+            registrationTime: localStorage.getItem('registrationTime'),
+            IP:process.env.VUE_APP_IP,
         }
       },
       methods: {
