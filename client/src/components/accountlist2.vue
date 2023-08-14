@@ -58,7 +58,7 @@ import axios from 'axios';
     methods: {
     accountdata(){
       axios.get(
-          "/api/v1/account/list/?section=002",{
+        "http://"+this.IP+"/api/v1/account/list/?section=002",{
   headers: {
     Authorization: `Bearer ${this.token}`
   }

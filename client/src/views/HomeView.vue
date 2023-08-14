@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <totaldata></totaldata>
-    <totaldata3 v-show="SeaSections"></totaldata3>
+    <totaldata3 ></totaldata3>
   </div>
 
 </template>

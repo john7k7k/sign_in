@@ -7,10 +7,26 @@
     <div class="mt-4 mb-2"><h4>全區</h4></div>
     <Table :columns="columns" :data="dataWithFallback">
       <template #action="{ index }">
-            <Button v-show="showbtn" type="primary" size="small" style="margin-right: 5px" @click="show(index)">View</Button>
-            <Button v-show="showbtn" type="error" size="small" @click="remove(index)">刪除</Button>
+            <Button  type="primary" size="small" style="margin-right: 5px" @click="show2(index)">編輯</Button>
+            <Button  type="error" size="small" @click="remove(index)">刪除</Button>
         </template>
     </Table>
+
+    <div class="mt-4 mb-2"><h4>北科</h4></div>
+  <Table :columns="columns" :data="dataWithFallback2">
+    <template #action="{ index }">
+            <Button  type="primary" size="small" style="margin-right: 5px" @click="show2(index)">編輯</Button>
+            <Button  type="error" size="small" @click="remove(index)">刪除</Button>
+        </template>
+  </Table>
+
+  <div class="mt-4 mb-2"><h4>海科</h4></div>
+  <Table :columns="columns" :data="dataWithFallback3">
+    <template #action="{ index }">
+            <Button v-show="fallbackRow.showbtn" type="primary" size="small" style="margin-right: 5px" @click="show2(index)">編輯</Button>
+            <Button v-show="fallbackRow.showbtn" type="error" size="small" @click="remove(index)">刪除</Button>
+        </template>
+  </Table>
   </template>
   
   <script>
@@ -58,6 +74,8 @@ import axios from 'axios';
                     }
                 ],
                 data: [],
+                data2: [],
+                data3: [],
                 IP:process.env.VUE_APP_IP,
                 fallbackRow: {
               name: '',
@@ -70,6 +88,12 @@ import axios from 'axios';
       computed: {
         dataWithFallback() {
           return this.data.length > 0 ? this.data : [this.fallbackRow];
+        },
+        dataWithFallback2() {
+          return this.data.length > 0 ? this.data2 : [this.fallbackRow];
+        },
+        dataWithFallback3() {
+          return this.data.length > 0 ? this.data3 : [this.fallbackRow];
         }
   },
       methods: {
@@ -78,7 +102,8 @@ import axios from 'axios';
             "/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
-    }
+    },
+    
   }
           )
           .then(res=> {
@@ -96,15 +121,41 @@ import axios from 'axios';
                 }
                 this.userdatas.push(newData)
             }
-            this.data = res.data.map(item => ({
-              email: item.email,
-              level: this.Tranlevel(item.level),
-              passcode: item.passcode,
-              registrationTime: this.formatDate(item.registrationTime),
-              section: this.TranSection(item.section),
-              userID: item.userID,
-              name: item.username
-            }));
+                res.data.forEach(item => {
+                const sectionResult = this.TranSection(item.section);
+
+                if (sectionResult === "全區") {
+                  this.data.push({
+                    email: item.email,
+                    level: this.Tranlevel(item.level),
+                    passcode: item.passcode,
+                    registrationTime: this.formatDate(item.registrationTime),
+                    section: sectionResult,
+                    userID: item.userID,
+                    name: item.username
+                  });
+                } else if (sectionResult === "北科") {
+                  this.data2.push({
+                    email: item.email,
+                    level: this.Tranlevel(item.level),
+                    passcode: item.passcode,
+                    registrationTime: this.formatDate(item.registrationTime),
+                    section: sectionResult,
+                    userID: item.userID,
+                    name: item.username
+                  });
+                } else if (sectionResult === "海科") {
+                  this.data3.push({
+                    email: item.email,
+                    level: this.Tranlevel(item.level),
+                    passcode: item.passcode,
+                    registrationTime: this.formatDate(item.registrationTime),
+                    section: sectionResult,
+                    userID: item.userID,
+                    name: item.username
+                  });
+                }
+              });
               })
           .catch(err=> {
               console.log(err);
@@ -141,6 +192,33 @@ import axios from 'axios';
           return "遊客"
         }
       },
+      remove(index){
+        axios.post(
+            "/api/v1/account/remove_user",
+            {
+              "username":this.data[index].name,
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(res=> {
+              console.log(res);
+              alert('刪除成功');
+              this.data.splice(index, 1);
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              alert('刪除失敗');
+          })
+      },
+      show2(index){
+        alert(index)
+        
+      }
 
     },
     

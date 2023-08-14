@@ -90,7 +90,7 @@
               "username":this.account,
               "mail":this.email,
               "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString(),
-              "section":this.SelectSection,
+              "section":this.transection(this.SelectSection),
             },
           )
           .then(res=> {
@@ -113,6 +113,13 @@
         },
         emailRule(v) {
   return /.+@.+\..+/.test(v) || 'Email 格式不正確';
+},
+transection(){
+  if(this.SelectSection === "北科"){
+    return "002"
+  }else{
+    return "003"
+  }
 }
       }
     }
