@@ -83,11 +83,11 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/(?:login|sign\/up)/, function(req, res) {
+app.get(/^\/(?:login|sign\/up)$/, function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/(?:ntut\/fish|nmmst\/fish|ntut\/fish\/edit|nmmst\/fish\/edit|user|home|fish\/list|account\/list|404)/, verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/^\/(?:ntut\/fish|nmmst\/fish|ntut\/fish\/edit|nmmst\/fish\/edit|user|home|fish\/list|account\/list|404)$/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
@@ -399,6 +399,7 @@ function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
     return (req, res, next) => {
       let token = '';
+      console.log(tokenFrom,req.headers['authorization'].split(' ')[1])
       try{
         if(tokenFrom === 'URL') token = req.query.token;
         else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];
