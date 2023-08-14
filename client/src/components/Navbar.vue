@@ -45,19 +45,19 @@
             prepend-icon="mdi-square-edit-outline"
             title="個人資料設定"
             value="about"
-            route to = "/UserData"
+            route to = "/user"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="仿生魚資料清單"
             value="data"
-            route to = "/FishDataList"
+            route to = "/fish/list"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="帳號資料清單"
             value="accountdata"
-            route to = "/AccountList"
+            route to = "/account/list"
           ></v-list-item>
         <v-list-item
           prepend-icon="mdi-export"
@@ -117,7 +117,7 @@ export default {
               if(res.status == 200){
                 alert("登出成功")
                 document.cookie = "token=" + res.data.token + "; path=/";
-                window.location.replace(`/`); 
+                window.location.replace(`/login`); 
               }
               else
               alert("登出失敗")

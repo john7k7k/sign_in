@@ -175,7 +175,7 @@ import axios from 'axios';
   },
   loadnewdata(){
       axios.get(
-        "/api/v1/account",{
+        "http://"+this.IP+"/api/v1/account",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }

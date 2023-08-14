@@ -161,7 +161,7 @@
                 <div class="text-black mx-1" >電量:</div>
                 
                   <div class="ma-1 pa-1  " :style="{ backgroundColor: fish.color }">
-                    <div class="font-weight-medium text-grey-darken-5">
+                    <div class="font-weight-medium text-black">
                       {{fish.bc}}
                     </div>
                   </div></v-card-actions>
@@ -172,7 +172,7 @@
           <v-btn prepend-icon="mdi-square-edit-outline"
                     class="ms-2 bg-black"
                     variant="outlined"
-                    route to = "/EditDatas"
+                    route to = "/ntut/fish/edit"
                     size="small"  @click="editFish(fish.id, $event)"> 編輯 </v-btn>
                     <div class="ma-1 pa-1">
                               <div  >

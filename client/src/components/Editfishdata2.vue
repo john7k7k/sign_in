@@ -147,7 +147,7 @@ function TranActive(active) {
       <v-row no-gutters justify="center" class="mt-10">
         <v-card width="1024" mx-auto>
           <v-toolbar dark color="blue-accent-1">
-            <v-btn icon dark  route to ="/Fishdatas-Section1">
+            <v-btn icon dark  route to ="/ntut/fish">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>編輯資料</v-toolbar-title>

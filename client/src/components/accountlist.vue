@@ -5,7 +5,12 @@
     
     </v-container>
     <div class="mt-4 mb-2"><h4>全區</h4></div>
-    <Table :columns="columns" :data="dataWithFallback"></Table>
+    <Table :columns="columns" :data="dataWithFallback">
+      <template #action="{ index }">
+            <Button v-show="showbtn" type="primary" size="small" style="margin-right: 5px" @click="show(index)">View</Button>
+            <Button v-show="showbtn" type="error" size="small" @click="remove(index)">刪除</Button>
+        </template>
+    </Table>
   </template>
   
   <script>
@@ -45,6 +50,12 @@ import axios from 'axios';
                         title: '所屬區域',
                         key: 'section'
                     },
+                    {
+                        title: '編輯',
+                        slot: 'action',
+                        width: 150,
+                        align: 'center'
+                    }
                 ],
                 data: [],
                 IP:process.env.VUE_APP_IP,
@@ -52,6 +63,7 @@ import axios from 'axios';
               name: '',
               level: '無資料',
               section: '',
+              showbtn:false,
             }
         }
       },

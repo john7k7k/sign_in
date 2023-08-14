@@ -17,7 +17,7 @@
         inset
         vertical
         ></v-divider>
-      <v-btn variant="text" route to = "/" class=" rounded-button text "><h3>登入</h3></v-btn>
+      <v-btn variant="text" route to = "/login" class=" rounded-button text "><h3>登入</h3></v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </template>

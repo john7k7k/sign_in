@@ -19,13 +19,13 @@
           </v-img> 
             <div class="d-flex align-center justify-space-between">
               <v-card-subtitle class="pt-1"> 紀錄時間:{{ time }} </v-card-subtitle>
-            <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="loadnewdata"></v-btn>
+            <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="RefreshDatas"></v-btn>
             </div>
           <v-card-text>
             <div>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " route to = "/Fishdatas-Section2" @click="SaveIndividualData(n.level)"></v-btn>
+              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " route to = "/nmmst/fish" @click="SaveIndividualData(n.level)"></v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
@@ -40,13 +40,13 @@
             </v-row>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
-                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(4)" route to = "/Fishdatas-Section2"
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(4)" route to = "/nmmst/fish"
                   >{{needchargenum}}條魚需充電</v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
               <v-col v-for="n in links" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2" >
-                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(5)" route to = "/Fishdatas-Section2"
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(5)" route to = "/nmmst/fish"
                   >{{needfixnum}}條魚有錯誤</v-btn>
               </v-col>
             </v-row>
@@ -97,6 +97,7 @@
           });
       },
       RefreshDatas() {
+        this.loadnewdata();
         this.links[1].text = 0; 
         this.links[2].text = 0; 
         const fish1Data = localStorage.getItem("fish31");
@@ -278,9 +279,6 @@
                   localStorage.setItem("fish30", JSON.stringify(fish30Values));
                   localStorage.setItem("fish31", JSON.stringify(fish31Values));
                   localStorage.setItem("fish32", JSON.stringify(fish32Values));
-                  setTimeout(() => {
-                    this.RefreshDatas();
-                  }, 320);
                   
                 }
             })
@@ -288,12 +286,15 @@
                 console.log(err);
             })
       },
+      
       routefishdata(){
-        this.$router.push('/Fishdatas-Section2');
+        this.$router.push('/nmmst/fish');
       }
     },
     mounted() {
-      this.loadnewdata();
+      setTimeout(() => {
+        this.RefreshDatas();
+      }, 200);
     },
   };
   </script>
