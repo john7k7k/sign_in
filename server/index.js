@@ -247,7 +247,7 @@ app.post(`/${API_VERSION}/account/remove_user/`, verifyTokenBy('Header')(20), as
     from: process.env.DB_GMAIL_ACCOUNT,
     to: userEmail,
     subject: "aifish.cc 提醒",
-    text: `您的帳號'${req.payload.username}'已被移除`
+    text: `您的帳號'${req.body.username}'已被移除`
   }
   transporter.sendMail(mailOption, (error, info) => {
     if (error) console.log(error);

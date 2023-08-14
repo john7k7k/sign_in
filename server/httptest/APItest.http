@@ -1,46 +1,46 @@
-POST http://localhost:3000/api/v1/account/sign_up
+POST http://20.89.131.34/api/v1/account/sign_up
 Content-Type: application/json
 
 {
-    "username": "123",
+    "username": "jack",
     "mail": "ppp1244qqq@gmail.com",
     "password": "735434cae08df8e591c1549da88c6d87",
     "section": "001"
 }
 ###
-POST http://localhost:3000/api/v1/account/login
+POST http://20.89.131.34/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "123",
+    "username": "john",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 
 ###
-POST http://localhost:3000/api/v1/account/delete_user
+POST http://20.89.131.34/api/v1/account/delete_user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTk5OTU2OSwiZXhwIjoxNjkyMDA4NTY5fQ.N4zloYTX8Ko71g8LgEQhyRglToDtSZekfI-uZlce7Ug
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTIwMDA1OTksImV4cCI6MTY5MjAwOTU5OX0.-OiaulIlDTlqNSpdGmTV-kuxEti-t5Uyj-F0Hvq0-I8
 
 ###
-POST http://localhost:3000/api/v1/account/remove_user
+POST http://20.89.131.34/api/v1/account/remove_user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTk5OTc5NiwiZXhwIjoxNjkyMDA4Nzk2fQ.nVwlamL23L4rw5tJDumYMCGlCV4B49tpAKVgTDe7YA0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTIwMDA1OTksImV4cCI6MTY5MjAwOTU5OX0.-OiaulIlDTlqNSpdGmTV-kuxEti-t5Uyj-F0Hvq0-I8
 
 {
-    "username": "123"
+    "username": "jack"
 }
 ###
-GET http://localhost:3000/api/v1/account
+GET http://20.89.131.34/api/v1/account
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
 ###
-GET http://localhost:3000/api/v1/account/list/?section=001
+GET http://20.89.131.34/api/v1/account/list/?section=001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTk5OTA3MCwiZXhwIjoxNjkyMDA4MDcwfQ.evsokL-wzrSZrqkGKN8gvkQSwQbCqUFFkipOMpHNacs
 
 ###
-POST http://localhost:3000/api/v1/account/revise/level
+POST http://20.89.131.34/api/v1/account/revise/level
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
@@ -49,7 +49,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newLevel": 20
 }
 ###
-POST http://localhost:3000/api/v1/account/revise/section
+POST http://20.89.131.34/api/v1/account/revise/section
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
@@ -58,7 +58,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newSection": "003"
 }
 ###
-POST http://localhost:3000/api/v1/fish/data/?section=001
+POST http://20.89.131.34/api/v1/fish/data/?section=001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
@@ -69,23 +69,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-GET http://localhost:3000/api/v1/fish/table/?section=001&fishesID=26,27,28,29
+GET http://20.89.131.34/api/v1/fish/table/?section=001&fishesID=26,27,28,29
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
 
 ###
-GET http://localhost:3000/api/v1/fish/data/?section=001&fishesID=26,27,28,29
+GET http://20.89.131.34/api/v1/fish/data/?section=001&fishesID=26,27,28,29
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
 ###
-GET http://localhost:3000/api/v1/fish/history_data/?section=001&fishesID=26,28,29&versions=1,1,1
+GET http://20.89.131.34/api/v1/fish/history_data/?section=001&fishesID=26,28,29&versions=1,1,1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
 ###
-POST http://localhost:3000/api/v1/fish/control/?section=002
+POST http://20.89.131.34/api/v1/fish/control/?section=002
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikphc29uIiwiaWF0IjoxNjkxNjc4MzM3LCJleHAiOjE2OTE2ODczMzd9.ryvAFm9KE-pRzGGIVScQXlVjboS-Zjumt8hvSP_Ad8w
 
@@ -113,7 +113,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikphc
 }
 
 ###
-POST http://localhost:3000/api/v1/fish/delete/?section=001
+POST http://20.89.131.34/api/v1/fish/delete/?section=001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
 
@@ -121,9 +121,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "fishesID": ["27","26"]
 }
 ###
-GET http://localhost:3000/api/v1/video/?video_uid=1&section=002
+GET http://20.89.131.34/api/v1/video/?video_uid=1&section=002
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTkxMzc5MywiZXhwIjoxNjkxOTIyNzkzfQ.y2vpad0KlqtVWPELBdUGQ7eKYmaw0kY4BdprzMQV0LM
 
 ###
-GET http://localhost:3000/home
+GET http://20.89.131.34/home
 Cookie:token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTc2ODczMCwiZXhwIjoxNjkxNzc3NzMwfQ.x-S_txC02B18EY56ZIBeGvZTrN7GmibB491IVhV9ym0
