@@ -24,4 +24,11 @@ model Fish{
   active Int
 }
 
+model User{
+  userId Int @id @default(autoincrement())
+  username String @unique
+  email String
+  
+}
+
 
