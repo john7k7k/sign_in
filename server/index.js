@@ -83,11 +83,11 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/(?:login|SignUp)/, function(req, res) {
+app.get(/\/(?:login|sign/up)/, function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home|FishDataList|AccountList)/, verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/\/(?:ntut/fish|nmmst/fish|ntut/fish/edit|nmmst/fish/edit|user|home|fish/list|account/list|404)/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 

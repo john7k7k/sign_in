@@ -74,7 +74,7 @@ export default {
       err: [],
       active: [],
       token:localStorage.getItem('token'),
-      time: localStorage.getItem('NewTime'),
+      time: null,
       links: [ 
         { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
         { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
@@ -143,6 +143,7 @@ export default {
               const minutes = date.getMinutes();
               const seconds = date.getSeconds();
               const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+              this.time = formattedDate
               localStorage.setItem("NewTime",formattedDate)
               this.processData(this.FishId, parsedResponseData);
               for (let i = 0; i < FishIdNow; i++) {
