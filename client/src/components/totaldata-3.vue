@@ -141,7 +141,8 @@
                 const seconds = date.getSeconds();
                 const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 this.time = formattedDate
-                localStorage.setItem("NewTime",formattedDate)
+                alert(formattedDate)
+                localStorage.setItem("NewTime3",formattedDate)
                 this.processData(this.FishId, parsedResponseData);
                 for (let i = 0; i < FishIdNow; i++) {
                 if (this.bc[i] < "20") this.needchargenum += 1;
