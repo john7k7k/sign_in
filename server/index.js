@@ -71,7 +71,7 @@ mqttConnection.on('error', (err) => {
 })
 
 //監聽port
-const port = 443;
+const port = 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
@@ -91,9 +91,11 @@ app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home|Fish
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+
+
 // 2. 帳號 API
 
-app.post(`/${API_VERSION}/account/login`, async function(req, res) {
+app.post(`/${API_VERSION}/account/login/`, async function(req, res) {
   console.log(req.body);
   const userTable = await sqlConnection.getUserTable();
   for (let i = 0; i < userTable.length; i++) {
@@ -130,11 +132,11 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
   console.log("無帳號")
 });
 
-app.post(`/${API_VERSION}/account/sign_up`, verifyUserData(),async function(req, res) {
+app.post(`/${API_VERSION}/account/sign_up/`, verifyUserData(),async function(req, res) {
   const userTable = await sqlConnection.getUserTable();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.username === userTable[i].username) {
-      res.sendStatus(403); //"註冊失敗，帳號已存在"
+      res.status(403).send('帳號已存在')
       return;
     }
   }
@@ -149,7 +151,7 @@ app.post(`/${API_VERSION}/account/sign_up`, verifyUserData(),async function(req,
   res.sendStatus(200); //註冊成功
 })
 
-app.post(`/${API_VERSION}/account/reset_password`,async function(req, res) {
+app.post(`/${API_VERSION}/account/reset_password/`,async function(req, res) {
   const userTable = await sqlConnection.getUserTable();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.account !== userTable[i].username) continue;
@@ -177,7 +179,7 @@ app.post(`/${API_VERSION}/account/reset_password`,async function(req, res) {
   console.log("重設密碼失敗，查無此帳號")
 })
 
-app.post(`/${API_VERSION}/account/reset_password_check`, function(req, res) {
+app.post(`/${API_VERSION}/account/reset_password_check/`, function(req, res) {
   console.log(req.body)
   if (req.body.code === randCode) {
     sqlConnection.revisePasscode(req.body.account, md5(req.body.password))
@@ -194,8 +196,19 @@ app.post(`/${API_VERSION}/account/logout/`, verifyTokenBy('Header')(),  async (r
   res.sendStatus(200);
 })
 
-app.post(`/${API_VERSION}/account/delete_user`, verifyTokenBy('Header')(),  async (req, res) => {
+app.post(`/${API_VERSION}/account/delete_user/`, verifyTokenBy('Header')(),  async (req, res) => {
+  const { email } = await sqlConnection.getUserData(req.payload.username, basis = 'username');
   sqlConnection.deleteUser(req.payload.username, basis = 'username');
+  const mailOption = {
+    from: process.env.DB_GMAIL_ACCOUNT,
+    to: email,
+    subject: "aifish.cc 註銷帳號提醒",
+    text: `您的帳號'${req.payload.username}'已註銷`
+  }
+  transporter.sendMail(mailOption, (error, info) => {
+    if (error) console.log(error);
+    else console.log("sent" + info.response)
+  })
   res.sendStatus(200);
 })
 
@@ -210,7 +223,7 @@ app.get(`/${API_VERSION}/account/`, verifyTokenBy('Header')(), async (req, res) 
   res.json(resData)
 });
 
-app.get(`/${API_VERSION}/account/list`, verifyTokenBy('Header')(20), async (req, res) => { 
+app.get(`/${API_VERSION}/account/list/`, verifyTokenBy('Header')(20), async (req, res) => { 
   const resData = await sqlConnection.getUserTable(req.query.section);
   for(let userData of resData){
     userData.passcode = undefined;
@@ -218,9 +231,9 @@ app.get(`/${API_VERSION}/account/list`, verifyTokenBy('Header')(20), async (req,
   res.send(resData);
 });
 
-app.post(`/${API_VERSION}/account/remove_user`, verifyTokenBy('Header')(20), async (req, res) => { 
-  const { adminLevel, adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
-  const { userLevel, userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
+app.post(`/${API_VERSION}/account/remove_user/`, verifyTokenBy('Header')(20), async (req, res) => { 
+  const { level: adminLevel, section: adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
+  const { levle: userLevel, email: userEmail, section: userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
   if(userLevel < adminLevel){
     res.sendStatus(403);
     return;
@@ -230,10 +243,20 @@ app.post(`/${API_VERSION}/account/remove_user`, verifyTokenBy('Header')(20), asy
     return;
   }
   sqlConnection.deleteUser(req.body.username, basis = 'username');
+  const mailOption = {
+    from: process.env.DB_GMAIL_ACCOUNT,
+    to: userEmail,
+    subject: "aifish.cc 提醒",
+    text: `您的帳號'${req.payload.username}'已被移除`
+  }
+  transporter.sendMail(mailOption, (error, info) => {
+    if (error) console.log(error);
+    else console.log("sent" + info.response)
+  })
   res.sendStatus(200);
 });
 
-app.post(`/${API_VERSION}/account/revise/level`, verifyTokenBy('Header')(20), async (req, res) => { 
+app.post(`/${API_VERSION}/account/revise/level/`, verifyTokenBy('Header')(20), async (req, res) => { 
   const { adminLevel, adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
   const { userLevel, userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
   if(req.body.newLevel < adminLevel || userLevel < adminLevel){
@@ -248,7 +271,7 @@ app.post(`/${API_VERSION}/account/revise/level`, verifyTokenBy('Header')(20), as
   res.sendStatus(200);
 });
 
-app.post(`/${API_VERSION}/account/revise/section`, verifyTokenBy('Header')(10), async (req, res) => {
+app.post(`/${API_VERSION}/account/revise/section/`, verifyTokenBy('Header')(10), async (req, res) => {
   sqlConnection.reviseUserSection(req.body.username, req.body.newSection);
   res.sendStatus(200);
 })
@@ -347,6 +370,9 @@ app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (re
   catch{res.sendStatus(403);}
 })
 
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 // 3. 影片API
 // 定義路由處理影片上傳請求
@@ -449,7 +475,7 @@ function sendVideo(res,videoPath) {
   fs.stat(videoPath, (err, stats) => {
     if (!err) {
       res.sendFile(path.resolve(videoPath),()=>{
-        fs.unlink(filePath,()=>{});
+        fs.unlink(videoPath,()=>{});
       })
     }
     else{
@@ -461,8 +487,8 @@ function sendVideo(res,videoPath) {
 function verifyUserData(){
   return (req, res, next) => {
     const { username, mail, password, section} = req.body;
-    if(! (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(mail))) res.sendStatus(403)
-    else if(! (username && mail && password && section)) res.sendStatus(403);
+    if(! (username && mail && password && section)) res.sendStatus(403);
+    else if(! (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(mail))) res.status(403).send('電子郵件不合法')
     else next();
   }
 }

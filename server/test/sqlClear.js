@@ -1,4 +1,4 @@
-const connection = require('./my_modules/sql')();
+const connection = require('../my_modules/sql')();
 require("dotenv").config();
 
 

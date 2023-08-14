@@ -13,7 +13,8 @@ const sectionProcess = require('./my_modules/section')();
 const mqttConnection = require('./my_modules/mqtt')();
 const lineNotify = require('./my_modules/lineNotify')();
 const transporter = require('./my_modules/nodeMailer')();
-const sqlConnection = require('./my_modules/sql')();
+const sql = require('./my_modules/newSQL');
+let  sqlConnection;
 const API_VERSION = 'api/v1'
 const upload = multer({ 
   storage: multer.diskStorage({
@@ -25,10 +26,11 @@ const upload = multer({
     }
   })
 });
-let randCode = getRand();
-const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut/t','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
-((app,sqlConnection) => { //init app, sql
+let randCode = getRand();
+const sub_topics = ['Fish/info/ntut/topicTest','Fish/info/nmmst/topicTest','Fish/info/pmp/topicTest','Fish/alarm/ntut/topicTest','Fish/alarm/nmmst/topicTest','Fish/alarm/pmp/topicTest'];
+
+(async(app,sql) => { //init app
   app.use(express.json())
   app.use(cors())
   app.use(cookieParser())
@@ -38,9 +40,8 @@ const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/ala
   app.use("/fonts", express.static('../public/fonts/'));
   app.use("/css", express.static('../public/css/'));
   app.use("/index", express.static('../public/'));
-  sqlConnection.buildVideoTable();
-  sqlConnection.buildUserTable();
-})(app,sqlConnection)
+  sqlConnection = await sql();
+})(app,sql)
 
 //mqtt處理
 
@@ -68,7 +69,7 @@ mqttConnection.on('error', (err) => {
 })
 
 //監聽port
-const port = 443;
+const port = 80;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
@@ -84,7 +85,11 @@ app.get(/\/(?:login|SignUp)/, function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home|FishDataList|AccountList)/, verifyTokenBy('Cookie')(), function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
@@ -92,7 +97,7 @@ app.get(/\/(?:Fishdatas-Section1|Fishdatas-Section3|EditDatas|UserData|home)/, v
 
 app.post(`/${API_VERSION}/account/login`, async function(req, res) {
   console.log(req.body);
-  const userTable = await sqlConnection.getUserTable();
+  const userTable = await sqlConnection.userTable.get();
   for (let i = 0; i < userTable.length; i++) {
     if (req.body.username !== userTable[i].username) continue;
     if(md5(req.body.password) !== userTable[i].passcode){
@@ -104,15 +109,15 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
       process.env.DB_JWTKEY,
       {expiresIn: '9000s'},
       async (err, token) => {
-        resData  = await sqlConnection.getUserData(req.body.username,basis = 'username');
+        resData  = await sqlConnection.userTable.get(req.body.username);
         resData.passcode = undefined;
         let fishesID = {};
-        let videoTime = await sqlConnection.getVideosData(resData.section);
+        let videoTime = await sqlConnection.fishTable.video.get('section', resData.section);
         console.log(videoTime)
         if(resData.section === '001') {
-          fishesID = await sqlConnection.getFishesActive();
+          fishesID = await sqlConnection.fishTable.getStatus();
         }
-        else fishesID[resData.section] = (await sqlConnection.getFishesActive())[resData.section];
+        else fishesID[resData.section] = (await sqlConnection.fishTable.getStatus())[resData.section];
         res.json({
           ...resData,
           fishesID,
@@ -127,15 +132,15 @@ app.post(`/${API_VERSION}/account/login`, async function(req, res) {
   console.log("無帳號")
 });
 
-app.post(`/${API_VERSION}/account/sign_up`,async function(req, res) {
-  const userTable = await sqlConnection.getUserTable();
+app.post(`/${API_VERSION}/account/sign_up`, verifyUserData(),async function(req, res) {
+  const userTable = await sqlConnection.userTable.get();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.username === userTable[i].username) {
-      res.sendStatus(403); //"註冊失敗，帳號已存在"
+      res.send('帳號已存在').status(403); //"註冊失敗，帳號已存在"
       return;
     }
   }
-  sqlConnection.createUser({
+  sqlConnection.userTable.insert({
     username: req.body.username,
     email: req.body.mail,
     passcode: md5(req.body.password),
@@ -147,7 +152,7 @@ app.post(`/${API_VERSION}/account/sign_up`,async function(req, res) {
 })
 
 app.post(`/${API_VERSION}/account/reset_password`,async function(req, res) {
-  const userTable = await sqlConnection.getUserTable();
+  const userTable = await sqlConnection.userTable.get();
   for (var i = 0; i < userTable.length; i++) {
     if (req.body.account !== userTable[i].username) continue;
     if (req.body.mail !== userTable[i].email) {
@@ -177,7 +182,7 @@ app.post(`/${API_VERSION}/account/reset_password`,async function(req, res) {
 app.post(`/${API_VERSION}/account/reset_password_check`, function(req, res) {
   console.log(req.body)
   if (req.body.code === randCode) {
-    sqlConnection.revisePasscode(req.body.account, md5(req.body.password))
+    sqlConnection.userTable.update(req.body.username, 'passcode', md5(req.body.password))
     res.sendStatus(200);
     console.log("重設密碼成功");
     randCode = getRand();
@@ -192,41 +197,76 @@ app.post(`/${API_VERSION}/account/logout/`, verifyTokenBy('Header')(),  async (r
 })
 
 app.post(`/${API_VERSION}/account/delete_user`, verifyTokenBy('Header')(),  async (req, res) => {
-  sqlConnection.deleteUser(req.payload.username, basis = 'username');
+  sqlConnection.userTable.remove(req.payload.username);
+  const mailOption = {
+    from: process.env.DB_GMAIL_ACCOUNT,
+    to: req.body.mail,
+    subject: "aifish.cc 註銷帳號提醒",
+    text: `帳號'${req.payload.username}'已註銷`
+  }
+  transporter.sendMail(mailOption, (error, info) => {
+    if (error) console.log(error);
+    else console.log("sent" + info.response)
+  })
   res.sendStatus(200);
 })
 
 app.get(`/${API_VERSION}/account/`, verifyTokenBy('Header')(), async (req, res) => { 
-  let userData = await sqlConnection.getUserData(req.payload.username, basis = 'username');
+  let userData = await sqlConnection.userTable.get(req.payload.username);
   let fishesID = {};
-  if(userData.section === '001') fishesID = await sqlConnection.getFishesActive();
-  else fishesID[userData.section] = (await sqlConnection.getFishesActive())[userData.section];
-  console.log(fishesID)
+  if(userData.section === '001') fishesID = await sqlConnection.fishTable.getStatus();
+  else fishesID[userData.section] = (await sqlConnection.fishTable.getStatus())[userData.section];
+  
   const resData = {...userData, fishesID};
   resData.passcode = undefined;
   res.json(resData)
 });
 
 app.get(`/${API_VERSION}/account/list`, verifyTokenBy('Header')(20), async (req, res) => { 
-  res.send(await sqlConnection.getUserTable(req.query.section));
+  let resData = {};
+  if(req.query.section === '001'){
+    for (let sectionCode of ['001','002','003','004'])
+      resData[sectionCode] = await sqlConnection.userTable.get(sectionCode,key = 'section');
+  } 
+  else resData[req.query.section] = await sqlConnection.userTable.get(req.query.section,key = 'section');
+  for(let usersData of Object.values(resData)){
+    usersData = usersData.map(userData => delete userData.passcode)
+  }
+  res.send(resData);
+});
+
+app.post(`/${API_VERSION}/account/remove_user`, verifyTokenBy('Header')(20), async (req, res) => { 
+  const { adminLevel, adminSection } = await sqlConnection.userTable.get(req.payload.username);
+  const { userLevel, userSection } = await sqlConnection.userTable.get(req.body.username);
+  if(userLevel < adminLevel){
+    res.sendStatus(403);
+    return;
+  }
+  if(adminSection !== '001' && userSection !== adminSection){
+    res.sendStatus(403);
+    return;
+  }
+  sqlConnection.userTable.remove(req.body.username);
+  res.sendStatus(200);
 });
 
 app.post(`/${API_VERSION}/account/revise/level`, verifyTokenBy('Header')(20), async (req, res) => { 
-  const adminLevel = (await sqlConnection.getUserData(req.payload.username,basis = 'username')).level
-  if(req.body.newLevel < adminLevel){
+  const { adminLevel, adminSection } = await sqlConnection.userTable.get(req.payload.username);
+  const { userLevel, userSection } = await sqlConnection.userTable.get(req.body.username);
+  if(req.body.newLevel < adminLevel || userLevel < adminLevel){
     res.sendStatus(403);
     return;
   }
-  if((await sqlConnection.getUserData(req.body.username,basis = 'username')).level < adminLevel){
+  if(adminSection !== '001' && userSection !== adminSection){
     res.sendStatus(403);
     return;
   }
-  sqlConnection.reviseUserLevel(req.body.username, req.body.newLevel);
+  sqlConnection.userTable.update(req.body.username, 'level', req.body.newLevel);
   res.sendStatus(200);
 });
 
 app.post(`/${API_VERSION}/account/revise/section`, verifyTokenBy('Header')(10), async (req, res) => {
-  sqlConnection.reviseUserSection(req.body.username, req.body.newSection);
+  sqlConnection.userTable.update(req.body.username, 'section', req.body.newSection);
   res.sendStatus(200);
 })
 
@@ -241,10 +281,29 @@ app.post(`/${API_VERSION}/fish/data/`, verifyTokenBy('Header')(40),  async (req,
       res.sendStatus(403);
       return;
     }
-    const fish_object = {};
-    fish_object[section] = fishData;
-    await sqlConnection.updateFishesData(fish_object); //從SQL中更新所求的data
-    await sqlConnection.showFishesTable(sqlConnection.getFishesID());
+    const time = (new Date).getTime()
+    for (fishID in fishData){
+      fishData[fishID].time = time;
+      if(!sqlConnection.fishTable[section + fishID]){
+        res.sendStatus(403);
+        return;
+      }
+      await sqlConnection.fishTable[section + fishID].insert(fishData[fishID]); //從SQL中更新所求的data
+    }
+    res.sendStatus(200);
+  }
+  catch{ res.sendStatus(403); }
+})
+
+app.post(`/${API_VERSION}/fish/`, verifyTokenBy('Header')(40),  async (req, res) => {
+  try{
+    const { fishID } = req.body; //取得參數
+    const { section } = req.query;
+    if(!fishID||!section){
+      res.sendStatus(403);
+      return;
+    }
+    sqlConnection.fishTable.insert({ fishUID: section + fishID });
     res.sendStatus(200);
   }
   catch{res.sendStatus(403);}
@@ -254,10 +313,16 @@ app.post(`/${API_VERSION}/fish/data/`, verifyTokenBy('Header')(40),  async (req,
 app.get(`/${API_VERSION}/fish/table/`, verifyTokenBy('Header')(50), async (req, res) => { 
   try{
     const { fishesID, section } = req.query; //取得路由參數
+    if(!section || !fishesID){
+      res.sendStatus(403);
+      return;
+    }
     const fish_id_array = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
-    const fish_object = {};
-    fish_object[section] = fish_id_array;
-    const tables = await sqlConnection.getFishesTable(fish_object) //從SQL中取得所求的table
+    let tables = {};
+    tables[section] = {}
+    for (const fishID of fish_id_array){
+      tables[section][fishID] = await sqlConnection.fishTable[section + fishID].get() //從SQL中取得所求的table
+    }
     res.send(tables);
   }
   catch{res.sendStatus(403);}
@@ -267,11 +332,17 @@ app.get(`/${API_VERSION}/fish/table/`, verifyTokenBy('Header')(50), async (req, 
 app.get(`/${API_VERSION}/fish/data/`, verifyTokenBy('Header')(50), async (req, res) => { 
   try{
     const { fishesID, section } = req.query; //取得路由參數
+    if(!section || !fishesID){
+      res.sendStatus(403);
+      return;
+    }
     fish_id_array = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
-    const fish_object = {};
-    fish_object[section] = fish_id_array;
-    const datas = await sqlConnection.getFishesData(fish_object); //從SQL中取得所求的data
-    res.send(datas);
+    let tables = {};
+    tables[section] = {}
+    for (const fishID of fish_id_array){
+      tables[section][fishID] = await sqlConnection.fishTable[section + fishID].get(1) //從SQL中取得所求的table
+    }
+    res.send(tables);
   }
   catch{res.sendStatus(403);}
 });
@@ -280,15 +351,18 @@ app.get(`/${API_VERSION}/fish/data/`, verifyTokenBy('Header')(50), async (req, r
 app.get(`/${API_VERSION}/fish/history_data/`, verifyTokenBy('Header')(50), async (req, res) => { 
   try{
     let { fishesID, section, versions } = req.query; //取得路由參數
-    fishesID = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
-    versions = versions.match(/(\d+)/g); //將路由參數轉為version陣列
-    const fish_object = {};
-    for(let i = 0; i < fishesID.length; i++){
-      if(fish_object[section]===undefined) fish_object[section]={};
-      fish_object[section][fishesID[i]] =versions[i];
+    if(!section || !fishesID || !versions){
+      res.sendStatus(403);
+      return;
     }
-    const datas = await sqlConnection.getFishesData(fish_object,history=true); //從SQL中取得所求的data
-    res.send(datas) //從SQL中取得所求的data
+    fishesID = fishesID.match(/(\d+)/g); //將路由參數轉為id陣列
+    versions = versions.match(/(\d+)/g).map(Number); //將路由參數轉為version陣列
+    let tables = {};
+    tables[section] = {}
+    for (const i in fishesID){
+      tables[section][fishesID[i]] = await sqlConnection.fishTable[section + fishesID[i]].get('version', versions[i]) //從SQL中取得所求的table
+    }
+    res.send(tables) //從SQL中取得所求的data
   }
   catch{res.sendStatus(403);}
 });
@@ -309,6 +383,20 @@ app.post(`/${API_VERSION}/fish/control/`, verifyTokenBy('Header')(60), async (re
   catch{res.sendStatus(403);}
 })
 
+app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (req, res) => {
+  try{
+    const { fishesID } = req.body; //取得參數
+    const { section } = req.query;
+    if(!section || !fishesID){
+      res.sendStatus(403);
+      return;
+    }
+    sqlConnection.fishTable.remove(fishesID.map(fishId => section + fishId))
+    res.sendStatus(200);
+  }
+  catch{res.sendStatus(403);}
+})
+
 
 // 3. 影片API
 // 定義路由處理影片上傳請求
@@ -324,14 +412,12 @@ app.post(`/${API_VERSION}/video/upload/`, upload.single('video'), (req, res) => 
 
 app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   const { video_uid, section } = req.query;
-  mqttConnection.publish(`Fish/video/${sectionProcess.code.decode(section)}/get`,video_uid,()=>{
+  /*mqttConnection.publish(`Fish/video/${sectionProcess.code.decode(section)}/get`,video_uid,()=>{
    
-  })
+  })*/
   const filePath = `uploads/videos/${video_uid + '.mp4'}`;
   sendVideo(res,filePath);
 });
-
-
 
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
@@ -356,7 +442,7 @@ function verifyTokenBy(tokenFrom = 'URL'){
           next();
           return;
         }
-        const { level, section } = await sqlConnection.getUserData(payload.username, basis = 'username');
+        const { level, section } = await sqlConnection.userTable.get(payload.username);
         if(level > threshold) res.sendStatus(403);
         else if(section !== req.query.section && section !== '001') res.sendStatus(403);
         else next();
@@ -386,25 +472,29 @@ function topicDecode(topic){
 
 async function mqttProcess(topic,mqtt_data){
   switch(topic){
-    case "Fish/alarm/ntut/t":
-      const video_data = {
+    case "Fish/alarm/ntut":
+      sqlConnection.video.insert({
         videoUID: mqtt_data.video_uid,
         time: mqtt_data.time,
         section: sectionProcess.code.encode(topic.split('/')[2]),
         fishID: Object.keys(mqtt_data)[0],
         status: mqtt_data[Object.keys(mqtt_data)[0]]
-      }
-      sqlConnection.updateVideo(video_data)
+      });
+      sqlConnection.error.insert({
+        section: sectionProcess.code.encode(topic.split('/')[2]),
+        fishID: Object.keys(mqtt_data)[0],
+        errorCode: mqtt_data[Object.keys(mqtt_data)[0]],
+        time: mqtt_data.time
+      })
       mqtt_data.section = topic.split('/')[2];
       lineNotify.send(mqtt_data, decode = lineNotify.decodeFishesAlarm);
     break;
     default :
       delete mqtt_data.time
       const topicInfo = topicDecode(topic);
-      const fish_object = {};
-      fish_object[topicInfo.section] = mqtt_data;
-      await sqlConnection.updateFishesData(fish_object); //更新sql資料
-      sqlConnection.showFishesTable();
+      for(let fishID in mqtt_data){
+        sqlConnection.fishTable[topicInfo.section + fishID].insert(mqtt_data[fishID]); //更新sql資料
+      }
     break;
   }
 }
@@ -413,7 +503,7 @@ function sendVideo(res,videoPath) {
   fs.stat(videoPath, (err, stats) => {
     if (!err) {
       res.sendFile(path.resolve(videoPath),()=>{
-        fs.unlink(filePath,()=>{});
+        fs.unlink(videoPath,()=>{});
       })
     }
     else{
@@ -421,3 +511,13 @@ function sendVideo(res,videoPath) {
     }
   });
 }
+
+function verifyUserData(){
+  return (req, res, next) => {
+    const { username, mail, password, section} = req.body;
+    if(! (username && mail && password && section)) res.sendStatus(403);
+    else if(! (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(mail))) res.send('電子郵件不合法').status(403)
+    else next();
+  }
+}
+
