@@ -141,7 +141,6 @@
                 const seconds = date.getSeconds();
                 const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 this.time = formattedDate
-                alert(formattedDate)
                 localStorage.setItem("NewTime3",formattedDate)
                 this.processData(this.FishId, parsedResponseData);
                 for (let i = 0; i < FishIdNow; i++) {
