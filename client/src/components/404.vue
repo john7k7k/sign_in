@@ -1,15 +1,16 @@
 <template>
   <header>
-    <img class="logo" src="@/assets/deadfish.svg" width="200" height="200" />
-  </header>
+    <img class="logo" :src="require('@/assets/deadfish.svg')" width="200"  />
     <div class="center">
       <h1>404</h1>
       <h3>
         似乎發生了某些問題
         <p></p>
-        <a href="https://aifish.cc/login">-->回首頁</a>
+        <a href="/login">--&gt;回首頁</a>
       </h3>
     </div>
+  </header>
+    
   </template>
   
 <style>
@@ -36,8 +37,9 @@
     header {
       display: flex;
       place-items: center;
-      padding-right: 50%;
+      padding-left: 50vh;
       margin: 0 8rem 0 0;
+      height: 100vh;
     }
     .logo {
       margin: 0 8rem 0 0;

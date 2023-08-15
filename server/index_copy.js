@@ -197,10 +197,11 @@ app.post(`/${API_VERSION}/account/logout/`, verifyTokenBy('Header')(),  async (r
 })
 
 app.post(`/${API_VERSION}/account/delete_user`, verifyTokenBy('Header')(),  async (req, res) => {
+  const { email } = await sqlConnection.userTable.get(req.payload.username, basis = 'username');
   sqlConnection.userTable.remove(req.payload.username);
   const mailOption = {
     from: process.env.DB_GMAIL_ACCOUNT,
-    to: req.body.mail,
+    to: email,
     subject: "aifish.cc 註銷帳號提醒",
     text: `帳號'${req.payload.username}'已註銷`
   }
@@ -251,8 +252,8 @@ app.post(`/${API_VERSION}/account/remove_user`, verifyTokenBy('Header')(20), asy
 });
 
 app.post(`/${API_VERSION}/account/revise/level`, verifyTokenBy('Header')(20), async (req, res) => { 
-  const { adminLevel, adminSection } = await sqlConnection.userTable.get(req.payload.username);
-  const { userLevel, userSection } = await sqlConnection.userTable.get(req.body.username);
+  const { level: adminLevel, section: adminSection } = await sqlConnection.userTable.get(req.payload.username);
+  const { level: userLevel, section: userSection } = await sqlConnection.userTable.get(req.body.username);
   if(req.body.newLevel < adminLevel || userLevel < adminLevel){
     res.sendStatus(403);
     return;
