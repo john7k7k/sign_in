@@ -242,7 +242,7 @@ function TranActive(active) {
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+                 "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -271,7 +271,7 @@ function TranActive(active) {
               version: this.version[index],
               time: this.formatDate(this.time[index])
             }));
-            this.Tableshow = true;
+            
           })
           .catch(err=> {
               console.log(err);
@@ -301,6 +301,7 @@ function TranActive(active) {
               console.log(res);
               if(res.status == 200){
                 this.FishId = Object.keys(res.data.fishesID["002"]);
+                this.Tableshow = true;
                 this.accountdata();
               }
           })

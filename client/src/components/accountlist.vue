@@ -130,7 +130,7 @@ import axios from 'axios';
       methods: {
       accountdata(){
         axios.get(
-            "http://"+this.IP+"/api/v1/account/list/?section=001",{
+            "/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -239,7 +239,7 @@ import axios from 'axios';
       },
       remove(username,index,num){
         axios.post(
-          "http://"+this.IP+"/api/v1/account/remove_user",
+          "/api/v1/account/remove_user",
             {
               "username":username,
             },
