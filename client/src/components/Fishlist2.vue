@@ -171,12 +171,12 @@ function TranActive(active) {
             ]
         }
       },
-      created(){
-        this.loadnewdata();
+      async created() {
+        await this.loadnewdata();
       },
       computed: {
     filteredData() {
-        
+      
         if (!this.searchId) {
           if(this.data.length < 0) return this.fallbackRow
           return this.data;
@@ -242,7 +242,7 @@ function TranActive(active) {
                 });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-                 "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+                "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -289,25 +289,27 @@ function TranActive(active) {
 
     return `${year}-${month}-${day}`;
   },
-  loadnewdata(){
-      axios.get(
-        "/api/v1/account",{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-              console.log(res);
-              if(res.status == 200){
-                this.FishId = Object.keys(res.data.fishesID["002"]);
-                this.Tableshow = true;
-                this.accountdata();
-              }
-          })
-          .catch(err=> {
-              console.log(err);
-          })
+  async loadnewdata() {
+      try {
+        const response = await axios.get(
+          "/api/v1/account",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        console.log(response);
+
+        if (response.status === 200) {
+          this.FishId = Object.keys(response.data.fishesID["002"]);
+          this.Tableshow = true;
+          this.accountdata();
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
     remove(id,index){
         axios.post(
