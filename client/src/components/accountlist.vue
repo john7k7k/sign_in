@@ -15,7 +15,7 @@
             
         </template>
       <template #action="{row, index }">
-            <Button v-show="fallbackRow.showbtn" type="error" size="small" @click="remove(row.name,index,1)">刪除</Button>
+            <Button v-show="row.showbtn" type="error" size="small" @click="remove(row.name,index,1)">刪除</Button>
         </template>
     </Table>
 
@@ -130,7 +130,7 @@ import axios from 'axios';
       methods: {
       accountdata(){
         axios.get(
-            "/api/v1/account/list/?section=001",{
+            "http://"+this.IP+"/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -154,8 +154,10 @@ import axios from 'axios';
             }
                 res.data.forEach(item => {
                 const sectionResult = this.TranSection(item.section);
-
+                const usernameResult = item.username
+                let showbtn = true;
                 if (sectionResult === "全區") {
+                  if(usernameResult === "123") showbtn = false
                   this.data.push({
                     email: item.email,
                     level: this.Tranlevel(item.level),
@@ -163,7 +165,8 @@ import axios from 'axios';
                     registrationTime: this.formatDate(item.registrationTime),
                     section: sectionResult,
                     userID: item.userID,
-                    name: item.username
+                    name: item.username,
+                    showbtn
                   });
                 } else if (sectionResult === "北科") {
                   this.data2.push({
@@ -186,8 +189,10 @@ import axios from 'axios';
                     name: item.username
                   });
                 }
-                if(this.data.length > 0){
-                  this.fallbackRow.showbtn = true
+                const index = this.data.findIndex(item => item.name === "123");
+                if (index !== -1) {
+                    const itemToMove = this.data.splice(index, 1)[0];
+                    this.data.unshift(itemToMove);
                 }
                 if(this.data2.length > 0){
                   this.fallbackRow2.showbtn = true
@@ -234,7 +239,7 @@ import axios from 'axios';
       },
       remove(username,index,num){
         axios.post(
-            "/api/v1/account/remove_user",
+          "http://"+this.IP+"/api/v1/account/remove_user",
             {
               "username":username,
             },

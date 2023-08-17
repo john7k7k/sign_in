@@ -212,7 +212,11 @@ import axios from 'axios'
         SelectTime:"請選擇想要查詢的錯誤影片時段",
         Errortimes:{},
         time: localStorage.getItem('NewTime'),
-        
+        active:[
+            "功能正常-待機中",
+            "活動中",
+            "維修中"
+        ],
         errnum:[],
         FishErrors: [],
         dialogControl:false,

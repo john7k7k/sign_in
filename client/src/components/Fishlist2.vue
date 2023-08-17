@@ -72,7 +72,7 @@
   </v-dialog> 
 </div> 
       <div class="mt-4"><h3>北科</h3></div>
-    <Table  :border="true" :columns="columns" :data="filteredData">
+    <Table v-show="Tableshow" :border="true" :columns="columns" :data="filteredData">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
     </template>
@@ -119,6 +119,7 @@ function TranActive(active) {
         return {
             userdatas:[],
             token:localStorage.getItem('token'),
+            Tableshow:false,
             show: false,
             FishId: [],
             fishdatas:[],
@@ -170,9 +171,14 @@ function TranActive(active) {
             ]
         }
       },
+      created(){
+        this.loadnewdata();
+      },
       computed: {
     filteredData() {
+        
         if (!this.searchId) {
+          if(this.data.length < 0) return this.fallbackRow
           return this.data;
         } else {
           return this.data.filter(item => {
@@ -207,6 +213,7 @@ function TranActive(active) {
                 this.dialognew = false
                 alert("新增成功")
                 location.reload();
+                
               }
               else{
                 this.dialog = false
@@ -229,17 +236,6 @@ function TranActive(active) {
             });
         },
       accountdata(){
-        this.loadnewdata();
-        const fish1Data = localStorage.getItem("fish21");
-        const parsedFish1Data = JSON.parse(fish1Data);
-        this.FishId = parsedFish1Data
-        const fish0Data = localStorage.getItem("fish20");
-        const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data)
-        this.FishId2num = this.FishId.length
-        const fish2Data = localStorage.getItem("fish22");
-        const parsedFish2Data = JSON.parse(fish2Data);
-        this.FishId.push(...parsedFish2Data)
         this.FishId = this.FishId.map((str) => {
                 const num = parseInt(str, 10);
                 return isNaN(num) ? 0 : num; 
@@ -255,7 +251,9 @@ function TranActive(active) {
           .then(res=> {
             console.log(res);
             this.fishdatas = {};
+            this.data = [];
             for (const id in res.data['002']) {
+            if(!Array.isArray(res.data['002'][id])) continue;
             const dataArray = res.data['002'][id];
             if (!this.fishdatas[id]) {
                 this.fishdatas[id] = [];
@@ -264,18 +262,16 @@ function TranActive(active) {
             const reversedLastFive = lastFiveObjects.reverse();
             this.fishdatas[id] = reversedLastFive;
             this.fishdatas[id].show = false;
-            }
-            for (const id in res.data['002']) {
-              const dataArray = res.data['002'][id];
-              const { version,time } = dataArray[dataArray.length-1];
-              this.version.push(version);
-              this.time.push(time);
+            const { version,time } = dataArray[dataArray.length-1];
+            this.version.push(version);
+            this.time.push(time);
             }
             this.data = this.FishId.map((item,index) => ({
               id: this.FishId[index],
               version: this.version[index],
               time: this.formatDate(this.time[index])
             }));
+            this.Tableshow = true;
           })
           .catch(err=> {
               console.log(err);
@@ -303,26 +299,9 @@ function TranActive(active) {
           )
           .then(res=> {
               console.log(res);
-              this.loading = false;
               if(res.status == 200){
-                const fish001Data = res.data.fishesID["002"];
-                const fish20Values = [];
-                const fish21Values = [];
-                const fish22Values = [];
-                if( Object.hasOwn(res.data.fishesID,"002")){
-                  Object.entries(fish001Data).forEach(([key, value]) => {
-                    if (value === 1) {
-                      fish21Values.push(key);
-                    } else if (value === 2) {
-                      fish22Values.push(key)
-                    } else {
-                      fish20Values.push(key)
-                    }
-                  });
-                }
-                localStorage.setItem("fish20", JSON.stringify(fish20Values));
-                localStorage.setItem("fish21", JSON.stringify(fish21Values));
-                localStorage.setItem("fish22", JSON.stringify(fish22Values));
+                this.FishId = Object.keys(res.data.fishesID["002"]);
+                this.accountdata();
               }
           })
           .catch(err=> {
@@ -353,11 +332,6 @@ function TranActive(active) {
               alert('刪除失敗');
           })
       },
-    },
-    
-    
-    mounted() {
-      this.accountdata();
     },
     }
   </script>
