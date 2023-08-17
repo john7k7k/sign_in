@@ -171,8 +171,8 @@ function TranActive(active) {
             ]
         }
       },
-      async created() {
-        await this.loadnewdata();
+      created() {
+        this.accountdata();
       },
       computed: {
     filteredData() {
@@ -197,7 +197,7 @@ function TranActive(active) {
           sectioncode = "002";
         }
         axios.post(
-            "/api/v1/fish/data/?section="+sectioncode,{
+          "/api/v1/fish/data/?section="+sectioncode,{
               "fishData": {
                 [this.NewId] : {"bc": this.NewBc, "err": 0,"active":TranActive(this.SelectActive)},
     }
@@ -207,10 +207,11 @@ function TranActive(active) {
     }
   }
           )
-          .then(res=> {
+          .then(async res=> {
               console.log(res);
               if(res.status == 200){
                 this.dialognew = false
+                await this.loadnewdata();
                 alert("新增成功")
                 location.reload();
                 
@@ -236,13 +237,23 @@ function TranActive(active) {
             });
         },
       accountdata(){
+        const fish1Data = localStorage.getItem("fish21");
+        const parsedFish1Data = JSON.parse(fish1Data);
+        this.FishId = parsedFish1Data;
+        const fish0Data = localStorage.getItem("fish20");
+        const parsedFish0Data = JSON.parse(fish0Data);
+        this.FishId.push(...parsedFish0Data);
+        this.FishId2num = this.FishId.length;
+        const fish2Data = localStorage.getItem("fish22");
+        const parsedFish2Data = JSON.parse(fish2Data);
+        this.FishId.push(...parsedFish2Data);
         this.FishId = this.FishId.map((str) => {
-                const num = parseInt(str, 10);
-                return isNaN(num) ? 0 : num; 
-                });
+          const num = parseInt(str, 10);
+          return isNaN(num) ? 0 : num;
+        });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-                "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+                 "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -271,7 +282,7 @@ function TranActive(active) {
               version: this.version[index],
               time: this.formatDate(this.time[index])
             }));
-            
+            this.Tableshow = true;
           })
           .catch(err=> {
               console.log(err);
@@ -303,13 +314,31 @@ function TranActive(active) {
         console.log(response);
 
         if (response.status === 200) {
-          this.FishId = Object.keys(response.data.fishesID["002"]);
-          this.Tableshow = true;
-          this.accountdata();
+          this.processFishData(response.data.fishesID);
         }
       } catch (error) {
         console.error(error);
       }
+    },
+  processFishData(fishesID) {
+      const fish001Data = fishesID["002"];
+      const fish20Values = [];
+      const fish21Values = [];
+      const fish22Values = [];
+      if (Object.prototype.hasOwnProperty.call(fishesID, "002")) {
+        Object.entries(fish001Data).forEach(([key, value]) => {
+          if (value === 1) {
+            fish21Values.push(key);
+          } else if (value === 2) {
+            fish22Values.push(key);
+          } else {
+            fish20Values.push(key);
+          }
+        });
+      }
+      localStorage.setItem("fish20", JSON.stringify(fish20Values));
+      localStorage.setItem("fish21", JSON.stringify(fish21Values));
+      localStorage.setItem("fish22", JSON.stringify(fish22Values));
     },
     remove(id,index){
         axios.post(
@@ -323,8 +352,9 @@ function TranActive(active) {
           }
         }
           )
-          .then(res=> {
+          .then(async res=> {
               console.log(res);
+              await this.loadnewdata();
               alert('刪除成功');
               this.data.splice(index, 1);
               location.reload();
