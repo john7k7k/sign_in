@@ -7,28 +7,42 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:Aa777266794@127.0.0.1:3306/hs"
-}
-
-model FishMap {
-  id Int  @id @default(autoincrement())
-  fish Fish[]
-}
-
-model Fish{
-  fishMap FishMap @relation(fields: [uid],references: [id])
-  uid Int
-  version Int @id @default(autoincrement())
-  bc Float
-  err Int
-  active Int
+  url      = env("DATABASE_URL")
 }
 
 model User{
   userId Int @id @default(autoincrement())
   username String @unique
   email String
-  
+  passcode String
+  level Int
+  section String
+  fishAble FishAble[]
 }
+
+model Fish {
+  fishUID String @id
+  fishData FishData[]
+  fishAble FishAble[]
+}
+
+model FishAble{
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [username],references: [username])
+  username String
+  fish Fish @relation(fields: [fishUID],references: [fishUID])
+  fishUID String
+}
+
+model FishData{
+  fish Fish @relation(fields: [fishUID],references: [fishUID])
+  fishUID String @id
+  time DateTime
+  bc Float
+  err Int
+  active Int
+}
+
+
 
 

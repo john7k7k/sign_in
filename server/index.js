@@ -87,10 +87,9 @@ app.get(/^\/(?:login|sign\/up)$/, function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get(/^\/(?:ntut\/fish|nmmst\/fish|ntut\/fish\/edit|nmmst\/fish\/edit|user|home|fish\/list|account\/list|404)$/, verifyTokenBy('Cookie')(), function(req, res) {
+app.get(/^\/(?:ntut\/fish|nmmst\/fish|ntut\/fish\/edit|nmmst\/fish\/edit|user|home|fish\/list|account\/list)$/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
-
 
 
 // 2. 帳號 API
@@ -257,8 +256,8 @@ app.post(`/${API_VERSION}/account/remove_user/`, verifyTokenBy('Header')(20), as
 });
 
 app.post(`/${API_VERSION}/account/revise/level/`, verifyTokenBy('Header')(20), async (req, res) => { 
-  const { adminLevel, adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
-  const { userLevel, userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
+  const { level: adminLevel, section: adminSection } = await sqlConnection.getUserData(req.payload.username,basis = 'username');
+  const { level: userLevel, section: userSection } = await sqlConnection.getUserData(req.body.username,basis = 'username');
   if(req.body.newLevel < adminLevel || userLevel < adminLevel){
     res.sendStatus(403);
     return;
@@ -370,9 +369,7 @@ app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (re
   catch{res.sendStatus(403);}
 })
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+
 
 // 3. 影片API
 // 定義路由處理影片上傳請求
@@ -395,11 +392,14 @@ app.get(`/${API_VERSION}/video/`, verifyTokenBy('Header')(20), (req, res) => {
   sendVideo(res,filePath);
 });
 
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
 function verifyTokenBy(tokenFrom = 'URL'){
   return (threshold = 0) => {
     return (req, res, next) => {
       let token = '';
-      console.log(tokenFrom,req.headers['authorization'].split(' ')[1])
       try{
         if(tokenFrom === 'URL') token = req.query.token;
         else if(tokenFrom === 'Header') token = req.headers['authorization'].split(' ')[1];

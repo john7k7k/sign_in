@@ -23,7 +23,7 @@
     "@babel/plugin-transform-runtime": "^7.22.2",
     "@babel/preset-env": "^7.22.2",
     "@babel/preset-react": "^7.22.3",
-    "prisma": "^4.16.1",
+    "prisma": "^4.16.2",
     "vue-template-compiler": "^2.7.14"
   },
   "name": "web",
