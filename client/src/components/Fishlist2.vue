@@ -194,12 +194,12 @@ function TranActive(active) {
             "/api/v1/fish/data/?section="+sectioncode,{
               "fishData": {
                 [this.NewId] : {"bc": this.NewBc, "err": 0,"active":TranActive(this.SelectActive)},
-    }
-            },{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
+                }
+                        },{
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
           )
           .then(res=> {
               console.log(res);
@@ -233,7 +233,7 @@ function TranActive(active) {
         const fish1Data = localStorage.getItem("fish21");
         const parsedFish1Data = JSON.parse(fish1Data);
         this.FishId = parsedFish1Data
-        const fish0Data = localStorage.getItem("fish20");
+        const fish0Data = localStorage.getItem("fish20"); 
         const parsedFish0Data = JSON.parse(fish0Data);
         this.FishId.push(...parsedFish0Data)
         this.FishId2num = this.FishId.length
@@ -256,9 +256,9 @@ function TranActive(active) {
             console.log(res);
             this.fishdatas = {};
             for (const id in res.data['002']) {
-            const dataArray = res.data['002'][id];
-            if (!this.fishdatas[id]) {
-                this.fishdatas[id] = [];
+              const dataArray = res.data['002'][id];
+              if (!this.fishdatas[id]) {
+                  this.fishdatas[id] = [];
             }
             const lastFiveObjects = dataArray.slice(-5);
             const reversedLastFive = lastFiveObjects.reverse();
@@ -266,12 +266,20 @@ function TranActive(active) {
             this.fishdatas[id].show = false;
             }
             for (const id in res.data['002']) {
-              const dataArray = res.data['002'][id];
+              if(!Array.isArray(res.data['002'][id])){
+                this.data.push({ //this.data 顯是home版本時間
+                  id,
+                  version: "創建中",
+                  time: ''
+                })
+                continue;
+              }//res -> dataArray -> version, time -> this.version, this.time ->this.data[].version
+              const dataArray = res.data['002'][id] // [{bc: ,err: }...];
               const { version,time } = dataArray[dataArray.length-1];
               this.version.push(version);
               this.time.push(time);
             }
-            this.data = this.FishId.map((item,index) => ({
+            this.data = this.FishId.map((item,index) => ({ //this.data 顯是home版本時間
               id: this.FishId[index],
               version: this.version[index],
               time: this.formatDate(this.time[index])

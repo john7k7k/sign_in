@@ -43,6 +43,7 @@ const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/ala
   app.use("/index", express.static('../public/'));
   sqlConnection.buildVideoTable();
   sqlConnection.buildUserTable();
+  //lineNotify.sendInterval(sqlConnection.getFishesData, lineNotify.decodeAllFishesData, 7200000)
 })(app,sqlConnection)
 
 //mqtt處理
@@ -60,12 +61,12 @@ mqttConnection.on('connect', () => {
   }
 });
 
-mqttConnection.on('message',async (topic, rec_message) => { //接收到IOT端訊息
+mqttConnection.on('message', async (topic, rec_message) => { //接收到IOT端訊息
   const json_data = JSON.parse(rec_message.toString()); //parse資料
   console.log('主題',topic,', 時間: ',  (new Date()).toLocaleString()); //印出資料
   mqttProcess(topic,json_data);
 });
-
+ 
 mqttConnection.on('error', (err) => {
   console.error('MQTT連接錯誤:', err);
 })

@@ -18,6 +18,7 @@ model User{
   level Int
   section String
   fishAble FishAble[]
+  active Int
 }
 
 model Fish {
