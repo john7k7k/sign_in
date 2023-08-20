@@ -302,7 +302,7 @@ export default {
 
     loadnewdata(){
       axios.get(
-       "/api/v1/account",{
+        "/api/v1/account",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }

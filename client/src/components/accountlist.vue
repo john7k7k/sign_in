@@ -6,13 +6,37 @@
     </v-container>
     <div class="mt-4 mb-2"><h4>全區</h4></div>
     <Table :columns="columns" :data="dataWithFallback">
-      <template #level="{row, index }">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow.showbtn"  icon="md-create"  size="small" @click="changelevel(index)"></Button></p>
-            
+      <template #level="{row}">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
+            <Modal
+              v-model="row.modal"
+              title="請選擇要變更的權限:"
+              :closable="false"
+              @on-ok="changelevel(row.selectedlevel,row.name)"
+              @on-cancel="cancel">
+              <RadioGroup v-model="row.selectedlevel">
+                <Radio label="總管理員"></Radio>
+                <Radio label="全區管理員"></Radio>
+                <Radio label="全區工程師"></Radio>
+                <Radio label="作業員"></Radio>
+                <Radio label="用戶"></Radio>
+              </RadioGroup>
+          </Modal>
         </template>
-        <template #section="{row, index }">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow.showbtn" icon="md-create" size="small" @click="changesection(index)"></Button></p>
-            
+        <template #section="{row}">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="row.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
+            <Modal
+              v-model="row.sectionmodal"
+              title="請選擇要變更的區域:"
+              :closable="false"
+              @on-ok="changesection(row.selectsection,row.name)"
+              @on-cancel="cancel">
+              <RadioGroup v-model="row.selectsection">
+                <Radio label="全區"></Radio>
+                <Radio label="北科"></Radio>
+                <Radio label="海科"></Radio>
+              </RadioGroup>
+          </Modal>
         </template>
       <template #action="{row, index }">
             <Button v-show="row.showbtn" type="error" size="small" @click="remove(row.name,index,1)">刪除</Button>
@@ -21,13 +45,37 @@
 
     <div class="mt-4 mb-2"><h4>北科</h4></div>
   <Table :columns="columns" :data="dataWithFallback2">
-    <template #level="{row, index }">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow2.showbtn" icon="md-create"  size="small" @click="remove(row.name,index,1)"></Button></p>
-            
+    <template #level="{row}">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow2.showbtn" icon="md-create"  size="small" @click="row.modal = true"></Button></p>
+            <Modal
+              v-model="row.modal"
+              title="請選擇要變更的權限:"
+              :closable="false"
+              @on-ok="changelevel(row.selectedlevel,row.name)"
+              @on-cancel="cancel">
+              <RadioGroup v-model="row.selectedlevel">
+                <Radio label="分區總管"></Radio>
+                <Radio label="分區管理員"></Radio>
+                <Radio label="分區工程師"></Radio>
+                <Radio label="作業員"></Radio>
+                <Radio label="用戶"></Radio>
+              </RadioGroup>
+          </Modal>
         </template>
-        <template #section="{row, index }">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow2.showbtn" icon="md-create" size="small" @click="remove(row.name,index,1)"></Button></p>
-            
+        <template #section="{row}">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow2.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
+            <Modal
+              v-model="row.sectionmodal"
+              title="請選擇要變更的區域:"
+              :closable="false"
+              @on-ok="changesection(row.selectsection,row.name)"
+              @on-cancel="cancel">
+              <RadioGroup v-model="row.selectsection">
+                <Radio label="全區"></Radio>
+                <Radio label="北科"></Radio>
+                <Radio label="海科"></Radio>
+              </RadioGroup>
+          </Modal>
         </template>
     <template #action="{row, index }">
             <Button v-show="fallbackRow2.showbtn" type="error" size="small" @click="remove(row.name,index,2)">刪除</Button>
@@ -36,13 +84,37 @@
 
   <div class="mt-4 mb-2"><h4>海科</h4></div>
   <Table :columns="columns" :data="dataWithFallback3">
-    <template #level="{row, index }">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="remove(row.name,index,1)"></Button></p>
-            
+    <template #level="{row}">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="row.modal = true"></Button></p>
+            <Modal
+              v-model="row.modal"
+              title="請選擇要變更的權限:"
+              :closable="false"
+              @on-ok="changelevel(row.selectedlevel,row.name)"
+              @on-cancel="cancel">
+              <RadioGroup v-model="row.selectedlevel">
+                <Radio label="分區總管"></Radio>
+                <Radio label="分區管理員"></Radio>
+                <Radio label="分區工程師"></Radio>
+                <Radio label="作業員"></Radio>
+                <Radio label="用戶"></Radio>
+              </RadioGroup>
+          </Modal>
         </template>
-        <template #section="{row, index }">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="remove(row.name,index,1)"></Button></p>
-            
+        <template #section="{row}">
+            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
+            <Modal
+              v-model="row.sectionmodal"
+              title="請選擇要變更的區域:"
+              :closable="false"
+              @on-ok="changesection(row.selectsection,row.name)"
+              @on-cancel="cancel">
+              <RadioGroup v-model="row.selectsection">
+                <Radio label="全區"></Radio>
+                <Radio label="北科"></Radio>
+                <Radio label="海科"></Radio>
+              </RadioGroup>
+          </Modal>
         </template>
     <template #action="{row, index }">
             <Button v-show="fallbackRow3.showbtn" type="error" size="small" @click="remove(row.name,index,3)">刪除</Button>
@@ -113,7 +185,9 @@ import axios from 'axios';
               level: '無資料',
               section: '',
               showbtn:false,
-            }
+            },
+            modal:false,
+            
         }
       },
       computed: {
@@ -125,12 +199,13 @@ import axios from 'axios';
         },
         dataWithFallback3() {
           return this.data3.length > 0 ? this.data3 : [this.fallbackRow3];
-        }
+        },
+        
   },
       methods: {
       accountdata(){
         axios.get(
-            "/api/v1/account/list/?section=001",{
+          "/api/v1/account/list/?section=001",{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -160,33 +235,45 @@ import axios from 'axios';
                   if(usernameResult === "123") showbtn = false
                   this.data.push({
                     email: item.email,
-                    level: this.Tranlevel(item.level),
+                    level: this.Tranlevel(item.level,item.username,0),
                     passcode: item.passcode,
                     registrationTime: this.formatDate(item.registrationTime),
                     section: sectionResult,
                     userID: item.userID,
                     name: item.username,
-                    showbtn
+                    showbtn,
+                    modal:false,
+                    sectionmodal:false,
+                    selectedlevel:this.Tranlevel(item.level,item.username,0),
+                    selectsection:sectionResult,
                   });
                 } else if (sectionResult === "北科") {
                   this.data2.push({
                     email: item.email,
-                    level: this.Tranlevel(item.level),
+                    level: this.Tranlevel(item.level,item.username,1),
                     passcode: item.passcode,
                     registrationTime: this.formatDate(item.registrationTime),
                     section: sectionResult,
                     userID: item.userID,
-                    name: item.username
+                    name: item.username,
+                    modal:false,
+                    sectionmodal:false,
+                    selectedlevel:this.Tranlevel(item.level,item.username,1),
+                    selectsection:sectionResult,
                   });
                 } else if (sectionResult === "海科") {
                   this.data3.push({
                     email: item.email,
-                    level: this.Tranlevel(item.level),
+                    level: this.Tranlevel(item.level,item.username,2),
                     passcode: item.passcode,
                     registrationTime: this.formatDate(item.registrationTime),
                     section: sectionResult,
                     userID: item.userID,
-                    name: item.username
+                    name: item.username,
+                    modal:false,
+                    sectionmodal:false,
+                    selectedlevel:this.Tranlevel(item.level,item.username,2),
+                    selectsection:sectionResult,
                   });
                 }
                 const index = this.data.findIndex(item => item.name === "123");
@@ -194,6 +281,7 @@ import axios from 'axios';
                     const itemToMove = this.data.splice(index, 1)[0];
                     this.data.unshift(itemToMove);
                 }
+                
                 if(this.data2.length > 0){
                   this.fallbackRow2.showbtn = true
                 }
@@ -230,11 +318,25 @@ import axios from 'axios';
           return section
         }
       },
-      Tranlevel(level){
-        if (level < 30) {
-          return "管理者"
+      Tranlevel(level,name,section){
+        if(name === "123"){
+          return "最高管理員"
+        }else if (level === 10 && section === 0) {
+          return "總管理員"
+        }else if (level === 20 && section === 0) {
+          return "全區管理員"
+        }else if (level === 30 && section === 0) {
+          return "全區工程師"
+        }else if (level === 10 ) {
+          return "分區總管"
+        }else if (level === 20 ) {
+          return "分區管理員"
+        }else if (level === 30 ) {
+          return "分區工程師"
+        }else if (level === 40 ) {
+          return "作業員"
         } else {
-          return "遊客"
+          return "用戶"
         }
       },
       remove(username,index,num){
@@ -251,7 +353,7 @@ import axios from 'axios';
           )
           .then(res=> {
               console.log(res);
-              alert('刪除成功');
+              this.$Message.success('刪除成功');
               if(num === 1){
                 this.data.splice(index, 1);
               }else if (num === 2){
@@ -264,15 +366,85 @@ import axios from 'axios';
           .catch(err=> {
               console.log(err);
               this.loading = false;
-              alert('刪除失敗');
+              this.$Message.error('刪除失敗');
           })
       },
-      changelevel(index){
-        console.log(index)
+      changelevel(newlevel,name){
+        let level = '';
+        if(newlevel === "總管理員" || newlevel === "分區總管"){
+          level = 10;
+        }else if(newlevel === "全區管理員" || newlevel === "分區管理員"){
+          level = 20;
+        }else if(newlevel === "全區工程師" || newlevel === "分區工程師"){
+          level = 30;
+        }else if(newlevel === "作業員"){
+          level = 40;
+        }else{
+          level = 80;
+        }
+        axios.post(
+          "/api/v1/account/revise/level",
+            {
+              "username":name,
+              "newLevel":level
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(res=> {
+              console.log(res);
+              this.$Message.success('變更權限成功');
+              setTimeout(() => {
+                location.reload();
+              }, 1500);
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('變更權限失敗');
+          })
       },
-      changesection(index){
-        console.log(index)
-      }
+      changesection(newsection,name){
+        let section = "";
+        if(newsection === "全區"){
+          section = "001"
+        }else if(newsection === "北科"){
+          section = "002"
+        }else{
+          section = "003"
+        }
+        axios.post(
+          "/api/v1/account/revise/section",
+            {
+              "username":name,
+              "newSection":section
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(res=> {
+              console.log(res);
+              this.$Message.success('變更權限成功');
+              setTimeout(() => {
+                location.reload();
+              }, 1500);
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('變更權限失敗');
+          })
+        
+      },
+      required (v) {
+          return v !== null && v.trim() !== '' || '此區為必填區域'
+        },
 
     },
     

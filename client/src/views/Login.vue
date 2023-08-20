@@ -57,12 +57,38 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  /* Apply styles only for mobile screens */
   .logininput {
     padding-left: 15px;
   }
 
   .text2 {
+    padding-left: 60px;
+    color: white;
+  }
+
+  .login {
+  background-image: url('../assets/login背景-phone2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: hidden
+}
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  .logininput {
+    padding-left: 15px;
+  }
+
+  .text2 {
+    padding-top: 200px;
     padding-left: 60px;
     color: white;
   }

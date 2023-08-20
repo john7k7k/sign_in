@@ -35,7 +35,7 @@
         <v-toolbar-title>新增仿生魚</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn variant="text" @click="newdatas"> 新增 </v-btn>
+          <v-btn variant="text" @click="newdatas" :disabled="AddButtonDisabled"> 新增 </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-list-subheader class="mx-4">基本資料</v-list-subheader>
@@ -46,12 +46,14 @@
             <v-text-field
               v-model="NewId"
               title="ID:"
+              :rules="[required, numericRule]"
+              inputmode="numeric"
             ></v-text-field>
           </v-list-item>
         </v-col>
         <v-col>
           <v-list-item title="電量(%):">
-            <v-text-field v-model="NewBc" ></v-text-field>
+            <v-text-field v-model="NewBc" :rules="[required, numericRule]" inputmode="numeric"></v-text-field>
           </v-list-item>
         </v-col>
       </v-row>
@@ -59,12 +61,12 @@
       <v-row class="d-flex justify-space-around">
         <v-col>
           <v-list-item title="區域:">
-            <v-select v-model="SelectSection" :items="sectionword"></v-select>
+            <v-select v-model="SelectSection" :items="sectionword" :rules="[required]"></v-select>
           </v-list-item>
         </v-col>
         <v-col>
           <v-list-item title="狀態:">
-            <v-select v-model="SelectActive" :items="activeword"></v-select>
+            <v-select v-model="SelectActive" :items="activeword" :rules="[required]"></v-select>
           </v-list-item>
         </v-col>
       </v-row>
@@ -77,7 +79,7 @@
       <strong>{{ row.id }}</strong>
     </template>
     <template #action="{ row: { id },index }">
-    <Button  type="primary" size="small" @click="fishdatas[id].show = true" class="mr-2">編輯</Button>
+    <Button  type="primary" size="small" @click="fishdatas[id].show = true" class="mr-2">查看</Button>
     <v-dialog v-model="fishdatas[id].show" width="auto">
       <v-card>
         <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
@@ -186,7 +188,16 @@ function TranActive(active) {
             return itemId.includes(this.searchId.toLowerCase());
           });
         }
-      }
+      },
+      AddButtonDisabled() {
+    const numericRegex = /^\d+$/;
+    const isNewIdValid = numericRegex.test(this.NewId);
+    const isNewBcValid = numericRegex.test(this.NewBc);
+    return !(isNewIdValid && isNewBcValid && this.SelectSection && this.SelectActive);
+  },
+    numericRule() {
+      return (v) => /^\d+$/.test(v) || '只能输入数字'; 
+    },
   },
       methods: {
         newdatas () {
@@ -211,21 +222,21 @@ function TranActive(active) {
               console.log(res);
               if(res.status == 200){
                 this.dialognew = false
+                this.$Message.success('新增成功');
                 await this.loadnewdata();
-                alert("新增成功")
                 location.reload();
                 
               }
               else{
                 this.dialog = false
-              alert("新增失敗")
+                this.$Message.error('新增失敗');
               }
               
           })
           .catch(err=> {
               console.log(err);
               this.dialog = false
-              alert('新增失敗');
+              this.$Message.error('新增失敗');
           })
 
         },
@@ -253,7 +264,7 @@ function TranActive(active) {
         });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-                 "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+                "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -354,17 +365,21 @@ function TranActive(active) {
           )
           .then(async res=> {
               console.log(res);
+              this.$Message.success('刪除成功');
               await this.loadnewdata();
-              alert('刪除成功');
               this.data.splice(index, 1);
               location.reload();
           })
           .catch(err=> {
               console.log(err);
               this.loading = false;
-              alert('刪除失敗');
+              this.$Message.error('刪除失敗');
           })
       },
+      required (v) {
+          return v !== null && v.trim() !== '' || '此區為必填區域'
+        },
+        
     },
     }
   </script>
@@ -380,4 +395,8 @@ function TranActive(active) {
   }
   }
   </style>
+
+
+
+
   
