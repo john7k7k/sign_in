@@ -41,7 +41,7 @@
             <v-list-item class="ml-4 mr-auto mt-5 font-weight-black"
               >權限</v-list-item
             >
-            <v-list-item class="mt-5 mr-13 text-center flex-grow-1">
+            <v-list-item class="mt-5 mr-7 text-center flex-grow-1">
               <t4>{{ level }}</t4>
             </v-list-item>
             <v-list-item class="mt-5">
@@ -90,6 +90,27 @@
       },
       methods: {
       TranSection() {
+        if(this.username === "123"){
+          this.level = "最高管理員"
+        }else if (this.level === 10 && this.section === "001") {
+          this.level = "總管理員"
+        }else if (this.level === 20 && this.section === "001") {
+          this.level = "全區管理員"
+        }else if (this.level === 30 && this.section === "001") {
+          this.level = "全區工程師"
+        }else if (this.level === 10 ) {
+          this.level = "分區總管"
+        }else if (this.level === 20 ) {
+          this.level = "分區管理員"
+        }else if (this.level === 30 ) {
+          this.level = "分區工程師"
+        }else if (this.level === 40 ) {
+          this.level = "作業員"
+        } else {
+          this.level = "用戶"
+        }
+
+
         if (this.section == "001") {
           this.section = "全區";
         } else if(this.section == "002"){
@@ -100,11 +121,6 @@
         }
 
         
-        if (this.level < 30) {
-          this.level = "管理者"
-        } else {
-          this.level = "遊客"
-        }
       },
     },
     

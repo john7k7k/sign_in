@@ -5,7 +5,7 @@
     
     </v-container>
     <div class="mt-4 mb-2"><h4>全區</h4></div>
-    <Table :columns="columns" :data="dataWithFallback">
+    <Table :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback">
       <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -44,7 +44,7 @@
     </Table>
 
     <div class="mt-4 mb-2"><h4>北科</h4></div>
-  <Table :columns="columns" :data="dataWithFallback2">
+  <Table :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback2">
     <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow2.showbtn" icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -83,7 +83,7 @@
   </Table>
 
   <div class="mt-4 mb-2"><h4>海科</h4></div>
-  <Table :columns="columns" :data="dataWithFallback3">
+  <Table :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback3">
     <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -131,10 +131,11 @@ import axios from 'axios';
             userdatas:[],
             token:localStorage.getItem('token'),
             show: false,
+            isMobileScreen: false,
             columns: [
                     {
                         title: '使用者名稱',
-                        key: 'name'
+                        key: 'name',
                     },
                     {
                         title: 'Email',
@@ -161,7 +162,45 @@ import axios from 'axios';
                         title: ' ',
                         slot: 'action',
                         width: 100,
-                        align: 'center'
+                        align: 'center',
+                    }
+                ],
+                mobileColumns:[
+                {
+                        title: '使用者名稱',
+                        key: 'name',
+                        width: 120,
+                        fixed: 'left'
+                    },
+                    {
+                        title: 'Email',
+                        width: 120,
+                        key: 'email',
+          
+                    },
+                    {
+                        title: '權限',
+                        slot: 'level',
+                        width: 150,
+                        align: 'left'
+                    },
+                    {
+                        title: '所屬區域',
+                        slot: 'section',
+                        width: 150,
+                        align: 'left'
+                    },
+                    {
+                        title: '註冊時間',
+                        width: 120,
+                        key: 'registrationTime'
+                    },
+                    {
+                        title: ' ',
+                        slot: 'action',
+                        width: 70,
+                        align: 'center',
+                        fixed: 'right',
                     }
                 ],
                 data: [],
@@ -202,7 +241,15 @@ import axios from 'axios';
         },
         
   },
-      methods: {
+  mounted() {
+    this.accountdata();
+    window.addEventListener('resize', this.updateScreenSize);
+    this.updateScreenSize();
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.updateScreenSize);
+  },
+  methods: {
       accountdata(){
         axios.get(
           "/api/v1/account/list/?section=001",{
@@ -319,7 +366,7 @@ import axios from 'axios';
         }
       },
       Tranlevel(level,name,section){
-        if(name === "123"){
+        if(name === "123" && level === 10){
           return "最高管理員"
         }else if (level === 10 && section === 0) {
           return "總管理員"
@@ -445,12 +492,10 @@ import axios from 'axios';
       required (v) {
           return v !== null && v.trim() !== '' || '此區為必填區域'
         },
-
+      updateScreenSize() {
+      this.isMobileScreen = window.innerWidth <= 768; 
     },
-    
-    
-    mounted() {
-      this.accountdata();
+
     },
     }
   </script>
