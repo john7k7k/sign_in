@@ -207,6 +207,7 @@ import axios from 'axios';
                 data2: [],
                 data3: [],
                 IP:process.env.VUE_APP_IP,
+                sectionOrigin:localStorage.getItem('UserSection'),
                 fallbackRow: {
               name: '',
               level: '無資料',
@@ -252,7 +253,7 @@ import axios from 'axios';
   methods: {
       accountdata(){
         axios.get(
-          "/api/v1/account/list/?section=001",{
+          "/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
