@@ -19,7 +19,7 @@
           </v-img> 
           <div class="d-flex align-center justify-space-between">
             <v-card-subtitle class="pt-1 pb-1 "> 紀錄時間:{{ time }} </v-card-subtitle>
-              <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="RefreshDatas" :disabled="isRefreshing"></v-btn>
+              <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refreshData" :disabled="isRefreshing"></v-btn>
           </div>
             
             
@@ -76,9 +76,9 @@ export default {
       token:localStorage.getItem('token'),
       time: localStorage.getItem("NewTime"),
       links: [ 
-        { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-        { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-        { icon: 'mdi-wrench', text: 0, color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi-fishbowl', text: "載", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi mdi-fish-off', text: "入", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi-wrench', text: "中", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
       ],
       isRefreshing: false,
       IP:process.env.VUE_APP_IP,
@@ -93,57 +93,14 @@ export default {
       this.active.push(active);
         });
     },
-    loaddata(){
-      this.links[1].text = 0; 
-      this.links[2].text = 0; 
-      const fish1Data = localStorage.getItem("fish21");
-      const parsedFish1Data = JSON.parse(fish1Data);
-      this.FishId = parsedFish1Data
-      const FishIdNow = this.FishId.length
-      const fish0Data = localStorage.getItem("fish20");
-      const parsedFish0Data = JSON.parse(fish0Data);
-      this.FishId.push(...parsedFish0Data)
-      this.FishId2num = this.FishId.length
-      const fish2Data = localStorage.getItem("fish22");
-      const parsedFish2Data = JSON.parse(fish2Data);
-      this.FishId.push(...parsedFish2Data)
-      this.FishId = this.FishId.map((str) => {
-              const num = parseInt(str, 10);
-              return isNaN(num) ? 0 : num; 
-            });
-      if (this.FishId != null) {
-              this.bc = localStorage.getItem("totalBc2");
-              this.err = localStorage.getItem("totalErro2");
-              this.active = localStorage.getItem("totalActive2");
-              for (let i = 0; i < FishIdNow; i++) {
-              if (this.bc[i] < "20") this.needchargenum += 1;
-            }
-            for (let i = 0; i < FishIdNow; i++) {
-              if (this.err[i] !== 0) this.needfixnum += 1;
-            }
-            if(this.needchargenum !== 0){
-              this.links[0].alertbcbutton = true
-            }
-            if(this.needfixnum !== 0){
-              this.links[0].alerterrbutton = true
-            }
-            this.links[0].text = this.active.filter((a) => a === 1).length;
-            this.links[1].text = this.active.filter((a) => a === 0).length;
-            this.links[2].text = this.active.filter((a) => a === 2).length;
-            localStorage.setItem("NewId2",this.FishId)
-            localStorage.setItem("NewBc2", this.bc);
-            localStorage.setItem("NewErro2", this.err);
-            localStorage.setItem("NewActive2", this.active);
-        
-      } else {
-        alert("無資料");
-      }
+    async refreshData() {
+      this.isRefreshing = true;
+      await this.loadnewdata();
+      await this.RefreshDatas();
+      this.isRefreshing = false;
     },
     async RefreshDatas() {
   try {
-    this.loadnewdata();
-    this.links[1].text = 0;
-    this.links[2].text = 0;
     const fish1Data = localStorage.getItem("fish21");
     const parsedFish1Data = JSON.parse(fish1Data);
     this.FishId = parsedFish1Data;
@@ -205,7 +162,10 @@ export default {
       this.links[0].text = this.active.filter((a) => a === 1).length;
       this.links[1].text = this.active.filter((a) => a === 0).length;
       this.links[2].text = this.active.filter((a) => a === 2).length;
-      
+      localStorage.setItem("NewId2", this.FishId);
+      localStorage.setItem("NewBc2", this.bc);
+      localStorage.setItem("NewErro2", this.err);
+      localStorage.setItem("NewActive2", this.active);
       if (!this.isRefreshing) {
         this.isRefreshing = true;
 
@@ -213,11 +173,6 @@ export default {
           this.isRefreshing = false;
         }, 1000); 
       }
-      
-      localStorage.setItem("NewId2", this.FishId);
-      localStorage.setItem("NewBc2", this.bc);
-      localStorage.setItem("NewErro2", this.err);
-      localStorage.setItem("NewActive2", this.active);
     } else {
       alert("無資料");
     }
@@ -300,47 +255,51 @@ export default {
       
     },
 
-    loadnewdata(){
-      axios.get(
-        "/api/v1/account",{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-              console.log(res);
-              if(res.status == 200){
-                const fish001Data = res.data.fishesID["002"];
-                const fish20Values = [];
-                const fish21Values = [];
-                const fish22Values = [];
-                if( Object.hasOwn(res.data.fishesID,"002")){
-                  Object.entries(fish001Data).forEach(([key, value]) => {
-                    if (value === 1) {
-                      fish21Values.push(key);
-                    } else if (value === 2) {
-                      fish22Values.push(key)
-                    } else {
-                      fish20Values.push(key)
-                    }
-                  });
-                }
-                localStorage.setItem("fish20", JSON.stringify(fish20Values));
-                localStorage.setItem("fish21", JSON.stringify(fish21Values));
-                localStorage.setItem("fish22", JSON.stringify(fish22Values));
+    async loadnewdata() {
+      try {
+        const response = await axios.get(
+          "/api/v1/account",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`
+            }
+          }
+        );
+
+        console.log(response);
+        if (response.status === 200) {
+          const fish001Data = response.data.fishesID["002"];
+          const fish20Values = [];
+          const fish21Values = [];
+          const fish22Values = [];
+
+          if (Object.prototype.hasOwnProperty.call(response.data.fishesID, "002")) {
+            Object.entries(fish001Data).forEach(([key, value]) => {
+              if (value === 1) {
+                fish21Values.push(key);
+              } else if (value === 2) {
+                fish22Values.push(key);
+              } else {
+                fish20Values.push(key);
               }
-          })
-          .catch(err=> {
-              console.log(err);
-          })
+            });
+          }
+
+          localStorage.setItem("fish20", JSON.stringify(fish20Values));
+          localStorage.setItem("fish21", JSON.stringify(fish21Values));
+          localStorage.setItem("fish22", JSON.stringify(fish22Values));
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     routefishdata(){
       this.$router.push('/ntut/fish');
     }
   },
   async created() {
-      await  this.RefreshDatas();
+    await this.loadnewdata();
+    await this.RefreshDatas();
     
   },
 };

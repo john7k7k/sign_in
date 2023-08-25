@@ -456,8 +456,8 @@ axios.get(
         return '45'
       },
       cols() {
-        const { lg, sm } = this.$vuetify.display
-        return lg ? 4 : sm ? 12 :12
+        const { xl, lg, md ,sm } = this.$vuetify.display; 
+        return xl || lg  ? 4 : sm || md ?  6:12;
       },
     },
     created() {

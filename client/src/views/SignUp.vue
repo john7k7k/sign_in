@@ -109,5 +109,33 @@
   overflow-y: hidden
 }
 }  
+
+@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
+  .signupinput {
+    padding-left: 600px;
+  }
+
+  .textsignup {
+    padding-top: 40px;
+    padding-left: 585px;
+    color: rgb(5, 5, 5);
+  }
+
+  .signup {
+    background-image: url('../assets/login背景.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+    background-position: 25% 50%; 
+}
+}
   
   </style>
