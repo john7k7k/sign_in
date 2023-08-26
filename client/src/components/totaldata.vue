@@ -76,12 +76,13 @@ export default {
       token:localStorage.getItem('token'),
       time: localStorage.getItem("NewTime"),
       links: [ 
-        { icon: 'mdi-fishbowl', text: "載", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-        { icon: 'mdi mdi-fish-off', text: "入", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-        { icon: 'mdi-wrench', text: "中", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
       ],
       isRefreshing: false,
       IP:process.env.VUE_APP_IP,
+      poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
     };
   },
   methods: {
@@ -300,7 +301,6 @@ export default {
   async created() {
     await this.loadnewdata();
     await this.RefreshDatas();
-    
   },
 };
 </script>

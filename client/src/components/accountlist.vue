@@ -4,8 +4,8 @@
     
     
     </v-container>
-    <div class="mt-4 mb-2"><h4>全區</h4></div>
-    <Table :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback">
+    <div v-show="sectionshow" class="mt-4 mb-2"><h4>全區</h4></div>
+    <Table v-show="sectionshow" :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback">
       <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -39,12 +39,12 @@
           </Modal>
         </template>
       <template #action="{row, index }">
-            <Button v-show="row.showbtn" type="error" size="small" @click="remove(row.name,index,1)">刪除</Button>
+            <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name,index,1)">刪除</Button>
         </template>
     </Table>
 
-    <div class="mt-4 mb-2"><h4>北科</h4></div>
-  <Table :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback2">
+    <div v-show="sectionshow2" class="mt-4 mb-2"><h4>北科</h4></div>
+  <Table v-show="sectionshow2" :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback2">
     <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow2.showbtn" icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -78,12 +78,12 @@
           </Modal>
         </template>
     <template #action="{row, index }">
-            <Button v-show="fallbackRow2.showbtn" type="error" size="small" @click="remove(row.name,index,2)">刪除</Button>
+            <Button v-show="fallbackRow2.showbtn" type="error" size="small" @click="confirm(row.name,index,2)">刪除</Button>
         </template>
   </Table>
 
-  <div class="mt-4 mb-2"><h4>海科</h4></div>
-  <Table :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback3">
+  <div v-show="sectionshow3" class="mt-4 mb-2"><h4>海科</h4></div>
+  <Table v-show="sectionshow3" :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback3">
     <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -117,7 +117,7 @@
           </Modal>
         </template>
     <template #action="{row, index }">
-            <Button v-show="fallbackRow3.showbtn" type="error" size="small" @click="remove(row.name,index,3)">刪除</Button>
+            <Button v-show="fallbackRow3.showbtn" type="error" size="small" @click="confirm(row.name,index,3)">刪除</Button>
         </template>
   </Table>
   </template>
@@ -208,21 +208,24 @@ import axios from 'axios';
                 data3: [],
                 IP:process.env.VUE_APP_IP,
                 sectionOrigin:localStorage.getItem('UserSection'),
+                sectionshow:false,
+                sectionshow2:false,
+                sectionshow3:false,
                 fallbackRow: {
-              name: '',
-              level: '無資料',
+              name: '無資料',
+              level: '',
               section: '',
               showbtn:false,
             },
             fallbackRow2: {
-              name: '',
-              level: '無資料',
+              name: '無資料',
+              level: '',
               section: '',
               showbtn:false,
             },
             fallbackRow3: {
-              name: '',
-              level: '無資料',
+              name: '無資料',
+              level: '',
               section: '',
               showbtn:false,
             },
@@ -243,6 +246,7 @@ import axios from 'axios';
         
   },
   mounted() {
+    this.sectionsShow();
     this.accountdata();
     window.addEventListener('resize', this.updateScreenSize);
     this.updateScreenSize();
@@ -251,7 +255,18 @@ import axios from 'axios';
     window.removeEventListener('resize', this.updateScreenSize);
   },
   methods: {
-      accountdata(){
+    sectionsShow(){
+      if(this.sectionOrigin === "001"){
+        this.sectionshow = true;
+        this.sectionshow2 = true;
+        this.sectionshow3 = true;
+      }else if(this.sectionOrigin === "002"){
+        this.sectionshow2 = true;
+      }else{
+        this.sectionshow3 = true;
+      }
+    },
+    accountdata(){
         axios.get(
           "/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
@@ -409,7 +424,10 @@ import axios from 'axios';
               }else{
                 this.data3.splice(index, 1);
               }
-              location.reload();
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+              
           })
           .catch(err=> {
               console.log(err);
@@ -490,12 +508,23 @@ import axios from 'axios';
           })
         
       },
+      confirm (name,index,num) {
+                this.$Modal.confirm({
+                    title: '確定要刪除此帳號嗎?',
+                    onOk: () => {
+                        this.remove(name,index,num);
+                    },
+                    onCancel: () => {
+                        
+                    }
+                });
+            },
       required (v) {
           return v !== null && v.trim() !== '' || '此區為必填區域'
         },
       updateScreenSize() {
-      this.isMobileScreen = window.innerWidth <= 768; 
-    },
+        this.isMobileScreen = window.innerWidth <= 768; 
+      },
 
     },
     }

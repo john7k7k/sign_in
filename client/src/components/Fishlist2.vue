@@ -74,7 +74,7 @@
   </v-dialog> 
 </div> 
       <div class="mt-4"><h3>北科</h3></div>
-    <Table v-show="Tableshow" :border="true" :columns="columns" :data="filteredData">
+    <Table v-show="Tableshow" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
     </template>
@@ -98,7 +98,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <Button  type="error" size="small" @click="remove(id,index)">刪除</Button>
+    <Button  type="error" size="small" @click="confirm(id,index)">刪除</Button>
     </template>
   </Table>
   </template>
@@ -128,10 +128,15 @@ function TranActive(active) {
             version:[],
             lastdatas:[],
             time:[],
+            active:[],
             columns: [
                     {
                         title: 'ID',
                         slot: 'id'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
                     },
                     {
                         title: '版本',
@@ -148,6 +153,30 @@ function TranActive(active) {
                         align: 'center'
                     }
                 ],
+            mobileColumns:[
+                    {
+                        title: 'ID',
+                        slot: 'id'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        key: 'version'
+                    },
+                    {
+                        title: '更新時間',
+                        key: 'time'
+                    },
+                    {
+                        title: '編輯',
+                        slot: 'action',
+                        width: 80,
+                        align: 'center'
+                    }
+            ],
             data: [],
             searchId:'',
             dialog: false,
@@ -156,6 +185,7 @@ function TranActive(active) {
             id: '',
             version: '無資料',
             time: '',
+            active:'',
             },
             dialognew:false,
             NewId:null,
@@ -176,8 +206,15 @@ function TranActive(active) {
       created() {
         this.accountdata();
       },
+      mounted() {
+        window.addEventListener('resize', this.updateScreenSize);
+        this.updateScreenSize();
+      },
+      beforeUnmount() {
+        window.removeEventListener('resize', this.updateScreenSize);
+      },
       computed: {
-    filteredData() {
+      filteredData() {
       
         if (!this.searchId) {
           if(this.data.length < 0) return this.fallbackRow
@@ -190,14 +227,14 @@ function TranActive(active) {
         }
       },
       AddButtonDisabled() {
-    const numericRegex = /^\d+$/;
-    const isNewIdValid = numericRegex.test(this.NewId);
-    const isNewBcValid = numericRegex.test(this.NewBc);
-    return !(isNewIdValid && isNewBcValid && this.SelectSection && this.SelectActive);
-  },
-    numericRule() {
-      return (v) => /^\d+$/.test(v) || '只能输入数字'; 
-    },
+        const numericRegex = /^\d+$/;
+        const isNewIdValid = numericRegex.test(this.NewId);
+        const isNewBcValid = numericRegex.test(this.NewBc);
+        return !(isNewIdValid && isNewBcValid && this.SelectSection && this.SelectActive);
+      },
+      numericRule() {
+        return (v) => /^\d+$/.test(v) || '只能输入数字'; 
+      },
   },
       methods: {
         newdatas () {
@@ -264,7 +301,7 @@ function TranActive(active) {
         });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-                "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+                  "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -284,15 +321,21 @@ function TranActive(active) {
             const reversedLastFive = lastFiveObjects.reverse();
             this.fishdatas[id] = reversedLastFive;
             this.fishdatas[id].show = false;
-            const { version,time } = dataArray[dataArray.length-1];
+            const { version,time,active } = dataArray[dataArray.length-1];
             this.version.push(version);
             this.time.push(time);
+            this.active.push(active);
             }
             this.data = this.FishId.map((item,index) => ({
               id: this.FishId[index],
               version: this.version[index],
-              time: this.formatDate(this.time[index])
+              time: this.formatDate(this.time[index]),
+              active:this.proccesactive(this.active[index])
             }));
+            this.data.sort((a, b) => {
+              const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
+              return order[a.active] - order[b.active];
+            });
             this.Tableshow = true;
           })
           .catch(err=> {
@@ -351,6 +394,17 @@ function TranActive(active) {
       localStorage.setItem("fish21", JSON.stringify(fish21Values));
       localStorage.setItem("fish22", JSON.stringify(fish22Values));
     },
+    confirm (id,index) {
+                this.$Modal.confirm({
+                    title: `確定要刪除ID: ${id} 嗎?`,
+                    onOk: () => {
+                        this.remove(id,index);
+                    },
+                    onCancel: () => {
+                        
+                    }
+                });
+            },
     remove(id,index){
         axios.post(
           "/api/v1/fish/delete/?section=002",
@@ -379,6 +433,19 @@ function TranActive(active) {
       required (v) {
           return v !== null && v.trim() !== '' || '此區為必填區域'
         },
+      updateScreenSize() {
+        this.isMobileScreen = window.innerWidth <= 768; 
+      },
+      proccesactive(num){
+        if(num === 1){
+          return "游動中"
+        }else if(num === 2){
+          return "維修中"
+        }else{
+          return "待機中"
+        }
+
+      }
         
     },
     }

@@ -48,12 +48,14 @@
             route to = "/user"
           ></v-list-item>
           <v-list-item
+            v-show="fishlistshow"
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="仿生魚資料清單"
             value="data"
             route to = "/fish/list"
           ></v-list-item>
           <v-list-item
+            v-show="userlistshow"
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="帳號資料清單"
             value="accountdata"
@@ -85,6 +87,9 @@ export default {
       username: localStorage.getItem('UserName'),
       level: localStorage.getItem('UserLevel'),
       token:localStorage.getItem('token'),
+      section:localStorage.getItem('UserSection'),
+      userlistshow:false,
+      fishlistshow:false,
       links: [
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" },
@@ -97,23 +102,45 @@ export default {
   methods: {
     userlevel() {
       if (this.level === "10" && this.username === "123") {
+        this.userlistshow = true;
+        this.fishlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
         return "最高管理員";
-      } else if (this.level === "10"){
+      } else if (this.level === "10" && this.section === "001"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
         return "總管理員";
-      } else if (this.level === "20"){
+      } else if (this.level === "20" && this.section === "001"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
-        return "管理員";
-      } else if (this.level === "30"){
+        return "全區管理員";
+      } else if (this.level === "30" && this.section === "001"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
-        return "管理員";
-      }else if (this.level === "40"){
+        return "全區工程師";
+      }else if (this.level === "10"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "分區總管";
+      }else if (this.level === "20"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "分區管理員";
+      }else if (this.level === "30"){
+        this.fishlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "分區工程師";
+      }else if (this.level === "40" || this.level === "50" || this.level === "60" || this.level === "70"){
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
         return "管理員";
       }else {
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
-        return "遊客";
+        return "用戶";
       }
     },
     logout(){

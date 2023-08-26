@@ -74,9 +74,9 @@
         token:localStorage.getItem('token'),
         time: null,
         links: [ 
-          { icon: 'mdi-fishbowl', text: "載", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-          { icon: 'mdi mdi-fish-off', text: "入", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-          { icon: 'mdi-wrench', text: "中", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
+          { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
+          { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
+          { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
         ],
         isRefreshing: false,
         IP:process.env.VUE_APP_IP,

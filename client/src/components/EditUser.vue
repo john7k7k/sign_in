@@ -92,19 +92,19 @@
       TranSection() {
         if(this.username === "123"){
           this.level = "最高管理員"
-        }else if (this.level === 10 && this.section === "001") {
+        }else if (this.level === "10" && this.section === "001") {
           this.level = "總管理員"
-        }else if (this.level === 20 && this.section === "001") {
+        }else if (this.level === "20" && this.section === "001") {
           this.level = "全區管理員"
-        }else if (this.level === 30 && this.section === "001") {
+        }else if (this.level === "30" && this.section === "001") {
           this.level = "全區工程師"
-        }else if (this.level === 10 ) {
+        }else if (this.level === "10" ) {
           this.level = "分區總管"
-        }else if (this.level === 20 ) {
+        }else if (this.level === "20" ) {
           this.level = "分區管理員"
-        }else if (this.level === 30 ) {
+        }else if (this.level === "30" ) {
           this.level = "分區工程師"
-        }else if (this.level === 40 ) {
+        }else if (this.level === "40" ) {
           this.level = "作業員"
         } else {
           this.level = "用戶"

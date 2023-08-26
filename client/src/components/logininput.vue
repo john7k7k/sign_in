@@ -119,6 +119,14 @@
                 localStorage.setItem("registrationTime",formattedDate)
                 localStorage.setItem("token",res.data.token)
                 document.cookie = "token=" + res.data.token + "; path=/";
+                const fishesID = res.data.fishesID;
+                const keys = Object.keys(fishesID);
+                keys.sort();
+                let poolsCode = [];
+                keys.forEach(key => {
+                  poolsCode.push(key)
+                });
+                localStorage.setItem("PoolsCode", JSON.stringify(poolsCode));
                 window.location.replace(`/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
               }
               else
