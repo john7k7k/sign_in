@@ -40,4 +40,14 @@
   }
 
 }
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  .text {
+    padding-left: 60px;
+    color: white;
+  }
+  .divider{
+    padding-left: 200px;
+  }
+}
 </style>

@@ -48,12 +48,14 @@
             route to = "/user"
           ></v-list-item>
           <v-list-item
+            v-show="fishlistshow"
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="仿生魚資料清單"
             value="data"
             route to = "/fish/list"
           ></v-list-item>
           <v-list-item
+            v-show="userlistshow"
             prepend-icon="mdi mdi-clipboard-text-search-outline"
             title="帳號資料清單"
             value="accountdata"
@@ -83,24 +85,62 @@ export default {
       drawer: null,
       userimage: "",
       username: localStorage.getItem('UserName'),
-      level: 30,
+      level: localStorage.getItem('UserLevel'),
       token:localStorage.getItem('token'),
+      section:localStorage.getItem('UserSection'),
+      userlistshow:false,
+      fishlistshow:false,
       links: [
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" },
         { icon: "", text: "", route: "/" }
       ],
       IP:process.env.VUE_APP_IP,
+      userlogo:"../assets/card.png"
     }
   },
   methods: {
     userlevel() {
-      if (this.level < 50) {
+      if (this.level === "10" && this.username === "123") {
+        this.userlistshow = true;
+        this.fishlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
-        return "管理員";
-      } else {
+        return "最高管理員";
+      } else if (this.level === "10" && this.section === "001"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
-        return "遊客";
+        return "總管理員";
+      } else if (this.level === "20" && this.section === "001"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "全區管理員";
+      } else if (this.level === "30" && this.section === "001"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "全區工程師";
+      }else if (this.level === "10"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "分區總管";
+      }else if (this.level === "20"){
+        this.fishlistshow = true;
+        this.userlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "分區管理員";
+      }else if (this.level === "30"){
+        this.fishlistshow = true;
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "分區工程師";
+      }else if (this.level === "40" || this.level === "50" || this.level === "60" || this.level === "70"){
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "管理員";
+      }else {
+        this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+        return "用戶";
       }
     },
     logout(){
@@ -115,17 +155,17 @@ export default {
               console.log(res);
               
               if(res.status == 200){
-                alert("登出成功")
+                this.$Message.success('登出成功');
                 document.cookie = "token=" + res.data.token + "; path=/";
                 window.location.replace(`/login`); 
               }
               else
-              alert("登出失敗")
+              this.$Message.error('登出失敗');
           })
           .catch(err=> {
               console.log(err);
               this.loading = false;
-              alert('登出失敗');
+              this.$Message.error('登出失敗');
           })
     },
     routehome() {

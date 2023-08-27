@@ -19,7 +19,7 @@
           </v-img> 
             <div class="d-flex align-center justify-space-between">
               <v-card-subtitle class="pt-1"> 紀錄時間:{{ time }} </v-card-subtitle>
-            <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="RefreshDatas"></v-btn>
+            <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refreshData" :disabled="isRefreshing"></v-btn>
             </div>
           <v-card-text>
             <div>
@@ -74,16 +74,11 @@
         token:localStorage.getItem('token'),
         time: null,
         links: [ 
-          { icon: 'mdi-fishbowl', text: 0, color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-          { icon: 'mdi mdi-fish-off', text: 0, color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-          { icon: 'mdi-wrench', text: 0, color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
+          { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
+          { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
+          { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
         ],
-        computed: {
-          cols() {
-            const { lg, sm } = this.$vuetify.display;
-            return lg ? 3 : sm ? 3 : 3;
-          },
-        },
+        isRefreshing: false,
         IP:process.env.VUE_APP_IP,
       };
     },
@@ -96,11 +91,14 @@
         this.active.push(active);
           });
       },
+      async refreshData() {
+      this.isRefreshing = true;
+      await this.loadnewdata();
+      await this.RefreshDatas();
+      this.isRefreshing = false;
+    },
       async RefreshDatas() {
   try {
-    this.loadnewdata();
-    this.links[1].text = 0;
-    this.links[2].text = 0;
     const fish1Data = localStorage.getItem("fish31");
     const parsedFish1Data = JSON.parse(fish1Data);
     this.FishId = parsedFish1Data;
@@ -123,7 +121,7 @@
       this.active = [];
       
       const response = await axios.get(
-         "/api/v1/fish/data/?section=003&fishesID=" + this.FishId,
+        "/api/v1/fish/data/?section=003&fishesID=" + this.FishId,
         {
           headers: {
             Authorization: `Bearer ${this.token}`,
@@ -162,11 +160,13 @@
       this.links[0].text = this.active.filter((a) => a === 1).length;
       this.links[1].text = this.active.filter((a) => a === 0).length;
       this.links[2].text = this.active.filter((a) => a === 2).length;
-      
-      if (this.links[0].text === 0 && this.links[1].text === 0 && this.links[2].text == 0) {
-        await this.RefreshDatas();
-      }
-      
+      if (!this.isRefreshing) {
+          this.isRefreshing = true;
+
+          setTimeout(() => {
+            this.isRefreshing = false;
+          }, 1000); 
+        }
       localStorage.setItem("NewId3", this.FishId);
       localStorage.setItem("NewBc3", this.bc);
       localStorage.setItem("NewErro3", this.err);
@@ -252,52 +252,52 @@
         
       },
   
-      loadnewdata(){
-        axios.get(
-          "/api/v1/account",{
-      headers: {
-        Authorization: `Bearer ${this.token}`
+      async loadnewdata() {
+      try {
+        const response = await axios.get(
+          "/api/v1/account",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`
+            }
+          }
+        );
+
+        console.log(response);
+        if (response.status === 200) {
+          const fish001Data = response.data.fishesID["003"];
+          const fish20Values = [];
+          const fish21Values = [];
+          const fish22Values = [];
+
+          if (Object.prototype.hasOwnProperty.call(response.data.fishesID, "003")) {
+            Object.entries(fish001Data).forEach(([key, value]) => {
+              if (value === 1) {
+                fish21Values.push(key);
+              } else if (value === 2) {
+                fish22Values.push(key);
+              } else {
+                fish20Values.push(key);
+              }
+            });
+          }
+
+          localStorage.setItem("fish30", JSON.stringify(fish20Values));
+          localStorage.setItem("fish31", JSON.stringify(fish21Values));
+          localStorage.setItem("fish32", JSON.stringify(fish22Values));
+        }
+      } catch (error) {
+        console.log(error);
       }
-    }
-            )
-            .then(res=> {
-                console.log(res);
-                if(res.status == 200){
-                  const fish002Data = res.data.fishesID["003"];
-                  const fish30Values = [];
-                  const fish31Values = [];
-                  const fish32Values = [];
-                  if(Object.hasOwn(res.data.fishesID,"003")){
-                    
-                    Object.entries(fish002Data).forEach(([key, value]) => {
-                      if (value === 1) {
-                        fish31Values.push(key)
-                      } else if (value === 2) {
-                        fish32Values.push(key)
-                      } else {
-                        fish30Values.push(key)
-                      }
-                    });
-                  }
-                  localStorage.setItem("fish30", JSON.stringify(fish30Values));
-                  localStorage.setItem("fish31", JSON.stringify(fish31Values));
-                  localStorage.setItem("fish32", JSON.stringify(fish32Values));
-                  
-                }
-            })
-            .catch(err=> {
-                console.log(err);
-            })
-      },
+    },
       
       routefishdata(){
         this.$router.push('/nmmst/fish');
       }
     },
-    mounted() {
-      setTimeout(() => {
-        this.RefreshDatas();
-      }, 200);
-    },
+    async created() {
+    await this.loadnewdata();
+    await this.RefreshDatas();
+  },
   };
   </script>

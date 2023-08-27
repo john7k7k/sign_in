@@ -35,7 +35,7 @@
         <v-toolbar-title>新增仿生魚</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn variant="text" @click="newdatas"> 新增 </v-btn>
+          <v-btn variant="text" @click="newdatas" :disabled="AddButtonDisabled"> 新增 </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-list-subheader class="mx-4">基本資料</v-list-subheader>
@@ -46,12 +46,14 @@
             <v-text-field
               v-model="NewId"
               title="ID:"
+              :rules="[required, numericRule]"
+              inputmode="numeric"
             ></v-text-field>
           </v-list-item>
         </v-col>
         <v-col>
           <v-list-item title="電量(%):">
-            <v-text-field v-model="NewBc" ></v-text-field>
+            <v-text-field v-model="NewBc" :rules="[required, numericRule]" inputmode="numeric"></v-text-field>
           </v-list-item>
         </v-col>
       </v-row>
@@ -59,12 +61,12 @@
       <v-row class="d-flex justify-space-around">
         <v-col>
           <v-list-item title="區域:">
-            <v-select v-model="SelectSection" :items="sectionword"></v-select>
+            <v-select v-model="SelectSection" :items="sectionword" :rules="[required]"></v-select>
           </v-list-item>
         </v-col>
         <v-col>
           <v-list-item title="狀態:">
-            <v-select v-model="SelectActive" :items="activeword"></v-select>
+            <v-select v-model="SelectActive" :items="activeword" :rules="[required]"></v-select>
           </v-list-item>
         </v-col>
       </v-row>
@@ -72,12 +74,12 @@
   </v-dialog> 
 </div> 
       <div class="mt-4"><h3>北科</h3></div>
-    <Table  :border="true" :columns="columns" :data="filteredData">
+    <Table v-show="Tableshow" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
     </template>
     <template #action="{ row: { id },index }">
-    <Button  type="primary" size="small" @click="fishdatas[id].show = true" class="mr-2">編輯</Button>
+    <Button  type="primary" size="small" @click="fishdatas[id].show = true" class="mr-2">查看</Button>
     <v-dialog v-model="fishdatas[id].show" width="auto">
       <v-card>
         <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
@@ -96,7 +98,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <Button  type="error" size="small" @click="remove(id,index)">刪除</Button>
+    <Button  type="error" size="small" @click="confirm(id,index)">刪除</Button>
     </template>
   </Table>
   </template>
@@ -119,16 +121,22 @@ function TranActive(active) {
         return {
             userdatas:[],
             token:localStorage.getItem('token'),
+            Tableshow:false,
             show: false,
             FishId: [],
             fishdatas:[],
             version:[],
             lastdatas:[],
             time:[],
+            active:[],
             columns: [
                     {
                         title: 'ID',
                         slot: 'id'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
                     },
                     {
                         title: '版本',
@@ -145,6 +153,30 @@ function TranActive(active) {
                         align: 'center'
                     }
                 ],
+            mobileColumns:[
+                    {
+                        title: 'ID',
+                        slot: 'id'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        key: 'version'
+                    },
+                    {
+                        title: '更新時間',
+                        key: 'time'
+                    },
+                    {
+                        title: '編輯',
+                        slot: 'action',
+                        width: 80,
+                        align: 'center'
+                    }
+            ],
             data: [],
             searchId:'',
             dialog: false,
@@ -153,6 +185,7 @@ function TranActive(active) {
             id: '',
             version: '無資料',
             time: '',
+            active:'',
             },
             dialognew:false,
             NewId:null,
@@ -170,9 +203,21 @@ function TranActive(active) {
             ]
         }
       },
+      created() {
+        this.accountdata();
+      },
+      mounted() {
+        window.addEventListener('resize', this.updateScreenSize);
+        this.updateScreenSize();
+      },
+      beforeUnmount() {
+        window.removeEventListener('resize', this.updateScreenSize);
+      },
       computed: {
-    filteredData() {
+      filteredData() {
+      
         if (!this.searchId) {
+          if(this.data.length < 0) return this.fallbackRow
           return this.data;
         } else {
           return this.data.filter(item => {
@@ -180,7 +225,16 @@ function TranActive(active) {
             return itemId.includes(this.searchId.toLowerCase());
           });
         }
-      }
+      },
+      AddButtonDisabled() {
+        const numericRegex = /^\d+$/;
+        const isNewIdValid = numericRegex.test(this.NewId);
+        const isNewBcValid = numericRegex.test(this.NewBc);
+        return !(isNewIdValid && isNewBcValid && this.SelectSection && this.SelectActive);
+      },
+      numericRule() {
+        return (v) => /^\d+$/.test(v) || '只能输入数字'; 
+      },
   },
       methods: {
         newdatas () {
@@ -191,7 +245,7 @@ function TranActive(active) {
           sectioncode = "002";
         }
         axios.post(
-            "/api/v1/fish/data/?section="+sectioncode,{
+          "/api/v1/fish/data/?section="+sectioncode,{
               "fishData": {
                 [this.NewId] : {"bc": this.NewBc, "err": 0,"active":TranActive(this.SelectActive)},
                 }
@@ -201,23 +255,25 @@ function TranActive(active) {
                 }
               }
           )
-          .then(res=> {
+          .then(async res=> {
               console.log(res);
               if(res.status == 200){
                 this.dialognew = false
-                alert("新增成功")
+                this.$Message.success('新增成功');
+                await this.loadnewdata();
                 location.reload();
+                
               }
               else{
                 this.dialog = false
-              alert("新增失敗")
+                this.$Message.error('新增失敗');
               }
               
           })
           .catch(err=> {
               console.log(err);
               this.dialog = false
-              alert('新增失敗');
+              this.$Message.error('新增失敗');
           })
 
         },
@@ -229,24 +285,23 @@ function TranActive(active) {
             });
         },
       accountdata(){
-        this.loadnewdata();
         const fish1Data = localStorage.getItem("fish21");
         const parsedFish1Data = JSON.parse(fish1Data);
-        this.FishId = parsedFish1Data
-        const fish0Data = localStorage.getItem("fish20"); 
+        this.FishId = parsedFish1Data;
+        const fish0Data = localStorage.getItem("fish20");
         const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data)
-        this.FishId2num = this.FishId.length
+        this.FishId.push(...parsedFish0Data);
+        this.FishId2num = this.FishId.length;
         const fish2Data = localStorage.getItem("fish22");
         const parsedFish2Data = JSON.parse(fish2Data);
-        this.FishId.push(...parsedFish2Data)
+        this.FishId.push(...parsedFish2Data);
         this.FishId = this.FishId.map((str) => {
-                const num = parseInt(str, 10);
-                return isNaN(num) ? 0 : num; 
-                });
+          const num = parseInt(str, 10);
+          return isNaN(num) ? 0 : num;
+        });
         this.FishId.sort((a, b) => a - b);
                 axios.get(
-            "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
+                  "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -255,10 +310,12 @@ function TranActive(active) {
           .then(res=> {
             console.log(res);
             this.fishdatas = {};
+            this.data = [];
             for (const id in res.data['002']) {
-              const dataArray = res.data['002'][id];
-              if (!this.fishdatas[id]) {
-                  this.fishdatas[id] = [];
+            if(!Array.isArray(res.data['002'][id])) continue;
+            const dataArray = res.data['002'][id];
+            if (!this.fishdatas[id]) {
+                this.fishdatas[id] = [];
             }
             const lastFiveObjects = dataArray.slice(-5);
             const reversedLastFive = lastFiveObjects.reverse();
@@ -282,8 +339,14 @@ function TranActive(active) {
             this.data = this.FishId.map((item,index) => ({ //this.data 顯是home版本時間
               id: this.FishId[index],
               version: this.version[index],
-              time: this.formatDate(this.time[index])
+              time: this.formatDate(this.time[index]),
+              active:this.proccesactive(this.active[index])
             }));
+            this.data.sort((a, b) => {
+              const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
+              return order[a.active] - order[b.active];
+            });
+            this.Tableshow = true;
           })
           .catch(err=> {
               console.log(err);
@@ -301,42 +364,57 @@ function TranActive(active) {
 
     return `${year}-${month}-${day}`;
   },
-  loadnewdata(){
-      axios.get(
-        "/api/v1/account",{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-              console.log(res);
-              this.loading = false;
-              if(res.status == 200){
-                const fish001Data = res.data.fishesID["002"];
-                const fish20Values = [];
-                const fish21Values = [];
-                const fish22Values = [];
-                if( Object.hasOwn(res.data.fishesID,"002")){
-                  Object.entries(fish001Data).forEach(([key, value]) => {
-                    if (value === 1) {
-                      fish21Values.push(key);
-                    } else if (value === 2) {
-                      fish22Values.push(key)
-                    } else {
-                      fish20Values.push(key)
-                    }
-                  });
-                }
-                localStorage.setItem("fish20", JSON.stringify(fish20Values));
-                localStorage.setItem("fish21", JSON.stringify(fish21Values));
-                localStorage.setItem("fish22", JSON.stringify(fish22Values));
-              }
-          })
-          .catch(err=> {
-              console.log(err);
-          })
+  async loadnewdata() {
+      try {
+        const response = await axios.get(
+          "/api/v1/account",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        console.log(response);
+
+        if (response.status === 200) {
+          this.processFishData(response.data.fishesID);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
+  processFishData(fishesID) {
+      const fish001Data = fishesID["002"];
+      const fish20Values = [];
+      const fish21Values = [];
+      const fish22Values = [];
+      if (Object.prototype.hasOwnProperty.call(fishesID, "002")) {
+        Object.entries(fish001Data).forEach(([key, value]) => {
+          if (value === 1) {
+            fish21Values.push(key);
+          } else if (value === 2) {
+            fish22Values.push(key);
+          } else {
+            fish20Values.push(key);
+          }
+        });
+      }
+      localStorage.setItem("fish20", JSON.stringify(fish20Values));
+      localStorage.setItem("fish21", JSON.stringify(fish21Values));
+      localStorage.setItem("fish22", JSON.stringify(fish22Values));
+    },
+    confirm (id,index) {
+                this.$Modal.confirm({
+                    title: `確定要刪除ID: ${id} 嗎?`,
+                    onOk: () => {
+                        this.remove(id,index);
+                    },
+                    onCancel: () => {
+                        
+                    }
+                });
+            },
     remove(id,index){
         axios.post(
           "/api/v1/fish/delete/?section=002",
@@ -349,23 +427,36 @@ function TranActive(active) {
           }
         }
           )
-          .then(res=> {
+          .then(async res=> {
               console.log(res);
-              alert('刪除成功');
+              this.$Message.success('刪除成功');
+              await this.loadnewdata();
               this.data.splice(index, 1);
               location.reload();
           })
           .catch(err=> {
               console.log(err);
               this.loading = false;
-              alert('刪除失敗');
+              this.$Message.error('刪除失敗');
           })
       },
-    },
-    
-    
-    mounted() {
-      this.accountdata();
+      required (v) {
+          return v !== null && v.trim() !== '' || '此區為必填區域'
+        },
+      updateScreenSize() {
+        this.isMobileScreen = window.innerWidth <= 768; 
+      },
+      proccesactive(num){
+        if(num === 1){
+          return "游動中"
+        }else if(num === 2){
+          return "維修中"
+        }else{
+          return "待機中"
+        }
+
+      }
+        
     },
     }
   </script>
@@ -381,4 +472,8 @@ function TranActive(active) {
   }
   }
   </style>
+
+
+
+
   
