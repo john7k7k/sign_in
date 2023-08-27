@@ -1,0 +1,53 @@
+
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+(async (prisma) => {
+
+    const args = process.argv.slice(2);
+    if(!args.length){
+        showAll(prisma);
+    }
+    else if(args[0] === '-s'){
+        if(args.length === 1){
+            showAll(prisma);
+        }
+        else{
+            for(let arg of args.slice(1)){
+                console.log(arg);
+                console.table(await prisma[arg].findMany());
+            }
+        }
+    }
+    else if(args[0] === '-d'){
+        if(args.length === 1){
+            await prisma.user.deleteMany();
+            await prisma.fish.deleteMany();
+            await prisma.fishAble.deleteMany();
+            await prisma.fishData.deleteMany();
+            await prisma.instruction.deleteMany();
+            await prisma.depart.deleteMany();
+            await prisma.pool.deleteMany();
+        }
+        else{
+            for(let i = 1; i < args.length; i++) await prisma[args[i]].deleteMany();
+        }
+    }
+})(prisma)
+
+async function showAll(prisma){
+    console.log('User');
+    console.table(await prisma.user.findMany());
+    console.log('Fish');
+    console.table(await prisma.fish.findMany());
+    console.log('FishAble');
+    console.table(await prisma.fishAble.findMany());
+    console.log('FishData');
+    console.table(await prisma.fishData.findMany());
+    console.log('Pool');
+    console.table(await prisma.pool.findMany());
+    console.log('Depart');
+    console.table(await prisma.depart.findMany());
+    console.log('Instruction');
+    console.table(await prisma.instruction.findMany());
+}

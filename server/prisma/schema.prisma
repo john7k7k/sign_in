@@ -1,5 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -7,43 +5,71 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url  = "mysql://root:Aa777266794@127.0.0.1:3306/hs"
 }
 
 model User{
-  userId Int @id @default(autoincrement())
+  userID Int @id @default(autoincrement())
   username String @unique
   email String
   passcode String
   level Int
   section String
   fishAble FishAble[]
-  active Int
+  registrationTime Int
+  exist Int
+  verify Int
 }
 
 model Fish {
   fishUID String @id
+  location String
+  exist Int
+  pool Pool @relation(fields: [location], references: [id], onDelete: Cascade)
   fishData FishData[]
   fishAble FishAble[]
 }
 
 model FishAble{
   id Int @id @default(autoincrement())
-  user User @relation(fields: [username],references: [username])
-  username String
-  fish Fish @relation(fields: [fishUID],references: [fishUID])
+  user User @relation(fields: [userID],references: [userID], onDelete: Cascade)
+  userID Int
+  fish Fish @relation(fields: [fishUID],references: [fishUID], onDelete: Cascade)
   fishUID String
+  @@unique([userID,fishUID])
 }
 
 model FishData{
-  fish Fish @relation(fields: [fishUID],references: [fishUID])
-  fishUID String @id
-  time DateTime
+  dataID Int @id @default(autoincrement())
+  fish Fish @relation(fields: [fishUID],references: [fishUID], onDelete: Cascade)
+  fishUID String
+  time Int
   bc Float
   err Int
   active Int
 }
 
+model Pool{
+  id String @id
+  location String
+  name String
+  fish Fish[]
+  depart Depart @relation(fields: [location], references: [id], onDelete: Cascade)
+}
+
+model Depart{
+  id String @id
+  location String
+  name String
+  pool Pool[] 
+  instruction Instruction @relation(fields: [location], references: [id], onDelete: Cascade)
+}
+
+model Instruction{
+  id String @id
+  name String
+  depart Depart[]
+}
 
 
 

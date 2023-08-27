@@ -26,8 +26,6 @@ const upload = multer({
   })
 });
 
-
-
 let randCode = getRand();
 const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
@@ -91,7 +89,6 @@ app.get(/^\/(?:login|sign\/up)$/, function(req, res) {
 app.get(/^\/(?:ntut\/fish|nmmst\/fish|ntut\/fish\/edit|nmmst\/fish\/edit|user|home|fish\/list|account\/list)$/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
-
 
 // 2. 帳號 API
 
@@ -369,8 +366,6 @@ app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (re
   }
   catch{res.sendStatus(403);}
 })
-
-
 
 // 3. 影片API
 // 定義路由處理影片上傳請求

@@ -1,33 +1,33 @@
-POST http://localhost:3000/api/v1/account/sign_up
+POST http://20.89.131.34/api/v1/account/sign_up
 Content-Type: application/json
 
 {
-    "username": "djy",
+    "username": "123",
     "mail": "jack2563@gmail.com",
     "password": "735434cae08df8e591c1549da88c6d87",
     "section": "001"
 }
 ###
-POST http://localhost:3000/api/v1/account/login
+POST http://20.89.131.34/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "djy",
+    "username": "john",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 
 ###
 POST http://20.89.131.34/api/v1/account/delete_user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRqeSIsImlhdCI6MTY5MjQ1Mjc1OCwiZXhwIjoxNjkyNDYxNzU4fQ.gUuLMIAGdi7gVTb45hOyif4CS84UIqqIf2XogdlFkfM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2OTI2MzEwNDcsImV4cCI6MTY5MjY0MDA0N30.VCkGbzr2EpwsLiNb2Xo62f2-QwwhHbsvmrpFfxC3GeI
 
 ###
 POST http://20.89.131.34/api/v1/account/remove_user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTIwMDM3NTEsImV4cCI6MTY5MjAxMjc1MX0.70S33XKsym9wXvpLNgukulr2dh1tdMVZDwkdHAXOtAE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjYzMTM2NSwiZXhwIjoxNjkyNjQwMzY1fQ.MZC2aQu-2kPG7L9WR_5EaD6LW4CmVqQdA6fPeZSeFCY
 
 {
-    "username": "jack"
+    "username": "1234"
 }
 ###
 GET http://20.89.131.34/api/v1/account
@@ -37,15 +37,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impva
 ###
 GET http://20.89.131.34/api/v1/account/list/?section=001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjAwMjc4MywiZXhwIjoxNjkyMDExNzgzfQ.y4rfO3H8bjD_ATHefr8fMA-thCZSpIbSCxl-934rkLA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzA2MDkzOCwiZXhwIjoxNjkzMDY5OTM4fQ.eZXXhGAPGamBjQz7t5uwH9RJyF5B5s4WwrPEETnY7Pc
 
 ###
-POST http://20.89.131.34/api/v1/account/revise/level
+POST http://20.89.131.34/api/v1/account/revise/level/?section=002
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTg3NTAyMiwiZXhwIjoxNjkxODg0MDIyfQ.GGj1_16bVlJ7KjGwU_CCGl_jr6v3JP5E9Vje1NKisIU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTMwNjExNjMsImV4cCI6MTY5MzA3MDE2M30.E9uE0oVwP2REnXiuXWHq5NKrVYq53a64OFyRbtMCh1o
 
 {
-    "username": "1234",
+    "username": "djy",
     "newLevel": 20
 }
 ###
@@ -58,9 +58,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newSection": "003"
 }
 ###
-POST http://20.89.131.34/api/v1/fish/data/?section=001
+POST http://20.89.131.34/api/v1/fish/data/?section=002
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTIxMDEzNDQsImV4cCI6MTY5MjExMDM0NH0.9EeAvenkbqwgeAO9Uig3wPRZS4kM_Skd42c3Xe0hOy8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjYzMjA1MCwiZXhwIjoxNjkyNjQxMDUwfQ.yMh6zIYK7lMF9yA5euA82-G6BpAkP0caTw5UHEX6pcY
 
 {
     "fishData": {
@@ -71,13 +71,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impva
 ###
 GET http://20.89.131.34/api/v1/fish/table/?section=003&fishesID=6006
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTIxMjEzMTcsImV4cCI6MTY5MjEzMDMxN30.6tndvUeiDspJZQFgTD1Pt-YvbkBEa8U3j-a6iaX6Uto
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjYwNTYwMCwiZXhwIjoxNjkyNjE0NjAwfQ.kOIE-cBUX8F0FhEuT5dKQyGKlrrWiSOWEIzweV_jM1s
 
 
 ###
-GET http://20.89.131.34/api/v1/fish/data/?section=002&fishesID=6006
+GET http://20.89.131.34/api/v1/fish/data/?section=002&fishesID=29
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjQzNzY4NSwiZXhwIjoxNjkyNDQ2Njg1fQ.hcP2koNP2xZJlj7SCIthuAfnDvB7VR9oBbf1tBabNFE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjYzMjA1MCwiZXhwIjoxNjkyNjQxMDUwfQ.yMh6zIYK7lMF9yA5euA82-G6BpAkP0caTw5UHEX6pcY
 
 ###
 GET http://20.89.131.34/api/v1/fish/history_data/?section=003&fishesID=6006&versions=1
@@ -115,10 +115,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikphc
 ###
 POST http://20.89.131.34/api/v1/fish/delete/?section=002
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2OTIxMTcxNjIsImV4cCI6MTY5MjEyNjE2Mn0.lR9EIpaNekfv1O2SSB2Zfgj_V5WFEcz_7tMnJMni22g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MjYzMjA1MCwiZXhwIjoxNjkyNjQxMDUwfQ.yMh6zIYK7lMF9yA5euA82-G6BpAkP0caTw5UHEX6pcY
 
 {
-    "fishesID": ["69"]
+    "fishesID": ["29"]
 }
 ###
 GET http://20.89.131.34/api/v1/video/?video_uid=1&section=002

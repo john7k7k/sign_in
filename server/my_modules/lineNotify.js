@@ -7,7 +7,7 @@ const lineNotifyEndpoint = 'https://notify-api.line.me/api/notify';
 
 module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   let lineNotify = {};
-  lineNotify.send = (message, decode = (mes)=>mes) => {
+  lineNotify.send = (message, decode = (mes)=>mes, test = false) => {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Bearer ${accessToken}`
@@ -15,6 +15,10 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   
     const data = new URLSearchParams();
     data.append('message', decode(message));
+    if(test){
+      console.log(data);
+      return;
+    }
     return fetch(lineNotifyEndpoint, {
       method: 'POST',
       headers,
@@ -39,11 +43,12 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   }
 
   lineNotify.decodeAllFishesData = (message) => { //解析sql端
-    const date = new Date();
     var data = '標題: 最新魚資料\n'
     data += `時間: ${(DateTime.now()).setZone('Asia/Taipei').toFormat('yyyy/M/d HH:mm:ss')} (GMT+0800)\n`;
     for(section in message){
-      data += `區域: ${sectionProcess.chinese.encode(sectionProcess.code.decode(section))} \n`
+      data += `機構: ${sectionProcess.chinese.encode(sectionProcess.code.decode(section))} \n`;
+      data += `部門: ${sectionProcess.chinese.encode(sectionProcess.code.decode(section))} \n`;
+      data += `水池: ${sectionProcess.chinese.encode(sectionProcess.code.decode(section))} \n`;
       for(fishID in message[section])
         data += `id: ${fishID}`
         for(infoName in message[section][fishID])
@@ -56,7 +61,10 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
   lineNotify.decodeFishesAlarm = (message) => { //解析IOT端
     return `
       標題: 錯誤警報
-      區域: ${sectionProcess.chinese.encode(message.section)}
+      水池ID: ${message.poolID}
+      機構: ${message.instruction}
+      部門: ${message.depart}
+      水池: ${message.pool}
       魚ID: ${Object.keys(message)[0]}
       時間: ${(DateTime.now()).setZone('Asia/Taipei').toFormat('yyyy/M/d HH:mm:ss')} (GMT+0800)
       錯誤內容: ${sectionProcess.error.decode(Object.values(message)[0])}`
