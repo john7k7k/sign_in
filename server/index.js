@@ -26,8 +26,6 @@ const upload = multer({
   })
 });
 
-
-
 let randCode = getRand();
 const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/alarm/ntut','Fish/alarm/nmmst','Fish/alarm/pmp'];
 
@@ -43,6 +41,7 @@ const sub_topics = ['Fish/info/ntut','Fish/info/nmmst','Fish/info/pmp','Fish/ala
   app.use("/index", express.static('../public/'));
   sqlConnection.buildVideoTable();
   sqlConnection.buildUserTable();
+  //lineNotify.sendInterval(sqlConnection.getFishesData, lineNotify.decodeAllFishesData, 7200000)
 })(app,sqlConnection)
 
 //mqtt處理
@@ -60,12 +59,12 @@ mqttConnection.on('connect', () => {
   }
 });
 
-mqttConnection.on('message',async (topic, rec_message) => { //接收到IOT端訊息
+mqttConnection.on('message', async (topic, rec_message) => { //接收到IOT端訊息
   const json_data = JSON.parse(rec_message.toString()); //parse資料
   console.log('主題',topic,', 時間: ',  (new Date()).toLocaleString()); //印出資料
   mqttProcess(topic,json_data);
 });
-
+ 
 mqttConnection.on('error', (err) => {
   console.error('MQTT連接錯誤:', err);
 })
@@ -90,7 +89,6 @@ app.get(/^\/(?:login|sign\/up)$/, function(req, res) {
 app.get(/^\/(?:ntut\/fish|nmmst\/fish|ntut\/fish\/edit|nmmst\/fish\/edit|user|home|fish\/list|account\/list)$/, verifyTokenBy('Cookie')(), function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
-
 
 // 2. 帳號 API
 
@@ -368,8 +366,6 @@ app.post(`/${API_VERSION}/fish/delete/`, verifyTokenBy('Header')(30),  async (re
   }
   catch{res.sendStatus(403);}
 })
-
-
 
 // 3. 影片API
 // 定義路由處理影片上傳請求
