@@ -4,8 +4,9 @@
     
     
     </v-container>
-    <div v-show="sectionshow" class="mt-4 mb-2"><h4>全區</h4></div>
-    <Table v-show="sectionshow" :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback">
+    <div v-for="(name,index) in sectionName" :key="name">
+    <div   class="mt-4 mb-2"><h4>{{ name }}</h4></div>
+    <Table  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index] || fallbackRow" class="mb-8">
       <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -35,91 +36,17 @@
                 <Radio label="全區"></Radio>
                 <Radio label="北科"></Radio>
                 <Radio label="海科"></Radio>
+                <Radio label="先鋒"></Radio>
+                <Radio v-for="poolname in poolsCode" :key="poolname" :label="TranSection(poolname)"></Radio>
               </RadioGroup>
           </Modal>
         </template>
-      <template #action="{row, index }">
-            <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name,index,1)">刪除</Button>
+      <template #action="{row}">
+            <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name)">刪除</Button>
         </template>
     </Table>
-
-    <div v-show="sectionshow2" class="mt-4 mb-2"><h4>北科</h4></div>
-  <Table v-show="sectionshow2" :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback2">
-    <template #level="{row}">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow2.showbtn" icon="md-create"  size="small" @click="row.modal = true"></Button></p>
-            <Modal
-              v-model="row.modal"
-              title="請選擇要變更的權限:"
-              :closable="false"
-              @on-ok="changelevel(row.selectedlevel,row.name)"
-              @on-cancel="cancel">
-              <RadioGroup v-model="row.selectedlevel">
-                <Radio label="分區總管"></Radio>
-                <Radio label="分區管理員"></Radio>
-                <Radio label="分區工程師"></Radio>
-                <Radio label="作業員"></Radio>
-                <Radio label="用戶"></Radio>
-              </RadioGroup>
-          </Modal>
-        </template>
-        <template #section="{row}">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow2.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
-            <Modal
-              v-model="row.sectionmodal"
-              title="請選擇要變更的區域:"
-              :closable="false"
-              @on-ok="changesection(row.selectsection,row.name)"
-              @on-cancel="cancel">
-              <RadioGroup v-model="row.selectsection">
-                <Radio label="全區"></Radio>
-                <Radio label="北科"></Radio>
-                <Radio label="海科"></Radio>
-              </RadioGroup>
-          </Modal>
-        </template>
-    <template #action="{row, index }">
-            <Button v-show="fallbackRow2.showbtn" type="error" size="small" @click="confirm(row.name,index,2)">刪除</Button>
-        </template>
-  </Table>
-
-  <div v-show="sectionshow3" class="mt-4 mb-2"><h4>海科</h4></div>
-  <Table v-show="sectionshow3" :columns="isMobileScreen ? mobileColumns : columns" :data="dataWithFallback3">
-    <template #level="{row}">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="row.modal = true"></Button></p>
-            <Modal
-              v-model="row.modal"
-              title="請選擇要變更的權限:"
-              :closable="false"
-              @on-ok="changelevel(row.selectedlevel,row.name)"
-              @on-cancel="cancel">
-              <RadioGroup v-model="row.selectedlevel">
-                <Radio label="分區總管"></Radio>
-                <Radio label="分區管理員"></Radio>
-                <Radio label="分區工程師"></Radio>
-                <Radio label="作業員"></Radio>
-                <Radio label="用戶"></Radio>
-              </RadioGroup>
-          </Modal>
-        </template>
-        <template #section="{row}">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="fallbackRow3.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
-            <Modal
-              v-model="row.sectionmodal"
-              title="請選擇要變更的區域:"
-              :closable="false"
-              @on-ok="changesection(row.selectsection,row.name)"
-              @on-cancel="cancel">
-              <RadioGroup v-model="row.selectsection">
-                <Radio label="全區"></Radio>
-                <Radio label="北科"></Radio>
-                <Radio label="海科"></Radio>
-              </RadioGroup>
-          </Modal>
-        </template>
-    <template #action="{row, index }">
-            <Button v-show="fallbackRow3.showbtn" type="error" size="small" @click="confirm(row.name,index,3)">刪除</Button>
-        </template>
-  </Table>
+    </div>
+    
   </template>
   
   <script>
@@ -204,48 +131,27 @@ import axios from 'axios';
                     }
                 ],
                 data: [],
-                data2: [],
-                data3: [],
                 IP:process.env.VUE_APP_IP,
                 sectionOrigin:localStorage.getItem('UserSection'),
                 sectionshow:false,
-                sectionshow2:false,
-                sectionshow3:false,
                 fallbackRow: {
               name: '無資料',
               level: '',
               section: '',
               showbtn:false,
             },
-            fallbackRow2: {
-              name: '無資料',
-              level: '',
-              section: '',
-              showbtn:false,
-            },
-            fallbackRow3: {
-              name: '無資料',
-              level: '',
-              section: '',
-              showbtn:false,
-            },
             modal:false,
-            
+            poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+            sectionName:[],
         }
       },
       computed: {
-        dataWithFallback() {
-          return this.data.length > 0 ? this.data : [this.fallbackRow];
-        },
-        dataWithFallback2() {
-          return this.data2.length > 0 ? this.data2 : [this.fallbackRow2];
-        },
-        dataWithFallback3() {
-          return this.data3.length > 0 ? this.data3 : [this.fallbackRow3];
+        dataWithFallback(index) {
+          return this.data[index].length > 0 ? this.data[index] : [this.fallbackRow];
         },
         
   },
-  mounted() {
+  created() {
     this.sectionsShow();
     this.accountdata();
     window.addEventListener('resize', this.updateScreenSize);
@@ -255,12 +161,22 @@ import axios from 'axios';
     window.removeEventListener('resize', this.updateScreenSize);
   },
   methods: {
+    processSectionName(str) {
+        var section = str.substring(0, 3);
+        if(section === "001") section = "全區"
+        if(section === "002") section = "北科"
+        if(section === "003") section = "海科"
+        if(section === "004") section = "先鋒"
+        if (!this.sectionName.includes(section)) {
+            this.sectionName.push(section);
+        }
+    },
     sectionsShow(){
       if(this.sectionOrigin === "001"){
         this.sectionshow = true;
         this.sectionshow2 = true;
         this.sectionshow3 = true;
-      }else if(this.sectionOrigin === "002"){
+      }else if(this.sectionOrigin.startsWith("002")){
         this.sectionshow2 = true;
       }else{
         this.sectionshow3 = true;
@@ -290,13 +206,18 @@ import axios from 'axios';
                 }
                 this.userdatas.push(newData)
             }
+              res.data.forEach(item => {
+                this.processSectionName(item.section)
+              });
+              for(let i = 0 ; i<this.sectionName.length;i++){
+                let datas = [];
                 res.data.forEach(item => {
                 const sectionResult = this.TranSection(item.section);
                 const usernameResult = item.username
                 let showbtn = true;
-                if (sectionResult === "全區") {
+                if (sectionResult.startsWith(this.sectionName[i])) {
                   if(usernameResult === "123") showbtn = false
-                  this.data.push({
+                  datas.push({
                     email: item.email,
                     level: this.Tranlevel(item.level,item.username,0),
                     passcode: item.passcode,
@@ -310,36 +231,8 @@ import axios from 'axios';
                     selectedlevel:this.Tranlevel(item.level,item.username,0),
                     selectsection:sectionResult,
                   });
-                } else if (sectionResult === "北科") {
-                  this.data2.push({
-                    email: item.email,
-                    level: this.Tranlevel(item.level,item.username,1),
-                    passcode: item.passcode,
-                    registrationTime: this.formatDate(item.registrationTime),
-                    section: sectionResult,
-                    userID: item.userID,
-                    name: item.username,
-                    modal:false,
-                    sectionmodal:false,
-                    selectedlevel:this.Tranlevel(item.level,item.username,1),
-                    selectsection:sectionResult,
-                  });
-                } else if (sectionResult === "海科") {
-                  this.data3.push({
-                    email: item.email,
-                    level: this.Tranlevel(item.level,item.username,2),
-                    passcode: item.passcode,
-                    registrationTime: this.formatDate(item.registrationTime),
-                    section: sectionResult,
-                    userID: item.userID,
-                    name: item.username,
-                    modal:false,
-                    sectionmodal:false,
-                    selectedlevel:this.Tranlevel(item.level,item.username,2),
-                    selectsection:sectionResult,
-                  });
                 }
-                const index = this.data.findIndex(item => item.name === "123");
+                /*const index = this.data.findIndex(item => item.name === "123");
                 if (index !== -1) {
                     const itemToMove = this.data.splice(index, 1)[0];
                     this.data.unshift(itemToMove);
@@ -350,8 +243,12 @@ import axios from 'axios';
                 }
                 if(this.data3.length > 0){
                   this.fallbackRow3.showbtn = true
-                }
+                }*/
+                
               });
+              this.data.push(datas);
+            }
+            
               })
           .catch(err=> {
               console.log(err);
@@ -372,17 +269,18 @@ import axios from 'axios';
   TranSection(section) {
         if (section == "001") {
           return "全區";
-        } else if(section == "002"){
-          return "北科";
-        } 
-        else if(section == "003"){
-          return "海科";
+        }else if (section.startsWith("002")) {
+            return "北科" + section.substring(3);
+        }else if (section.startsWith("003")) {
+            return "海科" + section.substring(3);
+        }else if (section.startsWith("004")) {
+            return "先鋒" + section.substring(3);
         }else{
           return section
         }
       },
       Tranlevel(level,name,section){
-        if(name === "123" && level === 10){
+        if(name === "123" && level === 5){
           return "最高管理員"
         }else if (level === 10 && section === 0) {
           return "總管理員"
@@ -390,7 +288,7 @@ import axios from 'axios';
           return "全區管理員"
         }else if (level === 30 && section === 0) {
           return "全區工程師"
-        }else if (level === 10 ) {
+        }else if (level === 10 || level === 5) {
           return "分區總管"
         }else if (level === 20 ) {
           return "分區管理員"
@@ -402,9 +300,9 @@ import axios from 'axios';
           return "用戶"
         }
       },
-      remove(username,index,num){
+      remove(username){
         axios.post(
-          "/api/v1/account/remove_user",
+          "/api/v1/account/remove_user/",
             {
               "username":username,
             },
@@ -417,13 +315,6 @@ import axios from 'axios';
           .then(res=> {
               console.log(res);
               this.$Message.success('刪除成功');
-              if(num === 1){
-                this.data.splice(index, 1);
-              }else if (num === 2){
-                this.data2.splice(index, 1);
-              }else{
-                this.data3.splice(index, 1);
-              }
               setTimeout(() => {
                 location.reload();
               }, 1000);
@@ -475,12 +366,14 @@ import axios from 'axios';
       },
       changesection(newsection,name){
         let section = "";
-        if(newsection === "全區"){
-          section = "001"
-        }else if(newsection === "北科"){
-          section = "002"
+        if (newsection.startsWith("全區")) {
+          section = "001" + newsection.substring(2);
+        }else if (newsection.startsWith("北科")) {
+          section = "002" + newsection.substring(2);
+        }else if (newsection.startsWith("海科")) {
+          section = "003" + newsection.substring(2);
         }else{
-          section = "003"
+          section = "004" + newsection.substring(2);
         }
         axios.post(
           "/api/v1/account/revise/section",

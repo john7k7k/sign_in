@@ -21,7 +21,7 @@ const routes = [
     },
     {
       name: "Fishdatas",
-      path: "/ntut/fish", 
+      path: "/:prefix/fish", 
       component: Fishdatas
     },
     {
@@ -36,7 +36,7 @@ const routes = [
     },
     {
       name: "editdatas",
-      path: "/ntut/fish/edit", 
+      path: "/:prefix/fish/edit", 
       component: editdatas
     },
     {

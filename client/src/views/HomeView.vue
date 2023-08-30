@@ -1,18 +1,16 @@
 <template>
   <div class="home">
     <totaldata v-show="NTUTSections"></totaldata>
-    <totaldata3 v-show="SeaSections"></totaldata3>
   </div>
 
 </template>
 
 <script>
   import totaldata from '@/components/totaldata.vue';
-  import totaldata3 from '@/components/totaldata-3.vue';
 
   export default {
     name: 'home',
-    components: { totaldata, totaldata3 },
+    components: { totaldata,  },
     data() {
       return {
         sectionvalue: localStorage.getItem('UserSection'),

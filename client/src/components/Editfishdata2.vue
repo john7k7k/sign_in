@@ -44,7 +44,7 @@ function TranActive(active) {
             "維修中"
         ],
         IP:process.env.VUE_APP_IP,
-        
+        poolname:localStorage.getItem('Poolname'),
         }
       },
       methods:{
@@ -54,7 +54,7 @@ function TranActive(active) {
           rgbaColor[i] = hexToRGBA(this.pickers[i])
         }
         axios.post(
-            "/api/v1/fish/control/",{
+            "/api/v1/fish/control/?section="+this.poolname,{
               "fishControl":{
         "led":{
             [this.FishId]:{
@@ -81,14 +81,14 @@ function TranActive(active) {
           .then(res=> {
               console.log(res);
               if(res.status == 200){
-                alert("變更顏色成功")
+                this.$Message.success('變更顏色成功');
               }
               else
-              alert("變更顏色失敗")
+              this.$Message.error('變更顏色失敗');
           })
           .catch(err=> {
               console.log(err);
-              alert('變更顏色失敗');
+              this.$Message.error('變更顏色失敗');
           })
         },
         ChangeDatas(){
@@ -147,7 +147,7 @@ function TranActive(active) {
       <v-row no-gutters justify="center" class="mt-10">
         <v-card width="1024" mx-auto>
           <v-toolbar dark color="blue-accent-1">
-            <v-btn icon dark  route to ="/ntut/fish">
+            <v-btn icon dark  :to="'/' + poolname + '/fish'">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>編輯資料</v-toolbar-title>

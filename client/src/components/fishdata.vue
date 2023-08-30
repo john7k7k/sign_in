@@ -8,7 +8,7 @@
           src="../assets/totalbg.jpg"
           cover
         >
-        <v-card-title class="d-flex align-center justify-space-between">北科魚池
+        <v-card-title class="d-flex align-center justify-space-between">{{ poolname }}魚池
             </v-card-title>
         </v-img>
         <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between "> 紀錄時間:{{ time }}
@@ -114,7 +114,7 @@
           <v-btn prepend-icon="mdi-square-edit-outline"
                     class="ms-2 bg-black"
                     variant="outlined"
-                    route to = "/ntut/fish/edit"
+                    :to = "'/'+poolname+'/fish/edit'"
                     size="small"  @click="editFish(fish.id, $event)"> 編輯 </v-btn>
                     <div class="ma-1 pa-1">
                               <div  >
@@ -230,18 +230,18 @@ import axios from 'axios'
         videoData: null,
         videoUrl: null,
         IP:process.env.VUE_APP_IP,
+        poolname:localStorage.getItem('Poolname'),
       }
     },
     methods:{
       
         RefreshFishDatas(){
-          if(this.FishId != null){
-            const iddata = localStorage.getItem("NewId2");
-            const bcData = localStorage.getItem("NewBc2");
-            const errData = localStorage.getItem("NewErro2");
-            const fishActiveData = localStorage.getItem("NewActive2");
+            const iddata = localStorage.getItem("Id");
+            const bcData = localStorage.getItem("Bc");
+            const errData = localStorage.getItem("Erro");
+            const fishActiveData = localStorage.getItem("Active");
             if (bcData && errData && fishActiveData && iddata) {
-                this.FishId = iddata.split(',').map(Number);
+                this.FishId = iddata.split(',').map(num => parseInt(num.toString().slice(-4)));
                 this.bc = bcData.split(',').map(Number);
                 this.err = errData.split(',').map(Number);
                 this.FishActive = fishActiveData.split(',').map(Number);
@@ -257,10 +257,6 @@ import axios from 'axios'
               bellshow: this.bellshowfunction(this.err[index],this.FishActive[index]),
               activeword: this.getactiveword(this.FishActive[index],this.err[index])
             }));
-            
-          }else{
-            alert("無資料")
-          }
 
         },
         processData(ids, data) {
@@ -351,7 +347,7 @@ import axios from 'axios'
             "2" : "GAGUE電量接收異常",
             "3" : "GAGUE電流傳送異常",
             "4" : "GAGUE電流接收異常",
-            "5" : "CHARGER電流上限設至失敗 充電",
+            "5" : "CHARGER電流上限設置失敗 充電",
             "6" : "CHARGER看門狗鎖定失敗",
             "7" : "CHARGER看門狗解鎖失敗",
             "8" : "PMIC設置錯誤 供電",
@@ -415,15 +411,17 @@ axios.get(
     },
     ControlFish(move) {
         axios.post(
-                "/api/v1/fish/control/",{
+                "/api/v1/fish/control/?section="+this.poolname,{
                   "fishControl":{
             "led":{
             },
-            "action":{
-                [this.controlFishId]:move
+            "motion":{
+              "id": this.controlFishId,
+              "motion": move
             },
             "mode":{
-                
+              "id": this.controlFishId,
+              "mode": 0
             }
         }
             },{
@@ -435,14 +433,14 @@ axios.get(
           .then(res=> {
               console.log(res);
               if(res.status == 200){
-                alert("可以開始控制")
+                this.$Message.success('可以開始控制');
               }
               else
-              alert("控制失敗")
+              this.$Message.error('控制失敗');
           })
           .catch(err=> {
               console.log(err);
-              alert('控制失敗');
+              this.$Message.error('控制失敗');
           })
         },
         
