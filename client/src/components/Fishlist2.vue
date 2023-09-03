@@ -73,17 +73,17 @@
     </v-card>
   </v-dialog> 
 </div> 
-      <div class="mt-4"><h3>北科</h3></div>
-    <Table v-show="Tableshow" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData">
+    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4"><h3>{{ poolname }}</h3>
+    <Table v-show="Tableshow" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)">
     <template #id="{ row }">
       <strong>{{ row.id }}</strong>
     </template>
-    <template #action="{ row: { id },index }">
-    <Button  type="primary" size="small" @click="fishdatas[id].show = true" class="mr-2">查看</Button>
-    <v-dialog v-model="fishdatas[id].show" width="auto">
+    <template #action="{ row: { id } }">
+    <Button  type="primary" size="small" @click="fishdatas[i][id].show = true" class="mr-2">查看</Button>
+    <v-dialog v-model="fishdatas[i][id].show" width="auto">
       <v-card>
         <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
-        <v-card-text v-for="fish in fishdatas[id]" :key="fish">
+        <v-card-text v-for="fish in fishdatas[i][id]" :key="fish">
           
           <div>
             版本: {{ fish.version }} &nbsp; 時間: {{ formatDate(fish.time) }}
@@ -92,15 +92,16 @@
           <v-divider class="ma-2"></v-divider>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" block @click="fishdatas[id].show = false"
+          <v-btn color="primary" block @click="fishdatas[i][id].show = false"
             >關閉</v-btn
           >
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <Button  type="error" size="small" @click="confirm(id,index)">刪除</Button>
+    <Button  type="error" size="small" @click="confirm(id)">刪除</Button>
     </template>
   </Table>
+  </div>
   </template>
   
   <script>
@@ -131,7 +132,7 @@ function TranActive(active) {
             active:[],
             columns: [
                     {
-                        title: 'ID',
+                        title: 'UID',
                         slot: 'id'
                     },
                     {
@@ -155,7 +156,7 @@ function TranActive(active) {
                 ],
             mobileColumns:[
                     {
-                        title: 'ID',
+                        title: 'UID',
                         slot: 'id'
                     },
                     {
@@ -200,11 +201,13 @@ function TranActive(active) {
         ],
             sectionword:[
               "北科","海科"
-            ]
+            ],
+            poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
         }
       },
-      created() {
-        this.accountdata();
+      async created() {
+        this.RefreshDatas2();
+        await this.accountdata();
       },
       mounted() {
         window.addEventListener('resize', this.updateScreenSize);
@@ -214,18 +217,18 @@ function TranActive(active) {
         window.removeEventListener('resize', this.updateScreenSize);
       },
       computed: {
-      filteredData() {
-      
-        if (!this.searchId) {
-          if(this.data.length < 0) return this.fallbackRow
-          return this.data;
-        } else {
-          return this.data.filter(item => {
-            const itemId = item.id.toString(); 
-            return itemId.includes(this.searchId.toLowerCase());
-          });
-        }
-      },
+        filteredData() {
+          return (index) => {
+            if (!this.searchId) {
+              return this.data[index];
+            } else {
+              return this.data[index].filter(item => {
+                const itemId = item.id.toString(); 
+                return itemId.includes(this.searchId.toLowerCase());
+              });
+            }
+          };
+        },
       AddButtonDisabled() {
         const numericRegex = /^\d+$/;
         const isNewIdValid = numericRegex.test(this.NewId);
@@ -238,14 +241,8 @@ function TranActive(active) {
   },
       methods: {
         newdatas () {
-        let sectioncode = "";
-        if(this.SelectSection === "北科"){
-          sectioncode = "002";
-        }else{
-          sectioncode = "002";
-        }
         axios.post(
-          "/api/v1/fish/data/?section="+sectioncode,{
+          "/api/v1/fish/data/",{
               "fishData": {
                 [this.NewId] : {"bc": this.NewBc, "err": 0,"active":TranActive(this.SelectActive)},
                 }
@@ -284,6 +281,25 @@ function TranActive(active) {
         this.time.push(time);
             });
         },
+<<<<<<< HEAD
+        RefreshDatas2() {
+          for (var i = 0; i < this.poolsCode.length; i++) {
+            const fish0 = "fish0" + this.poolsCode[i];
+            const fish1 = "fish1" + this.poolsCode[i];
+            const fish2 = "fish2" + this.poolsCode[i];
+
+            const fish1Data = localStorage.getItem(fish1);
+            const parsedFish1Data = JSON.parse(fish1Data);
+            const fish0Data = localStorage.getItem(fish0);
+            const parsedFish0Data = JSON.parse(fish0Data);
+            const fish2Data = localStorage.getItem(fish2);
+            const parsedFish2Data = JSON.parse(fish2Data);
+            const combinedFishIds = [...parsedFish1Data, ...parsedFish0Data, ...parsedFish2Data];
+            const parsedFishIds = combinedFishIds.map((str) => {
+              const num = parseInt(str, 10);
+              const paddedNum = num.toString().padStart(7, '0'); 
+              return paddedNum;
+=======
       accountdata(){
         const fish1Data = localStorage.getItem("fish21");
         const parsedFish1Data = JSON.parse(fish1Data);
@@ -345,14 +361,68 @@ function TranActive(active) {
             this.data.sort((a, b) => {
               const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
               return order[a.active] - order[b.active];
+>>>>>>> 06b8565151fed49d2c9aab7b0f08e6ab7100dcb5
             });
-            this.Tableshow = true;
-          })
-          .catch(err=> {
-              console.log(err);
-          })
-        
+            this.FishId.push(parsedFishIds); 
+          }
       },
+      async accountdata() {
+        try {
+            for (var i = 0; i < this.poolsCode.length; i++) {
+                this.FishId[i].sort((a, b) => a - b);
+                const response = await axios.get(
+                    "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.token}`
+                        }
+                    }
+                );
+
+                console.log(response);
+
+                let vertionarray = [];
+                let timearray = [];
+                let activearray = [];
+                for (const id in response.data[this.poolsCode[i]]) {
+                    if (!Array.isArray(response.data[this.poolsCode[i]][id])) continue;
+                    const dataArray = response.data[this.poolsCode[i]][id];
+                    if (!this.fishdatas[i]) {
+                        this.fishdatas[i] = {};
+                    }
+                    if (!this.fishdatas[i][id]) {
+                        this.fishdatas[i][id] = [];
+                    }
+                    const lastFiveObjects = dataArray.slice(-5);
+                    const reversedLastFive = lastFiveObjects.reverse();
+                    this.fishdatas[i][id] = reversedLastFive;
+                    this.fishdatas[i][id].show = false;
+                    const { version, time, active } = dataArray[dataArray.length - 1];
+                    vertionarray.push(version);
+                    timearray.push(time);
+                    activearray.push(active);
+                }
+                this.version.push(vertionarray);
+                this.time.push(timearray);
+                this.active.push(activearray);
+
+                let datas = this.FishId[i].map((item, index) => ({
+                    id: this.FishId[i][index],
+                    version: this.version[i][index],
+                    time: this.formatDate(this.time[i][index]),
+                    active: this.proccesactive(this.active[i][index])
+                }));
+                datas.sort((a, b) => {
+                    const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
+                    return order[a.active] - order[b.active];
+                });
+                this.data.push(datas);
+                this.Tableshow = true;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
     toggleShow(index) {
       this.fishdatas[index].show = !this.fishdatas[index].show
     },
@@ -364,62 +434,68 @@ function TranActive(active) {
 
     return `${year}-${month}-${day}`;
   },
-  async loadnewdata() {
+    async loadnewdata() {
       try {
         const response = await axios.get(
           "/api/v1/account",
           {
             headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
+              Authorization: `Bearer ${this.token}`
+            }
           }
         );
 
         console.log(response);
-
         if (response.status === 200) {
-          this.processFishData(response.data.fishesID);
+          for (var i = 0; i < this.poolsCode.length; i++) {
+            const fishData = response.data.fishesID[this.poolsCode[i]];
+            const fish0Values = [];
+            const fish1Values = [];
+            const fish2Values = [];
+
+            if (Object.prototype.hasOwnProperty.call(response.data.fishesID, this.poolsCode[i])) {
+              Object.entries(fishData).forEach(([key, value]) => {
+                if (value === 1) {
+                  fish1Values.push(key);
+                } else if (value === 2) {
+                  fish2Values.push(key);
+                } else {
+                  fish0Values.push(key);
+                }
+              });
+            }
+            const poolactivenum = fish1Values.length.toString() + fish0Values.length.toString() + fish2Values.length.toString() 
+            const num = "activeNum"+this.poolsCode[i]
+            const fish0ids = "fish0"+this.poolsCode[i]
+            const fish1ids = "fish1"+this.poolsCode[i]
+            const fish2ids = "fish2"+this.poolsCode[i]
+            localStorage.setItem(num, poolactivenum);
+            localStorage.setItem(fish0ids, JSON.stringify(fish0Values));
+            localStorage.setItem(fish1ids, JSON.stringify(fish1Values));
+            localStorage.setItem(fish2ids, JSON.stringify(fish2Values));
+          }
+          
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     },
-  processFishData(fishesID) {
-      const fish001Data = fishesID["002"];
-      const fish20Values = [];
-      const fish21Values = [];
-      const fish22Values = [];
-      if (Object.prototype.hasOwnProperty.call(fishesID, "002")) {
-        Object.entries(fish001Data).forEach(([key, value]) => {
-          if (value === 1) {
-            fish21Values.push(key);
-          } else if (value === 2) {
-            fish22Values.push(key);
-          } else {
-            fish20Values.push(key);
-          }
-        });
-      }
-      localStorage.setItem("fish20", JSON.stringify(fish20Values));
-      localStorage.setItem("fish21", JSON.stringify(fish21Values));
-      localStorage.setItem("fish22", JSON.stringify(fish22Values));
-    },
-    confirm (id,index) {
+    confirm (id) {
                 this.$Modal.confirm({
-                    title: `確定要刪除ID: ${id} 嗎?`,
+                    title: `確定要刪除UID: ${id} 嗎?`,
                     onOk: () => {
-                        this.remove(id,index);
+                        this.remove(id);
                     },
                     onCancel: () => {
                         
                     }
                 });
             },
-    remove(id,index){
+    remove(id){
         axios.post(
-          "/api/v1/fish/delete/?section=002",
+          "/api/v1/fish/delete/",
             {
-              "fishesID":[id.toString()],
+              "fishesUID":[id.toString()],
             },
             {
           headers: {
@@ -431,7 +507,6 @@ function TranActive(active) {
               console.log(res);
               this.$Message.success('刪除成功');
               await this.loadnewdata();
-              this.data.splice(index, 1);
               location.reload();
           })
           .catch(err=> {

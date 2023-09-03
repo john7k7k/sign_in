@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     userlevel() {
-      if (this.level === "10" && this.username === "123") {
+      if (this.level === "5" && this.username === "123") {
         this.userlistshow = true;
         this.fishlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
