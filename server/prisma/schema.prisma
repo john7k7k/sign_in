@@ -19,6 +19,7 @@ model User{
   registrationTime Int
   exist Int
   verify Int
+  verifyCode String?
 }
 
 model Fish {
@@ -53,6 +54,7 @@ model Pool{
   id String @id
   location String
   name String
+  mac String
   fish Fish[]
   depart Depart @relation(fields: [location], references: [id], onDelete: Cascade)
 }

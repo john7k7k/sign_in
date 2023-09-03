@@ -9,13 +9,14 @@ const dotenv = require("dotenv").config();
 const md5 = require('blueimp-md5');
 const jwt = require('jsonwebtoken');
 
-const sectionProcess = require('./my_modules/section')();
-const mqttConnection = require('./my_modules/mqtt')();
-const lineNotify = require('./my_modules/lineNotify')();
-const transporter = require('./my_modules/nodeMailer')();
+const sectionProcess = require('./modules/util/section')();
+const mqttConnection = require('./modules/util/mqtt')();
+const lineNotify = require('./modules/util/lineNotify')();
+const transporter = require('./modules/util/nodeMailer')();
 const { PrismaClient } = require('@prisma/client');
-const section = require('./my_modules/section');
+const section = require('./modules/util/section');
 const prisma = new PrismaClient();
+
 const API_VERSION = 'api/v1'
 const upload = multer({ 
   storage: multer.diskStorage({
@@ -47,6 +48,12 @@ const sub_topic_group = [
   //lineNotify.sendInterval(sqlConnection.getFishesData, lineNotify.decodeAllFishesData, 7200000)
 })(app)
 
+//監聽port
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
 //mqtt處理
 
 mqttConnection.on('connect', async () => {
@@ -70,17 +77,11 @@ mqttConnection.on('error', (err) => {
   console.error('MQTT連接錯誤:', err);
 })
 
-//監聽port
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
 //前端
 
 //1. 頁面
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.redirect('login');
 });
 
 app.get(/^\/(?:login|sign\/up)$/, function(req, res) {
@@ -157,12 +158,12 @@ app.get(`/${API_VERSION}/account/verify/`, async (req, res) => {
         username
       }
     })
-    res.sendStatus(200)
+    res.redirect('login');
   }catch{ res.sendStatus(403) }
   
 })
 
-app.post(`/${API_VERSION}/account/sign_up/`, verifyUserData(),async function(req, res) {
+app.post(`/${API_VERSION}/account/sign_up/`, verifyUserData(), async function(req, res) {
   const userTable = await prisma.user.findMany();
     for (let user of userTable) {
         if (req.body.username === user.username) {
@@ -443,7 +444,7 @@ app.post(`/${API_VERSION}/fish/assign/`,
       const { username, fishUID } = req.body;
       const { userID, section } = await prisma.user.findUnique({ where: { username } });
       const { location } = await prisma.fish.findUnique({ where: { fishUID }});
-      if(!location.match('^' + section)){
+      if(!location.match('^' + section) && section !== '001'){
         res.sendStatus(403);
         return;
       }
@@ -570,7 +571,7 @@ app.post(`/${API_VERSION}/fish/disassign/`,
       const { username, fishUID } = req.body;
       const { userID, section } = await prisma.user.findUnique({ where: { username } });
       const { location } = await prisma.fish.findUnique({ where: { fishUID }});
-      if(!location.match('^' + section)){
+      if(!location.match('^' + section) && section !== '001'){
         res.sendStatus(403);
         return;
       }
