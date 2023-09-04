@@ -56,7 +56,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET http://20.89.131.34:443/api/v1/account
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzgxNzc4NiwiZXhwIjoxNjkzODI2Nzg2fQ.jebJBL6RCsnnV_Suw9dE5eDNXkLJbuc6fTg6IsDkTgo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzgxODE3OCwiZXhwIjoxNjkzODI3MTc4fQ.Vsk8gQVdhULLTSvFJyr9L807IDXjZLxt1MpN-STKe6k
 
 ###
 GET http://20.89.131.34:443/api/v1/account/list/?section=001
@@ -225,3 +225,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET http://20.89.131.34:443/api/v1/fish/photosURL
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2OTM3NTAyNzMsImV4cCI6MTY5Mzc1OTI3M30.kKo8fSddF2pBjc22jkYZv89-pGwSJsEFNXDMYqxRXec
+
+GET http://20.89.131.34:443/api/v1/section
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
