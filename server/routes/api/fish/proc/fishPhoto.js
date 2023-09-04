@@ -27,7 +27,7 @@ const get = (req, res) => {
 
 const getURL = async (req, res) => {
     const { userID } = await prisma.user.findUnique({
-        where: { username: req.payload.username}
+        where: { username: req.payload.username }
     })
     const fishesUID = (await prisma.fishAble.findMany({
         where: { userID }
