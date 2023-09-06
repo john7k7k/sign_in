@@ -224,7 +224,8 @@ GET http://20.89.131.34:443/api/v1/account/sticker
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
 ###
 GET http://20.89.131.34:443/api/v1/fish/photosURL
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2OTM3NTAyNzMsImV4cCI6MTY5Mzc1OTI3M30.kKo8fSddF2pBjc22jkYZv89-pGwSJsEFNXDMYqxRXec
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzgyOTkxMiwiZXhwIjoxNjkzODM4OTEyfQ.pbUqibdalSL-n3wbaA_eYNHn6cQGOe1NlOQnh_k29Uo
 
+###
 GET http://20.89.131.34:443/api/v1/section
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
