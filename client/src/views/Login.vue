@@ -30,7 +30,6 @@ export default {
 </script>
 
 <style>
-c
 .loginnavbar-bg {
   height: 100px; 
   background-color: rgba(0, 0, 0, 0); 
