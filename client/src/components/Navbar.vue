@@ -26,7 +26,7 @@
   
     <v-navigation-drawer v-model="drawer" temporary class="#CE93D8">
       <v-list-item
-        :prepend-avatar="userimage"
+        :prepend-avatar="imageUrl"
         :title="username" 
         :subtitle="userLevelText"
       ></v-list-item>
@@ -84,6 +84,7 @@ export default {
       widgets: false,
       drawer: null,
       userimage: "",
+      imageUrl: localStorage.getItem('UserImage'),
       username: localStorage.getItem('UserName'),
       level: localStorage.getItem('UserLevel'),
       token:localStorage.getItem('token'),
@@ -101,7 +102,7 @@ export default {
   },
   methods: {
     userlevel() {
-      if (this.level === "5" && this.username === "123") {
+      if (this.level === "5" ) {
         this.userlistshow = true;
         this.fishlistshow = true;
         this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
@@ -173,11 +174,29 @@ export default {
       this.$router.push('/home');
       
     },
+    fetchImage(){
+        axios.get(
+            "http://"+this.IP+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+          Authorization: `Bearer ${this.token}`
+        }}) 
+              .then(res=> {
+              console.log(res);
+              const imageUrl = URL.createObjectURL(new Blob([res.data]));
+              this.imageUrl = imageUrl;
+
+          })
+          .catch(err=> {
+              console.log(err);
+          })
+      },
   },
   computed: {
     userLevelText() {
       return this.userlevel();
     }
+  },
+  created(){
+    this.fetchImage();
   }
 }
 </script>

@@ -41,6 +41,63 @@
     </v-dialog>
     </template>
   </Table>
+  <v-dialog
+    v-model="dialognew"
+    width="1024"
+    :scrim="false"
+    transition="dialog-bottom-transition"
+  >
+    <template v-slot:activator="{ props }">
+      <Button class="mr-8 mt-6"
+        color="light-blue-darken-4 mr-1"
+        size="large"
+        v-bind="props" type="primary"  >新增</Button>
+    </template>
+    <v-card>
+      <v-toolbar dark color="blue-accent-1">
+        <v-btn icon dark @click="dialognew = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>新增仿生魚</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn variant="text" @click="newdatas" :disabled="AddButtonDisabled"> 新增 </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+      <v-list-subheader class="mx-4">基本資料</v-list-subheader>
+
+      <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="ID">
+            <v-text-field
+              v-model="NewId"
+              title="ID:"
+              :rules="[required, numericRule]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="電量(%):">
+            <v-text-field v-model="NewBc" :rules="[required, numericRule]" inputmode="numeric"></v-text-field>
+          </v-list-item>
+        </v-col>
+      </v-row>
+
+      <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="區域:">
+            <v-select v-model="SelectSection" :items="sectionword" :rules="[required]"></v-select>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="狀態:">
+            <v-select v-model="SelectActive" :items="activeword" :rules="[required]"></v-select>
+          </v-list-item>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-dialog> 
   </template>
   
   <script>
@@ -93,7 +150,13 @@ import axios from 'axios';
             return itemId.includes(this.searchId.toLowerCase());
           });
         }
-      }
+      },
+      AddButtonDisabled() {
+        const numericRegex = /^\d+$/;
+        const isNewIdValid = numericRegex.test(this.NewId);
+        const isNewBcValid = numericRegex.test(this.NewBc);
+        return !(isNewIdValid && isNewBcValid && this.SelectSection && this.SelectActive);
+      },
   },
       methods: {
       processData(ids, data) {

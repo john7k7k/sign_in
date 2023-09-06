@@ -16,6 +16,7 @@
               @on-ok="changelevel(row.selectedlevel,row.name)"
               @on-cancel="cancel">
               <RadioGroup v-model="row.selectedlevel">
+                <Radio label="測試管理員"></Radio>
                 <Radio label="總管理員"></Radio>
                 <Radio label="全區管理員"></Radio>
                 <Radio label="全區工程師"></Radio>
@@ -259,13 +260,13 @@ import axios from 'axios';
       this.userdatas[index].show = !this.userdatas[index].show
     },
     formatDate(timestamp) {
-    const dateObj = new Date(timestamp);
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
+      const dateObj = new Date(timestamp * 1000); 
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+      const day = String(dateObj.getDate()).padStart(2, '0'); 
 
-    return `${year}-${month}-${day}`;
-  },
+      return `${year}-${month}-${day}`;
+    },
   TranSection(section) {
         if (section == "001") {
           return "全區";
@@ -280,7 +281,7 @@ import axios from 'axios';
         }
       },
       Tranlevel(level,name,section){
-        if(name === "123" && level === 5){
+        if(name === "123" || level === 5){
           return "最高管理員"
         }else if (level === 10 && section === 0) {
           return "總管理員"
@@ -330,6 +331,8 @@ import axios from 'axios';
         let level = '';
         if(newlevel === "總管理員" || newlevel === "分區總管"){
           level = 10;
+        }else if(newlevel === "測試管理員"){
+          level = 5;
         }else if(newlevel === "全區管理員" || newlevel === "分區管理員"){
           level = 20;
         }else if(newlevel === "全區工程師" || newlevel === "分區工程師"){

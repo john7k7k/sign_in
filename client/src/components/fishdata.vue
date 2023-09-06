@@ -8,7 +8,7 @@
           src="../assets/totalbg.jpg"
           cover
         >
-        <v-card-title class="d-flex align-center justify-space-between">{{ poolname }}魚池
+        <v-card-title class="d-flex align-center justify-space-between">{{ poolname }}
             </v-card-title>
         </v-img>
         <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between "> 紀錄時間:{{ time }}
