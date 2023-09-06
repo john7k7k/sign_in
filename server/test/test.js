@@ -1,11 +1,8 @@
-function update({key: condition, column: new_value}){
-    console.log(key);
-    console.log(condition);
-    console.log(column);
-    console.log(new_value);
-}
+let obj0 = {a: 1, b: {c: 2}};
+mul10(obj0);
+console.log(obj0.a, obj0.b.c)
 
-update({
-    a: 5,
-    b: 2
-})
+function mul10(obj0){
+    obj0.a = 10;
+    obj0.b.c = 20;
+}

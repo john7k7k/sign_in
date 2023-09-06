@@ -1,9 +1,9 @@
 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const fs = require('fs');
 
 (async (prisma) => {
-
     const args = process.argv.slice(2);
     if(!args.length){
         showAll(prisma);
@@ -28,9 +28,15 @@ const prisma = new PrismaClient();
             await prisma.instruction.deleteMany();
             await prisma.depart.deleteMany();
             await prisma.pool.deleteMany();
+            fs.rmdir(`uploads/photos/fish`, () => void 0);
+            fs.rmdir(`uploads/photos/user`, () => void 0);
         }
         else{
-            for(let i = 1; i < args.length; i++) await prisma[args[i]].deleteMany();
+            for(let i = 1; i < args.length; i++){
+                await prisma[args[i]].deleteMany();
+            }
+            if(args.includes('user')) fs.rmdir(`uploads/photos/user`, () => void 0);
+            if(args.includes('fish')) fs.rmdir(`uploads/photos/fish`, () => void 0);
         }
     }
 })(prisma)
