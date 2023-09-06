@@ -17,7 +17,7 @@ POST http://localhost:3000/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "1234567",
+    "username": "123456",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
@@ -61,7 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET http://localhost:3000/api/v1/account/list/?section=001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MTA3MiwiZXhwIjoxNjk0MDAwMDcyfQ.i31TohUlc64f5ebW-mAgU7I6X6g1Zobad1yyo8Myq6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MzUzMSwiZXhwIjoxNjk0MDAyNTMxfQ.7oYs0bzA3BgnVzvmHMwN3i9dUD_457ai-HXzgXJ1TyA
 
 ###
 POST http://localhost:3000/api/v1/account/revise/level
@@ -75,11 +75,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://localhost:3000/api/v1/account/revise/section
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNjU5MywiZXhwIjoxNjkzNDI1NTkzfQ.8PK_WVJDwxIOYJQq6l4yagLzaeUVo-By2S7t4ncA8r8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MzUzMSwiZXhwIjoxNjk0MDAyNTMxfQ.7oYs0bzA3BgnVzvmHMwN3i9dUD_457ai-HXzgXJ1TyA
 
 {
-    "username": "1234",
-    "newSection": "002002"
+    "username": "123456",
+    "newSection": "002"
 }
 ###
 POST http://localhost:3000/api/v1/fish/?section=002001002
