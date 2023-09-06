@@ -108,25 +108,28 @@
                 localStorage.setItem("UserLevel",res.data.level)
                 localStorage.setItem("UserSection",res.data.section)
                 const timestamp = res.data.registrationTime
-                const date = new Date(timestamp);
+                const date = new Date(timestamp * 1000); 
                 const year = date.getFullYear();
-                const month = date.getMonth() + 1; 
-                const day = date.getDate();
-                const hours = date.getHours();
-                const minutes = date.getMinutes();
-                const seconds = date.getSeconds();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+                const day = date.getDate().toString().padStart(2, '0'); 
+                const hours = date.getHours().toString().padStart(2, '0'); 
+                const minutes = date.getMinutes().toString().padStart(2, '0'); 
+                const seconds = date.getSeconds().toString().padStart(2, '0'); 
                 const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 localStorage.setItem("registrationTime",formattedDate)
                 localStorage.setItem("token",res.data.token)
                 document.cookie = "token=" + res.data.token + "; path=/";
-                const fishesID = res.data.fishesID;
-                const keys = Object.keys(fishesID);
-                keys.sort();
-                let poolsCode = [];
-                keys.forEach(key => {
-                  poolsCode.push(key)
-                });
-                localStorage.setItem("PoolsCode", JSON.stringify(poolsCode));
+                const poolTable = res.data.poolTable;
+                const poolLocations = poolTable.map(pool => pool.id);
+                const poolnames = poolTable.map(pool => pool.name);
+                const instructiontable = res.data.instructionTable;
+                const instructioncode =  instructiontable.map(ins => ins.id);
+                const instructionname =  instructiontable.map(ins => ins.name);
+                localStorage.setItem("PoolsCode", JSON.stringify(poolLocations));
+                localStorage.setItem("PoolsName", JSON.stringify(poolnames));
+                localStorage.setItem("InstructionCode", JSON.stringify(instructioncode));
+                localStorage.setItem("InstructionName", JSON.stringify(instructionname));
+                localStorage.setItem("UserImage", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
                 window.location.replace(`/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
               }
               else

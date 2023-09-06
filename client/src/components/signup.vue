@@ -91,15 +91,16 @@
               "mail":this.email,
               "password":CryptoJS.MD5(this.password + "kowkoww151s5ww").toString(),
               "section":this.transection(this.SelectSection),
+              "level": 80
             },
           )
           .then(res=> {
               console.log(res);
               if(res.status == '200'){
-                  alert("註冊成功!\n3秒後將會自動返回登入頁面..");
+                  alert("請至註冊信箱中點選驗證信進行驗證");
                   setTimeout(() => (this.loading = false), 2000)
                   window.location.replace(`/login`); //括號內加上+res.data.token
-              }else alert("註冊失敗!請再刷新螢幕重新註冊一次")
+              }else alert("註冊失敗!請刷新螢幕重新註冊一次")
           })
           .catch(err=> {
               console.log(err);
@@ -117,6 +118,10 @@
 transection(){
   if(this.SelectSection === "北科"){
     return "002"
+  }else if(this.SelectSection === "海科"){
+    return "003"
+  }else if(this.SelectSection === "先鋒"){
+    return "004"
   }else{
     return "003"
   }

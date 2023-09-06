@@ -5,16 +5,149 @@
     
     </v-container>
     
-        <div style="display: grid; grid-template-columns: 1fr auto;">
+        <div style="display: grid; grid-template-columns: 1fr auto auto;">
       <v-text-field
         v-model="searchId"
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
-        class="mb-2 mt-4"
+        class="mb-2 mt-4 mr-4"
         style="width: 200px;"
       ></v-text-field>
-    
+      <v-dialog
+    v-model="dialognewSection"
+    width="1024"
+    :scrim="false"
+    transition="dialog-bottom-transition"
+  >
+    <template v-slot:activator="{ props }">
+      <Button class="mr-4 mt-6"
+      type="warning"
+        size="large"
+        v-bind="props"   >註冊</Button>
+    </template>
+    <v-card>
+      <v-toolbar dark color="orange-accent-1">
+        <v-btn icon dark @click="dialognewSection = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>註冊</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn variant="text" @click="Signin(tab)" :disabled="SigninButtonDisabled" v-model="tab"> 新增 </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+
+      <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
+      <v-tab value="one">註冊機構</v-tab>
+      <v-tab value="two">註冊部門</v-tab>
+      <v-tab value="three">新增水池</v-tab>
+    </v-tabs>
+
+    <v-card-text>
+      <v-window v-model="tab">
+        <v-window-item value="one">
+          <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="新機構名稱">
+            <v-text-field
+              v-model="NewInstruction"
+              title="ID:"
+              :rules="[required]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="新機構代碼">
+            <v-text-field
+              v-model="NewInstructionCode"
+              title="ID:"
+              :rules="[required, numericRule]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+      </v-row>
+        </v-window-item>
+
+        <v-window-item value="two">
+          <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="選擇機構">
+            <v-select v-model="SelectInstruction" :items="InstructionName" :rules="[required]"></v-select>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item >
+            <v-select v-show="false"  :items="InstructionName" ></v-select>
+          </v-list-item>
+        </v-col>
+      </v-row>
+          <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="新部門名稱">
+            <v-text-field
+              v-model="NewDepart"
+              title="ID:"
+              :rules="[required]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="新部門代碼">
+            <v-text-field
+              v-model="NewDepartCode"
+              title="ID:"
+              :rules="[required, numericRule]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+      </v-row>
+        </v-window-item>
+
+        <v-window-item value="three">
+          <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="選擇機構">
+            <v-select v-model="SelectInstruction" :items="InstructionName" :rules="[required]"></v-select>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="選擇部門">
+            <v-select v-model="SelectDepart" :items="poolsCode" :rules="[required]"></v-select>
+          </v-list-item>
+        </v-col>
+      </v-row>
+      <v-row class="d-flex justify-space-around">
+        <v-col>
+          <v-list-item title="新水池名稱">
+            <v-text-field
+              v-model="NewPool"
+              title="ID:"
+              :rules="[required]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+        <v-col>
+          <v-list-item title="新水池代碼">
+            <v-text-field
+              v-model="NewPoolCode"
+              title="ID:"
+              :rules="[required, numericRule]"
+              inputmode="numeric"
+            ></v-text-field>
+          </v-list-item>
+        </v-col>
+      </v-row>
+        </v-window-item>
+      </v-window>
+    </v-card-text>
+    </v-card>
+  </v-dialog>
       <v-dialog
     v-model="dialognew"
     width="1024"
@@ -52,32 +185,27 @@
           </v-list-item>
         </v-col>
         <v-col>
-          <v-list-item title="電量(%):">
-            <v-text-field v-model="NewBc" :rules="[required, numericRule]" inputmode="numeric"></v-text-field>
-          </v-list-item>
-        </v-col>
-      </v-row>
-
-      <v-row class="d-flex justify-space-around">
-        <v-col>
           <v-list-item title="區域:">
-            <v-select v-model="SelectSection" :items="sectionword" :rules="[required]"></v-select>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="狀態:">
-            <v-select v-model="SelectActive" :items="activeword" :rules="[required]"></v-select>
+            <v-select v-model="SelectSection" :items="poolsCode" :rules="[required]"></v-select>
           </v-list-item>
         </v-col>
       </v-row>
     </v-card>
   </v-dialog> 
 </div> 
-    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4"><h3>{{ poolname }}</h3>
-    <Table v-show="Tableshow" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)">
+    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2" ><h3>{{ poolname }}</h3>
+    <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)">
     <template #id="{ row }">
-      <strong>{{ row.id }}</strong>
-    </template>
+      <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.id }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
+      <Modal
+              v-model="row.modal"
+              title="上傳仿生魚照片"
+              :closable="false"
+              @on-ok="uploadImage(row.id)"
+              @on-cancel="cancel">
+              <input type="file" ref="fileInput" @change="selectfile" />
+          </Modal>
+   </template>
     <template #action="{ row: { id } }">
     <Button  type="primary" size="small" @click="fishdatas[i][id].show = true" class="mr-2">查看</Button>
     <v-dialog v-model="fishdatas[i][id].show" width="auto">
@@ -101,12 +229,13 @@
     <Button  type="error" size="small" @click="confirm(id)">刪除</Button>
     </template>
   </Table>
+  <Table  v-show="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow"></Table>
   </div>
   </template>
   
   <script>
 import axios from 'axios';
-function TranActive(active) {
+/*function TranActive(active) {
   if (active == "功能正常-待機中") {
     return 0;
   } else if (active === "活動中") {
@@ -116,13 +245,13 @@ function TranActive(active) {
   } else {
     return -1;
   }
-}
+}*/
     export default {
       data() {
         return {
             userdatas:[],
             token:localStorage.getItem('token'),
-            Tableshow:false,
+            Tableshow:[],
             show: false,
             FishId: [],
             fishdatas:[],
@@ -157,7 +286,37 @@ function TranActive(active) {
             mobileColumns:[
                     {
                         title: 'UID',
-                        slot: 'id'
+                        slot: 'id',
+                        width:92,
+                        fixed: 'left'
+                    },
+                    {
+                        title: '狀態',
+                        width:80,
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        width:70,
+                        key: 'version'
+                    },
+                    {
+                        title: '更新時間',
+                        width:100,
+                        key: 'time'
+                    },
+                    {
+                        title: '編輯',
+                        slot: 'action',
+                        width: 80,
+                        align: 'center',
+                        fixed: 'right'
+                    }
+            ],
+            nodatacolumns: [
+                    {
+                        title: 'UID',
+                        key: 'id'
                     },
                     {
                         title: '狀態',
@@ -173,22 +332,51 @@ function TranActive(active) {
                     },
                     {
                         title: '編輯',
-                        slot: 'action',
+                        key: 'time',
+                        width: 150,
+                    }
+                ],
+                nodatamobileColumns:[
+                    {
+                        title: 'UID',
+                        key: 'id',
+                        fixed: 'left'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        width:80,
+                        key: 'version'
+                    },
+                    {
+                        title: '更新時間',
+                        key: 'time'
+                    },
+                    {
+                        title: '編輯',
+                        key: 'time',
                         width: 80,
-                        align: 'center'
+                        align: 'center',
+                        fixed: 'right'
                     }
             ],
             data: [],
             searchId:'',
             dialog: false,
             IP:process.env.VUE_APP_IP,
-            fallbackRow: {
-            id: '',
-            version: '無資料',
-            time: '',
-            active:'',
-            },
+            fallbackRow: [
+              {
+                id: " ",
+                version: '無資料',
+                time: " ",
+                active: " "
+              }
+            ],
             dialognew:false,
+            dialognewSection:false,
             NewId:null,
             NewBc:null,
             NewErro:null,
@@ -199,10 +387,18 @@ function TranActive(active) {
             "活動中",
             "維修中"
         ],
-            sectionword:[
-              "北科","海科"
-            ],
             poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+            instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
+            InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
+            NewInstruction:null,
+            NewInstructionCode:null,
+            SelectInstruction:null,
+            SelectDepart:null,
+            NewDepart:null,
+            NewDepartCode:null,
+            NewPool:null,
+            NewPoolCode:null,
+            tab:null,
         }
       },
       async created() {
@@ -221,19 +417,23 @@ function TranActive(active) {
           return (index) => {
             if (!this.searchId) {
               return this.data[index];
-            } else {
+            } else if(this.data[index]){
               return this.data[index].filter(item => {
                 const itemId = item.id.toString(); 
                 return itemId.includes(this.searchId.toLowerCase());
               });
+            }else{
+              return [];
             }
           };
         },
       AddButtonDisabled() {
         const numericRegex = /^\d+$/;
         const isNewIdValid = numericRegex.test(this.NewId);
-        const isNewBcValid = numericRegex.test(this.NewBc);
-        return !(isNewIdValid && isNewBcValid && this.SelectSection && this.SelectActive);
+        return !(isNewIdValid && this.SelectSection);
+      },
+      SigninButtonDisabled(){
+        return false
       },
       numericRule() {
         return (v) => /^\d+$/.test(v) || '只能输入数字'; 
@@ -242,10 +442,8 @@ function TranActive(active) {
       methods: {
         newdatas () {
         axios.post(
-          "/api/v1/fish/data/",{
-              "fishData": {
-                [this.NewId] : {"bc": this.NewBc, "err": 0,"active":TranActive(this.SelectActive)},
-                }
+          "/api/v1/fish/?section="+this.SelectSection,{
+            "fishUID": this.NewId,
                         },{
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -258,7 +456,6 @@ function TranActive(active) {
                 this.dialognew = false
                 this.$Message.success('新增成功');
                 await this.loadnewdata();
-                location.reload();
                 
               }
               else{
@@ -281,7 +478,6 @@ function TranActive(active) {
         this.time.push(time);
             });
         },
-<<<<<<< HEAD
         RefreshDatas2() {
           for (var i = 0; i < this.poolsCode.length; i++) {
             const fish0 = "fish0" + this.poolsCode[i];
@@ -299,69 +495,7 @@ function TranActive(active) {
               const num = parseInt(str, 10);
               const paddedNum = num.toString().padStart(7, '0'); 
               return paddedNum;
-=======
-      accountdata(){
-        const fish1Data = localStorage.getItem("fish21");
-        const parsedFish1Data = JSON.parse(fish1Data);
-        this.FishId = parsedFish1Data;
-        const fish0Data = localStorage.getItem("fish20");
-        const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data);
-        this.FishId2num = this.FishId.length;
-        const fish2Data = localStorage.getItem("fish22");
-        const parsedFish2Data = JSON.parse(fish2Data);
-        this.FishId.push(...parsedFish2Data);
-        this.FishId = this.FishId.map((str) => {
-          const num = parseInt(str, 10);
-          return isNaN(num) ? 0 : num;
-        });
-        this.FishId.sort((a, b) => a - b);
-                axios.get(
-                  "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-            console.log(res);
-            this.fishdatas = {};
-            this.data = [];
-            for (const id in res.data['002']) {
-            if(!Array.isArray(res.data['002'][id])) continue;
-            const dataArray = res.data['002'][id];
-            if (!this.fishdatas[id]) {
-                this.fishdatas[id] = [];
-            }
-            const lastFiveObjects = dataArray.slice(-5);
-            const reversedLastFive = lastFiveObjects.reverse();
-            this.fishdatas[id] = reversedLastFive;
-            this.fishdatas[id].show = false;
-            }
-            for (const id in res.data['002']) {
-              if(!Array.isArray(res.data['002'][id])){
-                this.data.push({ //this.data 顯是home版本時間
-                  id,
-                  version: "創建中",
-                  time: ''
-                })
-                continue;
-              }//res -> dataArray -> version, time -> this.version, this.time ->this.data[].version
-              const dataArray = res.data['002'][id] // [{bc: ,err: }...];
-              const { version,time } = dataArray[dataArray.length-1];
-              this.version.push(version);
-              this.time.push(time);
-            }
-            this.data = this.FishId.map((item,index) => ({ //this.data 顯是home版本時間
-              id: this.FishId[index],
-              version: this.version[index],
-              time: this.formatDate(this.time[index]),
-              active:this.proccesactive(this.active[index])
-            }));
-            this.data.sort((a, b) => {
-              const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
-              return order[a.active] - order[b.active];
->>>>>>> 06b8565151fed49d2c9aab7b0f08e6ab7100dcb5
+      
             });
             this.FishId.push(parsedFishIds); 
           }
@@ -369,6 +503,10 @@ function TranActive(active) {
       async accountdata() {
         try {
             for (var i = 0; i < this.poolsCode.length; i++) {
+                if(this.FishId[i].length === 0) {
+                  this.Tableshow.push(false);
+                  continue;
+                }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
                     "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
@@ -410,14 +548,15 @@ function TranActive(active) {
                     id: this.FishId[i][index],
                     version: this.version[i][index],
                     time: this.formatDate(this.time[i][index]),
-                    active: this.proccesactive(this.active[i][index])
+                    active: this.proccesactive(this.active[i][index]),
+                    modal:false,
                 }));
                 datas.sort((a, b) => {
                     const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
                     return order[a.active] - order[b.active];
                 });
                 this.data.push(datas);
-                this.Tableshow = true;
+                this.Tableshow.push(true);
             }
         } catch (error) {
             console.log(error);
@@ -427,13 +566,13 @@ function TranActive(active) {
       this.fishdatas[index].show = !this.fishdatas[index].show
     },
     formatDate(timestamp) {
-    const dateObj = new Date(timestamp);
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
+      const dateObj = new Date(timestamp * 1000); 
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+      const day = String(dateObj.getDate()).padStart(2, '0'); 
 
-    return `${year}-${month}-${day}`;
-  },
+      return `${year}-${month}-${day}`;
+    },
     async loadnewdata() {
       try {
         const response = await axios.get(
@@ -530,6 +669,126 @@ function TranActive(active) {
           return "待機中"
         }
 
+      },
+      select(e){
+        this.selectFile = e.target.files[0]
+      },
+      selectfile(e){
+        this.selectFile = e.target.files[0]
+      },
+      uploadImage(UID) {
+        if (typeof this.selectFile === 'undefined') {
+          this.$Message.error('尚未選擇圖片');
+          return;
+        }
+        const formData = new FormData()
+        formData.append('image',this.selectFile)
+        axios.post(
+            "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
+          )
+          .then(res=> {
+              console.log(res);
+              
+              if(res.status == 200){
+                this.$Message.success('上傳成功');
+              }
+              else
+              this.$Message.error('上傳失敗');
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('上傳失敗');
+          })
+      },
+      Signin(tab){
+        if (tab === "one"){
+          axios.post(
+          "/api/v1/instruction",{
+            "instruction":{"code": this.NewInstructionCode,
+                           "name": this.NewInstruction
+                          },
+                        },{
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+          )
+          .then(async res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.dialognew = false
+                this.$Message.success('新增成功');
+                await this.loadnewdata();
+                
+              }
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              this.$Message.error('新增失敗');
+          })
+        }else if(tab === "two"){
+          axios.post(
+          "/api/v1/depart",{
+            "depart":{"code": this.NewDepartCode,
+                      "name": this.NewDepart
+                      },
+            "instruction":{"code": this.SelectInstruction}
+                        },{
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+          )
+          .then(async res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.dialognew = false
+                this.$Message.success('新增成功');
+                await this.loadnewdata();
+                
+              }
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              this.$Message.error('新增失敗');
+          })
+        }else{
+          axios.post(
+          "/api/v1/pool",{
+            "instruction":{"code": this.SelectInstruction},
+            "depart":{"code": this.SelectDepart},
+            "pool":{"code": this.NewPoolCode,
+                    "name": this.NewPool }
+                        },{
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+          )
+          .then(async res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.dialognew = false
+                this.$Message.success('新增成功');
+                await this.loadnewdata();
+                
+              }
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              this.$Message.error('新增失敗');
+          })
+        }
+      },
+      testSigninInput(tab){
+        alert(tab);
       }
         
     },
