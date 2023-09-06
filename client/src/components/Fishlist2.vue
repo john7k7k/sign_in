@@ -495,69 +495,7 @@ import axios from 'axios';
               const num = parseInt(str, 10);
               const paddedNum = num.toString().padStart(7, '0'); 
               return paddedNum;
-=======
-      accountdata(){
-        const fish1Data = localStorage.getItem("fish21");
-        const parsedFish1Data = JSON.parse(fish1Data);
-        this.FishId = parsedFish1Data;
-        const fish0Data = localStorage.getItem("fish20");
-        const parsedFish0Data = JSON.parse(fish0Data);
-        this.FishId.push(...parsedFish0Data);
-        this.FishId2num = this.FishId.length;
-        const fish2Data = localStorage.getItem("fish22");
-        const parsedFish2Data = JSON.parse(fish2Data);
-        this.FishId.push(...parsedFish2Data);
-        this.FishId = this.FishId.map((str) => {
-          const num = parseInt(str, 10);
-          return isNaN(num) ? 0 : num;
-        });
-        this.FishId.sort((a, b) => a - b);
-                axios.get(
-                  "/api/v1/fish/table/?section=002&fishesID="+this.FishId,{
-    headers: {
-      Authorization: `Bearer ${this.token}`
-    }
-  }
-          )
-          .then(res=> {
-            console.log(res);
-            this.fishdatas = {};
-            this.data = [];
-            for (const id in res.data['002']) {
-            if(!Array.isArray(res.data['002'][id])) continue;
-            const dataArray = res.data['002'][id];
-            if (!this.fishdatas[id]) {
-                this.fishdatas[id] = [];
-            }
-            const lastFiveObjects = dataArray.slice(-5);
-            const reversedLastFive = lastFiveObjects.reverse();
-            this.fishdatas[id] = reversedLastFive;
-            this.fishdatas[id].show = false;
-            }
-            for (const id in res.data['002']) {
-              if(!Array.isArray(res.data['002'][id])){
-                this.data.push({ //this.data 顯是home版本時間
-                  id,
-                  version: "創建中",
-                  time: ''
-                })
-                continue;
-              }//res -> dataArray -> version, time -> this.version, this.time ->this.data[].version
-              const dataArray = res.data['002'][id] // [{bc: ,err: }...];
-              const { version,time } = dataArray[dataArray.length-1];
-              this.version.push(version);
-              this.time.push(time);
-            }
-            this.data = this.FishId.map((item,index) => ({ //this.data 顯是home版本時間
-              id: this.FishId[index],
-              version: this.version[index],
-              time: this.formatDate(this.time[index]),
-              active:this.proccesactive(this.active[index])
-            }));
-            this.data.sort((a, b) => {
-              const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
-              return order[a.active] - order[b.active];
->>>>>>> 06b8565151fed49d2c9aab7b0f08e6ab7100dcb5
+
             });
             this.FishId.push(parsedFishIds); 
           }
