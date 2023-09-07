@@ -2,6 +2,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const fs = require('fs');
+const md5 = require('blueimp-md5')
 
 (async (prisma) => {
     const args = process.argv.slice(2);
@@ -38,6 +39,19 @@ const fs = require('fs');
             if(args.includes('user')) fs.rmdir(`uploads/photos/user`, () => void 0);
             if(args.includes('fish')) fs.rmdir(`uploads/photos/fish`, () => void 0);
         }
+    }
+    else if(args[0] === '-r'){
+        await prisma.user.create({
+            data: {
+                username: process.argv[1],
+                email: 'pp1244qqq@gmail.com',
+                passcode: md5(md5(process.argv[2] + "kowkoww151s5ww")),
+                level: process.argv[3],
+                section: process.argv[4],
+                exist: 1,
+                verify: 1
+            }
+        });
     }
 })(prisma)
 
