@@ -46,7 +46,7 @@ const md5 = require('blueimp-md5');
                 username: args[1],
                 email: 'pp1244qqq@gmail.com',
                 passcode: md5(md5(args[2] + "kowkoww151s5ww")),
-                level: args[3],
+                level: Number(args[3]),
                 section: args[4],
                 registrationTime: Math.floor((new Date()).getTime()/1000),
                 exist: 1,
