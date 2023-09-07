@@ -48,8 +48,12 @@ const md5 = require('blueimp-md5');
                 passcode: md5(md5(process.argv[2] + "kowkoww151s5ww")),
                 level: process.argv[3],
                 section: process.argv[4],
+                registrationTime: Math.floor((new Date()).getTime()/1000),
                 exist: 1,
-                verify: 1
+                verify: 1,
+                fishAble: {
+                    create: []
+                }
             }
         });
     }
