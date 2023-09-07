@@ -43,11 +43,11 @@ const md5 = require('blueimp-md5');
     else if(args[0] === '-r'){
         await prisma.user.create({
             data: {
-                username: process.argv[1],
+                username: args[1],
                 email: 'pp1244qqq@gmail.com',
-                passcode: md5(md5(process.argv[2] + "kowkoww151s5ww")),
-                level: process.argv[3],
-                section: process.argv[4],
+                passcode: md5(md5(args[2] + "kowkoww151s5ww")),
+                level: args[3],
+                section: args[4],
                 registrationTime: Math.floor((new Date()).getTime()/1000),
                 exist: 1,
                 verify: 1,
