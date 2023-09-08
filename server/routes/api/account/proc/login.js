@@ -2,7 +2,6 @@ const md5 = require('blueimp-md5');
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const sectionProcess = require('../../../../modules/util/section')();
 const dotenv = require("dotenv").config();
 
 module.exports = async function(req, res) {
