@@ -5,9 +5,10 @@ const app = express();
 const allowDomainOnly = () => 
     (req, res, next) => {
   const allowedDomain = 'aifish.cc'; // 替换为你的域名
-  const requestOrigin = req.headers.origin || req.headers.referer;
-
+  const requestOrigin = req.get('Host');
+        console.log( requestOrigin);
   if (requestOrigin === `http://${allowedDomain}` || requestOrigin === `https://${allowedDomain}`) {
+
     next();
   } else {
     res.status(403).send('Access Forbidden');
