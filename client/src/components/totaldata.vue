@@ -28,7 +28,7 @@
             <div>
             <v-row  no-gutters>
               <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/fish'" @click="SaveIndividualData(index,n.level)"></v-btn>
+              <v-btn class="ma-2 " :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level)"></v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
@@ -43,13 +43,13 @@
             </v-row>
             <v-row  no-gutters>
               <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
-                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/fish'"
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/' + 'needcharge' + '/fish'"
                   >{{needchargenum[index]}}條魚需充電</v-btn>
               </v-col>
             </v-row>
             <v-row  no-gutters>
               <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2" >
-                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(index,5)" :to="'/' + name + '/fish'"
+                <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(index,5)" :to="'/' + name + '/' + 'error' + '/fish'"
                   >{{needfixnum[index]}}條魚有錯誤</v-btn>
               </v-col>
             </v-row>
@@ -77,10 +77,11 @@ export default {
       token:localStorage.getItem('token'),
       time: localStorage.getItem("NewTime"),
       links: [ 
-        { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-        { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-        { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
+        { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false,linetext:"swimming"},
+        { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false,linetext:"standby"},
+        { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false,linetext:"maintenance"},
       ],
+      
       isRefreshing: false,
       IP:process.env.VUE_APP_IP,
       poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
@@ -92,9 +93,9 @@ export default {
       this.links = []; 
       for (let i = 1; i <= count; i++) {
         this.links.push([
-          { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false },
-          { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false },
-          { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false },
+          { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false,linetext:"swimming" },
+          { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false,linetext:"standby" },
+          { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false,linetext:"maintenance" },
         ]);
       }
     },
@@ -371,7 +372,7 @@ export default {
     },
     async routefishdata(index,name){
       await this.SaveIndividualData(index,0);
-      this.$router.push(`/${name}/fish`);
+      this.$router.push(`/${name}/total/fish`);
     }
   },
   async created() {

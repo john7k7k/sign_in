@@ -151,8 +151,9 @@
                   </tbody>
                 </v-table>
                 <v-card-actions class="d-flex justify-space-between">
-            <v-select v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
+            <v-select v-show="false" v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
             <v-btn
+              v-show="false"
               prepend-icon="mdi mdi-magnify"
               class="ml-3 mb-2 bg-grey"
               @click="searchvideo"

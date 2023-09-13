@@ -20,133 +20,7 @@
     :scrim="false"
     transition="dialog-bottom-transition"
   >
-    <template v-slot:activator="{ props }">
-      <Button class="mr-4 mt-6"
-      type="warning"
-        size="large"
-        v-bind="props"   >註冊</Button>
-    </template>
-    <v-card>
-      <v-toolbar dark color="orange-accent-1">
-        <v-btn icon dark @click="dialognewSection = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title>註冊</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn variant="text" @click="Signin(tab)" :disabled="SigninButtonDisabled" v-model="tab"> 新增 </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-
-      <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
-      <v-tab value="one">註冊機構</v-tab>
-      <v-tab value="two">註冊部門</v-tab>
-      <v-tab value="three">新增水池</v-tab>
-    </v-tabs>
-
-    <v-card-text>
-      <v-window v-model="tab">
-        <v-window-item value="one">
-          <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="新機構名稱">
-            <v-text-field
-              v-model="NewInstruction"
-              title="ID:"
-              :rules="[required]"
-              inputmode="numeric"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="新機構代碼">
-            <v-text-field
-              v-model="NewInstructionCode"
-              title="ID:"
-              :rules="[required, numericRule]"
-              inputmode="numeric"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-      </v-row>
-        </v-window-item>
-
-        <v-window-item value="two">
-          <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="選擇機構">
-            <v-select v-model="SelectInstruction" :items="InstructionName" :rules="[required]"></v-select>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item >
-            <v-select v-show="false"  :items="InstructionName" ></v-select>
-          </v-list-item>
-        </v-col>
-      </v-row>
-          <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="新部門名稱">
-            <v-text-field
-              v-model="NewDepart"
-              title="ID:"
-              :rules="[required]"
-              inputmode="numeric"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="新部門代碼">
-            <v-text-field
-              v-model="NewDepartCode"
-              title="ID:"
-              :rules="[required, numericRule]"
-              inputmode="numeric"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-      </v-row>
-        </v-window-item>
-
-        <v-window-item value="three">
-          <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="選擇機構">
-            <v-select v-model="SelectInstruction" :items="InstructionName" :rules="[required]"></v-select>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="選擇部門">
-            <v-select v-model="SelectDepart" :items="poolsCode" :rules="[required]"></v-select>
-          </v-list-item>
-        </v-col>
-      </v-row>
-      <v-row class="d-flex justify-space-around">
-        <v-col>
-          <v-list-item title="新水池名稱">
-            <v-text-field
-              v-model="NewPool"
-              title="ID:"
-              :rules="[required]"
-              inputmode="numeric"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-        <v-col>
-          <v-list-item title="新水池代碼">
-            <v-text-field
-              v-model="NewPoolCode"
-              title="ID:"
-              :rules="[required, numericRule]"
-              inputmode="numeric"
-            ></v-text-field>
-          </v-list-item>
-        </v-col>
-      </v-row>
-        </v-window-item>
-      </v-window>
-    </v-card-text>
-    </v-card>
+    
   </v-dialog>
       <v-dialog
     v-model="dialognew"
@@ -193,7 +67,7 @@
     </v-card>
   </v-dialog> 
 </div> 
-    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2" ><h3>{{ poolname }}</h3>
+    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2" ><h3>{{ processSectionName(poolname) }}</h3>
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.id }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
@@ -388,20 +262,15 @@ import axios from 'axios';
             "維修中"
         ],
             poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+            poolName: JSON.parse(localStorage.getItem("PoolsName")),
             instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
             InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
-            NewInstruction:null,
-            NewInstructionCode:null,
-            SelectInstruction:null,
-            SelectDepart:null,
-            NewDepart:null,
-            NewDepartCode:null,
-            NewPool:null,
-            NewPoolCode:null,
-            tab:null,
+            keyvalueMapping :[],
         }
       },
       async created() {
+        this.formNameMapping(this.instructionCode,this.InstructionName);
+        this.formNameMapping(this.poolsCode,this.poolName);
         this.RefreshDatas2();
         await this.accountdata();
       },
@@ -432,14 +301,25 @@ import axios from 'axios';
         const isNewIdValid = numericRegex.test(this.NewId);
         return !(isNewIdValid && this.SelectSection);
       },
-      SigninButtonDisabled(){
-        return false
-      },
       numericRule() {
         return (v) => /^\d+$/.test(v) || '只能输入数字'; 
       },
   },
       methods: {
+        formNameMapping(code,name,){
+          const keyValueMapping = {};
+          for (let i = 0; i < code.length; i++) {
+            const key = code[i];
+            const value = name[i];
+            
+            keyValueMapping[key] = value;
+          }
+          this.keyvalueMapping.push(keyValueMapping);
+        },
+        processSectionName(str) {
+        var section = str.substring(0, 3);
+        return  this.keyvalueMapping[0][section]+"-"+this.keyvalueMapping[1][str] || "";
+    },
         newdatas () {
         axios.post(
           "/api/v1/fish/?section="+this.SelectSection,{
@@ -704,92 +584,7 @@ import axios from 'axios';
               this.$Message.error('上傳失敗');
           })
       },
-      Signin(tab){
-        if (tab === "one"){
-          axios.post(
-          "/api/v1/instruction",{
-            "instruction":{"code": this.NewInstructionCode,
-                           "name": this.NewInstruction
-                          },
-                        },{
-                headers: {
-                  Authorization: `Bearer ${this.token}`
-                }
-              }
-          )
-          .then(async res=> {
-              console.log(res);
-              if(res.status == 200){
-                this.dialognew = false
-                this.$Message.success('新增成功');
-                await this.loadnewdata();
-                
-              }
-          })
-          .catch(err=> {
-              console.log(err);
-              this.dialog = false
-              this.$Message.error('新增失敗');
-          })
-        }else if(tab === "two"){
-          axios.post(
-          "/api/v1/depart",{
-            "depart":{"code": this.NewDepartCode,
-                      "name": this.NewDepart
-                      },
-            "instruction":{"code": this.SelectInstruction}
-                        },{
-                headers: {
-                  Authorization: `Bearer ${this.token}`
-                }
-              }
-          )
-          .then(async res=> {
-              console.log(res);
-              if(res.status == 200){
-                this.dialognew = false
-                this.$Message.success('新增成功');
-                await this.loadnewdata();
-                
-              }
-          })
-          .catch(err=> {
-              console.log(err);
-              this.dialog = false
-              this.$Message.error('新增失敗');
-          })
-        }else{
-          axios.post(
-          "/api/v1/pool",{
-            "instruction":{"code": this.SelectInstruction},
-            "depart":{"code": this.SelectDepart},
-            "pool":{"code": this.NewPoolCode,
-                    "name": this.NewPool }
-                        },{
-                headers: {
-                  Authorization: `Bearer ${this.token}`
-                }
-              }
-          )
-          .then(async res=> {
-              console.log(res);
-              if(res.status == 200){
-                this.dialognew = false
-                this.$Message.success('新增成功');
-                await this.loadnewdata();
-                
-              }
-          })
-          .catch(err=> {
-              console.log(err);
-              this.dialog = false
-              this.$Message.error('新增失敗');
-          })
-        }
-      },
-      testSigninInput(tab){
-        alert(tab);
-      }
+      
         
     },
     }

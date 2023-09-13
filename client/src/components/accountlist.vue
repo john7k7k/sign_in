@@ -38,7 +38,7 @@
                 <Radio label="北科"></Radio>
                 <Radio label="海科"></Radio>
                 <Radio label="先鋒"></Radio>
-                <Radio v-for="poolname in poolsCode" :key="poolname" :label="TranSection(poolname)"></Radio>
+                <Radio v-for="poolname in poolsCode" :key="poolname" :label="processSectionName(poolname)"></Radio>
               </RadioGroup>
           </Modal>
         </template>
@@ -143,7 +143,11 @@ import axios from 'axios';
             },
             modal:false,
             poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+            poolName: JSON.parse(localStorage.getItem("PoolsName")),
+            instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
+            InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
             sectionName:[],
+            keyvalueMapping :[],
         }
       },
       computed: {
@@ -155,6 +159,8 @@ import axios from 'axios';
   created() {
     this.sectionsShow();
     this.accountdata();
+    this.formNameMapping(this.instructionCode,this.InstructionName);
+    this.formNameMapping(this.poolsCode,this.poolName);
     window.addEventListener('resize', this.updateScreenSize);
     this.updateScreenSize();
   },
@@ -162,7 +168,26 @@ import axios from 'axios';
     window.removeEventListener('resize', this.updateScreenSize);
   },
   methods: {
+    formNameMapping(code,name,){
+          const keyValueMapping = {};
+          for (let i = 0; i < code.length; i++) {
+            const key = code[i];
+            const value = name[i];
+            
+            keyValueMapping[key] = value;
+          }
+          this.keyvalueMapping.push(keyValueMapping);
+        },
     processSectionName(str) {
+          var section = str.substring(0, 3);
+        if(str === "001") return "全區"
+        else if (str.length === 3) {
+          return this.keyvalueMapping[0][section] || "";
+        } else {
+          return this.keyvalueMapping[0][section] + "-" + (this.keyvalueMapping[1][str] || "");
+        }
+      },
+    processSectionNameold(str) {
         var section = str.substring(0, 3);
         if(section === "001") section = "全區"
         if(section === "002") section = "北科"
@@ -208,12 +233,12 @@ import axios from 'axios';
                 this.userdatas.push(newData)
             }
               res.data.forEach(item => {
-                this.processSectionName(item.section)
+                this.processSectionNameold(item.section)
               });
               for(let i = 0 ; i<this.sectionName.length;i++){
                 let datas = [];
                 res.data.forEach(item => {
-                const sectionResult = this.TranSection(item.section);
+                const sectionResult = this.processSectionName(item.section);
                 const usernameResult = item.username
                 let showbtn = true;
                 if (sectionResult.startsWith(this.sectionName[i])) {
