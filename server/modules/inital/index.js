@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const allowDomainOnly = require('../middleware/verifyDomin');
 
 module.exports = (app, task = () => void 0) => {
     app.use(express.json())
@@ -13,6 +14,7 @@ module.exports = (app, task = () => void 0) => {
     app.use("/css", express.static('../public/css/'));
     app.use("/index", express.static('../public/'));
     app.use("/uploads", express.static('../uploads'));
+    app.use(allowDomainOnly());
     const port = 3000;
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`)

@@ -12,7 +12,8 @@ const getFishTable = require('./proc/getFishTable');
 const getHistoryData = require('./proc/getHistoryData');
 const verifyTokenBy = require('../../../modules/middleware/verifyToken');
 const verifyAdmin = require('../../../modules/middleware/verifyAdmin');
-const fishPhoto = require('./proc/fishPhoto')
+const fishPhoto = require('./proc/fishPhoto');
+const relocalFish = require('./proc/relocalFish');
 
 router.post(`/`, verifyTokenBy('Header')(30), addFish)
 
@@ -50,5 +51,7 @@ router.get(`/photosURL`, verifyTokenBy('Header')(),  fishPhoto.getURL);
 router.get(`/photos`, verifyTokenBy('Header')(),  fishPhoto.get);
 
 router.post(`/photos`, verifyTokenBy('Header')(),  fishPhoto.upload.single('image'), fishPhoto.process);
+
+router.post(`/relocal`, verifyTokenBy('Header')(), relocalFish);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/v1/account/sign_up
+POST http://aifi-web@20.78.122.91/api/v1/account/sign_up
 Content-Type: application/json
 
 {
@@ -9,19 +9,19 @@ Content-Type: application/json
     "level": 80
 }
 ###
-GET http://localhost:3000/api/v1/account/verify/?username=1234567
+GET http://aifi-web@20.78.122.91/api/v1/account/verify/?username=1234567
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/api/v1/account/login
+POST http://aifi-web@20.78.122.91/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "123456",
+    "username": "123",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
-POST http://localhost:3000/api/v1/fish/assign
+POST http://aifi-web@20.78.122.91/api/v1/fish/assign
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MjQ5NSwiZXhwIjoxNjk0MDAxNDk1fQ.I4bwYUPp-D4rmapfirCPxQWcpNGiOO_raOu73sjSSHY
 
@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST http://localhost:3000/api/v1/fish/disassign
+POST http://aifi-web@20.78.122.91/api/v1/fish/disassign
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNTc1NCwiZXhwIjoxNjkzNDI0NzU0fQ.CTi99ThcxnfZ5MOcaFyjqA6fODQ5nsK-x2niEWzgRNg
 
@@ -41,12 +41,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST http://localhost:3000/api/v1/account/delete_user
+POST http://aifi-web@20.78.122.91/api/v1/account/delete_user
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNTc1NCwiZXhwIjoxNjkzNDI0NzU0fQ.CTi99ThcxnfZ5MOcaFyjqA6fODQ5nsK-x2niEWzgRNg
 
 ###
-POST http://localhost:3000/api/v1/account/remove_user/
+POST http://aifi-web@20.78.122.91/api/v1/account/remove_user/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk3NDg4NiwiZXhwIjoxNjkyOTgzODg2fQ.9VrRSBOUu5VTRzEL2ZQRxGJ1SrmSnw6rNs922MbMZRs
 
@@ -54,17 +54,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "username": "abc"
 }
 ###
-GET http://localhost:3000/api/v1/account
+GET http://aifi-web@20.78.122.91/api/v1/account
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MjQ5NSwiZXhwIjoxNjk0MDAxNDk1fQ.I4bwYUPp-D4rmapfirCPxQWcpNGiOO_raOu73sjSSHY
 
 ###
-GET http://localhost:3000/api/v1/account/list/?section=001
+GET http://aifi-web@20.78.122.91/api/v1/account/list/?section=001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MzUzMSwiZXhwIjoxNjk0MDAyNTMxfQ.7oYs0bzA3BgnVzvmHMwN3i9dUD_457ai-HXzgXJ1TyA
 
 ###
-POST http://localhost:3000/api/v1/account/revise/level
+POST http://aifi-web@20.78.122.91/api/v1/account/revise/level
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MjQ5NSwiZXhwIjoxNjk0MDAxNDk1fQ.I4bwYUPp-D4rmapfirCPxQWcpNGiOO_raOu73sjSSHY
 
@@ -73,7 +73,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newLevel": 10
 }
 ###
-POST http://localhost:3000/api/v1/account/revise/section
+POST http://aifi-web@20.78.122.91/api/v1/account/revise/section
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MzUzMSwiZXhwIjoxNjk0MDAyNTMxfQ.7oYs0bzA3BgnVzvmHMwN3i9dUD_457ai-HXzgXJ1TyA
 
@@ -82,18 +82,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newSection": "002"
 }
 ###
-POST http://localhost:3000/api/v1/fish/?section=002001002
+POST http://aifi-web@20.78.122.91/api/v1/fish/?section=002001001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzk5MjQ5NSwiZXhwIjoxNjk0MDAxNDk1fQ.I4bwYUPp-D4rmapfirCPxQWcpNGiOO_raOu73sjSSHY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDE2MDEzOCwiZXhwIjoxNjk0MTY5MTM4fQ.d_O1eaVrHXRH1GjWTVFGKztNHikrfqSJ5gcilsvIf6c
 
 {
-    "fishUID": "0023003"
+    "fishUID": "0023001"
 }
 
 ###
-POST http://localhost:3000/api/v1/fish/data/
+POST http://aifi-web@20.78.122.91/api/v1/fish/data/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2OTM0MTY0OTIsImV4cCI6MTY5MzQyNTQ5Mn0.bOz7Kwk7_AhwXwpg7ddcEDANQDDGNRFTCTW4Ylm9ifM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDE2MDEzOCwiZXhwIjoxNjk0MTY5MTM4fQ.d_O1eaVrHXRH1GjWTVFGKztNHikrfqSJ5gcilsvIf6c
 
 {
     "fishData": {
@@ -102,23 +102,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-GET http://localhost:3000/api/v1/fish/table/?fishesUID=0023001
+GET http://aifi-web@20.78.122.91/api/v1/fish/table/?fishesUID=0023001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNjU5MywiZXhwIjoxNjkzNDI1NTkzfQ.8PK_WVJDwxIOYJQq6l4yagLzaeUVo-By2S7t4ncA8r8
 
 
 ###
-GET http://localhost:3000/api/v1/fish/data/?fishesUID=0023001
+GET http://aifi-web@20.78.122.91/api/v1/fish/data/?fishesUID=0023001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNjU5MywiZXhwIjoxNjkzNDI1NTkzfQ.8PK_WVJDwxIOYJQq6l4yagLzaeUVo-By2S7t4ncA8r8
 
 ###
-GET http://localhost:3000/api/v1/fish/history_data/?fishesUID=0023001,0023002&versions=1693063995:1693064041,1693064039:1693064040
+GET http://aifi-web@20.78.122.91/api/v1/fish/history_data/?fishesUID=0023001,0023002&versions=1693063995:1693064041,1693064039:1693064040
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzA3Mzg4OCwiZXhwIjoxNjkzMDgyODg4fQ.w1-8mkztLx7f5vne2Qro3Bbhk66ERrcwlvCtpVwUP_U
 
 ###
-POST http://localhost:3000/api/v1/fish/control/?section=002001001
+POST http://aifi-web@20.78.122.91/api/v1/fish/control/?section=002001001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNjU5MywiZXhwIjoxNjkzNDI1NTkzfQ.8PK_WVJDwxIOYJQq6l4yagLzaeUVo-By2S7t4ncA8r8
 
@@ -146,7 +146,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST http://localhost:3000/api/v1/fish/delete/
+POST http://aifi-web@20.78.122.91/api/v1/fish/delete/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxOTMxMCwiZXhwIjoxNjkzNDI4MzEwfQ.F-4NywDgcW8kAUsjV1N-oK9jAQYADHntUuPwiml8ycw
 
@@ -154,14 +154,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "fishesUID": ["0023001"]
 }
 ###
-GET http://localhost:3000/api/v1/video/?video_uid=1&section=002
+GET http://aifi-web@20.78.122.91/api/v1/video/?video_uid=1&section=002
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTkxMzc5MywiZXhwIjoxNjkxOTIyNzkzfQ.y2vpad0KlqtVWPELBdUGQ7eKYmaw0kY4BdprzMQV0LM
 
 ###
-GET http://localhost:3000/home
+GET http://aifi-web@20.78.122.91/home
 Cookie:token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTc2ODczMCwiZXhwIjoxNjkxNzc3NzMwfQ.x-S_txC02B18EY56ZIBeGvZTrN7GmibB491IVhV9ym0
 ###
-POST http://localhost:3000/api/v1/instruction
+POST http://aifi-web@20.78.122.91/api/v1/instruction
 Content-Type: application/json
 
 {
@@ -171,20 +171,20 @@ Content-Type: application/json
     }
 }
 ###
-POST http://localhost:3000/api/v1/depart
+POST http://aifi-web@20.78.122.91/api/v1/depart
 Content-Type: application/json
 
 {
     "depart":{
-        "code": "002",
-        "name": "ntut_2"
+        "code": "001",
+        "name": "先鋒國際研發大樓"
     },
     "instruction":{
         "code": "002"
     }
 }
 ###
-POST http://localhost:3000/api/v1/pool
+POST http://aifi-web@20.78.122.91/api/v1/pool
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzEzMDUzNCwiZXhwIjoxNjkzMTM5NTM0fQ.vlz8hjB7zM2kIaHweRTO5RnDWuxLzdwIdw9Wyj_i-w0
 
@@ -193,15 +193,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
         "code": "002"
     },
     "depart":{
-        "code": "002"
+        "code": "001"
     },
     "pool":{
         "code": "001",
-        "name": "ntut_2_1"
+        "name": "CSL水池"
     }
 }
 ###
-POST http://localhost:3000/api/v1/fish/?section=002001001
+POST http://aifi-web@20.78.122.91/api/v1/fish/?section=002001001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
 
@@ -216,20 +216,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 ###
 
-POST http://localhost:3000/api/v1/account/sticker
+POST http://aifi-web@20.78.122.91/api/v1/account/sticker
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
 ###
-GET http://localhost:3000/api/v1/account/sticker
+GET http://aifi-web@20.78.122.91/api/v1/account/sticker
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
 ###
-GET http://localhost:3000/api/v1/fish/photosURL
+GET http://aifi-web@20.78.122.91/api/v1/fish/photosURL
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
 
-POST http://localhost:3000/api/v1/fish/photos
+POST http://aifi-web@20.78.122.91/api/v1/fish/photos
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2OTM3NTAyNzMsImV4cCI6MTY5Mzc1OTI3M30.kKo8fSddF2pBjc22jkYZv89-pGwSJsEFNXDMYqxRXec
 
-GET http://localhost:3000/api/v1/fish/photos/?fishUID=0023001&time=1693727750653.jpg
+GET http://aifi-web@20.78.122.91/api/v1/fish/photos/?fishUID=0023001&time=1693727750653.jpg
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
 ###
-GET http://localhost:3000/api/v1/section
+GET http://aifi-web@20.78.122.91/api/v1/section
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
+###
+POST http://aifi-web@20.78.122.91/api/v1/fish/relocal
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDAwMjkwMCwiZXhwIjoxNjk0MDExOTAwfQ.aG5X3cXfVvj77i4nD0kt84VtEfFgmNX-tWVME-SOWLo
+Content-Type: application/json
+
+{
+    "fishUID": "0023001",
+    "newPool": "002001002"
+}
