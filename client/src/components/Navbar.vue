@@ -64,7 +64,7 @@
           v-show="userlistshow"
           prepend-icon="mdi mdi-clipboard-text-search-outline"
           title="註冊機構/部門水池"
-          value="accountdata"
+          value="signupsection"
           route to = "/sign/up/pool"
         ></v-list-item>
       <v-list-item
