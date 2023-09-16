@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
       await prisma.pool.create({
         data: {
           id: instruction.code + depart.code + pool.code,
+          mac: '',
           name: pool.name,
           depart: {
             connect: {
