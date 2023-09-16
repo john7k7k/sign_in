@@ -45,7 +45,17 @@ async function messageProcess(topic,mqtt_data){
         }
         else if(topic.type === 'info'){
             delete mqtt_data.time;
-            console.log(mqtt_data)
+            console.log(mqtt_data);
+            const thisPoolFishes = await prisma.fish.findMany({
+                where: {
+                    location: topic.instruction + topic.depart + topic.pol
+                }
+            })
+            Object.keys(mqtt_data).forEach(fishUID => {
+                if(!thisPoolFishes.includes(fishUID)){
+                    delete mqtt_data[fishUID];
+                }
+            })
             await prisma.fishData.createMany({
             data: Object.keys(mqtt_data).map(fishUID => ({
                     fishUID: '002' + fishUID,

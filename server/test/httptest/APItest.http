@@ -84,10 +84,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST https://pre.aifish.cc/api/v1/fish/?section=002001001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDgzODAyOCwiZXhwIjoxNjk0ODQ3MDI4fQ.-p2-A4bMQOF9kMDL4_Zpdig4HXvH6K1-E7Nu5ZtfQwA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDg0NTkyMywiZXhwIjoxNjk0ODU0OTIzfQ.N8c7RmosrVNkXOls9Oqkhj3BfxKSOyL2m-wBSlBiHDs
 
 {
-    "fishUID": "0023006"
+    "fishUID": "0023019"
 }
 
 ###
