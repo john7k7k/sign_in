@@ -8,6 +8,7 @@ import editdatas3 from '../views/Editdatas3.vue'
 import Fishdatas3 from '../views/FishdataView3.vue'
 import Accountlist from '../views/AccountList.vue'
 import FishDatalist from '../views/FishDatalist.vue'
+import SuSectionview from '../views/SignupSectionview.vue'
 const routes = [
   {
     name: "Nav",
@@ -21,7 +22,7 @@ const routes = [
     },
     {
       name: "Fishdatas",
-      path: "/:prefix/fish", 
+      path: "/:prefix/:prefix/fish/", 
       component: Fishdatas
     },
     {
@@ -53,6 +54,11 @@ const routes = [
       name: "FishDatalist",
       path: "/fish/list", 
       component: FishDatalist
+    },
+    {
+      name: "SignupSection",
+      path: "/sign/up/pool", 
+      component: SuSectionview
     },
    ]
   },
@@ -88,6 +94,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
     next("/404");
+  } else {
+    next();
+  }
+  const token = localStorage.getItem('token'); 
+  if (to.meta.requiresAuth && !token) {
+    next('/login');
   } else {
     next();
   }
