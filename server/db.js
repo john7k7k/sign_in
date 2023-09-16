@@ -137,6 +137,21 @@ const md5 = require('blueimp-md5');
                     }
                 }
             });
+            const fishesUID = ['0023001', '0023004', '0023009', '0023010', '0023011', '0023012', '0023013', '0023036']
+
+            for (let fishUID of fishesUID)
+                await prisma.fish.create({
+                    data: {
+                            fishUID,
+                            exist: 1,
+                            pool: {
+                                connect: {
+                                    id: '002001001'
+                                }
+                            }
+                        }
+                    }
+                )
         }
     }
 })(prisma)
