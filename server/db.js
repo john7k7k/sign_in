@@ -137,9 +137,9 @@ const md5 = require('blueimp-md5');
                     }
                 }
             });
-            const fishesUID = ['0023001', '0023004', '0023009', '0023010', '0023011', '0023012', '0023013', '0023036']
+            const fishesUID = ['0023001', '0023002', '0023004', '0023006', '0023009', '0023010', '0023011', '0023012', '0023013', '0023036']
 
-            for (let fishUID of fishesUID)
+            for (let fishUID of fishesUID){
                 await prisma.fish.create({
                     data: {
                             fishUID,
@@ -151,7 +151,29 @@ const md5 = require('blueimp-md5');
                             }
                         }
                     }
-                )
+                );
+                fs.mkdir(`uploads/photos/fish/${fishUID}` , {recursive: true},() => void 0)
+                const user = await prisma.user.findUnique({
+                    where: {
+                        username: '123'
+                    }
+                });
+                //const admins = users.filter(user => user.level <= 30 && ('002001001'.match('^' + user.section)||user.section=='001'));
+                await prisma.fishAble.create({
+                    data: {
+                        user: {
+                            connect: {
+                                userID: user.userID
+                            }
+                        },
+                        fish: {
+                        connect:{
+                            fishUID
+                        }
+                        }
+                    }
+                });
+            }
         }
     }
 })(prisma)
