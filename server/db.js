@@ -41,21 +41,57 @@ const md5 = require('blueimp-md5');
         }
     }
     else if(args[0] === '-r'){
-        await prisma.user.create({
-            data: {
-                username: args[1],
-                email: 'pp1244qqq@gmail.com',
-                passcode: md5(md5(args[2] + "kowkoww151s5ww")),
-                level: Number(args[3]),
-                section: args[4],
-                registrationTime: Math.floor((new Date()).getTime()/1000),
-                exist: 1,
-                verify: 1,
-                fishAble: {
-                    create: []
+        if(args[1] === 'user')
+            await prisma.user.create({
+                data: {
+                    username: args[2],
+                    email: 'pp1244qqq@gmail.com',
+                    passcode: md5(md5(args[3] + "kowkoww151s5ww")),
+                    level: Number(args[4]),
+                    section: args[5],
+                    registrationTime: Math.floor((new Date()).getTime()/1000),
+                    exist: 1,
+                    verify: 1,
+                    fishAble: {
+                        create: []
+                    }
                 }
-            }
-        });
+            });
+        else if(args[1] === 'pool'){
+            await prisma.pool.create({
+                data: {
+                    id: args[2],
+                    mac: '',
+                    name: args[3],
+                    depart: {
+                        connect: {
+                            id: args[4]
+                        }
+                    }
+                }
+            })
+        }
+        else if(args[1] === 'depart'){
+            await prisma.depart.create({
+                data: {
+                    id: args[2],
+                    name: args[3],
+                    instruction: {
+                        connect: {
+                            id: args[4]
+                        }
+                    }
+                }
+            })
+        }
+        else if(args[1] === 'ins'){
+            await prisma.instruction.create({
+                data: {
+                    id: args[2],
+                    name: args[3],
+                }
+            })
+        }
     }
 })(prisma)
 
