@@ -92,6 +92,52 @@ const md5 = require('blueimp-md5');
                 }
             })
         }
+        else if(args[1] === 'init'){
+            await prisma.instruction.create({
+                data: {
+                    id: '002',
+                    name: '台北科大',
+                }
+            })
+            await prisma.depart.create({
+                data: {
+                    id: '002001',
+                    name: '先鋒大樓',
+                    instruction: {
+                        connect: {
+                            id: '002'
+                        }
+                    }
+                }
+            })
+            await prisma.pool.create({
+                data: {
+                    id: '002001001',
+                    mac: 'CSL水池',
+                    name: '',
+                    depart: {
+                        connect: {
+                            id: '002001'
+                        }
+                    }
+                }
+            })
+            await prisma.user.create({
+                data: {
+                    username: '123',
+                    email: 'pp1244qqq@gmail.com',
+                    passcode: md5(md5('456' + "kowkoww151s5ww")),
+                    level: 5,
+                    section: '001',
+                    registrationTime: Math.floor((new Date()).getTime()/1000),
+                    exist: 1,
+                    verify: 1,
+                    fishAble: {
+                        create: []
+                    }
+                }
+            });
+        }
     }
 })(prisma)
 

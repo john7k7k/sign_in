@@ -54,5 +54,5 @@ async function messageProcess(topic,mqtt_data){
                 }))
             })
         }
-    }catch(err){console.log('iot data err')}
+    }catch(err){console.log(err)}
 }
