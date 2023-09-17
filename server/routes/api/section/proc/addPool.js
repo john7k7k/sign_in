@@ -1,5 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const sub_topic_group = require("../../../../config/subTopics");
+const subTopics = require('../../../../config/subTopics');
 
 module.exports = async (req, res) => {
     try{
@@ -16,6 +18,10 @@ module.exports = async (req, res) => {
           }
         }
       })
+      for(let sub_topic of subTopics){
+        global.mqttConnection.subscribe(sub_topic.replace('<poolID>', `${instruction.code}/${depart.code}/${pool.code}`))
+        console.log(sub_topic.replace('<poolID>', `${instruction.code}/${depart.code}/${pool.code}`))
+      }
       res.sendStatus(200);
-  }catch{ res.sendStatus(500); }
+  }catch(err){ console.log(err);res.sendStatus(500); }
 }

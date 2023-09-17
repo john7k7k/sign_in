@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const sub_topic_group = require("../../../config/subTopics")
 
 module.exports = (mqttConnection) => {
     return async () => {
@@ -13,8 +14,3 @@ module.exports = (mqttConnection) => {
         })
     }
 }
-
-const sub_topic_group = [
-    'Fish/info/<poolID>',
-    'Fish/alarm/<poolID>'
-  ];
