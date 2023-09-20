@@ -6,7 +6,7 @@
       <h3>
         似乎發生了某些問題
         <p></p>
-        <a href="/login">--&gt;回首頁</a>
+        <a href="/login">--&gt;回登入畫面</a>
       </h3>
     </div>
   </header>

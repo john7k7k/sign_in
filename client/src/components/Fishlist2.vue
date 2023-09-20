@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div class="d-flex justify-center"><h2>仿生魚清單</h2></div>
+    <div class="d-flex justify-center text-white"><h2>仿生魚清單</h2></div>
     
     
     </v-container>
@@ -11,8 +11,8 @@
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
-        class="mb-2 mt-4 mr-4"
-        style="width: 200px;"
+        class="mb-2 mt-4 mr-4 text-white"
+        style="width: 200px;  "
       ></v-text-field>
       <v-dialog
     v-model="dialognewSection"
@@ -67,7 +67,7 @@
     </v-card>
   </v-dialog> 
 </div> 
-    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2" ><h3>{{ processSectionName(poolname) }}</h3>
+    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2">{{ processSectionName(poolname) }}</h3>
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.id }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
@@ -591,15 +591,6 @@ import axios from 'axios';
   </script>
   
   <style>
-  .section1{
-    padding-left: 290px;
-  }
-
-  @media screen and (max-width: 600px){
-    .section1{
-    padding-left: 10px;
-  }
-  }
   </style>
 
 

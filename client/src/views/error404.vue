@@ -19,6 +19,8 @@
   </script>
   
   <style >
-  
+  .error{
+    background-color: white;
+  }
   </style>
   

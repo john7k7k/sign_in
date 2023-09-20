@@ -1,6 +1,6 @@
 <template>
     <v-container>
-    <div class="d-flex justify-center mt-3"><h2>帳號清單</h2></div>
+    <div class="d-flex justify-center mt-3 text-white"><h2>帳號清單</h2></div>
     
     
     </v-container>

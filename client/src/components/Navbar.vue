@@ -1,25 +1,31 @@
 <template>
   <div>
   <v-toolbar
+    class=" pt-1 pb-2"
     dark
-    color="cyan-lighten-3"
+    color="black"
   >
+  <v-app-bar-nav-icon v-if="isMobileScreen" class="" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <div v-if="!isMobileScreen" >
+      <v-btn class="ml-5 navbartext" value="home1"  href="/home">主頁</v-btn>
+      <v-btn  value="about" href="/user" class="navbartext">個人資料</v-btn>
+      <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext">仿生魚清單</v-btn>
+      <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext">帳號清單</v-btn>
+      <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext">註冊機構/水池</v-btn>
+      <v-btn  value="out" @click="logout" href="/login" class="navbartext">登出</v-btn>
+    </div>
+    <v-spacer ></v-spacer>
+    <div>
+      <v-avatar class=" mr-8 " :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar>
+      
+    </div>
     
-    <v-avatar>
-      <v-img
-        src="../assets/nabarlogo.png"
-        alt="logo"
-      ></v-img>
-    </v-avatar>
-    <v-toolbar-title ><v-btn class="font-weight-black" value="home1" @click="routehome"><h2>仿生魚監控站</h2></v-btn></v-toolbar-title>
-
-    <v-spacer Hidden only on xs></v-spacer>
-
     <v-btn v-show="false" icon>
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    
   </v-toolbar>
+  <div class=" text-white usernametext ">{{ username }}</div>
 </div>
 
 
@@ -61,7 +67,7 @@
           route to = "/account/list"
         ></v-list-item>
         <v-list-item
-          v-show="userlistshow"
+          v-show="signupSectionshow"
           prepend-icon="mdi mdi-clipboard-text-search-outline"
           title="註冊機構/部門水池"
           value="signupsection"
@@ -97,20 +103,33 @@ data() {
     section:localStorage.getItem('UserSection'),
     userlistshow:false,
     fishlistshow:false,
+    signupSectionshow:false,
     links: [
       { icon: "", text: "", route: "/" },
       { icon: "", text: "", route: "/" },
       { icon: "", text: "", route: "/" }
     ],
     IP:process.env.VUE_APP_IP,
-    userlogo:"../assets/card.png"
+    userlogo:"../assets/card.png",
+    
   }
 },
+mounted() {
+        window.addEventListener('resize', this.updateScreenSize);
+        this.updateScreenSize();
+      },
+beforeUnmount() {
+        window.removeEventListener('resize', this.updateScreenSize);
+      },
 methods: {
+  updateScreenSize() {
+        this.isMobileScreen = window.innerWidth <= 768; 
+      },
   userlevel() {
     if (this.level === "5" ) {
       this.userlistshow = true;
       this.fishlistshow = true;
+      this.signupSectionshow = true;
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
       return "最高管理員";
     } else if (this.level === "10" && this.section === "001"){
@@ -182,14 +201,14 @@ methods: {
   },
   fetchImage(){
       axios.get(
-          "/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
             console.log(res);
             const imageUrl = URL.createObjectURL(new Blob([res.data]));
             this.imageUrl = imageUrl;
-
+            localStorage.setItem("isMobileScreen",this.isMobileScreen)
         })
         .catch(err=> {
             console.log(err);
@@ -203,16 +222,37 @@ computed: {
 },
 created(){
   this.fetchImage();
+  
 }
 }
 </script>
 
 <style>
+.navbartext{
+  font-size: 17px;
+}
+.usernametext {
+  font-size: 15px;
+  position: absolute; 
+  top: 70px;
+  left: 95.6%;
+  z-index: 2;
+}
   .dialog-bottom-transition-enter-active,
   .dialog-bottom-transition-leave-active {
     transition: transform 0.2s ease-in-out;
   }
+  @media screen and (max-width: 600px) {
+    .usernametext {
+  font-size: 15px;
+  position: absolute; 
+  top: 60px;
+  left: 83%;
+  z-index: 2;
+}
 
+  }
+  
   
   
 </style>

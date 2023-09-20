@@ -1,22 +1,24 @@
 <template>
-  <v-card v-for="(name, index) in poolsName" class="mx-auto mb-6 classlist" width="750" :key="name">
+  <div class="Swiper" @mouseenter="showButtons = true"
+        @mouseleave="showButtons = false">
+      <v-btn class="leftbutton ml-5" v-if="true"  @click="leftSwipe" icon="mdi mdi-chevron-left"></v-btn>
+      <v-btn class="rightbutton mr-5" v-if="true"  @click="rightSwipe()" icon="mdi mdi-chevron-right"></v-btn>
+      <div class="Swiper-content" >
+        <v-card v-for="(name, index) in poolsName" class="Swiper-item " width="750"  :key="name">
   <v-img
     class="align-end text-white"
-    height="180"
+    height="150"
     src="../assets/totalbg.jpg"
     @click="routefishdata(index,poolsCode[index])"
     cover
   >
   </v-img> 
-  <div class="d-flex align-center justify-space-between">
-    <v-card-title >{{ name }}</v-card-title>
+    <v-card-text class="cardtextbg pt-4 pb-8">
+      <div class="d-flex align-center justify-space-between">
+    <v-card-title class="pooltext " >{{ name }}</v-card-title>
     
       <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
   </div>
-      
-      
-      
-    <v-card-text>
       <div>
         <v-row  no-gutters>
         <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mb-1">
@@ -25,25 +27,25 @@
       </v-row>
       <v-row  no-gutters>
         <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-          <v-sheet class=" ">{{ n.textname }} </v-sheet> 
+          <v-sheet class="mb-1">{{ n.textname }} </v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
         <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-        <v-btn class="mb-2 mt-1" :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level)"></v-btn>
+        <v-btn class="mb-2 mt-1" :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level,'/'+n.linetext)"></v-btn>
         </v-col>
       </v-row>
       
       
       <v-row  no-gutters>
       <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-1">
-        <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/' + 'needcharge' + '/fish'"
+        <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4,'/needcharge')" :to="'/' + name + '/' + 'needcharge' + '/fish'"
           >{{needchargenum[index]}}條魚需充電</v-btn>
       </v-col>
     </v-row>
     <v-row  no-gutters class="">
       <v-col  v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center"  >
-        <v-btn class="mt-2 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alertbcbutton"  @click="SaveIndividualData(index,5)" :to="'/' + name + '/' + 'error' + '/fish'"
+        <v-btn class="mt-2 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alertbcbutton"  @click="SaveIndividualData(index,5,'/error')" :to="'/' + name + '/' + 'error' + '/fish'"
           >{{needfixnum[index]}}條魚有錯誤</v-btn>
       </v-col>
       <v-card-subtitle class="mt-4 "> 紀錄時間:{{ time }} </v-card-subtitle>
@@ -51,14 +53,21 @@
     </div>
     </v-card-text>
   </v-card>
+      </div>
+  </div>
+
+  
 </template>
 
 <script>
 import axios from 'axios';
-
+import { Swiper } from '@/swiper/Swiper';
 export default {
 data() {
 return {
+center:"center",
+classlist:["three","four","two",],
+showButtons:false,
 FishId: [],
 FishId2num:null,
 FishIdNow:[],
@@ -79,9 +88,25 @@ isRefreshing: false,
 IP:process.env.VUE_APP_IP,
 poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
 poolsName:JSON.parse(localStorage.getItem("PoolsName")),
+isMobileScreen:localStorage.getItem("isMobileScreen")
 };
 },
+mounted(){
+          this.swiper();
+      },
 methods: {
+  swiper(){
+              this.swiperInstance = new Swiper({
+              classList: this.classlist,
+              SwiperContent: ".Swiper-content",
+          });
+          },
+          leftSwipe() {
+              this.swiperInstance.__leftMove();
+          },
+          rightSwipe() {
+              this.swiperInstance.__rightMove();
+          },
 generateLinksArray(count) {
 this.links = []; 
 for (let i = 1; i <= count; i++) {
@@ -138,7 +163,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -217,7 +242,8 @@ try {
   console.error('Error', error);
 }
 },
-async SaveIndividualData(i,level){
+async SaveIndividualData(i,level,route){
+  localStorage.setItem("route",route);
 if (level === 0) {
   await this.RefreshDatas(i);
   return; 
@@ -240,7 +266,7 @@ if(FishId1num !== 0){
 
 if(level === 1){
   localStorage.setItem("Poolname", this.poolsName[i]);
-  localStorage.setItem("Id",this.FishId[i])
+  localStorage.setItem("Id",this.FishId[i]);
   localStorage.setItem("Bc", bcdatas);
   localStorage.setItem("Erro", errdatas);
   localStorage.setItem("Active", activedatas);
@@ -324,7 +350,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "https://pre.aifish.cc"+"/api/v1/account",
+    "/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -371,7 +397,7 @@ try {
 }
 },
 async routefishdata(index,name){
-await this.SaveIndividualData(index,0);
+await this.SaveIndividualData(index,0,'/total');
 this.$router.push(`/${name}/total/fish`);
 }
 },
@@ -389,12 +415,54 @@ await this.RefreshDatas(i);
 </script>
 
 <style scoped>
-
+.cardtextbg{
+  background-color:white;
+}
+.two{
+      z-index: 2;
+      position: absolute;
+      transform: scale(0.9) translateY(-33px);
+      left: -475px;
+      
+  }
+  .three{
+      z-index: 9;
+      position: absolute;
+      transform:translateX(50%) scale(1) translateY(-33px);
+  }
+  .four{
+      z-index: 2;
+      position: absolute;
+      transform: scale(0.9) translateY(-33px);
+      right: -475px;
+  }
+.center{
+  transform:translateX(50%) scale(0.5);
+  margin-bottom: 10px;
+}
 .haveErrorText{
 margin-left: 61px;
 }
 .v-application__wrap{
     background-color: black;
   }
+  .leftbutton {
+      z-index: 10; /* 設置 z-index 為 10 */
+      position: fixed; /* 使用 fixed 定位，以便在螢幕上保持固定位置 */
+      left: 0; /* 將元素的左側靠近螢幕的左邊 */
+      top: 60%; /* 垂直位置在螢幕中間的上側 */
+      transform: translateY(-50%); /* 使用 transform 將元素垂直居中 */
+  }
+  
+  .rightbutton{
+      z-index: 10; /* 設置 z-index 為 10 */
+      position: fixed; /* 使用 fixed 定位，以便在螢幕上保持固定位置 */
+      right: 0; /* 將元素的左側靠近螢幕的左邊 */
+      top: 60%; /* 垂直位置在螢幕中間的上側 */
+      transform: translateY(-50%); /* 使用 transform 將元素垂直居中 */
+  }
+.pooltext{
+  transform: scale(1.2);
+}
 
 </style>

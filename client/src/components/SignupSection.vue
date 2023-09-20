@@ -23,7 +23,7 @@
         <v-col>
           <v-list-item title="新機構代碼">
             <v-text-field
-              v-model.number="NewInstructionCode"
+              v-model="NewInstructionCode"
               title="ID:"
               :rules="[required]"
               inputmode="numeric"
@@ -60,7 +60,7 @@
         <v-col>
           <v-list-item title="新部門代碼">
             <v-text-field
-              v-model.number="NewDepartCode"
+              v-model="NewDepartCode"
               title="ID:"
               :rules="[required]"
               inputmode="numeric"
@@ -97,7 +97,7 @@
         <v-col>
           <v-list-item title="新水池代碼">
             <v-text-field
-              v-model.number="NewPoolCode"
+              v-model="NewPoolCode"
               title="ID:"
               :rules="[required]"
               inputmode="numeric"
@@ -108,8 +108,8 @@
         </v-window-item>
       </v-window>
     </v-card-text>
-    <div class="d-flex justify-end">
-        <v-btn  @click="Signin(tab)" :disabled="SigninButtonDisabled" v-model="tab" class="mt-3 mr-10 " color="blue-accent-2"> 註冊 </v-btn>
+    <div class="d-flex justify-end signinbuttombg">
+        <v-btn  @click="Signin(tab)" :disabled="SigninButtonDisabled" v-model="tab" class="mt-3 mr-10 mb-16" color="blue-accent-2"> 註冊 </v-btn>
     </div>
 
 
@@ -187,7 +187,7 @@ export default {
         Signin(tab){
         if (tab === "one"){
           axios.post(
-          "/api/v1/instruction",{
+            "/api/v1/instruction",{
             "instruction":{"code": this.NewInstructionCode,
                            "name": this.NewInstruction
                           },
@@ -202,7 +202,6 @@ export default {
               if(res.status == 200){
                 this.dialognew = false
                 this.$Message.success('新增成功');
-                await this.loadnewdata();
                 
               }
           })
@@ -213,7 +212,7 @@ export default {
           })
         }else if(tab === "two"){
           axios.post(
-          "/api/v1/depart",{
+            "/api/v1/depart",{
             "depart":{"code": this.NewDepartCode,
                       "name": this.NewDepart
                       },
@@ -229,7 +228,6 @@ export default {
               if(res.status == 200){
                 this.dialognew = false
                 this.$Message.success('新增成功');
-                await this.loadnewdata();
                 
               }
           })
@@ -240,7 +238,7 @@ export default {
           })
         }else{
           axios.post(
-          "/api/v1/pool",{
+            "/api/v1/pool",{
             "instruction":{"code": this.SelectInstruction},
             "depart":{"code": this.SelectDepart},
             "pool":{"code": this.NewPoolCode,
@@ -256,7 +254,6 @@ export default {
               if(res.status == 200){
                 this.dialognew = false
                 this.$Message.success('新增成功');
-                await this.loadnewdata();
                 
               }
           })
@@ -276,3 +273,8 @@ export default {
 
 
 </script>
+<style>
+.v-slide-group__content,.v-card-text,.signinbuttombg{
+  background-color: white;
+}
+</style>

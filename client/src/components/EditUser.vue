@@ -149,7 +149,7 @@
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-            "http://"+this.IP+"/api/v1/account/sticker",formData,{
+          "/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -172,7 +172,7 @@
       },
       fetchImage(){
         axios.get(
-            "http://"+this.IP+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+          "/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
