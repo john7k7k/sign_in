@@ -1,5 +1,5 @@
 <template>
-  <v-app   >
+  <v-app   class="App">
     <meta property="og:url"                content="http://20.89.131.34/login" />
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="仿生魚監控站" />
