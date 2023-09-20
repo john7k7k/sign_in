@@ -45,14 +45,25 @@ async function messageProcess(topic,mqtt_data){
         }
         else if(topic.type === 'info'){
             delete mqtt_data.time;
-            console.log(mqtt_data)
+            console.log(mqtt_data);
+            let thisPoolFishesUID = (await prisma.fish.findMany({
+                where: {
+                    location: topic.instruction + topic.depart + topic.pool
+                }
+            })).map(({ fishUID }) => fishUID)
+            console.log(thisPoolFishesUID)
+            Object.keys(mqtt_data).forEach(fishID => {
+                if(!thisPoolFishesUID.map(fishUID => fishUID.slice(3)).includes(fishID)){
+                    delete mqtt_data[fishID];
+                }
+            })
             await prisma.fishData.createMany({
-            data: Object.keys(mqtt_data).map(fishUID => ({
-                    fishUID: '002' + fishUID,
+            data: Object.keys(mqtt_data).map(fishID => ({
+                    fishUID: '002' + fishID,
                     time: Math.floor((new Date()).getTime()/1000),
-                    ...(mqtt_data[fishUID])
+                    ...(mqtt_data[fishID])
                 }))
             })
         }
-    }catch(err){console.log('iot data err')}
+    }catch(err){console.log(err)}
 }

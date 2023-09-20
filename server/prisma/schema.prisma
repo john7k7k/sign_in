@@ -48,6 +48,7 @@ model FishData{
   bc Float
   err Int
   active Int
+  version String
 }
 
 model Pool{

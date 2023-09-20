@@ -41,21 +41,140 @@ const md5 = require('blueimp-md5');
         }
     }
     else if(args[0] === '-r'){
-        await prisma.user.create({
-            data: {
-                username: args[1],
-                email: 'pp1244qqq@gmail.com',
-                passcode: md5(md5(args[2] + "kowkoww151s5ww")),
-                level: Number(args[3]),
-                section: args[4],
-                registrationTime: Math.floor((new Date()).getTime()/1000),
-                exist: 1,
-                verify: 1,
-                fishAble: {
-                    create: []
+        if(args[1] === 'user')
+            await prisma.user.create({
+                data: {
+                    username: args[2],
+                    email: 'pp1244qqq@gmail.com',
+                    passcode: md5(md5(args[3] + "kowkoww151s5ww")),
+                    level: Number(args[4]),
+                    section: args[5],
+                    registrationTime: Math.floor((new Date()).getTime()/1000),
+                    exist: 1,
+                    verify: 1,
+                    fishAble: {
+                        create: []
+                    }
                 }
+            });
+        else if(args[1] === 'pool'){
+            await prisma.pool.create({
+                data: {
+                    id: args[2],
+                    mac: '',
+                    name: args[3],
+                    depart: {
+                        connect: {
+                            id: args[4]
+                        }
+                    }
+                }
+            })
+        }
+        else if(args[1] === 'depart'){
+            await prisma.depart.create({
+                data: {
+                    id: args[2],
+                    name: args[3],
+                    instruction: {
+                        connect: {
+                            id: args[4]
+                        }
+                    }
+                }
+            })
+        }
+        else if(args[1] === 'ins'){
+            await prisma.instruction.create({
+                data: {
+                    id: args[2],
+                    name: args[3],
+                }
+            })
+        }
+        else if(args[1] === 'init'){
+            await prisma.instruction.create({
+                data: {
+                    id: '002',
+                    name: '台北科大',
+                }
+            })
+            await prisma.depart.create({
+                data: {
+                    id: '002001',
+                    name: '先鋒大樓',
+                    instruction: {
+                        connect: {
+                            id: '002'
+                        }
+                    }
+                }
+            })
+            await prisma.pool.create({
+                data: {
+                    id: '002001001',
+                    mac: 'CSL水池',
+                    name: '',
+                    depart: {
+                        connect: {
+                            id: '002001'
+                        }
+                    }
+                }
+            })
+            await prisma.user.create({
+                data: {
+                    username: '123',
+                    email: 'pp1244qqq@gmail.com',
+                    passcode: md5(md5('456' + "kowkoww151s5ww")),
+                    level: 5,
+                    section: '001',
+                    registrationTime: Math.floor((new Date()).getTime()/1000),
+                    exist: 1,
+                    verify: 1,
+                    fishAble: {
+                        create: []
+                    }
+                }
+            });
+            const fishesUID = ['0023001', '0023002', '0023004', '0023006', '0023009', '0023010', '0023011', '0023012', '0023013', '0023036']
+
+            for (let fishUID of fishesUID){
+                await prisma.fish.create({
+                    data: {
+                            fishUID,
+                            exist: 1,
+                            pool: {
+                                connect: {
+                                    id: '002001001'
+                                }
+                            }
+                        }
+                    }
+                );
+                fs.mkdir(`uploads/photos/fish/${fishUID}` , {recursive: true},() => void 0)
+                const user = await prisma.user.findUnique({
+                    where: {
+                        username: '123'
+                    }
+                });
+                //const admins = users.filter(user => user.level <= 30 && ('002001001'.match('^' + user.section)||user.section=='001'));
+                await prisma.fishAble.create({
+                    data: {
+                        user: {
+                            connect: {
+                                userID: user.userID
+                            }
+                        },
+                        fish: {
+                        connect:{
+                            fishUID
+                        }
+                        }
+                    }
+                });
             }
-        });
+        }
     }
 })(prisma)
 
