@@ -30,15 +30,16 @@
 </div>
 
 
-  <v-navigation-drawer v-model="drawer" temporary class="#CE93D8" width="300">
+  <v-navigation-drawer v-model="drawer" temporary class="drawerbg" width="300">
     <v-list-item
       prepend-icon="mdi mdi-close"
+      class="text-white"
       :title="username" 
       :subtitle="userLevelText"
       @click.stop="drawer = !drawer"
     ></v-list-item>
 
-    <v-divider></v-divider>
+    <v-divider class="text-white"></v-divider>
 
     <v-list density="compact" nav >
       <v-list-item
@@ -46,6 +47,7 @@
         title="主頁"
         value="home1"
         ref="homeItem"
+        class="text-white"
         route to = "/home"
       ></v-list-item>
         <v-list-item
@@ -53,6 +55,7 @@
           title="個人資料設定"
           value="about"
           route to = "/user"
+          class="text-white"
         ></v-list-item>
         <v-list-item
           v-show="fishlistshow"
@@ -60,6 +63,7 @@
           title="仿生魚資料清單"
           value="data"
           route to = "/fish/list"
+          class="text-white"
         ></v-list-item>
         <v-list-item
           v-show="userlistshow"
@@ -67,6 +71,7 @@
           title="帳號資料清單"
           value="accountdata"
           route to = "/account/list"
+          class="text-white"
         ></v-list-item>
         <v-list-item
           v-show="signupSectionshow"
@@ -74,12 +79,14 @@
           title="註冊機構/部門水池"
           value="signupsection"
           route to = "/sign/up/pool"
+          class="text-white"
         ></v-list-item>
       <v-list-item
         prepend-icon="mdi-export"
         title="登出"
         value="out"
         @click="logout"
+        class="text-white"
       ></v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -245,6 +252,9 @@ created(){
 </script>
 
 <style>
+.drawerbg{
+  background-color:  rgba(0, 0, 0, 0.8);
+}
 .navbar{
   background-color: rgba(0, 0, 0, 0); 
 }

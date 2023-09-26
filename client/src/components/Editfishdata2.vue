@@ -404,19 +404,19 @@ function TranActive(active) {
 }
 .datacard{
   margin-left: 11%;
-  top: 45%;
+  top: 41%;
   position: absolute;
   transform: scale(0.8) ;
 }
 .fishimage{
-  top: 8%;
-  transform: scale(0.85) translateX(-50%);
+  top: 7%;
+  transform: scale(0.8) translateX(-50%);
 }
 .colorcard{
   transform: scale(0.55);
   position: absolute;
   left: -21%;
-  top: 71%;
+  top: 67%;
 }
 .setcolorbuttom{
   left: 75%;
