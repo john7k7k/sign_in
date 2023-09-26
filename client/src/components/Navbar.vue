@@ -1,14 +1,14 @@
 <template>
   <div>
   <v-toolbar
-    class=" pt-1 pb-2"
+  :key="desktopKey"
+    class=" pt-1 pb-2 navbar"
     dark
-    color="black"
   >
-  <v-app-bar-nav-icon v-if="isMobileScreen" class="" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+  <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
       <v-btn class="ml-5 navbartext" value="home1"  href="/home">主頁</v-btn>
-      <v-btn  value="about" href="/user" class="navbartext">個人資料</v-btn>
+      
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext">註冊機構/水池</v-btn>
@@ -16,7 +16,8 @@
     </div>
     <v-spacer ></v-spacer>
     <div>
-      <v-avatar class=" mr-8 " :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar>
+      <v-btn  value="about" href="/user" ><v-avatar class=" mr-4 mt-2" :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn>
+      
       
     </div>
     
@@ -25,15 +26,16 @@
     </v-btn>
     
   </v-toolbar>
-  <div class=" text-white usernametext ">{{ username }}</div>
+  <div class=" text-white usernametext d-flex justify-end mr-10">{{ username }}</div>
 </div>
 
 
-  <v-navigation-drawer v-model="drawer" temporary class="#CE93D8">
+  <v-navigation-drawer v-model="drawer" temporary class="#CE93D8" width="300">
     <v-list-item
-      :prepend-avatar="imageUrl"
+      prepend-icon="mdi mdi-close"
       :title="username" 
       :subtitle="userLevelText"
+      @click.stop="drawer = !drawer"
     ></v-list-item>
 
     <v-divider></v-divider>
@@ -111,19 +113,31 @@ data() {
     ],
     IP:process.env.VUE_APP_IP,
     userlogo:"../assets/card.png",
-    
+    desktopKey: 0,
   }
 },
+watch: {
+    screenWidth(newWidth) {
+      this.updateScreenSize(newWidth);
+    },
+  },   
 mounted() {
-        window.addEventListener('resize', this.updateScreenSize);
-        this.updateScreenSize();
-      },
-beforeUnmount() {
-        window.removeEventListener('resize', this.updateScreenSize);
-      },
+    window.addEventListener('resize', () => {
+      this.updateScreenSize(this.screenWidth);
+    });
+    this.updateScreenSize(this.screenWidth); 
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', () => {
+      this.updateScreenSize(this.screenWidth);
+    });
+  },
 methods: {
   updateScreenSize() {
         this.isMobileScreen = window.innerWidth <= 768; 
+        if (this.isMobileScreen) {
+        this.desktopKey += 1;
+      }
       },
   userlevel() {
     if (this.level === "5" ) {
@@ -216,6 +230,9 @@ methods: {
     },
 },
 computed: {
+  screenWidth() {
+      return window.innerWidth;
+    },
   userLevelText() {
     return this.userlevel();
   }
@@ -228,14 +245,17 @@ created(){
 </script>
 
 <style>
+.navbar{
+  background-color: rgba(0, 0, 0, 0); 
+}
 .navbartext{
+  color: white;
   font-size: 17px;
 }
 .usernametext {
-  font-size: 15px;
-  position: absolute; 
-  top: 70px;
-  left: 95.6%;
+  font-size: 18px;
+  position: absolute;
+  left: 95.4%;
   z-index: 2;
 }
   .dialog-bottom-transition-enter-active,
@@ -246,14 +266,32 @@ created(){
     .usernametext {
   font-size: 15px;
   position: absolute; 
-  top: 60px;
+  top: 70px;
   left: 83%;
   z-index: 2;
 }
 
   }
+
+  @media screen and (min-width: 601px) and (max-width: 1024px){
+    .usernametext {
+      font-size: 18px;
+      position: absolute; 
+      top: 6.5%;
+      left: 91.4%;
+      z-index: 2;
+    }
+  }
   
-  
+  @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
+    .usernametext {
+      font-size: 18px;
+      position: absolute; 
+      top: 9%;
+      left: 94%;
+      z-index: 2;
+    }
+  }
   
 </style>
 

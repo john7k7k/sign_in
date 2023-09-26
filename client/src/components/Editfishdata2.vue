@@ -1,15 +1,16 @@
 <template>
   <div class="text-white  idtext mt-8 font-weight-black">ID:</div>
-  <div class="text-white font-weight-black fishIDtext">{{ FishId }}</div>
+  
+  <div class="text-white  font-weight-black fishIDtext">{{ FishId }}</div>
   <v-card width="300" class="datacard">
             <v-list-item title="電量:" class="mt-4">
-              <v-text-field    :readonly="true">{{ FishBc }}</v-text-field>
+              <v-text-field    :readonly="true" density="compact">{{ FishBc }}</v-text-field>
             </v-list-item>
             <v-list-item title="錯誤:" >
-                <v-text-field   :readonly="true">{{ FishErr }}</v-text-field>
+                <v-text-field   :readonly="true" density="compact">{{ FishErr }}</v-text-field>
             </v-list-item>
             <v-list-item title="狀態:" >
-              <v-text-field    :readonly="true" >{{ selectactive }}</v-text-field>
+              <v-text-field    :readonly="true" density="compact">{{ selectactive }}</v-text-field>
             </v-list-item>
   </v-card>
   <v-card width="550" class="colorcard pl-4 pr-4 pb-2 pt-2">
@@ -152,8 +153,8 @@
         alt="Vector72216"
         class="vector"
       />
-      <v-avatar class="fishimage" size="450" rounded="0" style="position: relative;">
-      <v-img class="mt-6 pt-3 pr-7 " src="../assets/1.png"></v-img>
+      <v-avatar class="fishimage" size="450" rounded="0" style="">
+      <v-img class="mt-6 pt-3 pr-7 " src="../assets/fishimage1.png"></v-img>
       
     </v-avatar>
 </template>
@@ -206,6 +207,13 @@ function TranActive(active) {
         IP:process.env.VUE_APP_IP,
         poolname:localStorage.getItem('Poolname'),
         route:localStorage.getItem('route'),
+        dialogControl:false,
+        models:[
+          "自動",
+          "急速",
+          "急速悠游",
+          "沿牆",
+        ],
         }
       },
       methods:{
@@ -287,7 +295,41 @@ function TranActive(active) {
               this.dialog = false
               alert('編輯失敗');
           })
-    }
+    },
+    ControlFish(move) {
+        axios.post(
+                "/api/v1/fish/control/?section="+this.poolname,{
+                  "fishControl":{
+            "led":{
+            },
+            "motion":{
+              "id": this.FishId,
+              "motion": move
+            },
+            "mode":{
+              "id": this.FishId,
+              "mode": 0
+            }
+        }
+            },{
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.$Message.success('可以開始控制');
+              }
+              else
+              this.$Message.error('控制失敗');
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('控制失敗');
+          })
+        },
         
         
       
@@ -301,41 +343,155 @@ function TranActive(active) {
       transition: transform 0.2s ease-in-out;
     }
 .datacard{
-  margin-left: 120px;
-  margin-top: 144px;
+  margin-left: 8%;
+  margin-top: 10.5%;
+  transform: scale(1.1);
   position: absolute;
 }
 .idtext{
-  top: 80px;
   font-size: 50px;
-  margin-left: 120px;
+  margin-left: 7%;
 }
 .fishIDtext{
   font-size: 85px;
   position: absolute;
-  margin-left: 120px;
-  top: 180px;
+  margin-left: 7%;
+  top: 25%;
 }
 .vector {
-  width: 1018px;
-  height: 20px;
+  width: 67.5%;
+  height: 3%;
   position: absolute;
-  left: 466px;
-  top: 660px;
+  left: 30%;
+  top: 93.5%;
 }
 .fishimage{
   position: absolute;
-  left: 600px;
-  transform: scale(1.2);
+  left: 40%;
+  top: 10%;
+  transform: scale(1.4);
 }
 .colorcard{
   transform: scale(0.8);
   position: absolute;
-  left: 65%;
-  margin-top: 265px;
+  left: 65.3%;
+  margin-top: 18%;
 }
 .setcolorbuttom{
   left: 75%;
+}
+
+@media screen and (max-width: 600px){
+.controlbutton{
+  top: 12%;
+  position: absolute;
+  left: 80.5%;
+}
+.idtext{
+  position: absolute;
+  top: 5%;
+  font-size: 40px;
+  margin-left: 7%;
+}
+.vector {
+  display: none;
+}
+.fishIDtext{
+  font-size: 65px;
+  position: absolute;
+  margin-left: 7%;
+  top: 14%;
+}
+.datacard{
+  margin-left: 11%;
+  top: 45%;
+  position: absolute;
+  transform: scale(0.8) ;
+}
+.fishimage{
+  top: 8%;
+  transform: scale(0.85) translateX(-50%);
+}
+.colorcard{
+  transform: scale(0.55);
+  position: absolute;
+  left: -21%;
+  top: 71%;
+}
+.setcolorbuttom{
+  left: 75%;
+}
+}
+@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
+  .datacard{
+  margin-left: 3%;
+  margin-top: 24%;
+  transform: scale(0.98);
+  position: absolute;
+}
+.idtext{
+  font-size: 50px;
+  margin-left: 3%;
+}
+.fishIDtext{
+  font-size: 85px;
+  position: absolute;
+  margin-left: 2.8%;
+  top: 25%;
+}
+.colorcard{
+  transform: scale(0.8);
+  position: absolute;
+  left: 55.5%;
+  margin-top: 33%;
+}
+.fishimage{
+  position: absolute;
+  left: 37%;
+  top: 10%;
+  transform: scale(1.4);
+}
+}
+@media screen and (min-width: 601px) and (max-width: 1024px){
+  .controlbutton{
+  top: 12%;
+  position: absolute;
+  left: 80.5%;
+}
+.idtext{
+  position: absolute;
+  top: 5%;
+  font-size: 60px;
+  margin-left: 7%;
+}
+.vector {
+  display: none;
+}
+.fishIDtext{
+  font-size: 105px;
+  position: absolute;
+  margin-left: 7%;
+  top: 14%;
+}
+.datacard{
+  margin-left: 31%;
+  top: 49%;
+  position: absolute;
+  transform: scale(1.1) ;
+}
+.fishimage{
+  top: 15%;
+  transform: scale(1.5) translateX(-20%);
+}
+.colorcard{
+  transform: scale(0.8);
+  position: absolute;
+  left: 15%;
+  top: 71%;
+}
+.setcolorbuttom{
+  left: 75%;
+}
 }
   </style>
 

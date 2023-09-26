@@ -2,7 +2,7 @@ export class Swiper{
     constructor(options) {
         this.$options = options
         this.__init();
-        this.setupTouchSwipe();
+        //this.setupTouchSwipe();
         this.moveCount = 0;
     }
 
@@ -10,16 +10,28 @@ export class Swiper{
         this.SwiperContent = document.querySelector(this.$options.SwiperContent).children;
         this.classList = this.$options.classList;
         this.center = this.$options.center;
-        //this.__move2(this.center);
-        this. __move(this.classList);
+        if (window.innerWidth <= 600) {
+            this.__moveformobile(this.classList);
+        }else if(window.innerWidth<1200){
+            this.__moveforipad();
+        } else {
+            this.__move(this.classList);
+        }
     }
 
-    __move2(center){
+    __moveforipad(){
         [...this.SwiperContent].forEach((item) => {
             item.removeAttribute("class");
-            item.setAttribute("class", center);
+            item.setAttribute("class","forIpadcenter" );
         });
-}
+    }
+
+    __moveformobile(List){
+        [...this.SwiperContent].forEach((item) => {
+            item.removeAttribute("class");
+            item.setAttribute("class", List[0]);
+        });
+    }
 
     __move(List){
             [...this.SwiperContent].forEach((item, index) => {

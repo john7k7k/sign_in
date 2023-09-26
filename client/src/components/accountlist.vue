@@ -1,12 +1,12 @@
 <template>
     <v-container>
-    <div class="d-flex justify-center mt-3 text-white"><h2>帳號清單</h2></div>
+    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4">帳號清單</div>
     
     
     </v-container>
     <div v-for="(name,index) in sectionName" :key="name">
-    <div   class="mt-4 mb-2"><h4>{{ name }}</h4></div>
-    <Table  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index] || fallbackRow" class="mb-8">
+    <div   class="mt-4 mb-2 ml-8 text-white text-h6"><h4>{{ name }}</h4></div>
+    <Table  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index] || fallbackRow" class="mb-8 ml-8 mr-8">
       <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal

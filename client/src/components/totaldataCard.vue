@@ -1,54 +1,55 @@
 <template>
   <div class="Swiper" @mouseenter="showButtons = true"
         @mouseleave="showButtons = false">
-      <v-btn class="leftbutton ml-5" v-if="true"  @click="leftSwipe" icon="mdi mdi-chevron-left"></v-btn>
-      <v-btn class="rightbutton mr-5" v-if="true"  @click="rightSwipe()" icon="mdi mdi-chevron-right"></v-btn>
+      <v-btn class="leftbutton ml-5" v-if="showButtons"  @click="leftSwipe" icon="mdi mdi-chevron-left"></v-btn>
+      <v-btn class="rightbutton mr-5" v-if="showButtons"  @click="rightSwipe()" icon="mdi mdi-chevron-right"></v-btn>
       <div class="Swiper-content" >
-        <v-card v-for="(name, index) in poolsName" class="Swiper-item " width="750"  :key="name">
+        <v-card v-for="(name, index) in poolsName" class="Swiper-item "   :key="name" >
+          <v-card-text class="cardtextbg pt-5 pb-8">
   <v-img
-    class="align-end text-white"
+    class=" text-white cardimage"
     height="150"
     src="../assets/totalbg.jpg"
     @click="routefishdata(index,poolsCode[index])"
     cover
   >
   </v-img> 
-    <v-card-text class="cardtextbg pt-4 pb-8">
+    
       <div class="d-flex align-center justify-space-between">
     <v-card-title class="pooltext " >{{ name }}</v-card-title>
     
-      <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+      <v-btn class="mr-2 mt-3"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
-        <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mb-1">
-          <v-sheet class=" text-h4">{{n.text}}</v-sheet> 
+        <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center mb-1">
+          <v-sheet class=" text-h4 cardtext">{{n.text}}</v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
-        <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-          <v-sheet class="mb-1">{{ n.textname }} </v-sheet> 
+        <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center">
+          <v-sheet class="mb-1 cardtext">{{ n.textname }} </v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
-        <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
+        <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center">
         <v-btn class="mb-2 mt-1" :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level,'/'+n.linetext)"></v-btn>
         </v-col>
       </v-row>
       
       
       <v-row  no-gutters>
-      <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-1">
+      <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center mt-1">
         <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4,'/needcharge')" :to="'/' + name + '/' + 'needcharge' + '/fish'"
           >{{needchargenum[index]}}條魚需充電</v-btn>
       </v-col>
     </v-row>
-    <v-row  no-gutters class="">
-      <v-col  v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center"  >
+    <v-row  no-gutters >
+      <v-col  v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center"  >
         <v-btn class="mt-2 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alertbcbutton"  @click="SaveIndividualData(index,5,'/error')" :to="'/' + name + '/' + 'error' + '/fish'"
           >{{needfixnum[index]}}條魚有錯誤</v-btn>
       </v-col>
-      <v-card-subtitle class="mt-4 "> 紀錄時間:{{ time }} </v-card-subtitle>
+      <div class="mt-4 mr-2 cardtext"> 紀錄時間:{{ time }} </div>
     </v-row>
     </div>
     </v-card-text>
@@ -107,6 +108,14 @@ methods: {
           rightSwipe() {
               this.swiperInstance.__rightMove();
           },
+generateClassLink(count){
+  if (count > 3) {
+      const extraCount = count - 3;
+      for (let i = 0; i < extraCount; i++) {
+          this.classlist.push("nodisplay");
+        }
+      }
+},
 generateLinksArray(count) {
 this.links = []; 
 for (let i = 1; i <= count; i++) {
@@ -402,6 +411,7 @@ this.$router.push(`/${name}/total/fish`);
 }
 },
 async created() {
+this.generateClassLink(this.poolsCode.length);
 this.generateLinksArray(this.poolsCode.length);
 await this.loadnewdata();
 this.RefreshDatas2();
@@ -415,54 +425,119 @@ await this.RefreshDatas(i);
 </script>
 
 <style scoped>
-.cardtextbg{
-  background-color:white;
+.cardimage{
+  transform: scale(0.98);
+  border-radius: 10px;
+}
+.cardtextbg {
+  background-color: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.cardtext{
+  background-color: rgba(255, 255, 255, 0); 
+  color: white;
+}
+.nodisplay{
+  display: none;
 }
 .two{
       z-index: 2;
       position: absolute;
-      transform: scale(0.9) translateY(-33px);
-      left: -475px;
-      
+      transform: scale(0.9) translateY(-5%);
+      left: -33%;
+      width: 50%;
   }
   .three{
       z-index: 9;
       position: absolute;
-      transform:translateX(50%) scale(1) translateY(-33px);
+      transform:translateX(50%) scale(1) translateY(-5%);
+      width: 50%;
   }
   .four{
       z-index: 2;
       position: absolute;
-      transform: scale(0.9) translateY(-33px);
-      right: -475px;
+      transform: scale(0.9) translateY(-5%);
+      right: -33%;
+      width: 50%;
   }
-.center{
-  transform:translateX(50%) scale(0.5);
-  margin-bottom: 10px;
-}
+  .forIpadcenter{
+    margin-top: -5%;
+      position: relative;
+      transform: scale(0.8);
+      width: 100%;
+  }
+  .forIpadcenter + .forIpadcenter {
+      margin-top: -5%; 
+  }
 .haveErrorText{
-margin-left: 61px;
+margin-left: 38%;
 }
 .v-application__wrap{
     background-color: black;
   }
   .leftbutton {
-      z-index: 10; /* 設置 z-index 為 10 */
-      position: fixed; /* 使用 fixed 定位，以便在螢幕上保持固定位置 */
-      left: 0; /* 將元素的左側靠近螢幕的左邊 */
-      top: 60%; /* 垂直位置在螢幕中間的上側 */
-      transform: translateY(-50%); /* 使用 transform 將元素垂直居中 */
+      z-index: 10; 
+      position: fixed; 
+      left: 0; 
+      top: 60%; 
+      transform: translateY(-50%); 
   }
   
   .rightbutton{
-      z-index: 10; /* 設置 z-index 為 10 */
-      position: fixed; /* 使用 fixed 定位，以便在螢幕上保持固定位置 */
-      right: 0; /* 將元素的左側靠近螢幕的左邊 */
-      top: 60%; /* 垂直位置在螢幕中間的上側 */
-      transform: translateY(-50%); /* 使用 transform 將元素垂直居中 */
+      z-index: 10; 
+      position: fixed; 
+      right: 0; 
+      top: 60%; 
+      transform: translateY(-50%); 
   }
 .pooltext{
   transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0); 
+  color: white;
+}
+
+@media screen and (max-width: 600px) {
+  .haveErrorText{
+      margin-left: 0%;
+}
+  .two {
+      display: none;
+  }
+  .three {
+      margin-top: -10%;
+      position: relative;
+      transform: scale(0.8);
+      width: 100%;
+  }
+
+  .three + .three {
+      margin-top: -10%; 
+  }
+  .four{
+    margin-top: -5%;
+      position: relative;
+      transform: scale(0.8);
+      width: 100%;
+  }
+  .leftbutton {
+      display: none;
+  }
+  .rightbutton{
+      display: none;
+  }
+}
+@media screen and (min-width: 601px) and (max-width: 1024px){
+  .haveErrorText{
+      margin-left: 35%;
+}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
+  .haveErrorText{
+      margin-left: 22%;
+}
 }
 
 </style>

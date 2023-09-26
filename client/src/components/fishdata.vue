@@ -15,7 +15,7 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ props }">
-      <v-btn
+      <v-btn 
         class="mr-8 mt-6"
         color="purple-darken-2"
         icon="mdi mdi-gamepad-variant"
@@ -81,8 +81,8 @@
         <v-col v-for="fish in datas" :key="fish" :cols="cols" class="d-flex align-content-start   ">
           <v-card class="pa-2 mb-14 mx-auto cardbg" cover width="320">
         <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
-          <v-avatar class="ma-3" size="150" rounded="0" style="position: relative;">
-      <v-img class="mt-6 pt-3 pr-7 " src="../assets/1.png"></v-img>
+          <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
+      <v-img class="pr-9 pb-7" src="../assets/fishimage1.png"></v-img>
       <v-btn
         icon="mdi-numeric-null"
         height="13"
@@ -506,7 +506,13 @@ axios.get(
   text-align: left;
   padding-right: 150px;
 }
-  
+@media screen and (max-width: 600px){
+  .recordtext{
+  padding-top: 10px;
+  margin-left: 1%;
+  font-size: 15px;
+}
+}  
 
 
   
