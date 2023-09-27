@@ -210,7 +210,7 @@
     letter-spacing: 7px;
     border-radius: 80px;
     left: 3.5%;
-    top: 30%;
+    top: 40%;
     transform: scale(1.1);
 }
 }

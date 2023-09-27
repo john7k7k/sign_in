@@ -389,7 +389,7 @@ function TranActive(active) {
 }
 .idtext{
   position: absolute;
-  top: 5%;
+  top: 2.5%;
   font-size: 40px;
   margin-left: 7%;
 }
@@ -400,23 +400,23 @@ function TranActive(active) {
   font-size: 65px;
   position: absolute;
   margin-left: 7%;
-  top: 14%;
+  top: 11%;
 }
 .datacard{
   margin-left: 11%;
-  top: 41%;
+  top: 37%;
   position: absolute;
   transform: scale(0.8) ;
 }
 .fishimage{
-  top: 7%;
+  top: 4%;
   transform: scale(0.8) translateX(-50%);
 }
 .colorcard{
   transform: scale(0.55);
   position: absolute;
   left: -21%;
-  top: 67%;
+  top: 64%;
 }
 .setcolorbuttom{
   left: 75%;
@@ -460,7 +460,7 @@ function TranActive(active) {
 }
 .idtext{
   position: absolute;
-  top: 5%;
+  top: 2.5%;
   font-size: 60px;
   margin-left: 7%;
 }
@@ -471,23 +471,23 @@ function TranActive(active) {
   font-size: 105px;
   position: absolute;
   margin-left: 7%;
-  top: 14%;
+  top: 10%;
 }
 .datacard{
   margin-left: 31%;
-  top: 49%;
+  top: 46%;
   position: absolute;
   transform: scale(1.1) ;
 }
 .fishimage{
-  top: 15%;
+  top: 12%;
   transform: scale(1.5) translateX(-20%);
 }
 .colorcard{
   transform: scale(0.8);
   position: absolute;
   left: 15%;
-  top: 71%;
+  top: 68%;
 }
 .setcolorbuttom{
   left: 75%;
