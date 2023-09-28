@@ -29,6 +29,7 @@ model Fish {
   pool Pool @relation(fields: [location], references: [id], onDelete: Cascade)
   fishData FishData[]
   fishAble FishAble[]
+  version String @default("")
 }
 
 model FishAble{
@@ -49,6 +50,12 @@ model FishData{
   err Int
   active Int
   version String
+}
+
+model Bin{
+  id Int @id @default(autoincrement())
+  time Int
+  version String @unique
 }
 
 model Pool{

@@ -6,7 +6,7 @@ const upSticker = multer({
         destination: (req, file, cb) => {
             cb(null, `uploads/photos/user/${req.payload.username}/sticker`);
         },
-        filename:(req, file, cb) => {
+        filename: (req, file, cb) => {
             cb(null, 'sticker.jpg');
         }
     })

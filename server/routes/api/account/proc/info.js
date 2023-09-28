@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         }
     });
     resData.fishesID = {};
-    resData.fishAble.forEach(({fish: {location, fishUID, fishData: [{ active } = {active: 3}]}}) => {
+    resData.fishAble.forEach(({fish: {location, fishUID, fishData: [{ active } = {active: 0}]}}) => {
         if(!resData.fishesID[location]) resData.fishesID[location] = {};
         resData.fishesID[location][fishUID] = active;
     })
