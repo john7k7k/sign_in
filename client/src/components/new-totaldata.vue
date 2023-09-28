@@ -1,61 +1,56 @@
 <template>
-    <v-row no-gutters >
-      <v-card v-for="(name, index) in poolsName" class="mx-auto mb-6 mt-2" width="800" :key="name">
-        <v-img
-          class="align-end text-white"
-          height="200"
-          src="../assets/totalbg.jpg"
-          @click="routefishdata(index,poolsCode[index])"
-          cover
-        >
-        
-          
-          
-          
-        </v-img> 
-        <div class="d-flex align-center justify-space-between">
-          <v-card-title >{{ name }}</v-card-title>
-          
-            <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
-        </div>
-          
-          
-          
-        <v-card-text>
-          <div>
-          <v-row  no-gutters>
-            <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-            <v-btn class="ma-2 " :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/fish'" @click="SaveIndividualData(index,n.level)"></v-btn>
-            </v-col>
-          </v-row>
-          <v-row  no-gutters>
-            <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-              <v-sheet class=" ">{{ n.textname }} </v-sheet> 
-            </v-col>
-          </v-row>
-          <v-row  no-gutters>
-            <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-              <v-sheet class="ma-2 text-h4">{{n.text}}</v-sheet> 
-            </v-col>
-          </v-row>
-          <v-row  no-gutters>
-            <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
-              <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/fish'"
-                >{{needchargenum[index]}}條魚需充電</v-btn>
-            </v-col>
-          </v-row>
-          <v-row  no-gutters class="">
-            <v-col    >
-              <v-btn class="mt-1 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red"  @click="SaveIndividualData(index,5)" :to="'/' + name + '/fish'"
-                >{{needfixnum[index]}}條魚有錯誤</v-btn>
-            </v-col>
-            <v-card-subtitle class="mt-4"> 紀錄時間:{{ time }} </v-card-subtitle>
-          </v-row>
-          
-        </div>
-        </v-card-text>
-      </v-card>
+  <v-card v-for="(name, index) in poolsName" class="mx-auto mb-6 classlist" width="750" :key="name">
+  <v-img
+    class="align-end text-white"
+    height="180"
+    src="../assets/totalbg.jpg"
+    @click="routefishdata(index,poolsCode[index])"
+    cover
+  >
+  </v-img> 
+  <div class="d-flex align-center justify-space-between">
+    <v-card-title >{{ name }}</v-card-title>
+    
+      <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+  </div>
+      
+      
+      
+    <v-card-text>
+      <div>
+        <v-row  no-gutters>
+        <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mb-1">
+          <v-sheet class=" text-h4">{{n.text}}</v-sheet> 
+        </v-col>
+      </v-row>
+      <v-row  no-gutters>
+        <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
+          <v-sheet class=" ">{{ n.textname }} </v-sheet> 
+        </v-col>
+      </v-row>
+      <v-row  no-gutters>
+        <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
+        <v-btn class="mb-2 mt-1" :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level)"></v-btn>
+        </v-col>
+      </v-row>
+      
+      
+      <v-row  no-gutters>
+      <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-1">
+        <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/' + 'needcharge' + '/fish'"
+          >{{needchargenum[index]}}條魚需充電</v-btn>
+      </v-col>
     </v-row>
+    <v-row  no-gutters class="">
+      <v-col  v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center"  >
+        <v-btn class="mt-2 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alertbcbutton"  @click="SaveIndividualData(index,5)" :to="'/' + name + '/' + 'error' + '/fish'"
+          >{{needfixnum[index]}}條魚有錯誤</v-btn>
+      </v-col>
+      <v-card-subtitle class="mt-4 "> 紀錄時間:{{ time }} </v-card-subtitle>
+    </v-row>
+    </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -63,332 +58,343 @@ import axios from 'axios';
 
 export default {
 data() {
-  return {
-    FishId: [],
-    FishId2num:null,
-    FishIdNow:[],
-    needchargenum:[],
-    needfixnum:[],
-    bc: [],
-    err: [],
-    active: [],
-    token:localStorage.getItem('token'),
-    time: localStorage.getItem("NewTime"),
-    links: [ 
-      { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-      { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-      { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
-    ],
-    isRefreshing: false,
-    IP:process.env.VUE_APP_IP,
-    poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
-    poolsName:JSON.parse(localStorage.getItem("PoolsName")),
-  };
+return {
+FishId: [],
+FishId2num:null,
+FishIdNow:[],
+needchargenum:[],
+needfixnum:[],
+bc: [],
+err: [],
+active: [],
+token:localStorage.getItem('token'),
+time: localStorage.getItem("NewTime"),
+links: [ 
+  { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false,linetext:"swimming"},
+  { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false,linetext:"standby"},
+  { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false,linetext:"maintenance"},
+],
+
+isRefreshing: false,
+IP:process.env.VUE_APP_IP,
+poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+poolsName:JSON.parse(localStorage.getItem("PoolsName")),
+};
 },
 methods: {
-  generateLinksArray(count) {
-    this.links = []; 
-    for (let i = 1; i <= count; i++) {
-      this.links.push([
-        { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false },
-        { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false },
-        { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false },
-      ]);
-    }
-  },
-  processData(ids, data) {
-    const bcvalue = ids.map((id) => data[id].bc);
-    const errvalue = ids.map((id) => data[id].err);
-    const activevalue = ids.map((id) => data[id].active);
-    this.bc.push(bcvalue);
-    this.err.push(errvalue);
-    this.active.push(activevalue);
-  },
-  async refresh() {
-    this.isRefreshing = true;
-    this.generateLinksArray(this.poolsCode.length);
-    await this.loadnewdata();
-    this.RefreshDatas2();
-    for (var i = 0; i < this.poolsCode.length; i++) {
-    await this.RefreshDatas(i);
-  }
-    this.isRefreshing = false;
-  },
-  RefreshDatas2() {
-    for (var i = 0; i < this.poolsCode.length; i++) {
-      const fish0 = "fish0" + this.poolsCode[i];
-      const fish1 = "fish1" + this.poolsCode[i];
-      const fish2 = "fish2" + this.poolsCode[i];
-
-      const fish1Data = localStorage.getItem(fish1);
-      const parsedFish1Data = JSON.parse(fish1Data);
-      const fish0Data = localStorage.getItem(fish0);
-      const parsedFish0Data = JSON.parse(fish0Data);
-      const fish2Data = localStorage.getItem(fish2);
-      const parsedFish2Data = JSON.parse(fish2Data);
-      const combinedFishIds = [...parsedFish1Data, ...parsedFish0Data, ...parsedFish2Data];
-      const parsedFishIds = combinedFishIds.map((str) => {
-        const num = parseInt(str, 10);
-        const paddedNum = num.toString().padStart(7, '0'); 
-        return paddedNum;
-      });
-      this.FishIdNow.push(parsedFish1Data.length)
-      this.FishId.push(parsedFishIds); 
-    }
-
-  },
-  async RefreshDatas(i) {
-    try {
-          if (this.FishId[i].length !== 0) {
-            const response = await axios.get(
-              "http://"+this.IP+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
-              {
-                headers: {
-                  Authorization: `Bearer ${this.token}`,
-                },
-              }
-            );
-            
-            console.log(response);
-            const responseData = JSON.stringify(response.data[this.poolsCode[i]]);
-            const parsedResponseData = JSON.parse(responseData);
-            if(i === 0){
-              const currentTime = new Date();
-              const year = currentTime.getFullYear();
-              const month = String(currentTime.getMonth() + 1).padStart(2, '0');
-              const day = String(currentTime.getDate()).padStart(2, '0');
-              const hours = String(currentTime.getHours()).padStart(2, '0');
-              const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-              const seconds = String(currentTime.getSeconds()).padStart(2, '0');
-              const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-              this.time = formattedDate;
-              localStorage.setItem("NewTime", formattedDate);
-            }
-            this.processData(this.FishId[i], parsedResponseData);
-            const bcdata = this.bc[i];
-            const errdata = this.err[i];
-            let chargenum = 0 ;
-            let fixnum = 0;
-            for (let a = 0; a < this.FishIdNow[i]; a++) {
-              
-              if (bcdata[a] < "20") chargenum += 1;
-            }
-            for (let a = 0; a < this.FishIdNow[i]; a++) {
-              if ( errdata[a] !== 0) fixnum += 1;
-            }
-            this.needchargenum.push(chargenum);
-            this.needfixnum.push(fixnum);
-            if (this.needchargenum[i] !== 0) {
-              this.links[i][0].alertbcbutton = true;
-            }
-            if (this.needfixnum[i] !== 0) {
-              this.links[i][0].alerterrbutton = true;
-            }
-            
-            this.links[i][0].text = this.active[i].filter((a) => a === 1).length;
-            this.links[i][1].text = this.active[i].filter((a) => a === 0).length;
-            this.links[i][2].text = this.active[i].filter((a) => a === 2).length;
-            localStorage.setItem("Poolname", this.poolsName[i]);
-            localStorage.setItem("Id", this.FishId[i]);
-            localStorage.setItem("Bc", this.bc[i]);
-            localStorage.setItem("Erro", this.err[i]);
-            localStorage.setItem("Active", this.active[i]);
-            if (!this.isRefreshing) {
-              this.isRefreshing = true;
-
-              setTimeout(() => {
-                this.isRefreshing = false;
-              }, 1000); 
-            }
-          } else {
-            this.links[i][0].text = 0;
-            this.links[i][1].text = 0;
-            this.links[i][2].text = 0;
-            localStorage.setItem("Poolname", this.poolsName[i]);
-            localStorage.setItem("Id","")
-            localStorage.setItem("Bc", "");
-            localStorage.setItem("Erro", "");
-            localStorage.setItem("Active", "");
-          }
-    } catch (error) {
-      console.error('Error', error);
-    }
+generateLinksArray(count) {
+this.links = []; 
+for (let i = 1; i <= count; i++) {
+  this.links.push([
+    { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false,linetext:"swimming" },
+    { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false,linetext:"standby" },
+    { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false,linetext:"maintenance" },
+  ]);
+}
 },
-  async SaveIndividualData(i,level){
-    if (level === 0) {
-      await this.RefreshDatas(i);
-      return; 
-    }
-    const fish0 = "fish0" + this.poolsCode[i];
-    const fish1 = "fish1" + this.poolsCode[i];
-    const fish2 = "fish2" + this.poolsCode[i];
-    const fish1Data = localStorage.getItem(fish1);
-    const parsedFish1Data = JSON.parse(fish1Data);
-    this.FishId[i] = parsedFish1Data
-    const FishId1num = this.FishId[i].length
-    let bcdatas = [];
-    let errdatas = [];
-    let activedatas = [];
-    if(FishId1num !== 0){
-      bcdatas = this.bc[i].slice(0, FishId1num);
-      errdatas = this.err[i].slice(0, FishId1num);
-      activedatas = this.active[i].slice(0, FishId1num);
-    }
-    
-    if(level === 1){
-      localStorage.setItem("Poolname", this.poolsName[i]);
-      localStorage.setItem("Id",this.FishId[i])
-      localStorage.setItem("Bc", bcdatas);
-      localStorage.setItem("Erro", errdatas);
-      localStorage.setItem("Active", activedatas);
-    }  else if (level === 2){
-      const fish0Data = localStorage.getItem(fish0);
-      const parsedFish0Data = JSON.parse(fish0Data);
-      this.FishId[i].push(...parsedFish0Data)
-      let active0 = [];
-      let idResult = [];
-      let bcResult = [];
-      let errResult = [];
-      if (this.FishId[i].length !== 0){
-        active0 = this.active[i].filter(value => value < 1);
-        const active0index = this.active[i].map((value, index) => {
-          if (value === 0) {
-            return index;
-          }
-        }).filter(index => index !== undefined);
-        idResult = active0index.map(index => this.FishId[i][index]);
-        bcResult = active0index.map(index => this.bc[i][index]);
-        errResult = active0index.map(index => this.err[i][index]);
-      }
-      localStorage.setItem("Poolname", this.poolsName[i]);
-      localStorage.setItem("Id",idResult)
-      localStorage.setItem("Bc", bcResult);
-      localStorage.setItem("Erro", errResult);
-      localStorage.setItem("Active", active0);
-    }else if(level === 4){
-      const needcharge = bcdatas.filter(value => value < 20);
-      const needchargeindex = needcharge.map((value) => bcdatas.indexOf(value));
-      const idbcResult = needchargeindex.map(index => this.FishId[i][index]);
-      const errbcResult = needchargeindex.map(index => errdatas[index]);
-      const activebcResult = needchargeindex.map(index => activedatas[index]);
-      localStorage.setItem("Poolname", this.poolsName[i]);
-      localStorage.setItem("Id",idbcResult)
-      localStorage.setItem("Bc", needcharge);
-      localStorage.setItem("Erro", errbcResult);
-      localStorage.setItem("Active", activebcResult);
-    }else if(level === 5){
-      const needfix = errdatas.filter(value => value > 0);
-      const needfixindex = needfix.map((value) => errdatas.indexOf(value));
-      const idErrResult = needfixindex.map(index => this.FishId[i][index]);
-      const bcErrResult = needfixindex.map(index => bcdatas[index]);
-      const activeErrResult = needfixindex.map(index => activedatas[index]);
-      localStorage.setItem("Poolname", this.poolsName[i]);
-      localStorage.setItem("Id",idErrResult)
-      localStorage.setItem("Bc", bcErrResult);
-      localStorage.setItem("Erro", needfix);
-      localStorage.setItem("Active", activeErrResult);
-    } else{
-      const fish0Data = localStorage.getItem(fish0);
-      const parsedFish0Data = JSON.parse(fish0Data);
-      this.FishId[i].push(...parsedFish0Data)
-      const fish2Data = localStorage.getItem(fish2);
-      const parsedFish2Data = JSON.parse(fish2Data);
-      this.FishId[i].push(...parsedFish2Data)
-      let idResult = [];
-      let bcResult = [];
-      let errResult = [];
-      let fixing = [];
-      if(this.FishId[i].length !== 0){
-        fixing = this.active[i].filter(value => value > 1);
-        const fixindex = this.active[i].map((value, index) => {
-          if (value === 2) {
-            return index;
-          }
-        }).filter(index => index !== undefined);
-        idResult = fixindex.map(index => this.FishId[i][index]);
-        bcResult = fixindex.map(index => this.bc[i][index]);
-        errResult = fixindex.map(index => this.err[i][index]);
-      }
-      localStorage.setItem("Poolname", this.poolsName[i]);
-      localStorage.setItem("Id",idResult)
-      localStorage.setItem("Bc", bcResult);
-      localStorage.setItem("Erro", errResult);
-      localStorage.setItem("Active", fixing);
-    }
-    
-  },
+processData(ids, data) {
+const bcvalue = ids.map((id) => data[id].bc);
+const errvalue = ids.map((id) => data[id].err);
+const activevalue = ids.map((id) => data[id].active);
+this.bc.push(bcvalue);
+this.err.push(errvalue);
+this.active.push(activevalue);
+},
+async refresh() {
+this.isRefreshing = true;
+this.generateLinksArray(this.poolsCode.length);
+await this.loadnewdata();
+this.RefreshDatas2();
+for (var i = 0; i < this.poolsCode.length; i++) {
+await this.RefreshDatas(i);
+}
+this.isRefreshing = false;
+},
+RefreshDatas2() {
+for (var i = 0; i < this.poolsCode.length; i++) {
+  const fish0 = "fish0" + this.poolsCode[i];
+  const fish1 = "fish1" + this.poolsCode[i];
+  const fish2 = "fish2" + this.poolsCode[i];
 
-  async loadnewdata() {
-    try {
-      const response = await axios.get(
-        "http://"+this.IP+"/api/v1/account",
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`
+  const fish1Data = localStorage.getItem(fish1);
+  const parsedFish1Data = JSON.parse(fish1Data);
+  const fish0Data = localStorage.getItem(fish0);
+  const parsedFish0Data = JSON.parse(fish0Data);
+  const fish2Data = localStorage.getItem(fish2);
+  const parsedFish2Data = JSON.parse(fish2Data);
+  if(!parsedFish1Data || !parsedFish0Data || !parsedFish2Data) continue;
+  const combinedFishIds = [...parsedFish1Data, ...parsedFish0Data, ...parsedFish2Data];
+  const parsedFishIds = combinedFishIds.map((str) => {
+    const num = parseInt(str, 10);
+    const paddedNum = num.toString().padStart(7, '0'); 
+    return paddedNum;
+  });
+  this.FishIdNow.push(parsedFish1Data.length)
+  this.FishId.push(parsedFishIds); 
+}
+
+},
+async RefreshDatas(i) {
+try {
+      if (this.FishId[i].length !== 0) {
+        const response = await axios.get(
+          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
           }
+        );
+        
+        console.log(response);
+        const responseData = JSON.stringify(response.data[this.poolsCode[i]]);
+        const parsedResponseData = JSON.parse(responseData);
+        if(i === 0){
+          const currentTime = new Date();
+          const year = currentTime.getFullYear();
+          const month = String(currentTime.getMonth() + 1).padStart(2, '0');
+          const day = String(currentTime.getDate()).padStart(2, '0');
+          const hours = String(currentTime.getHours()).padStart(2, '0');
+          const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+          const seconds = String(currentTime.getSeconds()).padStart(2, '0');
+          const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+          this.time = formattedDate;
+          localStorage.setItem("NewTime", formattedDate);
         }
-      );
-
-      console.log(response);
-      if (response.status === 200) {
-        for (var i = 0; i < this.poolsCode.length; i++) {
-          const fishData = response.data.fishesID[this.poolsCode[i]];
-          const fish0Values = [];
-          const fish1Values = [];
-          const fish2Values = [];
-          const fish3Values = [];
-          if (Object.prototype.hasOwnProperty.call(response.data.fishesID, this.poolsCode[i])) {
-            Object.entries(fishData).forEach(([key, value]) => {
-              if (value === 1) {
-                fish1Values.push(key);
-              } else if (value === 2) {
-                fish2Values.push(key);
-              } else if (value === 0){
-                fish0Values.push(key);
-                
-              }else{
-                fish3Values.push(key);
-              }
-            });
-          }
-          const poolactivenum = fish1Values.length.toString() + fish0Values.length.toString() + fish2Values.length.toString() 
-          const num = "activeNum"+this.poolsCode[i]
-          const fish0ids = "fish0"+this.poolsCode[i]
-          const fish1ids = "fish1"+this.poolsCode[i]
-          const fish2ids = "fish2"+this.poolsCode[i]
-          localStorage.setItem(num, poolactivenum);
-          localStorage.setItem(fish0ids, JSON.stringify(fish0Values));
-          localStorage.setItem(fish1ids, JSON.stringify(fish1Values));
-          localStorage.setItem(fish2ids, JSON.stringify(fish2Values));
+        this.processData(this.FishId[i], parsedResponseData);
+        const bcdata = this.bc[i];
+        const errdata = this.err[i];
+        let chargenum = 0 ;
+        let fixnum = 0;
+        for (let a = 0; a < this.FishIdNow[i]; a++) {
+          
+          if (bcdata[a] < "20") chargenum += 1;
+        }
+        for (let a = 0; a < this.FishIdNow[i]; a++) {
+          if ( errdata[a] !== 0) fixnum += 1;
+        }
+        this.needchargenum.push(chargenum);
+        this.needfixnum.push(fixnum);
+        if (this.needchargenum[i] !== 0) {
+          this.links[i][0].alertbcbutton = true;
+        }
+        if (this.needfixnum[i] !== 0) {
+          this.links[i][0].alerterrbutton = true;
         }
         
+        this.links[i][0].text = this.active[i].filter((a) => a === 1).length;
+        let formattedCount = this.links[i][0].text < 10 ? `0${this.links[i][0].text}` : this.links[i][0].text.toString();
+        this.links[i][0].text = formattedCount;
+        this.links[i][1].text = this.active[i].filter((a) => a === 0).length;
+        formattedCount = this.links[i][1].text < 10 ? `0${this.links[i][1].text}` : this.links[i][1].text.toString();
+        this.links[i][1].text = formattedCount;
+        this.links[i][2].text = this.active[i].filter((a) => a === 2).length;
+        formattedCount = this.links[i][2].text < 10 ? `0${this.links[i][2].text}` : this.links[i][2].text.toString();
+        this.links[i][2].text = formattedCount;
+        localStorage.setItem("Poolname", this.poolsName[i]);
+        localStorage.setItem("Id", this.FishId[i]);
+        localStorage.setItem("Bc", this.bc[i]);
+        localStorage.setItem("Erro", this.err[i]);
+        localStorage.setItem("Active", this.active[i]);
+        if (!this.isRefreshing) {
+          this.isRefreshing = true;
+
+          setTimeout(() => {
+            this.isRefreshing = false;
+          }, 1000); 
+        }
+      } else {
+        this.links[i][0].text = 0;
+        this.links[i][1].text = 0;
+        this.links[i][2].text = 0;
+        localStorage.setItem("Poolname", this.poolsName[i]);
+        localStorage.setItem("Id","")
+        localStorage.setItem("Bc", "");
+        localStorage.setItem("Erro", "");
+        localStorage.setItem("Active", "");
       }
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  async routefishdata(index,name){
-    await this.SaveIndividualData(index,0);
-    this.$router.push(`/${name}/fish`);
+} catch (error) {
+  console.error('Error', error);
+}
+},
+async SaveIndividualData(i,level){
+if (level === 0) {
+  await this.RefreshDatas(i);
+  return; 
+}
+const fish0 = "fish0" + this.poolsCode[i];
+const fish1 = "fish1" + this.poolsCode[i];
+const fish2 = "fish2" + this.poolsCode[i];
+const fish1Data = localStorage.getItem(fish1);
+const parsedFish1Data = JSON.parse(fish1Data);
+this.FishId[i] = parsedFish1Data
+const FishId1num = this.FishId[i].length
+let bcdatas = [];
+let errdatas = [];
+let activedatas = [];
+if(FishId1num !== 0){
+  bcdatas = this.bc[i].slice(0, FishId1num);
+  errdatas = this.err[i].slice(0, FishId1num);
+  activedatas = this.active[i].slice(0, FishId1num);
+}
+
+if(level === 1){
+  localStorage.setItem("Poolname", this.poolsName[i]);
+  localStorage.setItem("Id",this.FishId[i])
+  localStorage.setItem("Bc", bcdatas);
+  localStorage.setItem("Erro", errdatas);
+  localStorage.setItem("Active", activedatas);
+}  else if (level === 2){
+  const fish0Data = localStorage.getItem(fish0);
+  const parsedFish0Data = JSON.parse(fish0Data);
+  this.FishId[i].push(...parsedFish0Data)
+  let active0 = [];
+  let idResult = [];
+  let bcResult = [];
+  let errResult = [];
+  if (this.FishId[i].length !== 0){
+    active0 = this.active[i].filter(value => value < 1);
+    const active0index = this.active[i].map((value, index) => {
+      if (value === 0) {
+        return index;
+      }
+    }).filter(index => index !== undefined);
+    idResult = active0index.map(index => this.FishId[i][index]);
+    bcResult = active0index.map(index => this.bc[i][index]);
+    errResult = active0index.map(index => this.err[i][index]);
   }
+  localStorage.setItem("Poolname", this.poolsName[i]);
+  localStorage.setItem("Id",idResult)
+  localStorage.setItem("Bc", bcResult);
+  localStorage.setItem("Erro", errResult);
+  localStorage.setItem("Active", active0);
+}else if(level === 4){
+  const needcharge = bcdatas.filter(value => value < 20);
+  const needchargeindex = needcharge.map((value) => bcdatas.indexOf(value));
+  const idbcResult = needchargeindex.map(index => this.FishId[i][index]);
+  const errbcResult = needchargeindex.map(index => errdatas[index]);
+  const activebcResult = needchargeindex.map(index => activedatas[index]);
+  localStorage.setItem("Poolname", this.poolsName[i]);
+  localStorage.setItem("Id",idbcResult)
+  localStorage.setItem("Bc", needcharge);
+  localStorage.setItem("Erro", errbcResult);
+  localStorage.setItem("Active", activebcResult);
+}else if(level === 5){
+  const needfix = errdatas.filter(value => value > 0);
+  const needfixindex = needfix.map((value) => errdatas.indexOf(value));
+  const idErrResult = needfixindex.map(index => this.FishId[i][index]);
+  const bcErrResult = needfixindex.map(index => bcdatas[index]);
+  const activeErrResult = needfixindex.map(index => activedatas[index]);
+  localStorage.setItem("Poolname", this.poolsName[i]);
+  localStorage.setItem("Id",idErrResult)
+  localStorage.setItem("Bc", bcErrResult);
+  localStorage.setItem("Erro", needfix);
+  localStorage.setItem("Active", activeErrResult);
+} else{
+  const fish0Data = localStorage.getItem(fish0);
+  const parsedFish0Data = JSON.parse(fish0Data);
+  this.FishId[i].push(...parsedFish0Data)
+  const fish2Data = localStorage.getItem(fish2);
+  const parsedFish2Data = JSON.parse(fish2Data);
+  this.FishId[i].push(...parsedFish2Data)
+  let idResult = [];
+  let bcResult = [];
+  let errResult = [];
+  let fixing = [];
+  if(this.FishId[i].length !== 0){
+    fixing = this.active[i].filter(value => value > 1);
+    const fixindex = this.active[i].map((value, index) => {
+      if (value === 2) {
+        return index;
+      }
+    }).filter(index => index !== undefined);
+    idResult = fixindex.map(index => this.FishId[i][index]);
+    bcResult = fixindex.map(index => this.bc[i][index]);
+    errResult = fixindex.map(index => this.err[i][index]);
+  }
+  localStorage.setItem("Poolname", this.poolsName[i]);
+  localStorage.setItem("Id",idResult)
+  localStorage.setItem("Bc", bcResult);
+  localStorage.setItem("Erro", errResult);
+  localStorage.setItem("Active", fixing);
+}
+
+},
+
+async loadnewdata() {
+try {
+  const response = await axios.get(
+    "https://pre.aifish.cc"+"/api/v1/account",
+    {
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
+    }
+  );
+
+  console.log(response);
+  if (response.status === 200) {
+    for (var i = 0; i < this.poolsCode.length; i++) {
+      const fishData = response.data.fishesID[this.poolsCode[i]];
+      const fish0Values = [];
+      const fish1Values = [];
+      const fish2Values = [];
+      const fish3Values = [];
+      if (Object.prototype.hasOwnProperty.call(response.data.fishesID, this.poolsCode[i])) {
+        Object.entries(fishData).forEach(([key, value]) => {
+          if (value === 1) {
+            fish1Values.push(key);
+          } else if (value === 2) {
+            fish2Values.push(key);
+          } else if (value === 0){
+            fish0Values.push(key);
+            
+          }else{
+            fish3Values.push(key);
+          }
+        });
+      }
+      const poolactivenum = fish1Values.length.toString() + fish0Values.length.toString() + fish2Values.length.toString() 
+      const num = "activeNum"+this.poolsCode[i]
+      const fish0ids = "fish0"+this.poolsCode[i]
+      const fish1ids = "fish1"+this.poolsCode[i]
+      const fish2ids = "fish2"+this.poolsCode[i]
+      localStorage.setItem(num, poolactivenum);
+      localStorage.setItem(fish0ids, JSON.stringify(fish0Values));
+      localStorage.setItem(fish1ids, JSON.stringify(fish1Values));
+      localStorage.setItem(fish2ids, JSON.stringify(fish2Values));
+    }
+    
+  }
+} catch (error) {
+  console.log(error);
+}
+},
+async routefishdata(index,name){
+await this.SaveIndividualData(index,0);
+this.$router.push(`/${name}/total/fish`);
+}
 },
 async created() {
-  this.generateLinksArray(this.poolsCode.length);
-  await this.loadnewdata();
-  this.RefreshDatas2();
-  for (var i = 0; i < this.poolsCode.length; i++) {
-    await this.RefreshDatas(i);
-  }
+this.generateLinksArray(this.poolsCode.length);
+await this.loadnewdata();
+this.RefreshDatas2();
+for (var i = 0; i < this.poolsCode.length; i++) {
+await this.RefreshDatas(i);
+}
 
-  
+
 },
 };
 </script>
 
-<style>
-.haveErrorText{
-margin-left: 70px;
-}
+<style scoped>
 
+.haveErrorText{
+margin-left: 61px;
+}
+.v-application__wrap{
+    background-color: black;
+  }
 
 </style>

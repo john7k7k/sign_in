@@ -1,11 +1,7 @@
 <template>
   <div class="login">
     <loginnavbar class="loginnavbar-bg"></loginnavbar>
-    <div class="v-application__wrap" style="height: 100%;">
-      <h1 class="text-center mr-15 text2">
-        仿生魚監控站
-      </h1>
-      <v-row class="mt-2">
+      <v-row class="">
         <v-col
           class="d-flex justify-center"
           xs="12"
@@ -13,7 +9,6 @@
           <logininput class="logininput"></logininput>
         </v-col>
       </v-row>
-    </div>
   </div>
 </template>
 
@@ -22,7 +17,7 @@ import loginnavbar from '@/components/loginnavbar.vue';
 import logininput from '@/components/logininput.vue';
 export default {
   name: 'login',
-  components: { loginnavbar, logininput },
+  components: { logininput ,loginnavbar},
   data: () => ({
     //
   }),
@@ -30,44 +25,38 @@ export default {
 </script>
 
 <style>
+
 .login {
-  background-image: url('../assets/login背景.png');
+  background-image: url('../assets/登入頁面第二版.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
   height:100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: hidden
+  overflow-y: hidden;
+  overflow: hidden;
 }
 .loginnavbar-bg {
   height: 100px; 
   background-color: rgba(0, 0, 0, 0); 
+  position: absolute;
 }
 
 .logininput {
+  position: absolute;
+  padding-top: 9%;
   padding-left: 800px;
-}
-.text2 {
-  padding-left: 850px;
 }
 
 @media screen and (max-width: 600px) {
   .logininput {
     padding-left: 15px;
+    margin-top: 30%;
   }
 
-  .text2 {
-    padding-left: 60px;
-    color: white;
-  }
 
   .login {
-  background-image: url('../assets/login背景-phone2.png');
+  background-image: url('../assets/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -84,17 +73,13 @@ export default {
 
 @media screen and (min-width: 601px) and (max-width: 1024px) {
   .logininput {
-    padding-left: 15px;
-  }
-
-  .text2 {
-    padding-top: 200px;
-    padding-left: 60px;
-    color: white;
+    padding-left: 25%;
+    transform: scale(1.5);
+    margin-top: 25%;
   }
 
   .login {
-  background-image: url('../assets/login背景-phone2.png');
+  background-image: url('../assets/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -111,29 +96,22 @@ export default {
 
 @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
   .logininput {
-    padding-left: 600px;
+    padding-left: 400px;
+    position: absolute;
+    transform: translateX(12%) scale(1.1);
+    margin-top: 7%;
   }
 
-  .text2 {
-    padding-top: 60px;
-    padding-left: 645px;
-    color: rgb(5, 5, 5);
-  }
 
   .login {
-    background-image: url('../assets/login背景.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: hidden;
-    background-position: 25% 50%; 
+  background-image: url('../assets/登入頁平板背景.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height:100%;
+  overflow-y: hidden;
+  overflow: hidden;
 }
 }
 

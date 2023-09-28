@@ -301,3 +301,58 @@
   },
   };
   </script>
+
+
+
+
+<v-container v-if="isMobileScreen">
+  <v-card v-for="(name, index) in poolsName" class="d-flex justify-center" width="750"  :key="name">
+<v-img
+  class="align-end text-white"
+  height="150"
+  src="../assets/totalbg.jpg"
+  @click="routefishdata(index,poolsCode[index])"
+  cover
+>
+</v-img> 
+  <v-card-text class="cardtextbg pt-4 pb-8">
+    <div class="d-flex align-center justify-space-between">
+  <v-card-title class="pooltext " >{{ name }}</v-card-title>
+  
+    <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+</div>
+    <div>
+      <v-row  no-gutters>
+      <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mb-1">
+        <v-sheet class=" text-h4">{{n.text}}</v-sheet> 
+      </v-col>
+    </v-row>
+    <v-row  no-gutters>
+      <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
+        <v-sheet class="mb-1">{{ n.textname }} </v-sheet> 
+      </v-col>
+    </v-row>
+    <v-row  no-gutters>
+      <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
+      <v-btn class="mb-2 mt-1" :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level,'/'+n.linetext)"></v-btn>
+      </v-col>
+    </v-row>
+    
+    
+    <v-row  no-gutters>
+    <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-1">
+      <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4,'/needcharge')" :to="'/' + name + '/' + 'needcharge' + '/fish'"
+        >{{needchargenum[index]}}條魚需充電</v-btn>
+    </v-col>
+  </v-row>
+  <v-row  no-gutters class="">
+    <v-col  v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center"  >
+      <v-btn class="mt-2 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alertbcbutton"  @click="SaveIndividualData(index,5,'/error')" :to="'/' + name + '/' + 'error' + '/fish'"
+        >{{needfixnum[index]}}條魚有錯誤</v-btn>
+    </v-col>
+    <v-card-subtitle class="mt-4 "> 紀錄時間:{{ time }} </v-card-subtitle>
+  </v-row>
+  </div>
+  </v-card-text>
+</v-card>
+</v-container>

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div class="d-flex justify-center"><h2>仿生魚清單</h2></div>
+    <div class="font-weight-black d-flex justify-center text-white text-h4">仿生魚清單</div>
     
     
     </v-container>
@@ -11,8 +11,8 @@
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
-        class="mb-2 mt-4 mr-4"
-        style="width: 200px;"
+        class="mb-2 mt-4 ml-7 text-white"
+        style="width: 200px;  "
       ></v-text-field>
       <v-dialog
     v-model="dialognewSection"
@@ -67,10 +67,10 @@
     </v-card>
   </v-dialog> 
 </div> 
-    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2" ><h3>{{ processSectionName(poolname) }}</h3>
-    <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)">
+    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
+    <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
-      <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.id }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
+      <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
       <Modal
               v-model="row.modal"
               title="上傳仿生魚照片"
@@ -103,7 +103,7 @@
     <Button  type="error" size="small" @click="confirm(id)">刪除</Button>
     </template>
   </Table>
-  <Table  v-show="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow"></Table>
+  <Table  v-show="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="ml-7 mr-7"></Table>
   </div>
   </template>
   
@@ -389,7 +389,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                    "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -564,7 +564,7 @@ import axios from 'axios';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-            "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -591,15 +591,6 @@ import axios from 'axios';
   </script>
   
   <style>
-  .section1{
-    padding-left: 290px;
-  }
-
-  @media screen and (max-width: 600px){
-    .section1{
-    padding-left: 10px;
-  }
-  }
   </style>
 
 

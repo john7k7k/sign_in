@@ -5,10 +5,10 @@ import Nav from  '../views/Nav.vue'
 import UserData from '../views/UserData.vue'
 import editdatas from '../views/Editdatas.vue'
 import editdatas3 from '../views/Editdatas3.vue'
-import Fishdatas3 from '../views/FishdataView3.vue'
 import Accountlist from '../views/AccountList.vue'
 import FishDatalist from '../views/FishDatalist.vue'
 import SuSectionview from '../views/SignupSectionview.vue'
+import SelectInstruction from '../views/SelectInstruction.vue'
 const routes = [
   {
     name: "Nav",
@@ -16,19 +16,9 @@ const routes = [
     component: Nav ,
     children:[
     {
-      name: "home",
-      path: "/home", 
-      component: HomeView
-    },
-    {
       name: "Fishdatas",
       path: "/:prefix/:prefix/fish/", 
       component: Fishdatas
-    },
-    {
-      name: "Fishdatas3",
-      path: "/nmmst/fish", 
-      component: Fishdatas3
     },
     {
       name: "UserData",
@@ -60,7 +50,18 @@ const routes = [
       path: "/sign/up/pool", 
       component: SuSectionview
     },
+    
    ]
+  },
+  {
+    name: "selectinstruction",
+    path: "/select/instruction", 
+    component: SelectInstruction
+  },
+  {
+      name: "home",
+      path: "/home", 
+      component: HomeView
   },
   {
     path: '/login',

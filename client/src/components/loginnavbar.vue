@@ -2,10 +2,10 @@
     <v-toolbar prominent>
       <template v-slot:prepend> 
       <v-img
-        src="../assets/NTUT-Logo.png"
+        src="../assets/logo北科.png"
         alt="logo"
         width="70"
-        
+        class="logoimage"
       ></v-img>
     
       </template>
@@ -17,12 +17,15 @@
         inset
         vertical
         ></v-divider>
-      <v-btn variant="text" route to = "/sign/up" class=" rounded-button text "><h3>註冊</h3></v-btn>
+      <v-btn v-if="false" variant="text" route to = "/sign/up" class=" rounded-button text "><h3>註冊</h3></v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </template>
 
 <style>
+.logoimage{
+  transform: scale(2.3);
+}
 .rounded-button {
   border-radius: 100px; 
 }

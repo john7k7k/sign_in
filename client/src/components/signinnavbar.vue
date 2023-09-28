@@ -1,11 +1,11 @@
 <template>
     <v-toolbar prominent>
       <template v-slot:prepend> 
-      <v-img
-        src="../assets/NTUT-Logo.png"
+        <v-img
+        src="../assets/logo北科.png"
         alt="logo"
         width="70"
-        
+        class="logoimage"
       ></v-img>
     
       </template>

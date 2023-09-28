@@ -1,6 +1,7 @@
 <template>
+  <v-container>
     <v-row no-gutters >
-      <v-card v-for="(name, index) in poolsName" class="mx-auto mb-6 mt-2" width="800" :key="name">
+      <v-card v-for="(name, index) in poolsName" class="mx-auto mb-6" width="800" :key="name">
         <v-img
           class="align-end text-white"
           height="200"
@@ -9,13 +10,15 @@
           cover
         >
         
-          
+          <v-card-title class="d-flex align-center justify-space-between">{{ name }}
+            
+            
+          </v-card-title>
           
           
         </v-img> 
         <div class="d-flex align-center justify-space-between">
-          <v-card-title >{{ name }}</v-card-title>
-          
+          <v-card-subtitle class="pt-1 pb-1 "> 紀錄時間:{{ time }} </v-card-subtitle>
             <v-btn class="mr-2 mt-1"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
         </div>
           
@@ -25,7 +28,7 @@
           <div>
           <v-row  no-gutters>
             <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center">
-            <v-btn class="ma-2 " :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/fish'" @click="SaveIndividualData(index,n.level)"></v-btn>
+            <v-btn class="ma-2 " :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level)"></v-btn>
             </v-col>
           </v-row>
           <v-row  no-gutters>
@@ -40,22 +43,21 @@
           </v-row>
           <v-row  no-gutters>
             <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2">
-              <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/fish'"
+              <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4)" :to="'/' + name + '/' + 'needcharge' + '/fish'"
                 >{{needchargenum[index]}}條魚需充電</v-btn>
             </v-col>
           </v-row>
-          <v-row  no-gutters class="">
-            <v-col    >
-              <v-btn class="mt-1 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red"  @click="SaveIndividualData(index,5)" :to="'/' + name + '/fish'"
+          <v-row  no-gutters>
+            <v-col v-for="n in links[index]" :key="n" :cols="cols"  class=" d-flex align-center justify-center mt-2" >
+              <v-btn rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alerterrbutton" @click="SaveIndividualData(index,5)" :to="'/' + name + '/' + 'error' + '/fish'"
                 >{{needfixnum[index]}}條魚有錯誤</v-btn>
             </v-col>
-            <v-card-subtitle class="mt-4"> 紀錄時間:{{ time }} </v-card-subtitle>
           </v-row>
-          
         </div>
         </v-card-text>
       </v-card>
     </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -75,10 +77,11 @@ data() {
     token:localStorage.getItem('token'),
     time: localStorage.getItem("NewTime"),
     links: [ 
-      { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false},
-      { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false},
-      { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false},
+      { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false,linetext:"swimming"},
+      { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false,linetext:"standby"},
+      { icon: 'mdi-wrench', text: ".", color: 'black', textname: "維修中",level:3,alertbcbutton:false,alerterrbutton:false,linetext:"maintenance"},
     ],
+    
     isRefreshing: false,
     IP:process.env.VUE_APP_IP,
     poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
@@ -90,9 +93,9 @@ methods: {
     this.links = []; 
     for (let i = 1; i <= count; i++) {
       this.links.push([
-        { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false },
-        { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false },
-        { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false },
+        { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false,linetext:"swimming" },
+        { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false,linetext:"standby" },
+        { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false,linetext:"maintenance" },
       ]);
     }
   },
@@ -141,7 +144,7 @@ methods: {
     try {
           if (this.FishId[i].length !== 0) {
             const response = await axios.get(
-              "http://"+this.IP+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+              "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`,
@@ -321,7 +324,7 @@ methods: {
   async loadnewdata() {
     try {
       const response = await axios.get(
-        "http://"+this.IP+"/api/v1/account",
+        this.IP+"/api/v1/account",
         {
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -369,7 +372,7 @@ methods: {
   },
   async routefishdata(index,name){
     await this.SaveIndividualData(index,0);
-    this.$router.push(`/${name}/fish`);
+    this.$router.push(`/${name}/total/fish`);
   }
 },
 async created() {
@@ -384,11 +387,3 @@ async created() {
 },
 };
 </script>
-
-<style>
-.haveErrorText{
-margin-left: 70px;
-}
-
-
-</style>

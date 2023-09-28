@@ -1,19 +1,13 @@
 <template>
-  <v-container>
-    <v-row no-gutters justify="center">
-      <v-card class="mx-auto" width="1200">
-        <v-img
-          class="align-end text-white"
-          height="100"
-          src="../assets/totalbg.jpg"
-          cover
-        >
-        <v-card-title class="d-flex align-center justify-space-between">{{ poolname }}
-            </v-card-title>
-        </v-img>
-        <v-card-subtitle class="pt-1 pb-1 d-flex align-center justify-space-between "> 紀錄時間:{{ time }}
-          <div >
-            <v-dialog
+    <v-img
+        src="../assets/rectangle.png"
+        alt="Rectangle"
+        class="rectangle"
+        width="20"
+      />
+    <div class="d-flex align-center justify-space-between">
+      <div class="text-white  pooltext"><h1>{{ poolname }}</h1></div>
+      <v-dialog
     v-model="dialogControl"
     width="500"
     :scrim="false"
@@ -21,10 +15,11 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ props }">
-      <v-btn
-        color="purple-darken-2 mr-1"
+      <v-btn 
+        class="mr-8 mt-6"
+        color="purple-darken-2"
         icon="mdi mdi-gamepad-variant"
-        size="small"
+        size="45"
         v-bind="props"
       >
       </v-btn>
@@ -75,119 +70,118 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-
-
-
-            
-            <v-btn   color="green-darken-4" icon="mdi mdi-update" size="small" @click="RefreshFishDatas" ></v-btn>
-          </div>
-          
-        </v-card-subtitle>
-        
-      </v-card>
-    </v-row>
-  </v-container>
-  <div>
-    <v-container class="mb-6">
-      <v-row  no-gutters style="height: 80px" class="d-flex align-content-start  flex-wrap ">
-        <v-col v-for="fish in datas" :key="fish" :cols="cols" class="d-flex align-content-start  flex-wrap ">
-          <v-card
-            class="pa-2 ma-2 mx-auto cardbg "
-            cover
-            width="320"          
-            >
-            <div class="d-flex flex-no-wrap justify-space-between">
-              <div>
-                <v-card-title class="text-h5 ">ID:{{fish.id}}</v-card-title>
-                <v-card-actions>
-                <div class="text-black mx-1" >電量:</div>
-                
-                  <div class="ma-1 pa-1  " :style="{ backgroundColor: fish.color }">
-                    <div class="font-weight-medium text-black">
-                      {{fish.bc}}
-                    </div>
-                  </div></v-card-actions>
-                  <v-card-actions> 
-                <div class="text-black mx-1 ">狀態:  {{ fish.activeword }}</div>
-                </v-card-actions>
-                <v-card-actions>
-          <v-btn prepend-icon="mdi-square-edit-outline"
-                    class="ms-2 bg-black"
-                    variant="outlined"
-                    :to = "'/'+poolname+'/fish/edit'"
-                    size="small"  @click="editFish(fish.id, $event)"> 編輯 </v-btn>
-                    <div class="ma-1 pa-1">
-                              <div  >
-                                <v-dialog
-              v-model="fish.dialogerr"
-              width="600"
-              :scrim="false"
-              transition="dialog-bottom-transition"
-            >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-show="fish.bellshow"
-                  icon="mdi mdi-bell-ring"
-                  width="30"
-                  height="30"
-                  v-bind="props"
-                  @click="ErroVideo(fish.id)"
-                  color="red"
-                ></v-btn>
-              </template>
-              <v-card>
-                <v-table fixed-header height="300px">
-                  <thead>
-                    <tr>
-                      <th class="text-left">時間</th>
-                      <th class="text-">錯誤</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
-                      <td>{{ item.time }}</td>
-                      <td>{{ item.error }}</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-                <v-card-actions class="d-flex justify-space-between">
-            <v-select v-show="false" v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
-            <v-btn
-              v-show="false"
-              prepend-icon="mdi mdi-magnify"
-              class="ml-3 mb-2 bg-grey"
-              @click="searchvideo"
-            >查詢</v-btn>
-            <div v-if="videoUrl">
-      <video controls id="videoPlayer" ref="videoPlayer">
-        <source :src="videoUrl" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
     </div>
-          </v-card-actions>
-                <v-card-actions>
-                  <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
+    
+    <div class="text-white d-flex align-center justify-space-between  mb-10">
+      <div class="recordtext">紀錄時間:{{ time }}</div>
+      <v-btn  class="mr-8 mb-5 mt-2"  color="green-darken-4" icon="mdi mdi-update" size="45" @click="RefreshFishDatas" ></v-btn>
+    </div>
+  <div>
+      <v-row  no-gutters  class="d-flex align-content-start  flex-wrap ">
+        <v-col v-for="fish in datas" :key="fish" :cols="cols" class="d-flex align-content-start   ">
+          <v-card class="pa-2 mb-14 mx-auto cardbg" cover width="320">
+        <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
+          <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
+      <v-img class="pr-9 pb-7" src="../assets/fishimage1.png"></v-img>
+      <v-btn
+        icon="mdi-numeric-null"
+        height="13"
+        width="13"
+        :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum), position: 'absolute', top: '0', left: '5%' }"
+      ></v-btn>
+      
+    </v-avatar>
+    <div class="text-black ml-7 font-weight-bold"  :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
+          <div>
+            <v-card-title class="mr-6  " :style="{  position: 'absolute', top: '5%', left: '77%', transform: 'translateX(-50%)' }">ID:</v-card-title>
+            <div class="" :style="{  position: 'absolute', top: '17%', left: '69%', transform: 'translateX(-50%)',fontSize:'52px' }">{{fish.id}}</div>
+            <v-card-actions>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '51%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '59%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,3)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '63%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,4)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '67%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,5)}">.</div>
+              <div class="text-black  text-h6" :style="{  position: 'absolute', top: '47%', left: '82%', transform: 'translateX(-50%)' }">{{fish.bc}}%</div>
+            </v-card-actions>
+            <v-card-actions>
+              <div v-show="false" class="text-black mt-10"></div>
+            </v-card-actions>
+            <v-card-actions class="mt-10 mr-16">
+              <v-btn
+                rounded="pill"
+                prepend-icon="mdi-square-edit-outline"
+                class="ms-2 bg-black"
+                width="85"
+                variant="outlined"
+                :to="'/'+poolname+'/fish/edit'"
+                size="small"
+                @click="editFish(fish.id, $event)"
+                :style="{  position: 'absolute', top: '77%', left: '66%', transform: 'translateX(-50%)' }"
+              >
+                編輯
+              </v-btn>
+              <div class=" pb-4">
+                <div>
+                  <v-dialog
+                    v-model="fish.dialogerr"
+                    width="600"
+                    :scrim="false"
+                    transition="dialog-bottom-transition"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-show="fish.bellshow"
+                        icon="mdi mdi-bell-ring "
+                        height="10"
+                        v-bind="props"
+                        @click="ErroVideo(fish.id)"
+                        color="red-darken-2"
+                        :style="{  position: 'absolute', top: '78%', left: '88%', transform: 'translateX(-50%)' }"
+                      ></v-btn>
+                    </template>
+                    <v-card>
+                      <v-table fixed-header height="300px">
+                        <thead>
+                          <tr>
+                            <th class="text-left">時間</th>
+                            <th class="text-">錯誤</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
+                            <td>{{ item.time }}</td>
+                            <td>{{ item.error }}</td>
+                          </tr>
+                        </tbody>
+                      </v-table>
+                      <v-card-actions class="d-flex justify-space-between">
+                  <v-select v-show="false" v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
+                  <v-btn
+                    v-show="false"
+                    prepend-icon="mdi mdi-magnify"
+                    class="ml-3 mb-2 bg-grey"
+                    @click="searchvideo"
+                  >查詢</v-btn>
+                  <div v-if="videoUrl">
+            <video controls id="videoPlayer" ref="videoPlayer">
+              <source :src="videoUrl" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
                 </v-card-actions>
-              </v-card>
-            </v-dialog>
-                              </div>
-                  </div>
-                </v-card-actions>
+                      <v-card-actions>
+                        <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </div>
               </div>
-              <v-avatar class="ma-3" size="150" rounded="0" style="position: relative;">
-                <v-img class="mt-6 pt-3" src="../assets/1.png"></v-img>
-                <v-btn
-                  icon="mdi-numeric-null"
-                  height="10"
-                  width="10"
-                  :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum), position: 'absolute', top: '0', left: '95%', transform: 'translateX(-50%)' }"
-                ></v-btn>
-            </v-avatar>
-            </div>
-          </v-card>
+            </v-card-actions>
+          </div>
+        </div>
+    </v-card>
         </v-col>
       </v-row>
-    </v-container>
   </div>
 </template>
 <script>
@@ -249,10 +243,9 @@ import axios from 'axios'
             }
             this.datas = this.FishId.map((id, index) => ({
               id: id,
-              bc: this.bc[index] + '%',
+              bc: this.bc[index] ,
               error: this.err[index],
               active: this.FishActive[index],
-              color: this.getColor(this.bc[index]),
               errornum:this.countNumbersInString(this.err[index]),
               dialogerr: false,
               bellshow: this.bellshowfunction(this.err[index],this.FishActive[index]),
@@ -268,18 +261,6 @@ import axios from 'axios'
           this.FishActive.push(active);
         });
     },
-
-    getColor(bcValue) {
-    if (bcValue >= 80) {
-      return ''; 
-    } else if (bcValue >= 50 && bcValue < 80) {
-      return ''; 
-    }else if (bcValue >= 20 && bcValue < 50) {
-      return '#FFFF8D'; 
-    } else {
-      return '#EF5350'; 
-    }
-  },
   geterrcolor(active,errnum){
     if(active === 2){
       return '#BDBDBD';
@@ -289,6 +270,30 @@ import axios from 'axios'
       return '#E53935';
     }else {
       return '#00E676';
+    }
+  },
+  getbccolor(bc,num){
+    if(bc >= 80){
+      return '#B2FF59'
+    }else if(bc >= 60 && num<5 || bc >= 40 && num<4 || bc >= 20 && num<3){
+      return '#B2FF59';//綠
+    }else if(bc <20 && num<2){
+      return '#EF5350';//red
+    }else{
+      return '#616161';//灰
+    }
+  },
+  getbcdisplay(bc){
+    if(bc >= 80){
+      return '.....';
+    }else if(bc >= 60){
+      return '....';
+    }else if(bc>=40){
+      return '...';
+    }else if(bc>=20){
+      return '..';
+    }else{
+      return '.';
     }
   },
   getactiveword(active,err){
@@ -456,7 +461,7 @@ axios.get(
       },
       cols() {
         const { xl, lg, md ,sm } = this.$vuetify.display; 
-        return xl || lg  ? 4 : sm || md ?  6:12;
+        return xl || lg  ? 3 : sm || md ?  6:12;
       },
     },
     created() {
@@ -466,22 +471,48 @@ axios.get(
   }
 </script>
 
-<style>
-    .dialog-bottom-transition-enter-active,
-    .dialog-bottom-transition-leave-active {
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .align-center {
+<style scoped>
+.pooltext{
+  font-size:x-large;
+  padding-left: 60px;
+  padding-top: 15px;
+}
+.rectangle {
+  z-index: 5;
+  top: 90px;
+  left: 30px;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  transform: scale(0.6);
+}
+.recordtext{
+  padding-top: 10px;
+  padding-left: 60px;
+  font-size: 15px;
+}
+.dialog-bottom-transition-enter-active,.dialog-bottom-transition-leave-active {
+   transition: transform 0.2s ease-in-out;
+}
+.align-center {
   align-items: center;
 }
-
-  .cardbg{
+.cardbg{
     background-image: url('../assets/card.png');
     background-size: cover;
     background-position: center;
   }
-  
+.cardIDtext,.v-card-title{
+  text-align: left;
+  padding-right: 150px;
+}
+@media screen and (max-width: 600px){
+  .recordtext{
+  padding-top: 10px;
+  margin-left: 1%;
+  font-size: 15px;
+}
+}  
 
 
   

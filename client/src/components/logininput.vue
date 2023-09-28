@@ -1,30 +1,30 @@
 <template>
     <v-container>
-      
-      <v-card class="mx-auto px-8 py-11  " max-width="344"  color="white" >
-        <div class="container">
-        
-          <v-form v-model="form" @submit.prevent="onSubmit" >
-        <div class="text-subtitle-1 text-black">使用者名稱</div>  
+      <v-card class=" pa-3 cardbg" max-width="400"    >
+        <v-form v-model="form" @submit.prevent="onSubmit" >
+          <v-btn variant="text" route to = "/sign/up" class="mt-2   d-flex justify-end " color="indigo-accent-4"><div class="sign-up-text">註冊</div></v-btn>
+          
+        <div class="titleword mb-5 ml-2 text-white">使用者登入</div>
+        <div class=" ml-2 mb-1 text-blue-grey-lighten-5 textdistance">使用者ID</div>  
         <v-text-field
-            v-model="account"
-            :readonly="loading"
-            :rules="[required]"
-            class="mb-2 "
-            clearable
-            placeholder="Enter your UserName"
-          ></v-text-field>
+          density="compact"
+          v-model="account"
+          :readonly="loading"
+          :rules="[required]"
+          class="mb-3 mr-2 ml-2 textfield"
+          placeholder=""
+          
+          bg-color="rgba(255, 255, 255, 0.15)"
+        ></v-text-field>
           <div
-        class="text-black text-subtitle-1  d-flex align-center justify-space-between"
-      >
-        密碼
-
+        class="text-blue-grey-lighten-5   d-flex align-center justify-space-between ml-2 mb-1 textdistance"
+      >密碼
         <a
-          class="text-caption text-decoration-underline text-white"
+          class="text-caption text-decoration-underline text-blue ml-2 textdistance"
           href="#"
           rel="noopener noreferrer"
           target="_blank"
-          v-show="false"
+          v-if="false"
         >
           忘記密碼?</a
         >
@@ -35,34 +35,29 @@
             v-model="password"
             :readonly="loading"
             :rules="[required]"
+            density="compact"
+            variant="solo"
+            placeholder=""
+            class="ml-2 mr-2 "
             @click:append-inner="visible = !visible"
-            
-            placeholder="Enter your password"
+            bg-color="rgba(255, 255, 255, 0.15)"
           ></v-text-field>
-  
           <br>
   
           
-          <v-snackbar :timeout="2000" color="blue-grey" rounded="pill">
+          <v-snackbar :timeout="1000"  rounded="pill">
       <template v-slot:activator="{ props }">
         <v-btn
-            rounded="pill"
-            :disabled="!form"
             :loading="loading"
-            block
-            color="success"
-            size="large"
             type="submit"
             variant="elevated"
-            class="mb-3"
+            class="mb-12 loginbuttom"
             v-bind="props"
-          >
-            登入
-          </v-btn>
+            width="150"
+          > </v-btn>
       </template>
     </v-snackbar>
           </v-form>
-        </div>
       
         
       </v-card>
@@ -130,7 +125,7 @@
                 localStorage.setItem("InstructionCode", JSON.stringify(instructioncode));
                 localStorage.setItem("InstructionName", JSON.stringify(instructionname));
                 localStorage.setItem("UserImage", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
-                window.location.replace(`/home`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
+                window.location.replace(`/select/instruction`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
               }
               else
               alert("登入失敗")
@@ -148,3 +143,45 @@
       }
     }
   </script>
+
+  <style scoped>
+  .cardbg {
+  border-radius: 30px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.textfield{
+  border-radius: 360px;
+}
+.titleword{
+  font-size: 20px;
+  letter-spacing: 6px;
+}
+.sign-up-text{
+  margin-left: 50%;
+  font-size: large;
+  letter-spacing: 6px;
+}
+.textdistance{
+  letter-spacing: 6px;
+}
+
+.loginbuttom{
+  border-radius: 80px;
+  background-image: url('../assets/按鈕框.png');
+  background-position: center;
+  background-size: 101% 101%;
+  left: 30%;
+  transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+</style>
