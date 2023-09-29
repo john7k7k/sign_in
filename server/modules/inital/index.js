@@ -2,11 +2,13 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const allowDomainOnly = require('../middleware/verifyDomin');
+const bodyParser = require('body-parser');
 
 module.exports = (app, task = () => void 0) => {
     app.use(express.json())
     app.use(cors())
     app.use(cookieParser())
+    app.use(bodyParser.urlencoded({ extended: true }))
     app.use("/public", express.static('../public'));
     app.use("/img", express.static('../public/img'));
     app.use("/js", express.static('../public/js/'));

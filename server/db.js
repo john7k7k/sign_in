@@ -193,4 +193,6 @@ async function showAll(prisma){
     console.table(await prisma.depart.findMany());
     console.log('Instruction');
     console.table(await prisma.instruction.findMany());
+    console.log('bin');
+    console.table(await prisma.bin.findMany());
 }
