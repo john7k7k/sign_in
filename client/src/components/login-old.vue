@@ -75,6 +75,14 @@
   backdrop-filter: blur(5px);
   border: 1.2px solid rgba(255, 255, 255, 0.2);
 }
+.loginbuttom{
+    background-color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 7px;
+    border-radius: 80px;
+    left: 3.5%;
+    top: 40%;
+    transform: scale(1.1);
+}//選擇區域查看鈕
   
   </style>
   

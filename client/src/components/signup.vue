@@ -8,22 +8,20 @@
         <div class=" ml-2 mb-1 text-blue-grey-lighten-5 textdistance">使用者名稱</div> 
           <v-text-field
             density="compact"
-            variant="solo"
             v-model="account"
             :readonly="loading"
             :rules="[required]"
-            class="mb-1.5 mr-2 ml-2"
+            class="mb-1.5 mr-2 ml-2 text-white"
             placeholder=""
             bg-color="rgba(255, 255, 255, 0.2)"
           ></v-text-field>
           <div class="ml-2 mb-1 text-blue-grey-lighten-5 textdistance">Email</div>
           <v-text-field
             density="compact"
-            variant="solo"
             v-model="email"
             :readonly="loading"
             :rules="[required,emailRule]"
-            class="mb-1.5 mr-2 ml-2 "
+            class="mb-1.5 mr-2 ml-2 text-white"
             placeholder=""
             bg-color="rgba(255, 255, 255, 0.2)"
           ></v-text-field>
@@ -35,14 +33,13 @@
             :readonly="loading"
             :rules="[required]"
             density="compact"
-            variant="solo"
             @click:append-inner="visible = !visible"
             placeholder=""
-            class="ml-2 mr-2 "
+            class="ml-2 mr-2 text-white"
             bg-color="rgba(255, 255, 255, 0.2)"
           ></v-text-field>
           <div class="ml-2 mb-1 text-blue-grey-lighten-5 textdistance">選擇區域</div>
-          <v-select v-model="SelectSection" :items="section" density="comfortable" :rules="[required]" bg-color="rgba(255, 255, 255, 0.2)" class="ml-2 mr-2 "></v-select>
+          <v-select v-model="SelectSection" :items="section" density="comfortable" :rules="[required]" bg-color="rgba(255, 255, 255, 0.2)" class="ml-2 mr-2 text-white"></v-select>
           <br>
           <v-snackbar :timeout="1000"  rounded="pill">
       <template v-slot:activator="{ props }">
