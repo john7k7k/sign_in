@@ -32,12 +32,11 @@
                         size="small"
                       ></v-btn>
                     </template>
-                    <v-row >
+                    <v-row justify="center">
                       <v-color-picker
                         hide-inputs
                         v-model="pickers[0]"
                         elevation="15"
-                        class="pr-4"
                       ></v-color-picker>
                     </v-row>
                   </v-dialog>
@@ -372,6 +371,7 @@ function TranActive(active) {
   transform: scale(1.4);
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.8);
   position: absolute;
   left: 65.3%;
@@ -408,6 +408,7 @@ function TranActive(active) {
   transform: scale(0.8) translateX(-50%);
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.55);
   position: relative;
   left: -21%;
@@ -435,6 +436,7 @@ function TranActive(active) {
   top: 25%;
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.8);
   position: absolute;
   left: 55.5%;
@@ -479,6 +481,7 @@ function TranActive(active) {
   transform: scale(1.5) translateX(-20%);
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.8);
   position: relative;
   left: 15%;

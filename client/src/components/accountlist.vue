@@ -211,7 +211,7 @@ import axios from 'axios';
     },
     accountdata(){
         axios.get(
-          "https://pre.aifish.cc"+"/api/v1/account/list/?section="+this.sectionOrigin,{
+          "/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -328,7 +328,7 @@ import axios from 'axios';
       },
       remove(username){
         axios.post(
-          "https://pre.aifish.cc"+"/api/v1/account/remove_user/",
+          "/api/v1/account/remove_user/",
             {
               "username":username,
             },
@@ -368,7 +368,7 @@ import axios from 'axios';
           level = 80;
         }
         axios.post(
-          "https://pre.aifish.cc"+"/api/v1/account/revise/level",
+          "/api/v1/account/revise/level",
             {
               "username":name,
               "newLevel":level
@@ -404,7 +404,7 @@ import axios from 'axios';
           section = "004" + newsection.substring(2);
         }
         axios.post(
-          "https://pre.aifish.cc"+"/api/v1/account/revise/section",
+          "/api/v1/account/revise/section",
             {
               "username":name,
               "newSection":section

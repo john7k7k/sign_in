@@ -1,14 +1,14 @@
 <template>
-  <v-tabs v-model="tab" color="deep-purple-accent-4 " align-tabs="center" class="mt-6">
+  <v-tabs v-model="tab" color="deep-purple-accent-4 " align-tabs="center" class="mt-6 ml-7 mr-7">
       <v-tab value="one">註冊機構</v-tab>
       <v-tab value="two">註冊部門</v-tab>
       <v-tab value="three">新增水池</v-tab>
       
     </v-tabs>
     
-    <v-card-text>
-      <v-window v-model="tab">
-        <v-window-item value="one">
+    <v-card-text class="ml-7 mr-7">
+      <v-window v-model="tab" >
+        <v-window-item value="one" >
           <v-row class="d-flex justify-space-around">
         <v-col>
           <v-list-item title="新機構名稱">
@@ -108,7 +108,7 @@
         </v-window-item>
       </v-window>
     </v-card-text>
-    <div class="d-flex justify-end signinbuttombg">
+    <div class="d-flex justify-end signinbuttombg ml-7 mr-7" >
         <v-btn  @click="Signin(tab)" :disabled="SigninButtonDisabled" v-model="tab" class="mt-3 mr-10 mb-16" color="blue-accent-2"> 註冊 </v-btn>
     </div>
 

@@ -5,15 +5,62 @@
     
     </v-container>
     
-        <div style="display: grid; grid-template-columns: 1fr auto auto;">
+        <div style="display: grid; grid-template-columns: 1fr auto auto auto auto;">
       <v-text-field
         v-model="searchId"
         append-icon="mdi-magnify"
         label="搜尋ID"
         hide-details
         class="mb-2 mt-4 ml-7 text-white"
-        style="width: 200px;  "
+        style="width: 200px;"
+        bg-color="rgba(255, 255, 255, 0.15)"
       ></v-text-field>
+      <v-btn @click="fetchBin" size="large" class="mr-8 mt-6 " >查看當前版本檔名</v-btn>
+      <v-dialog v-model="SearchBinmodal"  width="40%">
+        <v-card>
+          <v-card-text>
+            <div class="text-h6 ma-2">當前版本: {{BinName}}</div>
+            <div class="text-h6 ma-2" >上傳日期: {{BinTime}}</div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" block @click="SearchBinmodal = false"
+              >關閉</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-btn @click="Binmodal = true" size="large" class="mr-8 mt-6" color="green-darken-3">上傳更新檔</v-btn>
+      <Modal
+          v-model="Binmodal"
+          title="仿生魚更新檔"
+          :closable="false"
+          @on-ok="uploadBin"
+          @on-cancel="cancel">
+          <v-text-field
+            v-model="NewversionFileName"
+            label="輸入更新版本名稱"
+            style="width: 300px;"
+          ></v-text-field>
+          <input type="file" ref="fileInput" @change="select" />
+          </Modal>
+          <v-btn @click="Burnmodal = true" size="large" class="mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
+      <Modal
+          v-model="Burnmodal"
+          title="燒錄更新檔"
+          :closable="false"
+          ok-text="燒錄"
+          @on-ok="burnBin"
+          @on-cancel="cancel">
+          <Checkbox
+            :indeterminate="indeterminate"
+            :model-value="checkAll"
+            @click.prevent="handleCheckAll">全部</Checkbox>
+          <CheckboxGroup v-model="BurnFishId">
+            <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
+                <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
+              </div>
+        </CheckboxGroup>
+          </Modal>
       <v-dialog
     v-model="dialognewSection"
     width="1024"
@@ -29,10 +76,10 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ props }">
-      <Button class="mr-8 mt-6"
-        color="light-blue-darken-4 mr-1"
+      <v-btn class="mr-8 mt-6"
+        color="light-blue-darken-4 "
         size="large"
-        v-bind="props" type="primary"  >新增</Button>
+        v-bind="props" type="primary"  >新增</v-btn>
     </template>
     <v-card>
       <v-toolbar dark color="blue-accent-1">
@@ -266,6 +313,15 @@ import axios from 'axios';
             instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
             InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
             keyvalueMapping :[],
+            Binmodal:false,
+            Burnmodal:false,
+            SearchBinmodal:false,
+            NewversionFileName:"",
+            BinName:"",
+            BinTime:"",
+            BurnFishId:[],
+            indeterminate: true,
+            checkAll: false,
         }
       },
       async created() {
@@ -306,6 +362,122 @@ import axios from 'axios';
       },
   },
       methods: {
+        handleCheckAll () {
+                if (this.indeterminate) {
+                    this.checkAll = false;
+                } else {
+                    this.checkAll = !this.checkAll;
+                }
+                this.indeterminate = false;
+
+                if (this.checkAll) {
+                    this.BurnFishId = [];
+                    for (var i = 0; i < this.FishId.length; i++) {
+                      var subArray = this.FishId[i];
+                      for (var j = 0; j < subArray.length; j++) {
+                        this.BurnFishId.push(subArray[j]);
+                      }
+                    }
+                } else {
+                    this.BurnFishId = [];
+                }
+            },
+            checkAllGroupChange (data) {
+                if (data.length === 3) {
+                    this.indeterminate = false;
+                    this.checkAll = true;
+                } else if (data.length > 0) {
+                    this.indeterminate = true;
+                    this.checkAll = false;
+                } else {
+                    this.indeterminate = false;
+                    this.checkAll = false;
+                }
+            },
+        burnBin () {
+        axios.post(
+          "/api/v1/ota/burn",{
+            "fishesUID": this.BurnFishId,
+                        },{
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+          )
+          .then(async res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.$Message.success('燒錄成功');
+                
+              }
+              else{
+                this.$Message.error('燒錄失敗');
+              }
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              this.$Message.error('燒錄失敗');
+          })
+
+        },
+        fetchBin() {
+          axios.get(
+            "/api/v1/ota/bin",{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.BinName = res.data[0].version;
+                this.BinTime = this.formatDate(res.data[0].time);
+                this.SearchBinmodal = true;
+              }
+              else
+              this.$Message.error('查看失敗');
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('查看失敗');
+          })
+      },
+        uploadBin() {
+          if (!this.NewversionFileName.trim()) {
+          this.$Message.error('尚未輸入更新檔名稱');
+          return;
+        }
+          if (typeof this.selectFile === 'undefined') {
+          this.$Message.error('尚未選擇更新Bin檔');
+          return;
+        }
+        const formData = new FormData()
+        formData.append('version', this.NewversionFileName)
+        formData.append('bin',this.selectFile)
+        axios.post(
+          "/api/v1/ota/bin",formData,{
+    headers: {
+      Authorization: `Bearer ${this.token}`
+    }
+  }
+          )
+          .then(res=> {
+              console.log(res);
+              
+              if(res.status == 200){
+                this.$Message.success('上傳成功');
+              }
+              else
+              this.$Message.error('上傳失敗');
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('上傳失敗');
+          })
+      },
         formNameMapping(code,name,){
           const keyValueMapping = {};
           for (let i = 0; i < code.length; i++) {

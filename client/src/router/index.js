@@ -4,7 +4,6 @@ import Fishdatas from '../views/FishdataView.vue'
 import Nav from  '../views/Nav.vue'
 import UserData from '../views/UserData.vue'
 import editdatas from '../views/Editdatas.vue'
-import editdatas3 from '../views/Editdatas3.vue'
 import Accountlist from '../views/AccountList.vue'
 import FishDatalist from '../views/FishDatalist.vue'
 import SuSectionview from '../views/SignupSectionview.vue'
@@ -29,11 +28,6 @@ const routes = [
       name: "editdatas",
       path: "/:prefix/fish/edit", 
       component: editdatas
-    },
-    {
-      name: "editdatas3",
-      path: "/nmmst/fish/edit", 
-      component: editdatas3
     },
     {
       name: "Accountlist",
