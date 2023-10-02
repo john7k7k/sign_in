@@ -6,7 +6,7 @@
     </v-container>
     <div v-for="(name,index) in sectionName" :key="name">
     <div   class="mt-4 mb-2 ml-8 text-white text-h6"><h4>{{ name }}</h4></div>
-    <Table  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index] || fallbackRow" class="mb-8 ml-8 mr-8">
+    <Table v-show="data[index]"  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index]" class="mb-8 ml-8 mr-8">
       <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -131,11 +131,11 @@ import axios from 'axios';
                         fixed: 'right',
                     }
                 ],
-                data: [],
-                IP:process.env.VUE_APP_IP,
-                sectionOrigin:localStorage.getItem('UserSection'),
-                sectionshow:false,
-                fallbackRow: {
+            data: [],
+            IP:process.env.VUE_APP_IP,
+            sectionOrigin:localStorage.getItem('UserSection'),
+            sectionshow:false,
+            fallbackRow: {
               name: '無資料',
               level: '',
               section: '',
@@ -148,6 +148,7 @@ import axios from 'axios';
             InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
             sectionName:[],
             keyvalueMapping :[],
+            Tableshow:[],
         }
       },
       computed: {
@@ -274,7 +275,6 @@ import axios from 'axios';
               });
               this.data.push(datas);
             }
-            
               })
           .catch(err=> {
               console.log(err);

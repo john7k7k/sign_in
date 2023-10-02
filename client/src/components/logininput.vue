@@ -11,9 +11,8 @@
           v-model="account"
           :readonly="loading"
           :rules="[required]"
-          class="mb-3 mr-2 ml-2 textfield"
+          class="mb-3 mr-2 ml-2 textfield text-white"
           placeholder=""
-          
           bg-color="rgba(255, 255, 255, 0.15)"
         ></v-text-field>
           <div
@@ -30,15 +29,15 @@
         >
       </div>
           <v-text-field
+            dark
             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :type="visible ? 'text' : 'password'"
             v-model="password"
             :readonly="loading"
             :rules="[required]"
             density="compact"
-            variant="solo"
             placeholder=""
-            class="ml-2 mr-2 "
+            class="ml-2 mr-2 text-white"
             @click:append-inner="visible = !visible"
             bg-color="rgba(255, 255, 255, 0.15)"
           ></v-text-field>
@@ -170,7 +169,7 @@
 
 .loginbuttom{
   border-radius: 80px;
-  background-image: url('../assets/按鈕框.png');
+  background-image: url('../assets/登入鈕改.png');
   background-position: center;
   background-size: 101% 101%;
   left: 30%;

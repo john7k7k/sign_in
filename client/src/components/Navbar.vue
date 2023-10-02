@@ -8,7 +8,7 @@
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
       <v-btn class="ml-5 navbartext" value="home1"  href="/home">主頁</v-btn>
-      
+      <v-btn href="/select/instruction" v-if="fishlistshow" class="navbartext">選擇機構</v-btn>
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext">註冊機構/水池</v-btn>

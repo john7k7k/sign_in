@@ -32,12 +32,11 @@
                         size="small"
                       ></v-btn>
                     </template>
-                    <v-row >
+                    <v-row justify="center">
                       <v-color-picker
                         hide-inputs
                         v-model="pickers[0]"
                         elevation="15"
-                        class="pr-4"
                       ></v-color-picker>
                     </v-row>
                   </v-dialog>
@@ -372,6 +371,7 @@ function TranActive(active) {
   transform: scale(1.4);
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.8);
   position: absolute;
   left: 65.3%;
@@ -382,11 +382,6 @@ function TranActive(active) {
 }
 
 @media screen and (max-width: 600px){
-.controlbutton{
-  top: 12%;
-  position: absolute;
-  left: 80.5%;
-}
 .idtext{
   position: absolute;
   top: 2.5%;
@@ -398,25 +393,26 @@ function TranActive(active) {
 }
 .fishIDtext{
   font-size: 65px;
-  position: absolute;
+  position: relative;
   margin-left: 7%;
-  top: 11%;
+  margin-top: 3%;
 }
 .datacard{
   margin-left: 11%;
-  top: 37%;
-  position: absolute;
+  margin-top: 43%;
+  position: relative;
   transform: scale(0.8) ;
 }
 .fishimage{
-  top: 4%;
+  margin-top: -16%;
   transform: scale(0.8) translateX(-50%);
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.55);
-  position: absolute;
+  position: relative;
   left: -21%;
-  top: 64%;
+  margin-top: -10%;
 }
 .setcolorbuttom{
   left: 75%;
@@ -440,6 +436,7 @@ function TranActive(active) {
   top: 25%;
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.8);
   position: absolute;
   left: 55.5%;
@@ -454,7 +451,7 @@ function TranActive(active) {
 }
 @media screen and (min-width: 601px) and (max-width: 1024px){
   .controlbutton{
-  top: 12%;
+  margin-top: 12%;
   position: absolute;
   left: 80.5%;
 }
@@ -469,25 +466,26 @@ function TranActive(active) {
 }
 .fishIDtext{
   font-size: 105px;
-  position: absolute;
+  position: relative;
   margin-left: 7%;
-  top: 10%;
+  margin-top: 4%;
 }
 .datacard{
   margin-left: 31%;
-  top: 46%;
-  position: absolute;
+  margin-top: 43%;
+  position: relative;
   transform: scale(1.1) ;
 }
 .fishimage{
-  top: 12%;
+  margin-top: 3%;
   transform: scale(1.5) translateX(-20%);
 }
 .colorcard{
+  z-index: 2;
   transform: scale(0.8);
-  position: absolute;
+  position: relative;
   left: 15%;
-  top: 68%;
+  margin-top: 3%;
 }
 .setcolorbuttom{
   left: 75%;

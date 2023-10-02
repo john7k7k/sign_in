@@ -120,9 +120,9 @@ generateLinksArray(count) {
 this.links = []; 
 for (let i = 1; i <= count; i++) {
   this.links.push([
-    { icon: 'mdi-fishbowl', text: '.', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false,linetext:"swimming" },
-    { icon: 'mdi mdi-fish-off', text: '.', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false,linetext:"standby" },
-    { icon: 'mdi-wrench', text: '.', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false,linetext:"maintenance" },
+    { icon: 'mdi-fishbowl', text: '00', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false,linetext:"swimming" },
+    { icon: 'mdi mdi-fish-off', text: '00', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false,linetext:"standby" },
+    { icon: 'mdi-wrench', text: '00', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false,linetext:"maintenance" },
   ]);
 }
 },
@@ -164,7 +164,10 @@ for (var i = 0; i < this.poolsCode.length; i++) {
     return paddedNum;
   });
   this.FishIdNow.push(parsedFish1Data.length)
-  this.FishId.push(parsedFishIds); 
+  if(parsedFishIds.length !== 0){
+    this.FishId.push(parsedFishIds); 
+  }
+  
 }
 
 },

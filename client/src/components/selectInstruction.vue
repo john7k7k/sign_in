@@ -1,7 +1,7 @@
 <template>
   <div class="font-weight-black text-white titel-Name">{{ titel }}</div>
   <div class=" text-white en-titelName" style="white-space: pre-wrap;">{{ entitel }}</div>
-  <v-btn variant="elevated" class="mb-10 loginbuttom"  width="150" href="/home">查看</v-btn>
+  <v-btn variant="elevated" class="mb-10 loginbuttom"  width="150" href="/home"></v-btn>
    <div class="Swiper" @mouseenter="showButtons = true"
         @mouseleave="showButtons = false">
       <v-btn class="upbutton " v-if="showButtons"  @click="leftSwipe" icon="mdi mdi-chevron-up"></v-btn>
@@ -141,12 +141,13 @@
     width: 30%;
   }
   .loginbuttom{
-    background-color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 7px;
-  border-radius: 80px;
-  left: 3.5%;
-  top: 22%;
-  transform: scale(1.1);
+    border-radius: 80px;
+    background-image: url('../assets/查看鈕改.png');
+    background-position: center;
+    background-size: 101% 101%;
+    transform: scale(1.1);
+    left: 3.5%;
+    top: 22%;
 }
 @media screen and (max-width: 600px){
   .one {
@@ -182,9 +183,10 @@
     display: none;
   }
   .loginbuttom{
-    background-color: rgba(255, 255, 255, 0.5);
-    letter-spacing: 7px;
     border-radius: 80px;
+    background-image: url('../assets/查看鈕改.png');
+    background-position: center;
+    background-size: 101% 101%;
     left: 28%;
     top: -2%;
     transform: scale(1);
@@ -206,9 +208,10 @@
     width: 50%;
   }
   .loginbuttom{
-    background-color: rgba(255, 255, 255, 0.5);
-    letter-spacing: 7px;
     border-radius: 80px;
+    background-image: url('../assets/查看鈕改.png');
+    background-position: center;
+    background-size: 101% 101%;
     left: 3.5%;
     top: 40%;
     transform: scale(1.1);
