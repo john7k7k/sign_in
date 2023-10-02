@@ -123,10 +123,6 @@ const subTopics = require('../../../../config/subTopics');
                     }
                 }
             })
-            for(let sub_topic of subTopics){
-                global.mqttConnection.subscribe(sub_topic.replace('<poolID>', `002/001/001`))
-                console.log(sub_topic.replace('<poolID>', `${instruction.code}/${depart.code}/${pool.code}`))
-            }
             await prisma.user.create({
                 data: {
                     username: '123',
