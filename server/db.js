@@ -3,6 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const fs = require('fs');
 const md5 = require('blueimp-md5');
+const subTopics = require('../../../../config/subTopics');
 
 (async (prisma) => {
     const args = process.argv.slice(2);
@@ -122,6 +123,10 @@ const md5 = require('blueimp-md5');
                     }
                 }
             })
+            for(let sub_topic of subTopics){
+                global.mqttConnection.subscribe(sub_topic.replace('<poolID>', `002/001/001`))
+                console.log(sub_topic.replace('<poolID>', `${instruction.code}/${depart.code}/${pool.code}`))
+            }
             await prisma.user.create({
                 data: {
                     username: '123',
