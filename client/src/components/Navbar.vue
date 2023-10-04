@@ -5,6 +5,16 @@
     class=" pt-1 pb-2 navbar"
     dark
   >
+  <template v-slot:prepend> 
+      <v-img
+        src="../assets/logo北科.png"
+        alt="logo"
+        width="70"
+        class="logoimage"
+        v-if="!isMobileScreen"
+      ></v-img>
+    
+      </template>
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
       <v-btn class="ml-5 navbartext" value="home1"  href="/home">主頁</v-btn>
@@ -252,10 +262,14 @@ created(){
 </script>
 
 <style>
+.logoimage{
+  transform: scale(2.3);
+}
 .drawerbg{
   background-color:  rgba(0, 0, 0, 0.8);
 }
 .navbar{
+  z-index: 2;
   background-color: rgba(0, 0, 0, 0); 
 }
 .navbartext{
@@ -265,7 +279,7 @@ created(){
 .usernametext {
   font-size: 18px;
   position: absolute;
-  left: 95.4%;
+  right: 1px;
   z-index: 2;
 }
   .dialog-bottom-transition-enter-active,

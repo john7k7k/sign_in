@@ -5,7 +5,7 @@
     
     </v-container>
     
-        <div style="display: grid; grid-template-columns: 1fr auto auto auto auto;">
+        <div class="searchdisplay">
       <v-text-field
         v-model="searchId"
         append-icon="mdi-magnify"
@@ -15,7 +15,7 @@
         style="width: 200px;"
         bg-color="rgba(255, 255, 255, 0.15)"
       ></v-text-field>
-      <v-btn @click="fetchBin" size="large" class="mr-8 mt-6 " >查看當前版本檔名</v-btn>
+      <v-btn @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
       <v-dialog v-model="SearchBinmodal"  width="40%">
         <v-card>
           <v-card-text>
@@ -29,7 +29,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-btn @click="Binmodal = true" size="large" class="mr-8 mt-6" color="green-darken-3">上傳更新檔</v-btn>
+      <v-btn @click="Binmodal = true" size="large" class="ml-7 mr-8 mt-6" color="green-darken-3">上傳更新檔</v-btn>
       <Modal
           v-model="Binmodal"
           title="仿生魚更新檔"
@@ -43,7 +43,7 @@
           ></v-text-field>
           <input type="file" ref="fileInput" @change="select" />
           </Modal>
-          <v-btn @click="Burnmodal = true" size="large" class="mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
+          <v-btn @click="Burnmodal = true" size="large" class="ml-7 mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
       <Modal
           v-model="Burnmodal"
           title="燒錄更新檔"
@@ -76,7 +76,7 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ props }">
-      <v-btn class="mr-8 mt-6"
+      <v-btn class="ml-7 mr-8 mt-6"
         color="light-blue-darken-4 "
         size="large"
         v-bind="props" type="primary"  >新增</v-btn>
@@ -763,6 +763,16 @@ import axios from 'axios';
   </script>
   
   <style>
+  .searchdisplay{
+    display: grid; 
+    grid-template-columns: 1fr auto auto auto auto;
+  }
+  @media screen and (max-width: 600px) {
+    .searchdisplay{
+    display: grid; 
+    grid-template-columns: 1fr auto;
+  }
+  }
   </style>
 
 

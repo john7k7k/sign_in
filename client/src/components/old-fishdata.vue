@@ -1,6 +1,11 @@
 <template>
-<div class="fishdata-bg">
-  <div class="d-flex align-center justify-space-between">
+    <v-img
+        src="../assets/rectangle.png"
+        alt="Rectangle"
+        class="rectangle"
+        width="20"
+      />
+    <div class="d-flex align-center justify-space-between">
       <div class="text-white  pooltext"><h1>{{ poolname }}</h1></div>
       <v-dialog
     v-model="dialogControl"
@@ -67,7 +72,7 @@
     </div>
     
     <div class="text-white d-flex align-center justify-space-between  mb-10">
-      <div class="recordtext text-grey font-weight-black">紀錄時間:{{ time }}</div>
+      <div class="recordtext">紀錄時間:{{ time }}</div>
       <v-btn  class="mr-8 mb-5 mt-2 text-white btn-bg"   icon="mdi mdi-update" size="45" @click="RefreshFishDatas" ></v-btn>
     </div>
   <div>
@@ -85,10 +90,10 @@
       ></v-btn>
       
     </v-avatar>
-    <div :class="['ml-7 font-weight-bold', textColor]"   :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
+    <div class="text-white ml-7 font-weight-bold"  :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
           <div>
             <v-card-title class="mr-6 text-white " :style="{  position: 'absolute', top: '5%', left: '77%', transform: 'translateX(-50%)' }">ID:</v-card-title>
-            <div class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px' }">{{fish.id}}</div>
+            <div class="text-white" :style="{  position: 'absolute', top: '17%', left: '69%', transform: 'translateX(-50%)',fontSize:'52px' }">{{fish.id}}</div>
             <v-card-actions>
               <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '51%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
               <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
@@ -130,7 +135,7 @@
                         v-bind="props"
                         @click="ErroVideo(fish.id)"
                         color="red-darken-2"
-                        class="bellbtn"
+                        :style="{  position: 'absolute', top: '78%', left: '88%', transform: 'translateX(-50%)' }"
                       ></v-btn>
                     </template>
                     <v-card>
@@ -177,7 +182,6 @@
         </v-col>
       </v-row>
   </div>
-</div>
 </template>
 <script>
 import axios from 'axios'
@@ -221,7 +225,6 @@ import axios from 'axios'
         videoUrl: null,
         IP:process.env.VUE_APP_IP,
         poolname:localStorage.getItem('Poolname'),
-        textColor: 'text-white'
       }
     },
     methods:{
@@ -259,16 +262,12 @@ import axios from 'axios'
     },
   geterrcolor(active,errnum){
     if(active === 2){
-      this.textColor = 'text-grey-lighten-1';
       return '#BDBDBD';
     }else if (active === 0){
-      this.textColor = 'text-orange-lighten-1';
       return '#FFA726';
     }else if (errnum > 0 ){
-      this.textColor = 'text-red-darken-1';
       return '#E53935';
     }else {
-      this.textColor = 'text-green-accent-3';
       return '#00E676';
     }
   },
@@ -474,7 +473,7 @@ axios.get(
 <style scoped>
 .pooltext{
   font-size:x-large;
-  padding-left: 37px;
+  padding-left: 60px;
   padding-top: 15px;
 }
 .rectangle {
@@ -486,15 +485,9 @@ axios.get(
   position: absolute;
   transform: scale(0.6);
 }
-.bellbtn{
-  position:absolute;
-  top:33%;
-  left: 86%;
-  transform: translateX(-50%) ;
-}
 .recordtext{
   padding-top: 10px;
-  padding-left: 37px;
+  padding-left: 60px;
   font-size: 15px;
 }
 .dialog-bottom-transition-enter-active,.dialog-bottom-transition-leave-active {
@@ -511,7 +504,7 @@ axios.get(
 }
 .cardbg{
   border-radius: 15px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(0, 0, 255, 0.15), rgba(255, 255, 255, 0.15));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
   border: 3px solid rgba(255, 255, 255, 0.2);

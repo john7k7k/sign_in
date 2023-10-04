@@ -134,7 +134,7 @@ transection(){
     }
   </script>
 
-  <style>
+  <style scoped>
 .cardbg {
   border-radius: 30px;
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));

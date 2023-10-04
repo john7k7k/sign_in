@@ -61,15 +61,16 @@
           this.entitel = this.instructionName[this.centercardNum].Eninstruction;
           },
         leftSwipe() {
-              if(this.centercardNum !== 0)this.centercardNum -= 1;
-              else this.centercardNum = this.instructionName.length-1;
+          if(this.centercardNum !== this.instructionName.length-1)this.centercardNum += 1;
+              else this.centercardNum = 0;
+              
               this.titel = this.instructionName[this.centercardNum].instruction;
               this.entitel = this.instructionName[this.centercardNum].Eninstruction;
               this.swiperInstance.__leftMove();
           },
         rightSwipe() {
-              if(this.centercardNum !== this.instructionName.length-1)this.centercardNum += 1;
-              else this.centercardNum = 0;
+          if(this.centercardNum !== 0)this.centercardNum -= 1;
+              else this.centercardNum = this.instructionName.length-1;
               this.titel = this.instructionName[this.centercardNum].instruction;
               this.entitel = this.instructionName[this.centercardNum].Eninstruction;
               this.swiperInstance.__rightMove();
