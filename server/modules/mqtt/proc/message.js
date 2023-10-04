@@ -41,7 +41,7 @@ async function messageProcess(topic,mqtt_data){
             mqtt_data.instruction = instruction;
             mqtt_data.depart = depart;
             mqtt_data.pool = pool;
-            lineNotify.send(mqtt_data, decode = lineNotify.decodeFishesAlarm, test = true);
+            lineNotify.send(mqtt_data, decode = lineNotify.decodeFishesAlarm, test = false);
         }
         else if(topic.type === 'info'){
             delete mqtt_data.time;

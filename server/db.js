@@ -3,6 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const fs = require('fs');
 const md5 = require('blueimp-md5');
+const subTopics = require('../../../../config/subTopics');
 
 (async (prisma) => {
     const args = process.argv.slice(2);
