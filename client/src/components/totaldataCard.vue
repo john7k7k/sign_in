@@ -651,8 +651,8 @@ await this.RefreshDatas(i);
 
 @media screen and (max-width: 600px) {
   .notyet-bg1{
-  z-index: 0;
-  position: absolute;
+  z-index: 2;
+  position: relative;
   transform: scale(0.8) ;
   margin-top: -18%;
   left: -1%;
@@ -678,7 +678,7 @@ await this.RefreshDatas(i);
   display: none;
 }
   .poolsdatacard{
-      margin-top: 30%;
+      margin-top: 3%;
       position: absolute;
       transform: scale(0.85) ;
       width: 100%;

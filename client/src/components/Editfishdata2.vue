@@ -541,44 +541,44 @@ function TranActive(active) {
   }
   .titelbctext{
     position: relative;
-    margin-left: 11%;
+    margin-left: 15%;
     margin-top: -17%;
     letter-spacing: 3px;
     font-size: 18px;
   }
   .bcvalue-bg1{
     position: absolute;
-    left: 12%;
+    left: 16%;
     margin-top: 42%;
 }
 .bcvalue-bg2{
     position: absolute;
-    left: 22%;
+    left: 26%;
     margin-top: 42%;
 }
 .bcvalue-bg3{
     position: absolute;
-    left: 32%;
+    left: 36%;
     margin-top: 42%;
 }
 .bcvalue-bg4{
     position: absolute;
-    left: 42%;
+    left: 46%;
     margin-top: 42%;
 }
 .bcvalue-bg5{
     position: absolute;
-    left: 52%;
+    left: 56%;
     margin-top: 42%;
 }
 .fishbc-bg{
   position: absolute;
-  left: 62%;
+  left: 66%;
   margin-top: 43%;
 }
 .titelerrortext{
     position: relative;
-    margin-left: 11%;
+    margin-left: 15%;
     margin-top: -10%;
     letter-spacing: 3px;
     font-size: 18px;
@@ -592,13 +592,13 @@ function TranActive(active) {
   font-size: 25px;
   transform: scale(0.7);
   position: absolute;
-  margin-left: -6%;
-  margin-top: 80%;
+  margin-left: -2%;
+  margin-top: 78%;
   width: 420px;
 }
   .titelcolortext{
     position: relative;
-    margin-left: 11%;
+    margin-left: 15%;
     margin-top: -13%;
     letter-spacing: 3px;
     font-size: 18px;
@@ -606,8 +606,8 @@ function TranActive(active) {
 .colorcard{
   transform: scale(0.55);
   position: relative;
-  margin-left: -21%;
-  margin-top: 105%;
+  margin-left: -17%;
+  margin-top: 103%;
 }
 .setcolorbuttom{
   border-radius: 80px;
@@ -616,7 +616,7 @@ function TranActive(active) {
     background-size: 100% 100%;
     transform: scale(1.1);
     left: 27%;
-    top: -4%;
+    top: -6%;
 }
 }
 @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
