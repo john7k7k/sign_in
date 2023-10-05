@@ -51,8 +51,7 @@
 }
 @media screen and (max-width: 600px) {
   .signupinput {
-    margin-top: 270px;
-    transform: scale(0.75) translateX(-79%);
+    transform: scale(0.75) translateX(-79%) translateY(60%);
   }
   .signup {
     background-image: url('../assets/登入畫面手機背景.jpg');
