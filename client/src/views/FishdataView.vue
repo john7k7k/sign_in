@@ -23,7 +23,7 @@ export default {
 <style scoped>
 .Fishdatas {
   z-index: 0;
-  background-image: url('../assets/魚資料背景.png');
+  background-image: url('../assets/編輯魚bg.jpg');
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;

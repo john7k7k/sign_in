@@ -1,27 +1,32 @@
 <template>
   <div class="Swiper" >
-      
-      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
       <div class="Swiper-content" >
         <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
-          <div class="text-white ml-5 mt-5 text-h5 font-weight-black">{{ name }}</div>
-          <div class="text-white  ml-5  text-h6 font-weight-black" style="white-space: pre-wrap; width: 60%;  font-size: 20px;">{{ poolsdata[index].EnPoolName }}</div>
+          <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[index].EnPoolName }}</div>
       </v-card>
       </div>
-      <v-card v-if="poolsName.length <2" cover class="three" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
-          <div class="text-white text-center mt-16 text-h5 font-weight-black ">水池尚未開放</div>
-          <div class="text-white text-center   text-h6 font-weight-black" >The pool is not open yet</div>
+      <v-card v-if="poolsName.length <2" cover class="notyet-bg2" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <div class="notyet-bg2-overlay">
+            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
+            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+          </div>
       </v-card>
-      <v-card v-if="poolsName.length <=2"  cover class="one" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
-          <div class="text-white text-center mt-16 text-h5 font-weight-black ">水池尚未開放</div>
-          <div class="text-white text-center   text-h6 font-weight-black" >The pool is not open yet</div>
+      <v-card v-if="poolsName.length <=2"  cover class="notyet-bg1" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+          <div class="notyet-bg1-overlay">
+            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
+            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+          </div>
       </v-card>
       <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
       <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
       <v-card  class="poolsdatacard "   >
           <v-card-text class="cardtextbg  ">
-    
-      <div class="d-flex align-center justify-space-between">
+            <div v-if="isMobileScreen" class="font-weight-bold text-white text-end mr-1 mt-7" style="font-size: 40px; letter-spacing: 3px;">{{ poolsName[centerIndex] }}</div>
+            <div v-if="isMobileScreen" class=" text-white mr-2 mt-4" style="white-space: pre-wrap; text-align: end; width: 277px; font-size: 20px; margin-left: 70px;letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+            <div v-if="isMobileScreen" class="  text-blue-grey-lighten-1 text-end mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
+            <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
     
       <v-btn class="mr-2  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
@@ -29,12 +34,12 @@
       <div>
         <v-row  no-gutters>
         <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center mb-1">
-          <v-sheet class=" text-h3 cardtext text-grey-lighten-2">{{n.text}}</v-sheet> 
+          <v-sheet class=" text-h2 cardtext text-grey-lighten-2">{{n.text}}</v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
         <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center">
-          <v-sheet class="mb-1 cardtext text-grey-darken-1">{{ n.textname }} </v-sheet> 
+          <v-sheet class="mb-1 cardtext text-blue-grey-lighten-3">{{ n.textname }} </v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
@@ -444,6 +449,8 @@ this.$router.push(`/${name}/total/fish`);
 }
 },
 async created() {
+if(this.isMobileScreen == "true") this.isMobileScreen = true;
+else this.isMobileScreen = false;
 this.generateClassLink(this.poolsCode.length);
 this.generateLinksArray(this.poolsCode.length);
 await this.loadnewdata();
@@ -458,26 +465,79 @@ await this.RefreshDatas(i);
 </script>
 
 <style scoped>
+.notyet-bg1::before {
+    content: "";
+    background-color: rgb(0, 0, 255,0.15); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+}
+.notyet-bg1-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+}
+.notyet-bg1{
+  z-index: 0;
+  position: absolute;
+  transform: scale(0.9) ;
+  margin-top: -6%;
+  left: 10%;
+  width: 50%;
+}
+.notyet-bg2::before {
+    content: "";
+    background-color: rgb(0, 0, 255,0.1); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+}
+.notyet-bg2-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+}
+.notyet-bg2{
+  z-index: 0;
+  position: absolute;
+  transform: scale(0.9) ;
+  margin-top: 29%;
+  left: 10%;
+  width: 50%;
+}
+
 .titel-Name{
     font-size: 60px;
     position: absolute;
-    left: 80.7%;
+    left: 81.3%;
     margin-top: 0%;
-    letter-spacing: 7px;
+    letter-spacing: 4px;
   }
   .en-titelName{
     font-size: 25px;
     position: absolute;
-    letter-spacing: 2px;
-    left: 73.4%;
+    letter-spacing: 3px;
+    left: 73%;
     margin-top: 5.5%;
-    width: 24.4%;
+    width: 25.2%;
   }
 .needbcbtn-bg{
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
-  border: 3px solid #F9A825;
+  border: 3px solid rgba(249, 168, 37, 0.7);
 }
 .versiontext{
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
@@ -488,17 +548,17 @@ await this.RefreshDatas(i);
   width: 10%;
 }
 .refreshbtn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.05), rgba(255, 255, 255, 0.1));
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.12), rgba(255, 255, 255, 0.1));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.7);
   transform:  scaleX(-1);
 }
 .btn-bg{
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.7);
 }
 .cardimage{
   transform: scale(0.98);
@@ -516,7 +576,7 @@ await this.RefreshDatas(i);
   background-color: rgba(255, 255, 255, 0); 
   position: absolute;
   margin-top: 12%;
-  left: 82.5%;
+  left: 82.8%;
   font-size: 17px;
 }
 .nodisplay{
@@ -524,7 +584,7 @@ await this.RefreshDatas(i);
 }
 .poolsdatacard{
   position: absolute;
-  transform:translateX(99%) scale(1) translateY(75%);
+  transform:translateX(99.6%) scale(1) translateY(73%);
   width: 50%;
   background-color: rgba(255, 255, 255, 0);
 }
@@ -590,8 +650,41 @@ await this.RefreshDatas(i);
 }
 
 @media screen and (max-width: 600px) {
-  .haveErrorText{
-      margin-left: 0%;
+  .notyet-bg1{
+  z-index: 0;
+  position: absolute;
+  transform: scale(0.8) ;
+  margin-top: -18%;
+  left: -1%;
+  width: 50%;
+}
+.one{
+  z-index: 2;
+  position: absolute;
+  transform: scale(0.75) ;
+  margin-top: -18%;
+  left: -1%;
+  width: 50%;
+}
+.notyet-bg2{
+  z-index: 0;
+  position: absolute;
+  transform: scale(0.75) ;
+  margin-top: 137%;
+  left: -1%;
+  width: 50%;
+}
+.titel-Name ,.en-titelName, .recordtext{
+  display: none;
+}
+  .poolsdatacard{
+      margin-top: 30%;
+      position: absolute;
+      transform: scale(0.85) ;
+      width: 100%;
+      border-radius: 5px;
+      background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+      border: 3px solid rgba(255, 255, 255, 0.2);
 }
   .two {
       display: none;
@@ -604,7 +697,7 @@ await this.RefreshDatas(i);
   }
 
   .three + .three {
-      margin-top: -10%; 
+      display: none;
   }
   .four{
     margin-top: -5%;
@@ -620,15 +713,9 @@ await this.RefreshDatas(i);
   }
 }
 @media screen and (min-width: 601px) and (max-width: 1024px){
-  .haveErrorText{
-      margin-left: 35%;
-}
 }
 
 @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-  .haveErrorText{
-      margin-left: 22%;
-}
 }
 
 </style>

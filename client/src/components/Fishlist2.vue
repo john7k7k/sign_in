@@ -117,7 +117,7 @@
     <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
-      <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
+      <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
       <Modal
               v-model="row.modal"
               title="上傳仿生魚照片"
@@ -182,7 +182,7 @@ import axios from 'axios';
             active:[],
             columns: [
                     {
-                        title: 'UID',
+                        title: 'ID',
                         slot: 'id'
                     },
                     {
@@ -206,7 +206,7 @@ import axios from 'axios';
                 ],
             mobileColumns:[
                     {
-                        title: 'UID',
+                        title: 'ID',
                         slot: 'id',
                         width:92,
                         fixed: 'left'

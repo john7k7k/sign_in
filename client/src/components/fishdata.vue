@@ -18,7 +18,7 @@
       >
       </v-btn>
     </template>
-    <v-card color="black">
+    <v-card color="grey-darken-4">
       <div class="text-center mt-2" ><h2>仿生魚控制</h2></div>
       <v-divider color="grey-lighten-5" :thickness="3" class="mt-1"></v-divider>
       <v-row class="mt-3">
@@ -76,26 +76,26 @@
           <v-card class="pa-2 mb-14 mx-auto cardbg" cover width="320">
         <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
           <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
-      <v-img class="pr-9 pb-7" src="../assets/fishimage1.png"></v-img>
+      <v-img class="mr-12 mb-6" :src="getImageSource(fish.id)" width="50" height="150" :style="{ transform: imageScale(fish.id) }"></v-img>
       <v-btn
         icon="mdi-numeric-null"
-        height="13"
-        width="13"
-        :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum), position: 'absolute', top: '0', left: '5%' }"
+        height="9"
+        width="9"
+        :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum,0), position: 'absolute', top: '0', left: '5%' }"
       ></v-btn>
       
     </v-avatar>
-    <div :class="['ml-7 font-weight-bold', textColor]"   :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
+    <div :class="['ml-7 font-weight-bold',geterrcolor(fish.active,fish.errornum,1)]"   :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
           <div>
-            <v-card-title class="mr-6 text-white " :style="{  position: 'absolute', top: '5%', left: '77%', transform: 'translateX(-50%)' }">ID:</v-card-title>
-            <div class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px' }">{{fish.id}}</div>
+            <v-card-title class="mr-6 text-white " :style="{  position: 'absolute', top: '5%', left: '80.5%', transform: 'translateX(-50%) scale(1.2)', letterSpacing: '3px' }">ID</v-card-title>
+            <div class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px', letterSpacing: '3px' }">{{fish.id}}</div>
             <v-card-actions>
-              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '51%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
-              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
-              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '59%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,3)}">.</div>
-              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '63%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,4)}">.</div>
-              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '39%', left: '67%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,5)}">.</div>
-              <div class="text-black  text-h6 text-white" :style="{  position: 'absolute', top: '47%', left: '82%', transform: 'translateX(-50%)' }">{{fish.bc}}%</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '49%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '61%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,3)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '67%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,4)}">.</div>
+              <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '73%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,5)}">.</div>
+              <div class="text-black  text-h6 text-white" :style="{  position: 'absolute', top: '48%', left: '86%', transform: 'translateX(-50%)' }">{{fish.bc}}%</div>
             </v-card-actions>
             <v-card-actions>
               <div v-show="false" class="text-black mt-10"></div>
@@ -111,9 +111,7 @@
                 size="small"
                 @click="editFish(fish.id, $event)"
                 :style="{  position: 'absolute', top: '77%', left: '66%', transform: 'translateX(-50%)' }"
-              >
-                編輯
-              </v-btn>
+              >編輯</v-btn>
               <div class=" pb-4">
                 <div>
                   <v-dialog
@@ -221,7 +219,6 @@ import axios from 'axios'
         videoUrl: null,
         IP:process.env.VUE_APP_IP,
         poolname:localStorage.getItem('Poolname'),
-        textColor: 'text-white'
       }
     },
     methods:{
@@ -257,19 +254,19 @@ import axios from 'axios'
           this.FishActive.push(active);
         });
     },
-  geterrcolor(active,errnum){
+  geterrcolor(active,errnum,mode){
     if(active === 2){
-      this.textColor = 'text-grey-lighten-1';
-      return '#BDBDBD';
+    if(mode == 0) return '#BDBDBD';
+    else return 'text-grey-lighten-1';
     }else if (active === 0){
-      this.textColor = 'text-orange-lighten-1';
-      return '#FFA726';
-    }else if (errnum > 0 ){
-      this.textColor = 'text-red-darken-1';
-      return '#E53935';
+     if(mode == 0) return '#FFA726';
+     else return 'text-orange-lighten-1';
+    }else if (active == 1 && errnum >0  ){
+     if(mode == 0) return '#E53935';
+     else return 'text-red-darken-1';
     }else {
-      this.textColor = 'text-green-accent-3';
-      return '#00E676';
+    if(mode == 0) return '#00E676';
+    else return 'text-green-accent-3';
     }
   },
   getbccolor(bc,num){
@@ -449,7 +446,12 @@ axios.get(
               this.$Message.error('控制失敗');
           })
         },
-        
+        getImageSource(id) {
+        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      },
+      imageScale(id) {
+        return id <= 4000 ? "scale(1.2)" : "scale(0.95)";
+      },
         
       
     },
@@ -463,6 +465,7 @@ axios.get(
         const { xl, lg, md ,sm } = this.$vuetify.display; 
         return xl || lg  ? 3 : sm || md ?  6:12;
       },
+      
     },
     created() {
     this.RefreshFishDatas();
@@ -488,9 +491,9 @@ axios.get(
 }
 .bellbtn{
   position:absolute;
-  top:33%;
-  left: 86%;
-  transform: translateX(-50%) ;
+  top:29%;
+  left: 89%;
+  transform: translateX(-50%) scale(1.1);
 }
 .recordtext{
   padding-top: 10px;
@@ -510,7 +513,7 @@ axios.get(
   border: 3px solid rgba(255, 255, 255, 0.2);
 }
 .cardbg{
-  border-radius: 15px;
+  border-radius: 20px;
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);

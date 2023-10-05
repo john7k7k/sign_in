@@ -27,7 +27,7 @@ export default {
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 .main{
   background-color: black;
-  font-family: 'Noto Sans TC',sans-serif !important;
+  font-family: PingFangTC-Semibold, sans-serif !important;
 }
 </style>
 
