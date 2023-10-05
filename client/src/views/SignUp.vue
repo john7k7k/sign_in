@@ -51,7 +51,7 @@
 }
 @media screen and (max-width: 600px) {
   .signupinput {
-    margin-top: 72%;
+    margin-top: 270px;
     transform: scale(0.75) translateX(-79%);
   }
   .signup {

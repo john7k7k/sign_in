@@ -51,7 +51,7 @@ export default {
 @media screen and (max-width: 600px) {
   .logininput {
     padding-left: 15px;
-    margin-top: 85%;
+    margin-top: 340px;
   }
 
 
