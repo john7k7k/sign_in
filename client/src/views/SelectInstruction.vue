@@ -39,7 +39,7 @@
   @media screen and (max-width: 600px){
     .selectinstruction {
     z-index: 0;
-    background-image: url('../assets/過渡畫面背景.jpg');
+    background-image: url('../assets/過渡畫面手機背景2.png');
     background-size: cover;
     background-position: top;
     position: absolute;
