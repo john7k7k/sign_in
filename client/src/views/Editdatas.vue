@@ -39,7 +39,7 @@ import navbar from '@/components/Navbar.vue'
 @media screen and (max-width: 600px) {
   .editdatas{
   z-index: 0;
-    background-image: url('../assets/編輯魚畫面手機背景.png');
+    background-image: url('../assets/編輯魚畫面手機背景2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -50,7 +50,7 @@ import navbar from '@/components/Navbar.vue'
     left: 0;
     right: 0;
     bottom: 0;
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 }

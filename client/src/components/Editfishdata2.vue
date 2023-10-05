@@ -1,7 +1,8 @@
 <template>
-  <v-btn  class="  mt-5 ml-6 text-white btn-bg "   icon="mdi mdi-chevron-left" size="45" @click="goBack" ></v-btn>
+  
   <div  class="text-white  idtext  font-weight-medium">ID</div>
   <div class="text-white  font-weight-medium fishIDtext">{{ FishId }}</div>
+  <v-btn  class="  mt-5 ml-6 text-white btn-bg "   icon="mdi mdi-chevron-left" size="45" @click="goBack" ></v-btn>
   <div  class="activetext text-grey font-weight-medium"><h3>[{{ selectactive }}]</h3></div>
   <div class="titelbctext text-grey font-weight-medium">電量</div>
   <div  class=" mx-1 text-h1 bcvalue-bg1" :style="{  color: getbccolor(FishBc,1)}">.</div>
@@ -506,9 +507,9 @@ function TranActive(active) {
 @media screen and (max-width: 600px){
 .btn-bg{
   z-index: 2;
-  position: absolute;
+  position: relative;
   font-size: 23px;
-  top: 20%;
+  top: -2%;
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
@@ -528,56 +529,56 @@ function TranActive(active) {
 }
 .fishimage{
   margin-top: -16%;
-  transform: scale(1) translateX(-15%);
+  transform: scale(0.85) translateX(-20%);
 }
 .activetext{
     position: absolute;
     letter-spacing: 2px;
     font-size: 15px;
     margin-left: 50%;
-    margin-top: -7%;
+    margin-top: -24.5%;
 
   }
   .titelbctext{
     position: relative;
-    margin-left: 15%;
-    margin-top: 1%;
+    margin-left: 11%;
+    margin-top: -17%;
     letter-spacing: 3px;
     font-size: 18px;
   }
   .bcvalue-bg1{
     position: absolute;
-    left: 16%;
-    margin-top: 46%;
+    left: 12%;
+    margin-top: 42%;
 }
 .bcvalue-bg2{
     position: absolute;
-    left: 26%;
-    margin-top: 46%;
+    left: 22%;
+    margin-top: 42%;
 }
 .bcvalue-bg3{
     position: absolute;
-    left: 36%;
-    margin-top: 46%;
+    left: 32%;
+    margin-top: 42%;
 }
 .bcvalue-bg4{
     position: absolute;
-    left: 46%;
-    margin-top: 46%;
+    left: 42%;
+    margin-top: 42%;
 }
 .bcvalue-bg5{
     position: absolute;
-    left: 56%;
-    margin-top: 46%;
+    left: 52%;
+    margin-top: 42%;
 }
 .fishbc-bg{
   position: absolute;
-  left: 65%;
-  margin-top: 42%;
+  left: 62%;
+  margin-top: 43%;
 }
 .titelerrortext{
     position: relative;
-    margin-left: 15%;
+    margin-left: 11%;
     margin-top: -10%;
     letter-spacing: 3px;
     font-size: 18px;
@@ -591,22 +592,22 @@ function TranActive(active) {
   font-size: 25px;
   transform: scale(0.7);
   position: absolute;
-  right: -5%;
-  margin-top: 96%;
+  margin-left: -6%;
+  margin-top: 80%;
   width: 420px;
 }
   .titelcolortext{
     position: relative;
-    margin-left: 15%;
-    margin-top: -20%;
+    margin-left: 11%;
+    margin-top: -13%;
     letter-spacing: 3px;
     font-size: 18px;
 }
 .colorcard{
   transform: scale(0.55);
   position: relative;
-  margin-left: -16%;
-  margin-top: 130%;
+  margin-left: -21%;
+  margin-top: 105%;
 }
 .setcolorbuttom{
   border-radius: 80px;
@@ -614,8 +615,8 @@ function TranActive(active) {
     background-position: center;
     background-size: 100% 100%;
     transform: scale(1.1);
-    left: 30%;
-    top: -2%;
+    left: 27%;
+    top: -4%;
 }
 }
 @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
