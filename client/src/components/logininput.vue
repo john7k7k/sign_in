@@ -124,15 +124,16 @@
                 localStorage.setItem("InstructionCode", JSON.stringify(instructioncode));
                 localStorage.setItem("InstructionName", JSON.stringify(instructionname));
                 localStorage.setItem("UserImage", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
-                window.location.replace(`/select/instruction`); //括號內加上+res.data.token http://20.89.131.34:443/static/dist/home
+                if(res.data.section == "001" && res.data.level <=10) window.location.replace(`/select/instruction`);
+                else window.location.replace(`/home`);
               }
               else
-              alert("登入失敗")
+              this.$Message.error('登入失敗');
           })
           .catch(err=> {
               console.log(err);
               this.loading = false;
-              alert('登入失敗');
+              this.$Message.error('登入失敗');
           })
         },
         required (v) {

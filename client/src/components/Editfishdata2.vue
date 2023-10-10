@@ -1,25 +1,23 @@
 <template>
-  <div class="text-white  idtext mt-8 font-weight-black">ID:</div>
   
-  <div class="text-white  font-weight-black fishIDtext">{{ FishId }}</div>
-  <v-card width="300" class="datacard">
-            <v-list-item title="電量:" class="mt-4">
-              <v-text-field    :readonly="true" density="compact">{{ FishBc }}</v-text-field>
-            </v-list-item>
-            <v-list-item title="錯誤:" >
-                <v-text-field   :readonly="true" density="compact">{{ FishErr }}</v-text-field>
-            </v-list-item>
-            <v-list-item title="狀態:" >
-              <v-text-field    :readonly="true" density="compact">{{ selectactive }}</v-text-field>
-            </v-list-item>
-  </v-card>
-  <v-card width="550" class="colorcard pl-4 pr-4 pb-2 pt-2">
-    <v-list lines="two" subheader>
-    <v-list-subheader>LED顏色設定</v-list-subheader>
-    <v-list-item >
+  <div  class="text-white  idtext  font-weight-medium">ID</div>
+  <div class="text-white  font-weight-medium fishIDtext">{{ FishId }}</div>
+  <v-btn  class="  mt-5 ml-6 text-white btn-bg "   icon="mdi mdi-chevron-left" size="45" @click="goBack" ></v-btn>
+  <div  class="activetext text-grey font-weight-medium"><h3>[{{ selectactive }}]</h3></div>
+  <div class="titelbctext text-grey font-weight-medium">電量</div>
+  <div  class=" mx-1 text-h1 bcvalue-bg1" :style="{  color: getbccolor(FishBc,1)}">.</div>
+  <div  class=" mx-1 text-h1 bcvalue-bg2" :style="{  color: getbccolor(FishBc,2)}">.</div>
+  <div  class=" mx-1 text-h1 bcvalue-bg3" :style="{  color: getbccolor(FishBc,3)}">.</div>
+  <div  class=" mx-1 text-h1 bcvalue-bg4" :style="{  color: getbccolor(FishBc,4)}">.</div>
+  <div  class=" mx-1 text-h1 bcvalue-bg5" :style="{  color: getbccolor(FishBc,5)}">.</div>
+  <div class="  text-h5 text-white fishbc-bg" >{{FishBc}}%</div>
+  <div  class="titelerrortext  text-grey font-weight-medium">錯誤</div>
+  <v-card  class="errorcard pa-3 pt-2 pl-4 text-white">{{ errorcode(FishErr) }}</v-card>
+  <div  class="titelcolortext text-grey font-weight-medium">LED顏色設定</div>
+  <v-card width="530" class="colorcard pa-5 pb-7 pl-8 text-grey">
      <v-row>
       <v-col>
-        <t3> 左眼:<v-dialog
+        <t3> 左眼  <v-dialog
                   v-model="dialogs[0]"
                   width="1024"
                   transition="dialog-bottom-transition">
@@ -43,7 +41,7 @@
         </t3>
       </v-col>
       <v-col>
-        <t3> 右眼:<v-dialog
+        <t3> 右眼  <v-dialog
                   v-model="dialogs[1]"
                   width="1024"
                   transition="dialog-bottom-transition">
@@ -67,7 +65,7 @@
        </t3>
      </v-col>
      <v-col>
-        <t3> 上魚鰭:<v-dialog
+        <t3> 上魚鰭<v-dialog
                   v-model="dialogs[2]"
                   width="1024"
                   transition="dialog-bottom-transition">
@@ -91,7 +89,7 @@
        </t3>
      </v-col>
      <v-col>
-        <t3> 左後導光柱:<v-dialog
+        <t3> 左後導光柱<v-dialog
                   v-model="dialogs[3]"
                   width="1024"
                   transition="dialog-bottom-transition">
@@ -115,7 +113,7 @@
        </t3>
      </v-col>
      <v-col>
-        <t3> 右後導光柱:<v-dialog
+        <t3> 右後導光柱<v-dialog
                   v-model="dialogs[4]"
                   width="1024"
                   transition="dialog-bottom-transition">
@@ -139,21 +137,14 @@
        </t3>
      </v-col>
   </v-row>
+  </v-card>
   <v-btn 
             class="mt-4 ml-4 setcolorbuttom "
             variant="outlined"
-            size="small"
-            @click="editColor" > 顏色設定完成 </v-btn>
-  </v-list-item>
-</v-list>
-  </v-card>
-      <v-img
-        src="../assets/Vector.png"
-        alt="Vector72216"
-        class="vector"
-      />
+            width="130"
+            @click="editColor" >  </v-btn>
       <v-avatar class="fishimage" size="450" rounded="0" style="">
-      <v-img class="mt-6 pt-3 pr-7 " src="../assets/fishimage1.png"></v-img>
+      <v-img class="mt-6 pt-3 pr-7 " :src="getImageSource(FishId)" :style="{ transform: imageScale(FishId) }"></v-img>
       
     </v-avatar>
 </template>
@@ -216,6 +207,45 @@ function TranActive(active) {
         }
       },
       methods:{
+      goBack() {
+        window.history.back();
+      },
+      getImageSource(id) {
+        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      },
+      imageScale(id) {
+        return id <= 4000 ? "scale(1)" : "scale(0.7)";
+      },
+      errorcode(err){
+        const errorMapping = {
+            "0" : "無錯誤",
+            "1" : "AGUE電量傳送異常 量測",
+            "2" : "GAGUE電量接收異常",
+            "3" : "GAGUE電流傳送異常",
+            "4" : "GAGUE電流接收異常",
+            "5" : "CHARGER電流上限設置失敗 充電",
+            "6" : "CHARGER看門狗鎖定失敗",
+            "7" : "CHARGER看門狗解鎖失敗",
+            "8" : "PMIC設置錯誤 供電",
+            "9" : "重心馬達做動異常 重心",
+            "10" : "第一關節輸入電壓異常 關節",
+            "11" : "第一關節溫度過高",
+            "12" : "第一關節編碼器異常",
+            "13" : "第一關節電擊異常",
+            "14" : "第一關節過載",
+            "15" : "第二關節輸入電壓異常",
+            "16" : "第二關節溫度過高",
+            "17" : "第二關節編碼器異常",
+            "18" : "第二關節電擊異常",
+            "19" : "第二關節過載",
+            "20" : "第一關節通訊中斷",
+            "21" : "第二關節通訊中斷",
+            "22" : "雙關節通訊中斷",
+            "23" : "第一關節電源線不穩",
+            "24" : "第二關節電源線不穩"
+        };
+        return errorMapping[err];
+      },
       editColor () {
         const rgbaColor =["","","","",""]
         for (let i = 0; i < 5; i++){
@@ -295,6 +325,18 @@ function TranActive(active) {
               alert('編輯失敗');
           })
     },
+    getbccolor(bc,num){
+    bc = parseFloat(bc);
+    if(bc >= 80){
+      return '#B2FF59'
+    }else if(bc >= 60 && num<5 || bc >= 40 && num<4 || bc >= 20 && num<3){
+      return '#B2FF59';//綠
+    }else if(bc <20 && num<2){
+      return '#EF5350';//red
+    }else{
+      return '#616161';//灰
+    }
+  },
     ControlFish(move) {
         axios.post(
                 "/api/v1/fish/control/?section="+this.poolname,{
@@ -336,95 +378,248 @@ function TranActive(active) {
     }
   </script>
   
-  <style>
-    .dialog-bottom-transition-enter-active,
-    .dialog-bottom-transition-leave-active {
-      transition: transform 0.2s ease-in-out;
-    }
-.datacard{
-  margin-left: 8%;
-  margin-top: 10.5%;
-  transform: scale(1.1);
+  <style scoped>
+  .btn-bg{
   position: absolute;
+  font-size: 23px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
 }
 .idtext{
-  font-size: 50px;
-  margin-left: 7%;
+  font-size: 55px;
+  margin-left: 60%;
 }
 .fishIDtext{
-  font-size: 85px;
+  font-size: 80px;
   position: absolute;
-  margin-left: 7%;
-  top: 25%;
+  margin-left: 60%;
+  top: 18%;
+  letter-spacing: 5px;
 }
-.vector {
-  width: 67.5%;
-  height: 3%;
+.activetext{
+    position: absolute;
+    letter-spacing: 3px;
+    font-size: 18px;
+    margin-left: 75%;
+    margin-top: 2.4%;
+  }
+.titelbctext{
+    position: absolute;
+    margin-left: 60%;
+    top: 35%;
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.titelerrortext{
+    position: absolute;
+    margin-left: 60%;
+    top: 45%;
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  transform: scale(0.8);
   position: absolute;
-  left: 30%;
-  top: 93.5%;
+  margin-left: 56.5%;
+  margin-top: 13%;
+  width:530px;
 }
-.fishimage{
+.titelcolortext{
   position: absolute;
-  left: 40%;
-  top: 10%;
-  transform: scale(1.4);
+  margin-left: 60%;
+  top: 62%;
+  letter-spacing: 3px;
+  font-size: 18px;
 }
 .colorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
   z-index: 2;
   transform: scale(0.8);
   position: absolute;
-  left: 65.3%;
-  margin-top: 18%;
+  margin-left: 56.5%;
+  margin-top: 20.8%;
 }
 .setcolorbuttom{
+    border-radius: 80px;
+    background-image: url('../assets/顏色設定鈕.png');
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.1);
+    left: 78%;
+    top: 62%;
+}
+.fishimage{
+  position: absolute;
+  left: 14%;
+  top: 16%;
+  transform: scale(1.4);
+}
+.bcvalue-bg1{
+   position: absolute;
+   top: 29%;
+   left: 60.2%;
+   transform: translateX(-50%) scale(1.5);
+}
+.bcvalue-bg2{
+   position: absolute;
+   top: 29%;
+   left: 63.2%;
+   transform: translateX(-50%) scale(1.5);
+}
+.bcvalue-bg3{
+   position: absolute;
+   top: 29%;
+   left: 66.2%;
+   transform: translateX(-50%) scale(1.5);
+}
+.bcvalue-bg4{
+   position: absolute;
+   top: 29%;
+   left: 69.2%;
+   transform: translateX(-50%) scale(1.5);
+}
+.bcvalue-bg5{
+   position: absolute;
+   top: 29%;
+   left: 72.2%;
+   transform: translateX(-50%) scale(1.5);
+}
+.fishbc-bg{
+  position: absolute;
+  top: 39.8%;
   left: 75%;
 }
 
+
+
 @media screen and (max-width: 600px){
+.btn-bg{
+  z-index: 2;
+  position: relative;
+  font-size: 23px;
+  top: -2%;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
 .idtext{
   position: absolute;
-  top: 2.5%;
+  top: 8%;
   font-size: 40px;
   margin-left: 7%;
-}
-.vector {
-  display: none;
 }
 .fishIDtext{
   font-size: 65px;
   position: relative;
   margin-left: 7%;
-  margin-top: 3%;
-}
-.datacard{
-  margin-left: 11%;
-  margin-top: 43%;
-  position: relative;
-  transform: scale(0.8) ;
+  top: 3%;
 }
 .fishimage{
   margin-top: -16%;
-  transform: scale(0.8) translateX(-50%);
+  transform: scale(0.85) translateX(-20%);
+}
+.activetext{
+    position: absolute;
+    letter-spacing: 2px;
+    font-size: 15px;
+    margin-left: 50%;
+    margin-top: -24.5%;
+
+  }
+  .titelbctext{
+    position: relative;
+    margin-left: 15%;
+    margin-top: -17%;
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+  .bcvalue-bg1{
+    position: absolute;
+    left: 16%;
+    margin-top: 42%;
+}
+.bcvalue-bg2{
+    position: absolute;
+    left: 26%;
+    margin-top: 42%;
+}
+.bcvalue-bg3{
+    position: absolute;
+    left: 36%;
+    margin-top: 42%;
+}
+.bcvalue-bg4{
+    position: absolute;
+    left: 46%;
+    margin-top: 42%;
+}
+.bcvalue-bg5{
+    position: absolute;
+    left: 56%;
+    margin-top: 42%;
+}
+.fishbc-bg{
+  position: absolute;
+  left: 66%;
+  margin-top: 43%;
+}
+.titelerrortext{
+    position: relative;
+    margin-left: 15%;
+    margin-top: -10%;
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  transform: scale(0.7);
+  position: absolute;
+  margin-left: -2%;
+  margin-top: 78%;
+  width: 420px;
+}
+  .titelcolortext{
+    position: relative;
+    margin-left: 15%;
+    margin-top: -13%;
+    letter-spacing: 3px;
+    font-size: 18px;
 }
 .colorcard{
-  z-index: 2;
   transform: scale(0.55);
   position: relative;
-  left: -21%;
-  margin-top: -10%;
+  margin-left: -17%;
+  margin-top: 103%;
 }
 .setcolorbuttom{
-  left: 75%;
+  border-radius: 80px;
+    background-image: url('../assets/顏色設定鈕.png');
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.1);
+    left: 27%;
+    top: -6%;
 }
 }
 @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-  .datacard{
-  margin-left: 3%;
-  margin-top: 24%;
-  transform: scale(0.98);
-  position: absolute;
-}
 .idtext{
   font-size: 50px;
   margin-left: 3%;
@@ -469,12 +664,6 @@ function TranActive(active) {
   position: relative;
   margin-left: 7%;
   margin-top: 4%;
-}
-.datacard{
-  margin-left: 31%;
-  margin-top: 43%;
-  position: relative;
-  transform: scale(1.1) ;
 }
 .fishimage{
   margin-top: 3%;

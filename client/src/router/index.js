@@ -14,21 +14,13 @@ const routes = [
     path: "/nav",
     component: Nav ,
     children:[
-    {
-      name: "Fishdatas",
-      path: "/:prefix/:prefix/fish/", 
-      component: Fishdatas
-    },
+    
     {
       name: "UserData",
       path: "/user", 
       component: UserData
     },
-    {
-      name: "editdatas",
-      path: "/:prefix/fish/edit", 
-      component: editdatas
-    },
+    
     {
       name: "Accountlist",
       path: "/account/list", 
@@ -46,6 +38,16 @@ const routes = [
     },
     
    ]
+  },
+  {
+    name: "editdatas",
+    path: "/:prefix/fish/edit", 
+    component: editdatas
+  },
+  {
+    name: "Fishdatas",
+    path: "/:prefix/:prefix/fish/", 
+    component: Fishdatas
   },
   {
     name: "selectinstruction",

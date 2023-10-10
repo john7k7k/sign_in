@@ -1,60 +1,71 @@
 <template>
-  <div class="Swiper" @mouseenter="showButtons = true"
-        @mouseleave="showButtons = false">
-      <v-btn class="leftbutton ml-5" v-if="showButtons"  @click="leftSwipe" icon="mdi mdi-chevron-left"></v-btn>
-      <v-btn class="rightbutton mr-5" v-if="showButtons"  @click="rightSwipe()" icon="mdi mdi-chevron-right"></v-btn>
+  <div class="Swiper" >
       <div class="Swiper-content" >
-        <v-card v-for="(name, index) in poolsName" class="Swiper-item "   :key="name" >
-          <v-card-text class="cardtextbg pt-5 pb-8">
-  <v-img
-    class=" text-white cardimage"
-    height="150"
-    src="../assets/totalbg.jpg"
-    @click="routefishdata(index,poolsCode[index])"
-    cover
-  >
-  </v-img> 
+        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+          <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[index].EnPoolName }}</div>
+      </v-card>
+      </div>
+      
+      <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
+      <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
+      <v-card v-if="poolsName.length <2" cover class="notyet-bg2"    :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <div class="notyet-bg2-overlay">
+            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
+            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+          </div>
+      </v-card>
+      <v-card v-if="poolsName.length <=2"  cover class="notyet-bg1"    :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+          <div class="notyet-bg1-overlay">
+            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
+            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+          </div>
+      </v-card>
+      <v-card  class="poolsdatacard "   >
+          <v-card-text class="cardtextbg  ">
+            <div v-if="isMobileScreen" class="font-weight-bold text-white text-end mr-1 mt-7" style="font-size: 40px; letter-spacing: 3px;">{{ poolsName[centerIndex] }}</div>
+            <div v-if="isMobileScreen" class=" text-white mr-1 mt-4  text-end" style="white-space:pre-wrap;padding-left: 20%;   font-size: 20px; letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+            <div v-if="isMobileScreen" class="  text-blue-grey-lighten-1 text-end mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
+            <div class="d-flex align-center justify-space-between">
+    <v-card-title  ></v-card-title>
     
-      <div class="d-flex align-center justify-space-between">
-    <v-card-title class="pooltext " >{{ name }}</v-card-title>
-    
-      <v-btn class="mr-2 mt-3"  color="green" icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+      <v-btn class="mr-2  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
-        <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center mb-1">
-          <v-sheet class=" text-h4 cardtext">{{n.text}}</v-sheet> 
+        <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center mb-1">
+          <v-sheet class=" text-h2 cardtext text-grey-lighten-2">{{n.text}}</v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
-        <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center">
-          <v-sheet class="mb-1 cardtext">{{ n.textname }} </v-sheet> 
+        <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center">
+          <v-sheet class="mb-1 cardtext text-blue-grey-lighten-3">{{ n.textname }} </v-sheet> 
         </v-col>
       </v-row>
       <v-row  no-gutters>
-        <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center">
-        <v-btn class="mb-2 mt-1" :color="n.color" :icon="n.icon " :to="'/' + poolsCode[index] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(index,n.level,'/'+n.linetext)"></v-btn>
+        <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center">
+        <v-btn class="mb-2 mt-1 btn-bg text-white"  :icon="n.icon " :to="'/' + poolsCode[centerIndex] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(centerIndex,n.level,'/'+n.linetext)"></v-btn>
         </v-col>
       </v-row>
       
       
       <v-row  no-gutters>
-      <v-col v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center mt-1">
-        <v-btn rounded="xl" size="small" prepend-icon="mdi-battery-charging-10" color="orange" v-show="n.alertbcbutton" @click="SaveIndividualData(index,4,'/needcharge')" :to="'/' + name + '/' + 'needcharge' + '/fish'"
-          >{{needchargenum[index]}}條魚需充電</v-btn>
+      <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center mt-1 ">
+        <v-btn class="needbcbtn-bg text-white mt-3" rounded="xl" size="small" prepend-icon="mdi-battery-charging-10"  v-show="n.alertbcbutton" @click="SaveIndividualData(centerIndex,4,'/needcharge')" :to="'/' + poolsName[centerIndex] + '/' + 'needcharge' + '/fish'"
+          >{{needchargenum[centerIndex]}}條魚需充電</v-btn>
       </v-col>
     </v-row>
     <v-row  no-gutters >
-      <v-col  v-for="n in links[index]" :key="n"   class=" d-flex align-center justify-center"  >
-        <v-btn class="mt-2 haveErrorText " rounded="xl" size="small" prepend-icon="mdi-alert" color="red" v-show="n.alertbcbutton"  @click="SaveIndividualData(index,5,'/error')" :to="'/' + name + '/' + 'error' + '/fish'"
-          >{{needfixnum[index]}}條魚有錯誤</v-btn>
+      <v-col  v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center"  >
+        <v-btn class="mt-4 needfixbtn-bg text-white" rounded="xl" size="small" prepend-icon="mdi-alert"  v-show="n.alertbcbutton"  @click="SaveIndividualData(centerIndex,5,'/error')" :to="'/' + poolsName[centerIndex] + '/' + 'error' + '/fish'"
+          >{{needfixnum[centerIndex]}}條魚有錯誤</v-btn>
       </v-col>
-      <div class="mt-4 mr-2 cardtext"> 紀錄時間:{{ time }} </div>
+      <div class="mt-4 mr-2 cardtext"></div>
     </v-row>
     </div>
     </v-card-text>
   </v-card>
-      </div>
   </div>
 
   
@@ -67,8 +78,7 @@ export default {
 data() {
 return {
 center:"center",
-classlist:["three","four","two",],
-showButtons:false,
+classlist:["two","three","one",],
 FishId: [],
 FishId2num:null,
 FishIdNow:[],
@@ -79,6 +89,20 @@ err: [],
 active: [],
 token:localStorage.getItem('token'),
 time: localStorage.getItem("NewTime"),
+poolsdata:[
+            {
+                EnPoolName:"National Taipei University of Technology",
+                imageurl: require("../assets/主頁魚池33.png")
+            },
+            {
+                EnPoolName:"",
+                imageurl: require("../assets/主頁魚池22.png")
+            },
+            {
+                EnPoolName:"",
+                imageurl: require("../assets/主頁魚池11.png")
+            }
+        ],
 links: [ 
   { icon: 'mdi-fishbowl', text: ".", color: 'indigo-darken-1', textname: "游動中",level:1,alertbcbutton:false,alerterrbutton:false,linetext:"swimming"},
   { icon: 'mdi mdi-fish-off', text: ".", color: 'orange-darken-2', textname: "待機中",level:2,alertbcbutton:false,alerterrbutton:false,linetext:"standby"},
@@ -89,8 +113,18 @@ isRefreshing: false,
 IP:process.env.VUE_APP_IP,
 poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
 poolsName:JSON.parse(localStorage.getItem("PoolsName")),
-isMobileScreen:localStorage.getItem("isMobileScreen")
+isMobileScreen:localStorage.getItem("isMobileScreen"),
+titleName:"",
+EntitleName:"",
+centercardNum:0,
 };
+},
+props:{
+  centerIndex: {
+            type: Number,
+            default: 0,
+            required: true,
+        },
 },
 mounted(){
           this.swiper();
@@ -120,7 +154,7 @@ generateLinksArray(count) {
 this.links = []; 
 for (let i = 1; i <= count; i++) {
   this.links.push([
-    { icon: 'mdi-fishbowl', text: '00', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: false, alerterrbutton: false,linetext:"swimming" },
+    { icon: 'mdi-fishbowl', text: '00', color: 'indigo-darken-1', textname: "游動中", level: 1, alertbcbutton: true, alerterrbutton: true,linetext:"swimming" },
     { icon: 'mdi mdi-fish-off', text: '00', color: 'orange-darken-2', textname: "待機中", level: 2, alertbcbutton: false, alerterrbutton: false,linetext:"standby" },
     { icon: 'mdi-wrench', text: '00', color: 'black', textname: "維修中", level: 3, alertbcbutton: false, alerterrbutton: false,linetext:"maintenance" },
   ]);
@@ -135,12 +169,12 @@ this.err.push(errvalue);
 this.active.push(activevalue);
 },
 async refresh() {
-this.isRefreshing = true;
-this.generateLinksArray(this.poolsCode.length);
-await this.loadnewdata();
-this.RefreshDatas2();
-for (var i = 0; i < this.poolsCode.length; i++) {
-await this.RefreshDatas(i);
+  this.isRefreshing = true;
+  this.generateLinksArray(this.poolsCode.length);
+  await this.loadnewdata();
+  this.RefreshDatas2();
+  for (var i = 0; i < this.poolsCode.length; i++) {
+  await this.RefreshDatas(i);
 }
 this.isRefreshing = false;
 },
@@ -173,7 +207,7 @@ for (var i = 0; i < this.poolsCode.length; i++) {
 },
 async RefreshDatas(i) {
 try {
-      if (this.FishId[i].length !== 0) {
+      if (this.FishId.length !== 0 && this.FishId[i].length !== 0) {
         const response = await axios.get(
           "/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
@@ -186,6 +220,7 @@ try {
         console.log(response);
         const responseData = JSON.stringify(response.data[this.poolsCode[i]]);
         const parsedResponseData = JSON.parse(responseData);
+        console.log(parsedResponseData)
         if(i === 0){
           const currentTime = new Date();
           const year = currentTime.getFullYear();
@@ -198,7 +233,11 @@ try {
           this.time = formattedDate;
           localStorage.setItem("NewTime", formattedDate);
         }
-        this.processData(this.FishId[i], parsedResponseData);
+        if (parsedResponseData) {
+          this.processData(this.FishId[i], parsedResponseData);
+        }else {
+          return;
+        }
         const bcdata = this.bc[i];
         const errdata = this.err[i];
         let chargenum = 0 ;
@@ -206,8 +245,6 @@ try {
         for (let a = 0; a < this.FishIdNow[i]; a++) {
           
           if (bcdata[a] < "20") chargenum += 1;
-        }
-        for (let a = 0; a < this.FishIdNow[i]; a++) {
           if ( errdata[a] !== 0) fixnum += 1;
         }
         this.needchargenum.push(chargenum);
@@ -414,6 +451,8 @@ this.$router.push(`/${name}/total/fish`);
 }
 },
 async created() {
+if(this.isMobileScreen == "true") this.isMobileScreen = true;
+else this.isMobileScreen = false;
 this.generateClassLink(this.poolsCode.length);
 this.generateLinksArray(this.poolsCode.length);
 await this.loadnewdata();
@@ -428,43 +467,156 @@ await this.RefreshDatas(i);
 </script>
 
 <style scoped>
+
+.notyet-bg1::before {
+    content: "";
+    background-color: rgb(0, 0, 255,0.15); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+}
+.notyet-bg1-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+}
+.notyet-bg1{
+  z-index: 0;
+  position: absolute;
+  transform: scale(0.9) ;
+  margin-top: -6%;
+  left: 10%;
+  width:400px;
+  min-height:230px;
+}
+.notyet-bg2::before {
+    content: "";
+    background-color: rgb(0, 0, 255,0.1); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+}
+.notyet-bg2-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+}
+.notyet-bg2{
+  z-index: 0;
+  position: absolute;
+  transform: scale(0.9) ;
+  margin-top: 29%;
+  left: 10%;
+  width:400px;
+  min-height:230px;
+}
+
+.titel-Name{
+    font-size: 60px;
+    position: absolute;
+    left: 81.3%;
+    margin-top: 0%;
+    letter-spacing: 4px;
+  }
+  .en-titelName{
+    font-size: 25px;
+    position: absolute;
+    letter-spacing: 3px;
+    left: 73%;
+    margin-top: 5.5%;
+    width: 25.2%;
+  }
+.needbcbtn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(249, 168, 37, 0.7);
+}
+.versiontext{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(0, 0, 255, 1);
+  border-radius: 50px;
+  width: 10%;
+}
+.refreshbtn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.12), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  transform:  scaleX(-1);
+}
+.btn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+}
 .cardimage{
   transform: scale(0.98);
   border-radius: 10px;
 }
 .cardtextbg {
-  background-color: rgba(255, 255, 255, 0.1); 
-  backdrop-filter: blur(15px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0); 
 }
 .cardtext{
+  background-color: rgba(255, 255, 255, 0);
+  letter-spacing: 2px;
+  
+}
+.recordtext{
   background-color: rgba(255, 255, 255, 0); 
-  color: white;
+  position: absolute;
+  margin-top: 12%;
+  left: 82.8%;
+  font-size: 17px;
 }
 .nodisplay{
   display: none;
 }
+.poolsdatacard{
+  position: absolute;
+  transform:translateX(99.6%) scale(1) translateY(73%);
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0);
+}
+.one{
+  z-index: 2;
+  position: absolute;
+  transform: scale(0.9) ;
+  margin-top: -6%;
+  left: 10%;
+  width: 50%;
+}
 .two{
-      z-index: 2;
-      position: absolute;
-      transform: scale(0.9) translateY(-5%);
-      left: -33%;
-      width: 50%;
-  }
-  .three{
-      z-index: 9;
-      position: absolute;
-      transform:translateX(50%) scale(1) translateY(-5%);
-      width: 50%;
-  }
-  .four{
-      z-index: 2;
-      position: absolute;
-      transform: scale(0.9) translateY(-5%);
-      right: -33%;
-      width: 50%;
-  }
+  z-index: 9;
+  position: absolute;
+  transform: scale(1.2) ;
+  margin-top: 11.5%;
+  left: 10%;
+  width: 50%;
+}
+.three{
+  z-index: 2;
+  position: absolute;
+  transform: scale(0.9) ;
+  margin-top: 29%;
+  left: 10%;
+  width: 50%;
+}
   .forIpadcenter{
     margin-top: -5%;
       position: relative;
@@ -474,26 +626,27 @@ await this.RefreshDatas(i);
   .forIpadcenter + .forIpadcenter {
       margin-top: -5%; 
   }
-.haveErrorText{
-margin-left: 38%;
+.needfixbtn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid #B71C1C;
 }
 .v-application__wrap{
     background-color: black;
   }
-  .leftbutton {
+  .upbutton {
       z-index: 10; 
       position: fixed; 
-      left: 0; 
-      top: 60%; 
-      transform: translateY(-50%); 
+      left: 20%;
+      top: 9%; 
   }
   
-  .rightbutton{
+  .downbutton{
       z-index: 10; 
       position: fixed; 
-      right: 0; 
-      top: 60%; 
-      transform: translateY(-50%); 
+      left: 20%;
+      bottom: 4%;
   }
 .pooltext{
   transform: scale(1.2);
@@ -502,45 +655,46 @@ margin-left: 38%;
 }
 
 @media screen and (max-width: 600px) {
-  .haveErrorText{
-      margin-left: 0%;
+  .Swiper{
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
 }
-  .two {
-      display: none;
-  }
-  .three {
-      margin-top: -10%;
-      position: relative;
-      transform: scale(0.8);
-      width: 100%;
-  }
 
-  .three + .three {
-      margin-top: -10%; 
-  }
-  .four{
-    margin-top: -5%;
-      position: relative;
-      transform: scale(0.8);
-      width: 100%;
-  }
-  .leftbutton {
-      display: none;
-  }
-  .rightbutton{
-      display: none;
+
+.notyet-bg1 {
+  width: 80%;
+  height: 20%;
+  transform: none;
+}
+
+.poolsdatacard {
+  width: 100%;
+  height: auto;
+  transform: scale(0.85);
+  border-radius: 15px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  margin: 40% 0;
+}
+
+.notyet-bg2 {
+  width: 80%;
+  height: 20%;
+  transform: none;
+  margin: 130% 0;
+}
+  .titel-Name, .en-titelName, .recordtext,.one, .two, .three, .upbutton,.Swiper-content, .downbutton {
+    display: none;
   }
 }
 @media screen and (min-width: 601px) and (max-width: 1024px){
-  .haveErrorText{
-      margin-left: 35%;
-}
 }
 
 @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-  .haveErrorText{
-      margin-left: 22%;
-}
 }
 
 </style>

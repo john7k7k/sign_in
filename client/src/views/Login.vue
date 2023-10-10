@@ -51,12 +51,12 @@ export default {
 @media screen and (max-width: 600px) {
   .logininput {
     padding-left: 15px;
-    margin-top: 30%;
+    transform: scale(0.85) translateY(52%);
   }
 
 
   .login {
-  background-image: url('../assets/background.jpg');
+  background-image: url('../assets/登入畫面手機背景.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

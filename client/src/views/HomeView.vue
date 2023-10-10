@@ -1,7 +1,6 @@
 <template>
-    <div class="home">
-        <navbar></navbar>
-      <div class="titelText text-white ">仿生魚監控管理系統 </div>
+    <div class="home" :style="{ backgroundImage: `url(${poolsdata[centerIndex%3].imageurl})` }">
+        <navbar class="item"></navbar>
         <v-text-field
           v-if="false"
           class="searchinput mt-2"
@@ -15,7 +14,12 @@
           @click:append-inner="onClick"
           style=""
         ></v-text-field>
-        <totaldata ></totaldata>
+        <v-btn class="upbutton ml-5" v-if="showButtons && poolsName.length > 1"  @click="triggerLeftSwipe" icon="mdi mdi-chevron-up" @mouseenter="showButtons = true"
+        @mouseleave="showButtons = false"></v-btn>
+        <v-btn class="downbutton mr-5" v-if="showButtons && poolsName.length > 1"  @click="triggerRightSwipe" icon="mdi mdi-chevron-down" @mouseenter="showButtons = true"
+        @mouseleave="showButtons = false"></v-btn>
+        <totaldata class="item" :centerIndex="centerIndex" ref="totaldataRef" @mouseenter="showButtons = true"
+        @mouseleave="showButtons = false"></totaldata>
     </div>
   
   </template>
@@ -34,6 +38,22 @@
                 ],
                 classlist:["three","four","two",],
                 showButtons: false,
+                poolsName:JSON.parse(localStorage.getItem("PoolsName")),
+                poolsdata:[
+                            {
+                                EnPoolName:"CSL Pool",
+                                imageurl: require("../assets/主頁魚池33.png")
+                            },
+                            {
+                                EnPoolName:"",
+                                imageurl: require("../assets/主頁魚池22.png")
+                            },
+                            {
+                                EnPoolName:"",
+                                imageurl: require("../assets/主頁魚池11.png")
+                            }
+                        ],
+                centerIndex:0,
           }
       },
       methods:{
@@ -43,11 +63,16 @@
               SwiperContent: ".Swiper-content",
           });
           },
-          leftSwipe() {
-              this.swiperInstance.__leftMove();
+          triggerLeftSwipe() {
+            if(this.centerIndex !== this.poolsName.length-1) this.centerIndex += 1;
+              else this.centerIndex = 0;
+            
+            this.$refs.totaldataRef.leftSwipe();
           },
-          rightSwipe() {
-              this.swiperInstance.__rightMove();
+          triggerRightSwipe() {
+            if(this.centerIndex !== 0) this.centerIndex -= 1;
+            else this.centerIndex = this.poolsName.length-1;
+            this.$refs.totaldataRef.rightSwipe();
           },
   
   
@@ -56,23 +81,31 @@
   </script>
   
   <style scoped>
-  .home{
-    z-index: 0;
-    background-image: url('../assets/background.jpg');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
+  .home::before {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.65); 
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    z-index: 1; 
+}
+  .home{
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
   }
+  .item{
+    z-index: 2;
+  }
   .titelText{
+      z-index: 2;
       position: relative;
       font-size: 50px;
       width: 100%;
@@ -111,20 +144,18 @@
       display: block; 
       transform: translateY(-50px);
   }
-  .two{
-      z-index: 2;
-      transform: scale(0.9) translateY(-33px);
-      left: -475px;
-      
+  .upbutton {
+      z-index: 10; 
+      position: fixed; 
+      left: 20%;
+      top: 10%; 
   }
-  .three{
-      z-index: 9;
-      transform:translateX(50%) scale(1) translateY(-33px);
-  }
-  .four{
-      z-index: 2;
-      transform: scale(0.9) translateY(-33px);
-      right: -475px;
+  
+  .downbutton{
+      z-index: 10; 
+      position: fixed; 
+      left: 20%;
+      bottom: 4%;
   }
 
   @media screen and (max-width: 600px) {
@@ -136,7 +167,7 @@
     background-repeat: no-repeat;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow-y:auto;
   }
     .titelText{
       position: relative;

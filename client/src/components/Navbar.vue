@@ -2,17 +2,27 @@
   <div>
   <v-toolbar
   :key="desktopKey"
-    class=" pt-1 pb-2 navbar"
+    class="  pb-2 navbar"
     dark
   >
+  <template v-slot:prepend> 
+      <v-img
+        src="../assets/logo北科.png"
+        alt="logo"
+        width="70"
+        class="logoimage"
+        v-if="!isMobileScreen"
+      ></v-img>
+    
+      </template>
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
-      <v-btn class="ml-5 navbartext" value="home1"  href="/home">主頁</v-btn>
-      <v-btn href="/select/instruction" v-if="fishlistshow" class="navbartext">選擇機構</v-btn>
-      <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext">仿生魚清單</v-btn>
-      <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext">帳號清單</v-btn>
-      <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext">註冊機構/水池</v-btn>
-      <v-btn  value="out" @click="logout" href="/login" class="navbartext">登出</v-btn>
+      <v-btn class="ml-5 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
+      <v-btn href="/select/instruction" v-if="SelectSectionshow" class="navbartext font-weight-bold">選擇機構</v-btn>
+      <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext font-weight-bold">仿生魚清單</v-btn>
+      <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
+      <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
+      <v-btn  value="out" @click="logout" href="/login" class="navbartext font-weight-bold">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
     <div>
@@ -47,8 +57,16 @@
         title="主頁"
         value="home1"
         ref="homeItem"
-        class="text-white"
+        class="text-white "
         route to = "/home"
+      ></v-list-item>
+      <v-list-item
+        v-if="SelectSectionshow"
+        prepend-icon="mdi mdi-hand-pointing-up"
+        title="選擇機構"
+        value="select"
+        class="text-white "
+        route to = "/select/instruction"
       ></v-list-item>
         <v-list-item
           prepend-icon="mdi-square-edit-outline"
@@ -110,6 +128,7 @@ data() {
     level: localStorage.getItem('UserLevel'),
     token:localStorage.getItem('token'),
     section:localStorage.getItem('UserSection'),
+    SelectSectionshow:false,
     userlistshow:false,
     fishlistshow:false,
     signupSectionshow:false,
@@ -148,12 +167,14 @@ methods: {
       },
   userlevel() {
     if (this.level === "5" ) {
+      this.SelectSectionshow = true;
       this.userlistshow = true;
       this.fishlistshow = true;
       this.signupSectionshow = true;
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
       return "最高管理員";
     } else if (this.level === "10" && this.section === "001"){
+      this.SelectSectionshow = true ;
       this.fishlistshow = true;
       this.userlistshow = true;
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
@@ -252,10 +273,14 @@ created(){
 </script>
 
 <style>
+.logoimage{
+  transform: scale(2.3);
+}
 .drawerbg{
   background-color:  rgba(0, 0, 0, 0.8);
 }
 .navbar{
+  z-index: 2;
   background-color: rgba(0, 0, 0, 0); 
 }
 .navbartext{
@@ -265,7 +290,7 @@ created(){
 .usernametext {
   font-size: 18px;
   position: absolute;
-  left: 95.4%;
+  right: 1px;
   z-index: 2;
 }
   .dialog-bottom-transition-enter-active,
