@@ -1,12 +1,9 @@
 <template>
   <v-app   class="App">
-    <meta property="og:url"                content="http://20.89.131.34/login" />
-    <meta property="og:type"               content="article" />
-    <meta property="og:title"              content="仿生魚監控站" />
-    <meta property="og:description"        content="" />
-    <meta property="og:image"              content="https://news-data.pts.org.tw/media/125928/cover.jpg" />
+    
     <v-main class="main">
-
+      <link rel="icon" type="image/png" href="img/NTUT-Logo.png">
+        <title>仿生魚監控站</title>
       <router-view/>
     </v-main >
   </v-app>
@@ -26,6 +23,8 @@ export default {
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 .main{
+  margin: 0;
+  padding: 0;
   background-color: black;
   font-family: PingFangTC-Semibold, sans-serif !important;
 }

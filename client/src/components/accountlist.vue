@@ -6,7 +6,7 @@
     </v-container>
     <div v-for="(name,index) in sectionName" :key="name">
     <div   class="mt-4 mb-2 ml-8 text-white text-h6"><h4>{{ name }}</h4></div>
-    <Table v-show="data[index]"  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index]" class="mb-8 ml-8 mr-8">
+    <Table v-if="Tableshow[index]"  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index]" class="mb-8 ml-8 mr-8">
       <template #level="{row}">
             <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
             <Modal
@@ -46,6 +46,7 @@
             <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name)">刪除</Button>
         </template>
     </Table>
+    <Table v-if="!Tableshow[index]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="mb-8 ml-8 mr-8"></Table>
     </div>
     
   </template>
@@ -94,7 +95,7 @@ import axios from 'axios';
                     }
                 ],
                 mobileColumns:[
-                {
+                    {
                         title: '使用者名稱',
                         key: 'name',
                         width: 120,
@@ -131,17 +132,93 @@ import axios from 'axios';
                         fixed: 'right',
                     }
                 ],
+                nodatacolumns: [
+                    {
+                        title: '使用者名稱',
+                        key: 'name',
+                    },
+                    {
+                        title: 'Email',
+                        key: 'email',
+          
+                    },
+                    {
+                        title: '權限',
+                        key: 'level',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '所屬區域',
+                        key: 'section',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '註冊時間',
+                        key: 'registrationTime'
+                    },
+                    {
+                        title: ' ',
+                        key: 'registrationTime',
+                        width: 100,
+                        align: 'center',
+                    }
+                ],
+                nodatamobileColumns:[
+                {
+                        title: '使用者名稱',
+                        key: 'name',
+                        width: 120,
+                        fixed: 'left'
+                    },
+                    {
+                        title: 'Email',
+                        width: 120,
+                        key: 'email',
+          
+                    },
+                    {
+                        title: '權限',
+                        key: 'level',
+                        width: 150,
+                        align: 'left'
+                    },
+                    {
+                        title: '所屬區域',
+                        key: 'section',
+                        width: 150,
+                        align: 'left'
+                    },
+                    {
+                        title: '註冊時間',
+                        width: 120,
+                        key: 'registrationTime'
+                    },
+                    {
+                        title: ' ',
+                        key: 'action',
+                        width: 70,
+                        align: 'center',
+                        fixed: 'right',
+                    }
+            ],
             data: [],
             IP:process.env.VUE_APP_IP,
             sectionOrigin:localStorage.getItem('UserSection'),
             sectionshow:false,
-            fallbackRow: {
-              name: '無資料',
-              level: '',
-              section: '',
-              showbtn:false,
-            },
+            fallbackRow: [
+              {
+                name: '',
+                level: "",
+                email: "無資料",
+                section: "",
+                registrationTime: "",
+                action: "",
+              }
+            ],
             modal:false,
+            Username: localStorage.getItem('UserName'),
             poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
             poolName: JSON.parse(localStorage.getItem("PoolsName")),
             instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
@@ -152,16 +229,22 @@ import axios from 'axios';
         }
       },
       computed: {
-        dataWithFallback(index) {
-          return this.data[index].length > 0 ? this.data[index] : [this.fallbackRow];
+        dataWithFallback() {
+          return (index) => {
+            if (this.data[index].length > 0) {
+              return this.data[index];
+            }else{
+              return this.fallbackRow;
+            }
+          };
         },
         
   },
   created() {
-    this.sectionsShow();
+    this.sectionsShow(); //決定該顯示的區域
+    this.formNameMapping(this.instructionCode,this.InstructionName); //產生機構代碼跟名稱對照表 ex:"001":全區
+    this.formNameMapping(this.poolsCode,this.poolName);  //產生部門代碼跟名稱對照表   
     this.accountdata();
-    this.formNameMapping(this.instructionCode,this.InstructionName);
-    this.formNameMapping(this.poolsCode,this.poolName);
     window.addEventListener('resize', this.updateScreenSize);
     this.updateScreenSize();
   },
@@ -179,11 +262,12 @@ import axios from 'axios';
           }
           this.keyvalueMapping.push(keyValueMapping);
         },
-    processSectionName(str) {
+    processSectionName(str) {  //產生用戶的所屬機構-部門名稱
           var section = str.substring(0, 3);
         if(str === "001") return "全區"
+        
         else if (str.length === 3) {
-          return this.keyvalueMapping[0][section] || "";
+          return this.keyvalueMapping[0][section] || "機構";
         } else {
           return this.keyvalueMapping[0][section] + "-" + (this.keyvalueMapping[1][str] || "");
         }
@@ -191,9 +275,7 @@ import axios from 'axios';
     processSectionNameold(str) {
         var section = str.substring(0, 3);
         if(section === "001") section = "全區"
-        if(section === "002") section = "北科"
-        if(section === "003") section = "海科"
-        if(section === "004") section = "先鋒"
+        else section = this.keyvalueMapping[0][section];
         if (!this.sectionName.includes(section)) {
             this.sectionName.push(section);
         }
@@ -220,33 +302,26 @@ import axios from 'axios';
           )
           .then(res=> {
               console.log(res);
-              for(const obj of res.data){
-                const {email,level,registrationTime,section,username,userID} = obj;
-                const newData = {
-                    username,
-                    email,
-                    level,
-                    registrationTime,
-                    section,
-                    userID,
-                    show:false,
+              if(this.sectionOrigin === "001"){//產生所有機構的標題
+                this.sectionName.push("全區")
+                for(let i=0 ; i<Object.keys(this.keyvalueMapping[0]).length ;i++){
+                  this.sectionName.push(this.keyvalueMapping[0][this.instructionCode[i]])
                 }
-                this.userdatas.push(newData)
-            }
-              res.data.forEach(item => {
-                this.processSectionNameold(item.section)
+              }else{
+                res.data.forEach(item => {
+                this.processSectionNameold(item.section) //只產生該用戶能收到的帳號機構的標題
               });
-              for(let i = 0 ; i<this.sectionName.length;i++){
+              }
+              for(let i = 0 ; i<this.sectionName.length;i++){  //產生每個標題中的資料內容
                 let datas = [];
                 res.data.forEach(item => {
-                const sectionResult = this.processSectionName(item.section);
-                const usernameResult = item.username
+                const sectionResult = this.processSectionName(item.section); //產生用戶所屬區域名稱
                 let showbtn = true;
                 if (sectionResult.startsWith(this.sectionName[i])) {
-                  if(usernameResult === "123") showbtn = false
+                  if(item.username === "123" || item.username == this.Username) showbtn = false //使123帳號不能被更改
                   datas.push({
                     email: item.email,
-                    level: this.Tranlevel(item.level,item.username,0),
+                    level: this.Tranlevel(item.level,item.username,0), //用戶權限名稱
                     passcode: item.passcode,
                     registrationTime: this.formatDate(item.registrationTime),
                     section: sectionResult,
@@ -259,6 +334,7 @@ import axios from 'axios';
                     selectsection:sectionResult,
                   });
                 }
+                
                 /*const index = this.data.findIndex(item => item.name === "123");
                 if (index !== -1) {
                     const itemToMove = this.data.splice(index, 1)[0];
@@ -273,6 +349,11 @@ import axios from 'axios';
                 }*/
                 
               });
+              if(datas.length !== 0){
+                this.Tableshow.push(true)
+              }else{
+                this.Tableshow.push(false)
+              }
               this.data.push(datas);
             }
               })
@@ -281,9 +362,6 @@ import axios from 'axios';
           })
         
       },
-      toggleShow(index) {
-      this.userdatas[index].show = !this.userdatas[index].show
-    },
     formatDate(timestamp) {
       const dateObj = new Date(timestamp * 1000); 
       const year = dateObj.getFullYear();

@@ -74,16 +74,38 @@
         password: null,
         token:'',
         loading: false,
-        section:[
-          "北科",
-          "海科"
-        ],
+        section:[],
         SelectSection:null,
         visible: false,
         IP:process.env.VUE_APP_IP,
       }),
-  
+      created(){
+        this.fetchInstruction();
+      },
       methods: {
+        
+        fetchInstruction(){
+          axios.get(
+            "https://pre.aifish.cc"+"/api/v1/section",{
+              headers: {
+                Authorization: `Bearer `
+              },
+              
+            }
+          )
+          .then(res=> {
+              console.log(res);
+              const instructiontable = res.data.instructionTable;
+              const instructionname =  instructiontable.map(ins => ins.name);
+              this.section = instructionname
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              
+              alert('註冊失敗');
+          })
+        },
         onSubmit () {
           if (!this.form) return
           this.loading = true
@@ -104,13 +126,13 @@
                   alert("請至註冊信箱中點選驗證信進行驗證");
                   setTimeout(() => (this.loading = false), 2000)
                   window.location.replace(`/login`); //括號內加上+res.data.token
-              }else alert("註冊失敗!請刷新螢幕重新註冊一次")
+              }else this.$Message.error('註冊失敗!請刷新螢幕重新註冊一次')
           })
           .catch(err=> {
               console.log(err);
               this.loading = false;
               
-              alert('註冊失敗');
+              this.$Message.error('註冊失敗');
           })
         },
         required (v) {

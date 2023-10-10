@@ -15,7 +15,7 @@
         style="width: 200px;"
         bg-color="rgba(255, 255, 255, 0.15)"
       ></v-text-field>
-      <v-btn @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
+      <v-btn v-if="showBurnBtn" @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
       <v-dialog v-model="SearchBinmodal"  width="40%">
         <v-card>
           <v-card-text>
@@ -29,7 +29,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-btn @click="Binmodal = true" size="large" class="ml-7 mr-8 mt-6" color="green-darken-3">上傳更新檔</v-btn>
+      <v-btn v-if="showBurnBtn" @click="Binmodal = true" size="large" class="ml-7 mr-8 mt-6" color="green-darken-3">上傳更新檔</v-btn>
       <Modal
           v-model="Binmodal"
           title="仿生魚更新檔"
@@ -43,7 +43,7 @@
           ></v-text-field>
           <input type="file" ref="fileInput" @change="select" />
           </Modal>
-          <v-btn @click="Burnmodal = true" size="large" class="ml-7 mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
+          <v-btn v-if="showBurnBtn" @click="Burnmodal = true" size="large" class="ml-7 mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
       <Modal
           v-model="Burnmodal"
           title="燒錄更新檔"
@@ -79,7 +79,7 @@
       <v-btn class="ml-7 mr-8 mt-6"
         color="light-blue-darken-4 "
         size="large"
-        v-bind="props" type="primary"  >新增</v-btn>
+        v-bind="props" type="primary"  v-if="showBurnBtn">新增</v-btn>
     </template>
     <v-card>
       <v-toolbar dark color="blue-accent-1">
@@ -89,7 +89,7 @@
         <v-toolbar-title>新增仿生魚</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn variant="text" @click="newdatas" :disabled="AddButtonDisabled"> 新增 </v-btn>
+          <v-btn  variant="text" @click="newdatas" :disabled="AddButtonDisabled"> 新增 </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-list-subheader class="mx-4">基本資料</v-list-subheader>
@@ -117,15 +117,15 @@
     <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
-      <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-create" size="small" @click="row.modal = true"></Button></p>
-      <Modal
-              v-model="row.modal"
-              title="上傳仿生魚照片"
-              :closable="false"
-              @on-ok="uploadImage(row.id)"
-              @on-cancel="cancel">
+      <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
+      <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel">
               <input type="file" ref="fileInput" @change="selectfile" />
-          </Modal>
+              <div class="mt-4 font-weight-bold text-h6">上傳照片範例:</div>
+              <div class="mb-1 f ">(以黑色作為照片背景，按照下圖所示的魚身角度進行拍攝)</div>
+              <div style="width: 30%; height: 30%; background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage1.png" width="100%" height="100%" ></v-img></div>
+              <div class="mt-1">備註:上傳照片前需要經過去背。</div>      
+              <div>免費去背網站:https://picwish.com/tw/remove-background</div>    
+            </Modal>
    </template>
     <template #action="{ row: { id } }">
     <Button  type="primary" size="small" @click="fishdatas[i][id].show = true" class="mr-2">查看</Button>
@@ -150,7 +150,7 @@
     <Button  type="error" size="small" @click="confirm(id)">刪除</Button>
     </template>
   </Table>
-  <Table  v-show="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="ml-7 mr-7"></Table>
+  <Table  v-if="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="ml-7 mr-7"></Table>
   </div>
   </template>
   
@@ -194,7 +194,7 @@ import axios from 'axios';
                         key: 'version'
                     },
                     {
-                        title: '更新時間',
+                        title: '資料更新時間',
                         key: 'time'
                     },
                     {
@@ -222,7 +222,7 @@ import axios from 'axios';
                         key: 'version'
                     },
                     {
-                        title: '更新時間',
+                        title: '資料更新時間',
                         width:100,
                         key: 'time'
                     },
@@ -248,7 +248,7 @@ import axios from 'axios';
                         key: 'version'
                     },
                     {
-                        title: '更新時間',
+                        title: '資料更新時間',
                         key: 'time'
                     },
                     {
@@ -273,7 +273,7 @@ import axios from 'axios';
                         key: 'version'
                     },
                     {
-                        title: '更新時間',
+                        title: '資料更新時間',
                         key: 'time'
                     },
                     {
@@ -322,12 +322,17 @@ import axios from 'axios';
             BurnFishId:[],
             indeterminate: true,
             checkAll: false,
+            showBurnBtn:false,
+            showNewfishBtn:false,
+            level: localStorage.getItem('UserLevel'),
         }
       },
       async created() {
         this.formNameMapping(this.instructionCode,this.InstructionName);
         this.formNameMapping(this.poolsCode,this.poolName);
         this.RefreshDatas2();
+        if(this.level < 10) this.showBurnBtn = true;
+        if(this.level <= 30) this.showNewfishBtn = true;
         await this.accountdata();
       },
       mounted() {
@@ -599,7 +604,7 @@ import axios from 'axios';
                 let datas = this.FishId[i].map((item, index) => ({
                     id: this.FishId[i][index],
                     version: this.version[i][index],
-                    time: this.formatDate(this.time[i][index]),
+                    time: this.fishformatDate(this.time[i][index]),
                     active: this.proccesactive(this.active[i][index]),
                     modal:false,
                 }));
@@ -616,6 +621,16 @@ import axios from 'axios';
     },
     toggleShow(index) {
       this.fishdatas[index].show = !this.fishdatas[index].show
+    },
+    fishformatDate(timestamp) {
+      const dateObj = new Date(timestamp * 1000); 
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+      const day = String(dateObj.getDate()).padStart(2, '0'); 
+      const hours = dateObj.getHours().toString().padStart(2, '0'); 
+      const minutes = dateObj.getMinutes().toString().padStart(2, '0'); 
+      const seconds = dateObj.getSeconds().toString().padStart(2, '0'); 
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
     formatDate(timestamp) {
       const dateObj = new Date(timestamp * 1000); 

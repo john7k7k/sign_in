@@ -6,25 +6,26 @@
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[index].EnPoolName }}</div>
       </v-card>
       </div>
-      <v-card v-if="poolsName.length <2" cover class="notyet-bg2" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+      
+      <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
+      <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
+      <v-card v-if="poolsName.length <2" cover class="notyet-bg2"    :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
         <div class="notyet-bg2-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
-      <v-card v-if="poolsName.length <=2"  cover class="notyet-bg1" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+      <v-card v-if="poolsName.length <=2"  cover class="notyet-bg1"    :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
           <div class="notyet-bg1-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
-      <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
-      <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
-      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
       <v-card  class="poolsdatacard "   >
           <v-card-text class="cardtextbg  ">
             <div v-if="isMobileScreen" class="font-weight-bold text-white text-end mr-1 mt-7" style="font-size: 40px; letter-spacing: 3px;">{{ poolsName[centerIndex] }}</div>
-            <div v-if="isMobileScreen" class=" text-white mr-2 mt-4" style="white-space: pre-wrap; text-align: end; width: 277px; font-size: 20px; margin-left: 70px;letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+            <div v-if="isMobileScreen" class=" text-white mr-1 mt-4  text-end" style="white-space:pre-wrap;padding-left: 20%;   font-size: 20px; letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
             <div v-if="isMobileScreen" class="  text-blue-grey-lighten-1 text-end mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
@@ -206,7 +207,7 @@ for (var i = 0; i < this.poolsCode.length; i++) {
 },
 async RefreshDatas(i) {
 try {
-      if (this.FishId[i].length !== 0) {
+      if (this.FishId.length !== 0 && this.FishId[i].length !== 0) {
         const response = await axios.get(
           "/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
@@ -219,6 +220,7 @@ try {
         console.log(response);
         const responseData = JSON.stringify(response.data[this.poolsCode[i]]);
         const parsedResponseData = JSON.parse(responseData);
+        console.log(parsedResponseData)
         if(i === 0){
           const currentTime = new Date();
           const year = currentTime.getFullYear();
@@ -465,6 +467,7 @@ await this.RefreshDatas(i);
 </script>
 
 <style scoped>
+
 .notyet-bg1::before {
     content: "";
     background-color: rgb(0, 0, 255,0.15); 
@@ -489,7 +492,8 @@ await this.RefreshDatas(i);
   transform: scale(0.9) ;
   margin-top: -6%;
   left: 10%;
-  width: 50%;
+  width:400px;
+  min-height:230px;
 }
 .notyet-bg2::before {
     content: "";
@@ -515,7 +519,8 @@ await this.RefreshDatas(i);
   transform: scale(0.9) ;
   margin-top: 29%;
   left: 10%;
-  width: 50%;
+  width:400px;
+  min-height:230px;
 }
 
 .titel-Name{
@@ -650,66 +655,40 @@ await this.RefreshDatas(i);
 }
 
 @media screen and (max-width: 600px) {
-  .notyet-bg1{
-  z-index: 2;
-  position: relative;
-  transform: scale(0.8) ;
-  margin-top: -18%;
-  left: -1%;
-  width: 50%;
+  .Swiper{
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
 }
-.one{
-  z-index: 2;
-  position: absolute;
-  transform: scale(0.75) ;
-  margin-top: -18%;
-  left: -1%;
-  width: 50%;
-}
-.notyet-bg2{
-  z-index: 0;
-  position: absolute;
-  transform: scale(0.75) ;
-  margin-top: 137%;
-  left: -1%;
-  width: 50%;
-}
-.titel-Name ,.en-titelName, .recordtext{
-  display: none;
-}
-  .poolsdatacard{
-      margin-top: 3%;
-      position: absolute;
-      transform: scale(0.85) ;
-      width: 100%;
-      border-radius: 5px;
-      background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
-      border: 3px solid rgba(255, 255, 255, 0.2);
-}
-  .two {
-      display: none;
-  }
-  .three {
-      margin-top: -10%;
-      position: relative;
-      transform: scale(0.8);
-      width: 100%;
-  }
 
-  .three + .three {
-      display: none;
-  }
-  .four{
-    margin-top: -5%;
-      position: relative;
-      transform: scale(0.8);
-      width: 100%;
-  }
-  .upbutton {
-      display: none;
-  }
-  .downbutton{
-      display: none;
+
+.notyet-bg1 {
+  width: 80%;
+  height: 20%;
+  transform: none;
+}
+
+.poolsdatacard {
+  width: 100%;
+  height: auto;
+  transform: scale(0.85);
+  border-radius: 15px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  margin: 40% 0;
+}
+
+.notyet-bg2 {
+  width: 80%;
+  height: 20%;
+  transform: none;
+  margin: 130% 0;
+}
+  .titel-Name, .en-titelName, .recordtext,.one, .two, .three, .upbutton,.Swiper-content, .downbutton {
+    display: none;
   }
 }
 @media screen and (min-width: 601px) and (max-width: 1024px){
