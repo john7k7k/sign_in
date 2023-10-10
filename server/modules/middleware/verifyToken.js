@@ -3,8 +3,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = function (tokenFrom = 'URL'){
-    return (threshold = 0, verifySection = true) => {
+    return (redirect = false,threshold = 0, verifySection = true) => {
       return (req, res, next) => {
+        console.log(redirect)
+        if(!redirect) failMethod = () => res.sendStatus(403);
+        else failMethod = () => res.redirect('/login');
         let token = '';
         try{
           if(tokenFrom === 'URL') token = req.query.token;
@@ -12,12 +15,12 @@ module.exports = function (tokenFrom = 'URL'){
           else if(tokenFrom === 'Cookie') token = req.cookies.token;
         }
         catch{
-          res.sendStatus(403);
+          failMethod();
           return;
         }
         jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
           if (err) {
-            res.sendStatus(403);
+            failMethod();
             console.log(err);
             return;
           }
@@ -31,8 +34,8 @@ module.exports = function (tokenFrom = 'URL'){
               username: payload.username
             }
           });
-          if(level > threshold) res.sendStatus(403);
-          else if(verifySection && !req.query.section.match('^'+section) && section !== '001') res.sendStatus(403);
+          if(level > threshold) failMethod();
+          else if(verifySection && !req.query.section.match('^'+section) && section !== '001') failMethod();
           else next();
         })
       }

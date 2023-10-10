@@ -15,6 +15,16 @@ module.exports = async (req,res) => {
           }
         }
       });
+      await prisma.fishData.create({
+        data: {
+          fishUID,
+          time: Math.floor((new Date()).getTime()/1000),
+          bc: 0,
+          err: 0,
+          active: 0,
+          version: 'init'
+        }
+      })
       fs.mkdir(`uploads/photos/fish/${fishUID}` , {recursive: true},() => void 0)
       const users = await prisma.user.findMany();
       const admins = users.filter(user => user.level <= 30 && (req.query.section.match('^' + user.section)||user.section=='001'));
@@ -34,5 +44,5 @@ module.exports = async (req,res) => {
           }
         });
       res.sendStatus(200);
-    }catch{ res.sendStatus(500); }
+    }catch(e){ res.sendStatus(e); }
   }

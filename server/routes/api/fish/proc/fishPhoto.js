@@ -44,6 +44,10 @@ const getURL = async (req, res) => {
     })
 }
 
+const deletePhoto = async () => {
+    
+}
+
 module.exports = {
     upload,
     process: (req, res) => {
