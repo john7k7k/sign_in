@@ -54,4 +54,6 @@ router.post(`/photos`, verifyTokenBy('Header')(),  fishPhoto.upload.single('imag
 
 router.post(`/relocal`, verifyTokenBy('Header')(), relocalFish);
 
+router.post('/photo/delete', verifyTokenBy('Header')(), fishPhoto.remove)
+
 module.exports = router;
