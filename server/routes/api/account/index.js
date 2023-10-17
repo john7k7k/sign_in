@@ -14,6 +14,7 @@ const removeUser = require('./proc/removeUser');
 const reviseLevel = require('./proc/reviseLevel');
 const reviseSection = require('./proc/reviseSection');
 const sticker = require('./proc/sticker');
+const changePassword = require('./proc/changePassword');
 
 const verifyTokenBy = require('../../../modules/middleware/verifyToken');
 const verifyAdmin = require('../../../modules/middleware/verifyAdmin')
@@ -73,5 +74,7 @@ router.get(`/sticker`,
     verifyTokenBy('Header')(),
     sticker.get
 )
+
+//router.post(`/change/password`, verifyTokenBy('Header')(), changePassword);
 
 module.exports = router;

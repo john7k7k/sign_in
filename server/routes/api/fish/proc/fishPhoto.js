@@ -21,7 +21,16 @@ const get = (req, res) => {
     fs.readdir(dir , (err, photos) => {
         console.log(photos)
         if(!photos.includes(req.query.time)) return res.sendStatus(403);
+        console.log('a');
         res.sendFile(path.join(dir,req.query.time));
+    })
+}
+
+const remove = (req, res) => {
+    const dir = path.join(__dirname, `../../../../uploads/photos/fish/${req.query.fishUID}`);
+    console.log(dir)
+    fs.unlink(dir + req.body.addTime , (err, photos) => {
+        res.sendStatus(200);
     })
 }
 
@@ -51,5 +60,6 @@ module.exports = {
         res.sendStatus(200)
     },
     get,
-    getURL
+    getURL,
+    remove
 }

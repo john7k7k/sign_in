@@ -42,6 +42,16 @@ module.exports = (accessToken = process.env.DB_LINE_TOKEN) => {
     return data
   }
 
+  lineNotify.decodeFishesInfoReturn = (message) => { //解析IOT端
+    const date = new Date();
+    var data = '(Info)\n'
+    data += date.toLocaleString();
+    for(i in message){
+      data+='\n'+'id: '+i+', '+'bc: '+message[i]['bc']+', '+'err: '+message[i]['err']+', '+'active: '+message[i]['active'];
+    }
+    return data
+  }
+
   lineNotify.decodeAllFishesData = (message) => { //解析sql端
     var data = '標題: 最新魚資料\n'
     data += `時間: ${(DateTime.now()).setZone('Asia/Taipei').toFormat('yyyy/M/d HH:mm:ss')} (GMT+0800)\n`;
