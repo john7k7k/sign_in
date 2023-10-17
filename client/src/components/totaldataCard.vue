@@ -1,36 +1,39 @@
 <template>
   <div class="Swiper" >
+      <div class="father1">
+        
+      <v-card v-if="poolsName.length <2" cover class="three" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <div class="notyet-bg2-overlay">
+            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
+            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+          </div>
+      </v-card>
       <div class="Swiper-content" >
         <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[index].EnPoolName }}</div>
       </v-card>
       </div>
-      
-      <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
-      <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
-      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
-      <v-card v-if="poolsName.length <2" cover class="notyet-bg2"    :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
-        <div class="notyet-bg2-overlay">
-            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
-            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
-          </div>
-      </v-card>
-      <v-card v-if="poolsName.length <=2"  cover class="notyet-bg1"    :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+      <v-card v-if="poolsName.length <=2"  cover class="one" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
           <div class="notyet-bg1-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
+      </div>
+      <div class="father2">
+        <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
+      <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+      <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
       <v-card  class="poolsdatacard "   >
           <v-card-text class="cardtextbg  ">
             <div v-if="isMobileScreen" class="font-weight-bold text-white text-end mr-1 mt-7" style="font-size: 40px; letter-spacing: 3px;">{{ poolsName[centerIndex] }}</div>
-            <div v-if="isMobileScreen" class=" text-white mr-1 mt-4  text-end" style="white-space:pre-wrap;padding-left: 20%;   font-size: 20px; letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+            <div v-if="isMobileScreen" class=" text-white  mt-4" style="white-space: pre-wrap; text-align: end;  font-size: 20px; letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
             <div v-if="isMobileScreen" class="  text-blue-grey-lighten-1 text-end mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
     
-      <v-btn class="mr-2  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+      <v-btn class="  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
@@ -66,6 +69,7 @@
     </div>
     </v-card-text>
   </v-card>
+      </div>
   </div>
 
   
@@ -207,7 +211,7 @@ for (var i = 0; i < this.poolsCode.length; i++) {
 },
 async RefreshDatas(i) {
 try {
-      if (this.FishId.length !== 0 && this.FishId[i].length !== 0) {
+      if (this.FishId[i].length !== 0) {
         const response = await axios.get(
           "/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
@@ -467,8 +471,7 @@ await this.RefreshDatas(i);
 </script>
 
 <style scoped>
-
-.notyet-bg1::before {
+.three::before {
     content: "";
     background-color: rgb(0, 0, 255,0.15); 
     width: 100%;
@@ -478,7 +481,7 @@ await this.RefreshDatas(i);
     left: 0;
     z-index: 1; 
 }
-.notyet-bg1-overlay {
+.three-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -486,16 +489,7 @@ await this.RefreshDatas(i);
   height: 100%;
   z-index: 2; 
 }
-.notyet-bg1{
-  z-index: 0;
-  position: absolute;
-  transform: scale(0.9) ;
-  margin-top: -6%;
-  left: 10%;
-  width:400px;
-  min-height:230px;
-}
-.notyet-bg2::before {
+.one::before {
     content: "";
     background-color: rgb(0, 0, 255,0.1); 
     width: 100%;
@@ -505,7 +499,7 @@ await this.RefreshDatas(i);
     left: 0;
     z-index: 1; 
 }
-.notyet-bg2-overlay {
+.one-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -513,111 +507,8 @@ await this.RefreshDatas(i);
   height: 100%;
   z-index: 2; 
 }
-.notyet-bg2{
-  z-index: 0;
-  position: absolute;
-  transform: scale(0.9) ;
-  margin-top: 29%;
-  left: 10%;
-  width:400px;
-  min-height:230px;
-}
 
-.titel-Name{
-    font-size: 60px;
-    position: absolute;
-    left: 81.3%;
-    margin-top: 0%;
-    letter-spacing: 4px;
-  }
-  .en-titelName{
-    font-size: 25px;
-    position: absolute;
-    letter-spacing: 3px;
-    left: 73%;
-    margin-top: 5.5%;
-    width: 25.2%;
-  }
-.needbcbtn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(249, 168, 37, 0.7);
-}
-.versiontext{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(0, 0, 255, 1);
-  border-radius: 50px;
-  width: 10%;
-}
-.refreshbtn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.12), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.7);
-  transform:  scaleX(-1);
-}
-.btn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.7);
-}
-.cardimage{
-  transform: scale(0.98);
-  border-radius: 10px;
-}
-.cardtextbg {
-  background-color: rgba(255, 255, 255, 0); 
-}
-.cardtext{
-  background-color: rgba(255, 255, 255, 0);
-  letter-spacing: 2px;
-  
-}
-.recordtext{
-  background-color: rgba(255, 255, 255, 0); 
-  position: absolute;
-  margin-top: 12%;
-  left: 82.8%;
-  font-size: 17px;
-}
-.nodisplay{
-  display: none;
-}
-.poolsdatacard{
-  position: absolute;
-  transform:translateX(99.6%) scale(1) translateY(73%);
-  width: 50%;
-  background-color: rgba(255, 255, 255, 0);
-}
-.one{
-  z-index: 2;
-  position: absolute;
-  transform: scale(0.9) ;
-  margin-top: -6%;
-  left: 10%;
-  width: 50%;
-}
-.two{
-  z-index: 9;
-  position: absolute;
-  transform: scale(1.2) ;
-  margin-top: 11.5%;
-  left: 10%;
-  width: 50%;
-}
-.three{
-  z-index: 2;
-  position: absolute;
-  transform: scale(0.9) ;
-  margin-top: 29%;
-  left: 10%;
-  width: 50%;
-}
-  .forIpadcenter{
+.forIpadcenter{
     margin-top: -5%;
       position: relative;
       transform: scale(0.8);
@@ -653,48 +544,162 @@ await this.RefreshDatas(i);
   background-color: rgba(255, 255, 255, 0); 
   color: white;
 }
+.needbcbtn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(249, 168, 37, 0.7);
+}
+.refreshbtn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.12), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  transform:  scaleX(-1);
+}
+.btn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+}
+.cardimage{
+  transform: scale(0.98);
+  border-radius: 10px;
+}
+.cardtextbg {
+  background-color: rgba(255, 255, 255, 0); 
+}
+.cardtext{
+  background-color: rgba(255, 255, 255, 0);
+  letter-spacing: 2px;
+  
+}
+.recordtext{
+  background-color: rgba(255, 255, 255, 0); 
+  font-size: 17px;
+}
+.nodisplay{
+  display: none;
+}
+@media screen and  (min-width: 960px) {
+.Swiper{
+  display: flex;
+  width: 100%;
+  max-height: 100%;
+  
+}
 
-@media screen and (max-width: 600px) {
-  .Swiper{
+.father1{
   display: flex;
   flex-direction: column;
-  align-content: space-around;
-  justify-content: flex-start;
-  width: 100%;
-  height: 100%;
+  justify-content: space-around;
+  width: 50%;
+  height: 50%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  align-items: flex-end;
+  margin-top: 4%;
+}
+.one{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 33%;
+  
+}
+.two{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 33%;
+}
+.three{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 33%;
 }
 
 
-.notyet-bg1 {
-  width: 80%;
-  height: 20%;
-  transform: none;
-}
-
-.poolsdatacard {
-  width: 100%;
-  height: auto;
-  transform: scale(0.85);
-  border-radius: 15px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  margin: 40% 0;
-}
-
-.notyet-bg2 {
-  width: 80%;
-  height: 20%;
-  transform: none;
-  margin: 130% 0;
-}
-  .titel-Name, .en-titelName, .recordtext,.one, .two, .three, .upbutton,.Swiper-content, .downbutton {
-    display: none;
+.titel-Name{
+    font-size: 60px;
+    letter-spacing: 4px;
   }
+  .en-titelName{
+    font-size: 25px;
+    letter-spacing: 3px;
+    width: 385px;
+  }
+
+.poolsdatacard{
+  width: 100%;
+  height: 200%;
+  flex: auto;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+
 }
 @media screen and (min-width: 601px) and (max-width: 1024px){
 }
 
-@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
+@media screen and (max-width: 600px) {
+  .titel-Name,.en-titelName,.recordtext,.Swiper-content{
+    display: none;
+  }
+  .Swiper{
+    display: flex;
+    flex-direction: column-reverse;
+    width: 90%;
+    justify-content: flex-start;
+  }
+  .father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  height: 50%;
+  align-items: center;
+  margin-top: 3%;
 }
+.father2{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+  .poolsdatacard{
+  width: 90%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 15px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.one{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 33%;
+  
+}
+.two{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 33%;
+}
+.three{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 33%;
+}
+}
+
+
+
 
 </style>

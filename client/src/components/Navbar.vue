@@ -25,8 +25,9 @@
       <v-btn  value="out" @click="logout" href="/login" class="navbartext font-weight-bold">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
+    <div class=" text-white navbartext font-weight-bold mt-2">{{ username }}</div>
     <div>
-      <v-btn  value="about" href="/user" ><v-avatar class=" mr-4 mt-2" :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn>
+      <v-btn  value="about" href="/user" ><v-avatar class=" mr-4 " :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn>
       
       
     </div>
@@ -36,7 +37,7 @@
     </v-btn>
     
   </v-toolbar>
-  <div class=" text-white usernametext d-flex justify-end mr-10">{{ username }}</div>
+  
 </div>
 
 
@@ -213,7 +214,7 @@ methods: {
   },
   logout(){
     axios.post(
-          "/api/v1/account/logout",{},{
+      "/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }

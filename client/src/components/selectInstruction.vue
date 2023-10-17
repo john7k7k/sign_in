@@ -188,7 +188,7 @@
     background-image: url('../assets/查看鈕改.png');
     background-position: center;
     background-size: 101% 101%;
-    left: 28%;
+    left: 30%;
     top: -2%;
     transform: scale(1);
 }

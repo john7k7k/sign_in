@@ -121,10 +121,8 @@
     transform: translateX(-50%) scale(0.8);
   }
   .Swiper{
-      height: 100%;
       width: 100%;
       position: relative;
-      margin: 70px auto;
   }
   
   .Swiper-content{
