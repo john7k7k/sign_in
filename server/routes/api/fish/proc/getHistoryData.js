@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
         if(!datas[fish.location]) datas[fish.location] = {};
         fish.fishData.forEach(data => delete data.fishUID);
         datas[fish.location][fish.fishUID] = fish.fishData;
-        datas[fish.location][fish.fishUID].photoCode = fish.photoCode;
+        datas[fish.location][fish.fishUID].at(-1).photoCode = fish.photoCode;
       })
       res.send(datas);
     }catch{res.sendStatus(403);}
