@@ -17,27 +17,27 @@ POST http://localhost:3000/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "1234",
+    "username": "123",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
 POST http://localhost:3000/api/v1/fish/assign
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODExOTEyNCwiZXhwIjoxNjk4MTI4MTI0fQ.nJKPdG9pHAxpy44iL1kRXYJBmDFd6nVl4gZ-cg5RAUs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA3MjAzOCwiZXhwIjoxNjk4MDgxMDM4fQ.Zd8sTqeHteLXwpuCB8ghAhnFN3pGBtvUIQYDaMv8R5U
 
 {
-    "username": "123",
-    "fishUID": "0023999"
+    "username": "1234",
+    "fishUID": "0023001"
 }
 
 ###
 POST http://localhost:3000/api/v1/fish/disassign
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODExOTEyNCwiZXhwIjoxNjk4MTI4MTI0fQ.nJKPdG9pHAxpy44iL1kRXYJBmDFd6nVl4gZ-cg5RAUs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNTc1NCwiZXhwIjoxNjkzNDI0NzU0fQ.CTi99ThcxnfZ5MOcaFyjqA6fODQ5nsK-x2niEWzgRNg
 
 {
-    "username": "123",
-    "fishUID": "0023999"
+    "username": "1234",
+    "fishUID": "0023001"
 }
 
 ###
@@ -61,7 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET http://localhost:3000/api/v1/account/list/?section=001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQyNTcyOSwiZXhwIjoxNjkzNDM0NzI5fQ.0HqX8T8MkU7vd5ICaQEPX-i7q1hkIvOisbnEnXQJaAU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2MTQ1MCwiZXhwIjoxNjk4MTcwNDUwfQ.ipQ489He7Lbtgq2Iw4vXGj2wjkPa2EzKdwPKgnIqE84
 
 ###
 POST http://localhost:3000/api/v1/account/revise/level
@@ -75,11 +75,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://localhost:3000/api/v1/account/revise/section
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODExOTEyNCwiZXhwIjoxNjk4MTI4MTI0fQ.nJKPdG9pHAxpy44iL1kRXYJBmDFd6nVl4gZ-cg5RAUs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNjU5MywiZXhwIjoxNjkzNDI1NTkzfQ.8PK_WVJDwxIOYJQq6l4yagLzaeUVo-By2S7t4ncA8r8
 
 {
     "username": "1234",
-    "newSection": "002001"
+    "newSection": "002002"
 }
 ###
 POST http://localhost:3000/api/v1/fish/?section=002001001
@@ -93,7 +93,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://localhost:3000/api/v1/fish/data/
 Content-Type: application/json
-Authorization: BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA1MTAxOCwiZXhwIjoxNjk4MDYwMDE4fQ.pt2wsvOkC2JW9rmyp_EpQKBtZIrJiWxMoZ35-PCWdC8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE1MjU2MywiZXhwIjoxNjk4MTYxNTYzfQ.qwdd8_JDnm9r52joSG0xh-clTYixJBRp-Zc1VebReyw"
 
 {
     "fishData": {
@@ -111,14 +111,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 
 ###
-GET http://localhost:3000/api/v1/fish/data/?fishesUID=0023999
+GET http://localhost:3000/api/v1/fish/data/?fishesUID=0023002
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA1MTAxOCwiZXhwIjoxNjk4MDYwMDE4fQ.pt2wsvOkC2JW9rmyp_EpQKBtZIrJiWxMoZ35-PCWdC8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE1NzEyOCwiZXhwIjoxNjk4MTY2MTI4fQ.c4fdOEZSt8UET2lqWSwyVFOZPSZJnsMzPWhWwIHwEyU
 
 ###
-GET http://localhost:3000/api/v1/fish/history_data/?fishesUID=0023001,0023002&versions=1693063995:1693064041,1693064039:1693064040
+GET http://localhost:3000/api/v1/fish/history_data/?fishesUID=0023999&versions=1694102057:1698064041
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzA3Mzg4OCwiZXhwIjoxNjkzMDgyODg4fQ.w1-8mkztLx7f5vne2Qro3Bbhk66ERrcwlvCtpVwUP_U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2Mzg0OCwiZXhwIjoxNjk4MTcyODQ4fQ.853qp8OqQSXpjBHKySn0wZel__vonQVb8GtTdItDL8E
 
 ###
 POST http://localhost:3000/api/v1/fish/control/?section=002001001
@@ -235,10 +235,40 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 ###
 POST http://localhost:3000/api/v1/fish/photo/change
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA1MDAxOCwiZXhwIjoxNjk4MDU5MDE4fQ.rbcs2rJXS75ooFkUrSzDoK-7vwgsYwv7iLQhpFzaVXQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE1MjU2MywiZXhwIjoxNjk4MTYxNTYzfQ.qwdd8_JDnm9r52joSG0xh-clTYixJBRp-Zc1VebReyw
 Content-Type: application/json
 
 {
-    "fishUID": "0023999",
+    "fishUID": "0023001",
     "photoCode": 1
+}
+###
+POST http://localhost:3000/api/v1/fish/relocal
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE1MjU2MywiZXhwIjoxNjk4MTYxNTYzfQ.qwdd8_JDnm9r52joSG0xh-clTYixJBRp-Zc1VebReyw
+
+{
+    "fishUID": "0023001",
+    "newPool": "002001002"
+}
+###
+POST http://localhost:3000/api/v1/ota/burn
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
+
+{
+    "fishesUID": ["0023001","0023002"],
+    "version": "test_2"
+}
+
+###
+GET http://localhost:3000/api/v1/ota/bin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NDk1NSwiZXhwIjoxNjkzNzYzOTU1fQ.k48udhky0SI6RR9pWmEhMYOR_Xb6a0t1a2bFOky_X5Y
+
+###
+POST http://localhost:3000/api/v1/ota/bin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NDk1NSwiZXhwIjoxNjkzNzYzOTU1fQ.k48udhky0SI6RR9pWmEhMYOR_Xb6a0t1a2bFOky_X5Y
+
+{
+    "version": "v1.3.4test"
 }
