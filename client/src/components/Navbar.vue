@@ -212,9 +212,18 @@ methods: {
       return "用戶";
     }
   },
+  clearCookies() {
+  var cookies = document.cookie.split("; ");
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    var eqPos = cookie.indexOf("=");
+    var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+},
   logout(){
     axios.post(
-      "/api/v1/account/logout",{},{
+      "https://pre.aifish.cc"+"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -224,8 +233,10 @@ methods: {
             console.log(res);
             
             if(res.status == 200){
-              this.$Message.success('登出成功');
+              
+              this.clearCookies();
               document.cookie = "token=" + res.data.token + "; path=/";
+              this.$Message.success('登出成功');
               window.location.replace(`/login`); 
             }
             else
@@ -244,7 +255,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "https://pre.aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {

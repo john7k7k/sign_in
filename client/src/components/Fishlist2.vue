@@ -129,6 +129,16 @@
                  
             </Modal>
    </template>
+   <template #active="{ row}">
+    <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
+    <Modal v-model="row.ActiveModal" :title="row.id" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
+        <RadioGroup  v-model="row.selectActive">
+          <Radio class="radio" label="游動中">游動中</Radio>
+          <Radio class="radio" label="待機中">待機中</Radio>
+          <Radio class="radio" label="維修中">維修中</Radio>
+        </RadioGroup>           
+    </Modal>
+  </template>
     <template #action="{ row: { id } }">
     <Button  type="primary" size="small" @click="fishdatas[i][id].show = true" class="mr-2">查看</Button>
     <v-dialog v-model="fishdatas[i][id].show" width="auto">
@@ -182,6 +192,8 @@ import axios from 'axios';
             lastdatas:[],
             time:[],
             active:[],
+            bc:[],
+            error:[],
             columns: [
                     {
                         title: 'ID',
@@ -189,7 +201,9 @@ import axios from 'axios';
                     },
                     {
                         title: '狀態',
-                        key: 'active'
+                        slot: 'active',
+                        width: 250,
+                        align: 'left'
                     },
                     {
                         title: '版本',
@@ -210,12 +224,12 @@ import axios from 'axios';
                     {
                         title: 'ID',
                         slot: 'id',
-                        width:92,
+                        width:100,
                         fixed: 'left'
                     },
                     {
                         title: '狀態',
-                        width:80,
+                        width:82,
                         key: 'active'
                     },
                     {
@@ -231,7 +245,7 @@ import axios from 'axios';
                     {
                         title: '編輯',
                         slot: 'action',
-                        width: 80,
+                        width: 78,
                         align: 'center',
                         fixed: 'right'
                     }
@@ -568,7 +582,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "https://pre.aifish.cc"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -581,6 +595,8 @@ import axios from 'axios';
                 let vertionarray = [];
                 let timearray = [];
                 let activearray = [];
+                let bcarray = [];
+                let errarray = [];
                 for (const id in response.data[this.poolsCode[i]]) {
                     if (!Array.isArray(response.data[this.poolsCode[i]][id])) continue;
                     const dataArray = response.data[this.poolsCode[i]][id];
@@ -594,21 +610,29 @@ import axios from 'axios';
                     const reversedLastFive = lastFiveObjects.reverse();
                     this.fishdatas[i][id] = reversedLastFive;
                     this.fishdatas[i][id].show = false;
-                    const { version, time, active } = dataArray[dataArray.length - 1];
+                    const { version, time, active, bc, err } = dataArray[dataArray.length - 1];
                     vertionarray.push(version);
                     timearray.push(time);
                     activearray.push(active);
+                    bcarray.push(bc);
+                    errarray.push(err);
                 }
                 this.version.push(vertionarray);
                 this.time.push(timearray);
                 this.active.push(activearray);
+                this.bc.push(bcarray);
+                this.error.push(errarray);
 
                 let datas = this.FishId[i].map((item, index) => ({
                     id: this.FishId[i][index],
+                    bc: this.bc[i][index],
+                    err: this.error[i][index],
                     version: this.version[i][index],
                     time: this.fishformatDate(this.time[i][index]),
                     active: this.proccesactive(this.active[i][index]),
                     modal:false,
+                    ActiveModal:false,
+                    selectActive: this.proccesactive(this.active[i][index]),
                 }));
                 datas.sort((a, b) => {
                     const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
@@ -645,7 +669,7 @@ import axios from 'axios';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "/api/v1/account",
+          "https://pre.aifish.cc"+"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -773,6 +797,37 @@ import axios from 'axios';
               this.$Message.error('上傳失敗');
           })
       },
+    changeFishActive(fishdata,newActive){
+      if(newActive == "游動中"){
+        newActive = 1;
+      }else if(newActive == "維修中"){
+        newActive = 2;
+      }else newActive = 0;
+      axios.post(
+        "https://pre.aifish.cc"+"/api/v1/fish/data/",
+            {
+              "fishData": {
+                          [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
+                      }
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(async res=> {
+              console.log(res);
+              this.$Message.success('變更狀態成功');
+              await this.loadnewdata();
+              location.reload();
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              this.$Message.error('變更狀態失敗');
+          })
+    }
       
         
     },

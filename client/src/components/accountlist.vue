@@ -43,7 +43,22 @@
           </Modal>
         </template>
       <template #action="{row}">
-            <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name)">刪除</Button>
+        <Button v-show="row.showbtn" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button>
+        <Modal
+          v-model="Assignmodal"
+          title="分配此帳戶仿生魚UID權限"
+          :closable="false"
+          ok-text="分配"
+          @on-ok="AssignfishFunction"
+          @on-cancel="cancel">
+          <CheckboxGroup v-model="AssignFishId">
+            <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
+                <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
+              </div>
+        </CheckboxGroup>
+          </Modal>
+          
+          <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name)">刪除</Button>
         </template>
     </Table>
     <Table v-if="!Tableshow[index]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="mb-8 ml-8 mr-8"></Table>
@@ -90,7 +105,7 @@ import axios from 'axios';
                     {
                         title: ' ',
                         slot: 'action',
-                        width: 100,
+                        width: 150,
                         align: 'center',
                     }
                 ],
@@ -226,6 +241,9 @@ import axios from 'axios';
             sectionName:[],
             keyvalueMapping :[],
             Tableshow:[],
+            Assignmodal:false,
+            FishId:[],
+            AssignFishId:[],
         }
       },
       computed: {
@@ -245,6 +263,7 @@ import axios from 'axios';
     this.formNameMapping(this.instructionCode,this.InstructionName); //產生機構代碼跟名稱對照表 ex:"001":全區
     this.formNameMapping(this.poolsCode,this.poolName);  //產生部門代碼跟名稱對照表   
     this.accountdata();
+    this.RefreshDatas2();
     window.addEventListener('resize', this.updateScreenSize);
     this.updateScreenSize();
   },
@@ -293,7 +312,7 @@ import axios from 'axios';
     },
     accountdata(){
         axios.get(
-          "/api/v1/account/list/?section="+this.sectionOrigin,{
+          "https://pre.aifish.cc"+"/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -406,7 +425,7 @@ import axios from 'axios';
       },
       remove(username){
         axios.post(
-          "/api/v1/account/remove_user/",
+          "https://pre.aifish.cc"+"/api/v1/account/remove_user/",
             {
               "username":username,
             },
@@ -446,7 +465,7 @@ import axios from 'axios';
           level = 80;
         }
         axios.post(
-          "/api/v1/account/revise/level",
+          "https://pre.aifish.cc"+"/api/v1/account/revise/level",
             {
               "username":name,
               "newLevel":level
@@ -482,7 +501,7 @@ import axios from 'axios';
           section = "004" + newsection.substring(2);
         }
         axios.post(
-          "/api/v1/account/revise/section",
+          "https://pre.aifish.cc"+"/api/v1/account/revise/section",
             {
               "username":name,
               "newSection":section
@@ -524,6 +543,31 @@ import axios from 'axios';
       updateScreenSize() {
         this.isMobileScreen = window.innerWidth <= 768; 
       },
+      RefreshDatas2() {
+          for (var i = 0; i < this.poolsCode.length; i++) {
+            const fish0 = "fish0" + this.poolsCode[i];
+            const fish1 = "fish1" + this.poolsCode[i];
+            const fish2 = "fish2" + this.poolsCode[i];
+
+            const fish1Data = localStorage.getItem(fish1);
+            const parsedFish1Data = JSON.parse(fish1Data);
+            const fish0Data = localStorage.getItem(fish0);
+            const parsedFish0Data = JSON.parse(fish0Data);
+            const fish2Data = localStorage.getItem(fish2);
+            const parsedFish2Data = JSON.parse(fish2Data);
+            const combinedFishIds = [...parsedFish1Data, ...parsedFish0Data, ...parsedFish2Data];
+            const parsedFishIds = combinedFishIds.map((str) => {
+              const num = parseInt(str, 10);
+              const paddedNum = num.toString().padStart(7, '0'); 
+              return paddedNum;
+
+            });
+            this.FishId.push(parsedFishIds); 
+          }
+      },
+      AssignfishFunction(){
+        alert(this.AssignFishId)
+      }
 
     },
     }

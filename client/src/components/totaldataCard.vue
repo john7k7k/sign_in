@@ -11,7 +11,7 @@
       <div class="Swiper-content" >
         <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
-          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[index].EnPoolName }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
       </div>
       <v-card v-if="poolsName.length <=2"  cover class="one" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
@@ -118,6 +118,7 @@ IP:process.env.VUE_APP_IP,
 poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
 poolsName:JSON.parse(localStorage.getItem("PoolsName")),
 isMobileScreen:localStorage.getItem("isMobileScreen"),
+section:localStorage.getItem('UserSection'),
 titleName:"",
 EntitleName:"",
 centercardNum:0,
@@ -213,7 +214,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -403,7 +404,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "/api/v1/account",
+    "https://pre.aifish.cc"+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -464,7 +465,9 @@ this.RefreshDatas2();
 for (var i = 0; i < this.poolsCode.length; i++) {
 await this.RefreshDatas(i);
 }
-
+if(this.section == "003"){
+  this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology"
+}
 
 },
 };
