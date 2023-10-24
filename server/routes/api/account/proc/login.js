@@ -43,9 +43,22 @@ module.exports = async function(req, res) {
                 delete resData.passcode;
                 delete resData.exist;
                 delete resData.verify;
-                resData.instructionTable = await prisma.instruction.findMany();
-                resData.departTable = await prisma.depart.findMany();
-                resData.poolTable = await prisma.pool.findMany();
+                resData.instructionTable = (await prisma.instruction.findMany()).filter(({ id }) => {
+                    if(resData.section === '001') return true;
+                    return resData.section.match(`^${id}`);
+                });
+
+                resData.departTable = (await prisma.depart.findMany()).filter(({ location ,id }) => {
+                    if(resData.section === '001') return true;
+                    if( resData.section.match(`^${location}`) ) return true;
+                    return resData.section.match(`^${id}`);
+                });
+                resData.poolTable = (await prisma.pool.findMany()).filter(({ location ,id }) => {
+                    if(resData.section === '001') return true;
+                    if( resData.section.match(`^${location.slice(0,3)}`) ) return true;
+                    if( resData.section.match(`^${location}`) ) return true;
+                    return resData.section.match(`^${id}`);
+                });
                 resData.stickerURL = `uploads/photos/user/${req.body.username}/sticker/image.png`;
                 resData.token = token
                 res.send(resData)

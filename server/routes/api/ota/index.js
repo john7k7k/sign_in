@@ -8,6 +8,6 @@ router.get('/bin', bin.get);
 
 router.post('/bin',   bin.uploadBin.single('bin'), bin.preProcess, bin.process);
 
-router.post('/burn', burn.process);
+router.post('/burn', burn.execute, burn.process);
 
 module.exports = router;
