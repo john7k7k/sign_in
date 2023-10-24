@@ -86,7 +86,7 @@
         
         fetchInstruction(){
           axios.get(
-            "https://pre.aifish.cc"+"/api/v1/section",{
+            "/api/v1/section",{
               headers: {
                 Authorization: `Bearer `
               },

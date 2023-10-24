@@ -118,13 +118,15 @@
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
-      <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel">
-              <input type="file" ref="fileInput" @change="selectfile" />
-              <div class="mt-4 font-weight-bold text-h6">上傳照片範例:</div>
-              <div class="mb-1 f ">(以黑色作為照片背景，按照下圖所示的魚身角度進行拍攝)</div>
-              <div style="width: 30%; height: 30%; background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage1.png" width="100%" height="100%" ></v-img></div>
-              <div class="mt-1">備註:上傳照片前需要經過去背。</div>      
-              <div>免費去背網站:https://picwish.com/tw/remove-background</div>    
+      <Modal v-model="row.modal" title="變更仿生魚照片" :closable="false" @on-ok="cancel" @on-cancel="cancel">
+        <RadioGroup class="radio-group" v-model="row.selectsection">
+          <Radio class="radio" label="全區">紅色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage5.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+          <Radio class="radio" label="北科">橘色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage2.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+          <Radio class="radio" label="海科">藍色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage3.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+          <Radio class="radio" label="先鋒">黃色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage4.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+        </RadioGroup>     
+        
+                 
             </Modal>
    </template>
     <template #action="{ row: { id } }">
@@ -778,14 +780,27 @@ import axios from 'axios';
   </script>
   
   <style>
+  .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .radio {
+    flex-basis: calc(50% - 10px); 
+    margin: 5px; 
+  }
   .searchdisplay{
     display: grid; 
     grid-template-columns: 1fr auto auto auto auto;
   }
   @media screen and (max-width: 600px) {
-    .searchdisplay{
-    display: grid; 
-    grid-template-columns: 1fr auto;
+    .searchdisplay {
+      grid-template-columns: 2fr 1fr; 
+    grid-auto-rows: auto; 
+  }
+
+  .searchdisplay > *:nth-child(n + 3) {
+    grid-column: span 3; 
   }
   }
   </style>

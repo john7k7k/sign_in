@@ -537,6 +537,7 @@ function TranActive(active) {
     font-size: 15px;
     margin-left: 50%;
     margin-top: -24.5%;
+    transform: scale(0.8);
 
   }
   .titelbctext{
