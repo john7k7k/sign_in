@@ -26,6 +26,7 @@ model Fish {
   fishUID String @id
   location String
   exist Int
+  photoCode Int @default(0)
   pool Pool @relation(fields: [location], references: [id], onDelete: Cascade)
   fishData FishData[]
   fishAble FishAble[]

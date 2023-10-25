@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
-    //try{
+    try{
       const { username, fishUID } = req.body;
       const { userID, section } = await prisma.user.findUnique({ where: { username } });
       const { location } = await prisma.fish.findUnique({ where: { fishUID }});
@@ -25,5 +25,5 @@ module.exports = async (req, res) => {
         }
       });
       res.sendStatus(200);
-    //}catch{res.sendStatus(403)}
+    }catch(e){console.log(e);res.status(403).send("已經綁定或資料錯誤")}
   }

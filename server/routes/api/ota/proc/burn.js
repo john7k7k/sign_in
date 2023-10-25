@@ -12,10 +12,13 @@ const execute = async (req,res,next) => {
         }
     })
     const binName = `${time}_${version}`;
-    exec(`rsync -r ../uploads/ota/hello.c @$2:/home/$1/aifi_ota/`, (err, stdout, stderr) => {
+    console.log(`rsync -r ../uploads/ota/${ binName } @$2:/home/$1/aifi_ota/`);
+    /*
+    exec(`rsync -r ../uploads/ota/${ binName } @$2:/home/$1/aifi_ota/`, (err, stdout, stderr) => {
         if(err) { console.log(err); return;}
         console.log(stdout);
-    })
+    })*/
+    next();
 }
 
 const process = async (req, res) => {

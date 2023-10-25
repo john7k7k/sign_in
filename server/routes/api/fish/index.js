@@ -14,8 +14,9 @@ const verifyTokenBy = require('../../../modules/middleware/verifyToken');
 const verifyAdmin = require('../../../modules/middleware/verifyAdmin');
 const fishPhoto = require('./proc/fishPhoto');
 const relocalFish = require('./proc/relocalFish');
+const changePhoto = require('./proc/changePhoto.js');
 
-router.post(`/`, verifyTokenBy('Header')(30), addFish)
+router.post(`/`, verifyTokenBy('Header')(30), addFish);
 
 //此API可新增fish的data
 router.post(`/data`, verifyTokenBy('Header')(40, false),  addFishData)
@@ -55,5 +56,7 @@ router.post(`/photos`, verifyTokenBy('Header')(),  fishPhoto.upload.single('imag
 router.post(`/relocal`, verifyTokenBy('Header')(), relocalFish);
 
 router.post('/photo/delete', verifyTokenBy('Header')(), fishPhoto.remove)
+
+router.post('/photo/change', verifyTokenBy('Header')(), changePhoto)
 
 module.exports = router;
