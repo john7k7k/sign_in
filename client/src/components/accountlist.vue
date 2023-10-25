@@ -49,7 +49,7 @@
           title="分配此帳戶仿生魚UID權限"
           :closable="false"
           ok-text="分配"
-          @on-ok="AssignfishFunction"
+          @on-ok="cancel"
           @on-cancel="cancel">
           <CheckboxGroup v-model="AssignFishId">
             <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>

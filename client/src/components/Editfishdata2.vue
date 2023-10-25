@@ -144,7 +144,7 @@
             width="130"
             @click="editColor" >  </v-btn>
       <v-avatar class="fishimage" size="450" rounded="0" style="">
-      <v-img class="mt-6 pt-3 pr-7 " :src="getImageSource(FishId)" :style="{ transform: imageScale(FishId) }"></v-img>
+      <v-img class="mt-6 pt-3 pr-7 " :src="getImageSource(FishId,FishPhoto)" :style="{ transform: imageScale(FishId,FishPhoto) }"></v-img>
       
     </v-avatar>
 </template>
@@ -181,6 +181,7 @@ function TranActive(active) {
         FishBc: localStorage.getItem("EditBc"),
         FishErr: localStorage.getItem("EditErr"),
         FishActive: localStorage.getItem("EditActive"),
+        FishPhoto: localStorage.getItem("EditPhoto"),
         token:localStorage.getItem('token'),
         selectcolor:null,
         selectactive:localStorage.getItem("EditActive"),
@@ -210,11 +211,19 @@ function TranActive(active) {
       goBack() {
         window.history.back();
       },
-      getImageSource(id) {
-        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      getImageSource(id,photonum) {
+        const photoCode = parseInt(photonum, 10);
+        return id <= 4000 ? require("../assets/fishimage"+(photoCode+1)+".png") : require("../assets/海龜.png");
       },
-      imageScale(id) {
-        return id <= 4000 ? "scale(1)" : "scale(0.7)";
+      imageScale(id,photonum) {
+        const photoCode = parseInt(photonum, 10);
+        if (photoCode === 0 && id <= 4000) {
+            return "scale(1)";
+          } else if (photoCode > 0 && id <= 4000) {
+            return "scale(1.3) translateY(20px)";
+          } else {
+            return "scale(0.7)";
+          }
       },
       errorcode(err){
         const errorMapping = {

@@ -22,7 +22,7 @@
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext font-weight-bold">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
-      <v-btn  value="out" @click="logout" href="/login" class="navbartext font-weight-bold">登出</v-btn>
+      <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
     <div class=" text-white navbartext font-weight-bold mt-2">{{ username }}</div>
@@ -187,7 +187,7 @@ methods: {
       return "全區管理員";
     } else if (this.level === "30" && this.section === "001"){
       this.fishlistshow = true;
-      this.userlistshow = true;
+      this.userlistshow = false;
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
       return "全區工程師";
     }else if (this.level === "10"){
@@ -212,15 +212,6 @@ methods: {
       return "用戶";
     }
   },
-  clearCookies() {
-  var cookies = document.cookie.split("; ");
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i];
-    var eqPos = cookie.indexOf("=");
-    var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
-},
   logout(){
     axios.post(
       "https://pre.aifish.cc"+"/api/v1/account/logout",{},{
@@ -233,10 +224,7 @@ methods: {
             console.log(res);
             
             if(res.status == 200){
-              
-              this.clearCookies();
-              document.cookie = "token=" + res.data.token + "; path=/";
-              this.$Message.success('登出成功');
+              localStorage.setItem("token","")
               window.location.replace(`/login`); 
             }
             else

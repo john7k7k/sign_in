@@ -77,8 +77,12 @@
         visible: false,
         loading: false,
         IP:process.env.VUE_APP_IP,
+        usertoken:localStorage.getItem('token'),
       }),
-  
+      async created() {
+        await this.loadnewdata();
+
+        },
       methods: {
         onSubmit () {
           const saltedPassword = this.password + this.salt;
@@ -139,6 +143,25 @@
         required (v) {
         return !!v || '此區為必填區域'
       },
+      async loadnewdata() {
+          try {
+            const response = await axios.get(
+              "https://pre.aifish.cc"+"/api/v1/account",
+              {
+                headers: {
+                  Authorization: `Bearer ${this.usertoken}`
+                }
+              }
+            );
+
+            console.log(response);
+            if (response.status === 200) {
+              window.location.replace(`/home`);
+            }
+          } catch (error) {
+            //console.log(error);
+          }
+          },
         
       }
     }

@@ -118,12 +118,12 @@
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
-      <Modal v-model="row.modal" title="變更仿生魚照片" :closable="false" @on-ok="cancel" @on-cancel="cancel">
-        <RadioGroup class="radio-group" v-model="row.selectsection">
-          <Radio class="radio" label="全區">紅色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage5.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-          <Radio class="radio" label="北科">橘色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage2.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-          <Radio class="radio" label="海科">藍色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage3.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-          <Radio class="radio" label="先鋒">黃色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage4.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+      <Modal v-model="row.modal" :title="'變更' + row.id + '照片'" :closable="false" @on-ok="changeFishPhoto(row.id,row.photo)" @on-cancel="cancel">
+        <RadioGroup class="radio-group" v-model="row.photo">
+          <Radio class="radio" label="0">紅色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage5.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+          <Radio class="radio" label="1">橘色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage2.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+          <Radio class="radio" label="2">藍色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage3.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
+          <Radio class="radio" label="3">黃色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage4.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
         </RadioGroup>     
         
                  
@@ -131,8 +131,8 @@
    </template>
    <template #active="{ row}">
     <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
-    <Modal v-model="row.ActiveModal" :title="row.id" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
-        <RadioGroup  v-model="row.selectActive">
+    <Modal v-model="row.ActiveModal" :title="'變更 ' + row.id + ' 狀態'" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
+        <RadioGroup class="radio-group" v-model="row.selectActive">
           <Radio class="radio" label="游動中">游動中</Radio>
           <Radio class="radio" label="待機中">待機中</Radio>
           <Radio class="radio" label="維修中">維修中</Radio>
@@ -194,6 +194,7 @@ import axios from 'axios';
             active:[],
             bc:[],
             error:[],
+            photoCode:[],
             columns: [
                     {
                         title: 'ID',
@@ -445,7 +446,7 @@ import axios from 'axios';
         },
         fetchBin() {
           axios.get(
-            "/api/v1/ota/bin",{
+            "https://pre.aifish.cc"+"/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -597,6 +598,7 @@ import axios from 'axios';
                 let activearray = [];
                 let bcarray = [];
                 let errarray = [];
+                let photoarray = [];
                 for (const id in response.data[this.poolsCode[i]]) {
                     if (!Array.isArray(response.data[this.poolsCode[i]][id])) continue;
                     const dataArray = response.data[this.poolsCode[i]][id];
@@ -610,24 +612,27 @@ import axios from 'axios';
                     const reversedLastFive = lastFiveObjects.reverse();
                     this.fishdatas[i][id] = reversedLastFive;
                     this.fishdatas[i][id].show = false;
-                    const { version, time, active, bc, err } = dataArray[dataArray.length - 1];
+                    const { version, time, active, bc, err, photoCode } = dataArray[dataArray.length - 1];
                     vertionarray.push(version);
                     timearray.push(time);
                     activearray.push(active);
                     bcarray.push(bc);
                     errarray.push(err);
+                    photoarray.push(photoCode);
                 }
                 this.version.push(vertionarray);
                 this.time.push(timearray);
                 this.active.push(activearray);
                 this.bc.push(bcarray);
                 this.error.push(errarray);
+                this.photoCode.push(photoarray);
 
                 let datas = this.FishId[i].map((item, index) => ({
                     id: this.FishId[i][index],
                     bc: this.bc[i][index],
                     err: this.error[i][index],
                     version: this.version[i][index],
+                    photo: this.photoCode[i][index].toString(),
                     time: this.fishformatDate(this.time[i][index]),
                     active: this.proccesactive(this.active[i][index]),
                     modal:false,
@@ -827,7 +832,33 @@ import axios from 'axios';
               this.loading = false;
               this.$Message.error('變更狀態失敗');
           })
-    }
+    },
+    changeFishPhoto(id,photonum){
+      const photoCode = parseInt(photonum, 10);
+      axios.post(
+        "https://pre.aifish.cc"+"/api/v1/fish/photo/change",
+            {
+              "fishUID": id,
+              "photoCode": photoCode
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(async res=> {
+              console.log(res);
+              this.$Message.success('變更照片成功');
+              await this.loadnewdata();
+              location.reload();
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              this.$Message.error('變更照片失敗');
+          })
+    },
       
         
     },
@@ -838,11 +869,14 @@ import axios from 'axios';
   .radio-group {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
+    height: auto;
   }
 
   .radio {
     flex-basis: calc(50% - 10px); 
     margin: 5px; 
+    width: 45%;
   }
   .searchdisplay{
     display: grid; 

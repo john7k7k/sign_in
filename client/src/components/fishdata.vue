@@ -76,7 +76,7 @@
             <v-card class="pa-2 mb-14 mx-auto cardbg" cover width="320">
           <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
             <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
-        <v-img class="mr-12 mb-6" :src="getImageSource(fish.id)" width="50" height="150" :style="{ transform: imageScale(fish.id) }"></v-img>
+        <v-img class="mr-12 mb-6" :src="getImageSource(fish.id,fish.photo)" width="50" height="150" :style="{ transform: imageScale(fish.id ,fish.photo) }"></v-img>
         <v-btn
           icon="mdi-numeric-null"
           height="9"
@@ -189,6 +189,7 @@
           err: [],
           FishActive: [],
           datas: [],
+          photoCode:[],
           dialog: false,
           notifications: false,
           sound: true,
@@ -219,6 +220,7 @@
           videoUrl: null,
           IP:process.env.VUE_APP_IP,
           poolname:localStorage.getItem('Poolname'),
+          photoUrl:["../assets/fishimage1.png","../assets/fishimage2.png","../assets/fishimage3.png","../assets/fishimage4.png"]
         }
       },
       methods:{
@@ -228,10 +230,12 @@
               const bcData = localStorage.getItem("Bc");
               const errData = localStorage.getItem("Erro");
               const fishActiveData = localStorage.getItem("Active");
-              if (bcData && errData && fishActiveData && iddata) {
+              const photoData = localStorage.getItem("FishPhoto");
+              if (bcData && errData && fishActiveData && iddata && photoData) {
                   this.FishId = iddata.split(',').map(num => parseInt(num.toString().slice(-4)));
                   this.bc = bcData.split(',').map(Number);
                   this.err = errData.split(',').map(Number);
+                  this.photoCode = photoData.split(',').map(Number);
                   this.FishActive = fishActiveData.split(',').map(Number);
               }
               this.datas = this.FishId.map((id, index) => ({
@@ -239,6 +243,7 @@
                 bc: this.bc[index] ,
                 error: this.err[index],
                 active: this.FishActive[index],
+                photo: this.photoCode[index],
                 errornum:this.countNumbersInString(this.err[index]),
                 dialogerr: false,
                 bellshow: this.bellshowfunction(this.err[index],this.FishActive[index]),
@@ -330,6 +335,7 @@
         localStorage.setItem("EditId", fishId);
         localStorage.setItem("EditBc", this.bc[index]);
         localStorage.setItem("EditErr", this.err[index]);
+        localStorage.setItem("EditPhoto", this.photoCode[index]);
         if(this.datas[index].active === 0){
           localStorage.setItem("EditActive", this.active[0]);
         } else if(this.datas[index].active === 1){
@@ -446,11 +452,17 @@
                 this.$Message.error('控制失敗');
             })
           },
-          getImageSource(id) {
-          return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+          getImageSource(id ,photonum) {
+          return id <= 4000 ? require("../assets/fishimage"+(photonum+1)+".png") : require("../assets/海龜.png");
         },
-        imageScale(id) {
-          return id <= 4000 ? "scale(1.2)" : "scale(0.95)";
+        imageScale(id,photonum) {
+          if (photonum === 0 && id <= 4000) {
+            return "scale(1.2)";
+          } else if (photonum > 0 && id <= 4000) {
+            return "scale(1.6) translateY(6px)";
+          } else {
+            return "scale(0.95)";
+          }
         },
         fetchImage(){
         axios.get(

@@ -91,6 +91,7 @@ needfixnum:[],
 bc: [],
 err: [],
 active: [],
+photoCode:[],
 token:localStorage.getItem('token'),
 time: localStorage.getItem("NewTime"),
 poolsdata:[
@@ -169,9 +170,11 @@ processData(ids, data) {
 const bcvalue = ids.map((id) => data[id].bc);
 const errvalue = ids.map((id) => data[id].err);
 const activevalue = ids.map((id) => data[id].active);
+const photovalue = ids.map((id) => data[id].photoCode);
 this.bc.push(bcvalue);
 this.err.push(errvalue);
 this.active.push(activevalue);
+this.photoCode.push(photovalue);
 },
 async refresh() {
   this.isRefreshing = true;
@@ -214,7 +217,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -312,10 +315,12 @@ const FishId1num = this.FishId[i].length
 let bcdatas = [];
 let errdatas = [];
 let activedatas = [];
+let photodatas = [];
 if(FishId1num !== 0){
   bcdatas = this.bc[i].slice(0, FishId1num);
   errdatas = this.err[i].slice(0, FishId1num);
   activedatas = this.active[i].slice(0, FishId1num);
+  photodatas = this.photoCode[i].slice(0,FishId1num);
 }
 
 if(level === 1){
@@ -324,6 +329,7 @@ if(level === 1){
   localStorage.setItem("Bc", bcdatas);
   localStorage.setItem("Erro", errdatas);
   localStorage.setItem("Active", activedatas);
+  localStorage.setItem("FishPhoto", photodatas);
 }  else if (level === 2){
   const fish0Data = localStorage.getItem(fish0);
   const parsedFish0Data = JSON.parse(fish0Data);
@@ -332,6 +338,7 @@ if(level === 1){
   let idResult = [];
   let bcResult = [];
   let errResult = [];
+  let photoResult = [];
   if (this.FishId[i].length !== 0){
     active0 = this.active[i].filter(value => value < 1);
     const active0index = this.active[i].map((value, index) => {
@@ -342,34 +349,40 @@ if(level === 1){
     idResult = active0index.map(index => this.FishId[i][index]);
     bcResult = active0index.map(index => this.bc[i][index]);
     errResult = active0index.map(index => this.err[i][index]);
+    photoResult = active0index.map(index => this.photoCode[i][index]);
   }
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idResult)
   localStorage.setItem("Bc", bcResult);
   localStorage.setItem("Erro", errResult);
   localStorage.setItem("Active", active0);
+  localStorage.setItem("FishPhoto", photoResult);
 }else if(level === 4){
   const needcharge = bcdatas.filter(value => value < 20);
   const needchargeindex = needcharge.map((value) => bcdatas.indexOf(value));
   const idbcResult = needchargeindex.map(index => this.FishId[i][index]);
   const errbcResult = needchargeindex.map(index => errdatas[index]);
   const activebcResult = needchargeindex.map(index => activedatas[index]);
+  const photobcResult = needchargeindex.map(index => photodatas[index]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idbcResult)
   localStorage.setItem("Bc", needcharge);
   localStorage.setItem("Erro", errbcResult);
   localStorage.setItem("Active", activebcResult);
+  localStorage.setItem("FishPhoto", photobcResult);
 }else if(level === 5){
   const needfix = errdatas.filter(value => value > 0);
   const needfixindex = needfix.map((value) => errdatas.indexOf(value));
   const idErrResult = needfixindex.map(index => this.FishId[i][index]);
   const bcErrResult = needfixindex.map(index => bcdatas[index]);
   const activeErrResult = needfixindex.map(index => activedatas[index]);
+  const photoErrResult = needfixindex.map(index => photodatas[index]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idErrResult)
   localStorage.setItem("Bc", bcErrResult);
   localStorage.setItem("Erro", needfix);
   localStorage.setItem("Active", activeErrResult);
+  localStorage.setItem("FishPhoto", photoErrResult);
 } else{
   const fish0Data = localStorage.getItem(fish0);
   const parsedFish0Data = JSON.parse(fish0Data);
@@ -380,6 +393,7 @@ if(level === 1){
   let idResult = [];
   let bcResult = [];
   let errResult = [];
+  let photoResult = [];
   let fixing = [];
   if(this.FishId[i].length !== 0){
     fixing = this.active[i].filter(value => value > 1);
@@ -391,12 +405,14 @@ if(level === 1){
     idResult = fixindex.map(index => this.FishId[i][index]);
     bcResult = fixindex.map(index => this.bc[i][index]);
     errResult = fixindex.map(index => this.err[i][index]);
+    photoResult = fixindex.map(index => this.poolsCode[i][index]);
   }
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idResult)
   localStorage.setItem("Bc", bcResult);
   localStorage.setItem("Erro", errResult);
   localStorage.setItem("Active", fixing);
+  localStorage.setItem("FishPhoto", photoResult);
 }
 
 },
@@ -404,7 +420,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "https://pre.aifish.cc"+"/api/v1/account",
+    "/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
