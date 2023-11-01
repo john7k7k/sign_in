@@ -7,11 +7,11 @@
       <v-btn class="upbutton " v-if="showButtons"  @click="leftSwipe" icon="mdi mdi-chevron-up"></v-btn>
       <v-btn class="downbutton " v-if="showButtons"  @click="rightSwipe" icon="mdi mdi-chevron-down"></v-btn>
       <div class="Swiper-content" >  
-        <v-card v-for="name in instructionName" :key="name" class="Swiper-item" width="400" variant="elevated">
+        <v-card v-for="name in instructionName" :key="name" class="Swiper-item" width="400" height="250px" variant="elevated">
             <v-img
             :src="name.imageurl"
             class="align-end"
-            height="250px"
+            
             cover>
             <div class="text-white  ml-5 text-h5 font-weight-black">{{ name.instruction }}</div>
             <div class="text-white mb-16 ml-5 text-h6 font-weight-black" style="white-space: pre-wrap; width: 60%;"> {{name.Eninstruction}} </div>
@@ -34,9 +34,9 @@
                 imageurl: require("../assets/機構北科.png")
             },
             {
-                instruction:"海科館",
-                Eninstruction:"Museum of Marine Science and Technology",
-                imageurl: require("../assets/機構海科.png")
+                instruction:"世貿一館",
+                Eninstruction:"Taipei World Trade Center Exhibition Hall 1",
+                imageurl: require("../assets/世貿一館照片3.png")
             },
             {
                 instruction:"海科館",

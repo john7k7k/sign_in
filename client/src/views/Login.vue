@@ -45,7 +45,7 @@ export default {
 .logininput {
   position: absolute;
   padding-top: 9%;
-  padding-left: 800px;
+  left: 60%;
 }
 
 @media screen and (max-width: 600px) {

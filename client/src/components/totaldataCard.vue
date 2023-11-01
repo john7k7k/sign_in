@@ -2,19 +2,19 @@
   <div class="Swiper" >
       <div class="father1">
         
-      <v-card v-if="poolsName.length <2" cover class="three" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+      <v-card v-if="poolsName.length <2" cover class="three" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
         <div class="notyet-bg2-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
       <div class="Swiper-content" >
-        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item"  min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
       </div>
-      <v-card v-if="poolsName.length <=2"  cover class="one" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+      <v-card v-if="poolsName.length <=2"  cover class="one" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
           <div class="notyet-bg1-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
@@ -96,7 +96,7 @@ token:localStorage.getItem('token'),
 time: localStorage.getItem("NewTime"),
 poolsdata:[
             {
-                EnPoolName:"National Taipei University of Technology",
+                EnPoolName:"Taipei World Trade Center Exhibition Hall 1",
                 imageurl: require("../assets/主頁魚池33.png")
             },
             {
@@ -601,7 +601,7 @@ if(this.section == "003"){
 .nodisplay{
   display: none;
 }
-@media screen and  (min-width: 960px) {
+@media screen and  (min-width: 1601px){
 .Swiper{
   display: flex;
   width: 100%;
@@ -623,6 +623,82 @@ if(this.section == "003"){
   width: 48%;
   align-items: flex-end;
   margin-top: 4%;
+}
+.Swiper-content{
+  width: 55%;
+  height: 30%;
+}
+.one{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 260px;
+  
+}
+.two{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 260px;
+}
+.three{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 260px;
+}
+
+
+.titel-Name{
+    font-size: 60px;
+    letter-spacing: 4px;
+    margin-top: 2%;
+  }
+  .en-titelName{
+    font-size: 25px;
+    letter-spacing: 3px;
+    width: 385px;
+  }
+  .recordtext{
+  background-color: rgba(255, 255, 255, 0); 
+  font-size: 17px;
+  margin-top: 2%;
+}
+.poolsdatacard{
+  width: 100%;
+  height: 200%;
+  flex: auto;
+  background-color: rgba(255, 255, 255, 0);
+  transform: scale(1.2);
+  margin-right: 7%;
+  margin-top: 8%;
+}
+
+
+}
+@media screen and  (min-width: 960px) and (max-width: 1600px){
+.Swiper{
+  display: flex;
+  width: 100%;
+  max-height: 100%;
+  
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 50%;
+  height: 50%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  align-items: flex-end;
+  margin-top: 4%;
+}
+.Swiper-content{
+  width: 400px;
 }
 .one{
   z-index: 2;

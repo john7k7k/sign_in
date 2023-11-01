@@ -446,7 +446,7 @@ import axios from 'axios';
         },
         fetchBin() {
           axios.get(
-            "https://pre.aifish.cc"+"/api/v1/ota/bin",{
+            "/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -583,7 +583,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "https://pre.aifish.cc"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -674,7 +674,7 @@ import axios from 'axios';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "https://pre.aifish.cc"+"/api/v1/account",
+          "/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -809,7 +809,7 @@ import axios from 'axios';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "https://pre.aifish.cc"+"/api/v1/fish/data/",
+        "/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -836,7 +836,7 @@ import axios from 'axios';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "https://pre.aifish.cc"+"/api/v1/fish/photo/change",
+        "/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

@@ -91,7 +91,7 @@
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            "https://pre.aifish.cc"+"/api/v1/account/login",
+            "/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword
@@ -146,7 +146,7 @@
       async loadnewdata() {
           try {
             const response = await axios.get(
-              "https://pre.aifish.cc"+"/api/v1/account",
+              "/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`

@@ -214,7 +214,7 @@ methods: {
   },
   logout(){
     axios.post(
-      "https://pre.aifish.cc"+"/api/v1/account/logout",{},{
+      "/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -243,7 +243,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "https://pre.aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
