@@ -14,18 +14,18 @@
   </div>
   <div class="titelbctext text-grey font-weight-medium">電量</div>
   <div class="d-flex" >
-    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mr-5" :style="{ backgroundColor: getbccolor(FishBc,1) }"></v-btn>
-    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5" :style="{ backgroundColor: getbccolor(FishBc,2) }"></v-btn>
-    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5" :style="{ backgroundColor: getbccolor(FishBc,3) }"></v-btn>
-    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5" :style="{ backgroundColor: getbccolor(FishBc,4) }"></v-btn>
-    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5" :style="{ backgroundColor: getbccolor(FishBc,5) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mr-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,1) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,2) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,3) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,4) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,5) }"></v-btn>
     <div class="  text-h5 text-white fishbc-bg mb-1 pb-1 mt-1" >{{FishBc}}%</div>
   </div>
   
-  <div  class="titelerrortext  text-grey font-weight-medium">錯誤</div>
+  <div  class="titelerrortext  text-grey font-weight-medium bcdisplay">錯誤</div>
   <div>
     <v-card  class="errorcard pa-3 pt-3 pl-4 text-white mt-2">{{ errorcode(FishErr) }}</v-card>
-  <div  class="titelcolortext text-grey mt-3 font-weight-medium">LED顏色設定</div>
+  <div  class="titelcolortext text-grey mt-3 font-weight-medium ">LED顏色設定</div>
   <div class="colorsetfather">
     <v-card  class="colorcard pa-5 pb-7 pl-8 text-grey mt-2">
      <v-row>
@@ -154,7 +154,7 @@
   </div>
   </div>
   <v-btn 
-            class=" ml-1 setcolorbuttom "
+            class=" ml-1 setcolorbuttom mt-10"
             variant="outlined"
             width="130"
             @click="editColor" >  </v-btn>
@@ -452,27 +452,67 @@ function TranActive(active) {
     transform: scale(1.1);
 }
 
-.bcvalue-bg1{
-  font-size: 60px;
-}
-.bcvalue-bg2{
-   transform:  scale(1.5);
-}
-.bcvalue-bg3{
-   transform:  scale(1.5);
-}
-.bcvalue-bg4{
-   transform:  scale(1.5);
-}
-.bcvalue-bg5{
-   transform:  scale(1.5);
-}
-.fishbc-bg{
-}
 
-
-
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1601px) {
+  .idtext{
+  font-size: 40px;
+  transform: scale(2);
+}
+.fishIDtext{
+  font-size: 100px;
+  letter-spacing: 5px;
+}
+.activetext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+.titelbctext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+.titelerrortext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+  .titelcolortext{
+  letter-spacing: 3px;
+  font-size: 28px;
+}
+  .bcdisplay{
+    margin-top: 20px;
+  }
+  .btn-bg{
+  position: relative;
+  font-size: 23px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.father0{
+  display: flex;
+  width: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 55%;
+  height: 50%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  width: 43%;
+  align-items: flex-start;
+}
+.fishimage{
+  transform: scale(1.4);
+  margin-top: 6%;
+}
+}
+@media screen and (min-width: 1200px) and (max-width: 1600px){
 .father0{
   display: flex;
   width: 100%;
