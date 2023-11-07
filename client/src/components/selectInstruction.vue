@@ -29,15 +29,16 @@
         showButtons:false,
         instructionName:[
             {
+                instruction:"世貿一館",
+                Eninstruction:"Taipei World Trade Center Exhibition Hall 1",
+                imageurl: require("../assets/世貿電腦圖2.png")
+            },
+            {
                 instruction:"台北科技大學",
                 Eninstruction:"National Taipei University of Technology",
                 imageurl: require("../assets/機構北科.png")
             },
-            {
-                instruction:"世貿一館",
-                Eninstruction:"Taipei World Trade Center Exhibition Hall 1",
-                imageurl: require("../assets/世貿一館照片3.png")
-            },
+            
             {
                 instruction:"海科館",
                 Eninstruction:"Museum of Marine Science and Technology",
