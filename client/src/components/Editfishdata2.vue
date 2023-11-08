@@ -3,7 +3,7 @@
   <div class="father0">
     <div class="son1">
       <v-avatar class="fishimage" size="450" rounded="0" style="">
-        <v-img  :src="getImageSource(FishId)" :style="{ transform: imageScale(FishId) }"></v-img>
+        <v-img  :src="getImageSource(FishId,FishPhoto)" :style="{ transform: imageScale(FishId,FishPhoto) }"></v-img>
       </v-avatar>
     </div>
     <div class="son2">
@@ -196,6 +196,7 @@ function TranActive(active) {
         FishBc: localStorage.getItem("EditBc"),
         FishErr: localStorage.getItem("EditErr"),
         FishActive: localStorage.getItem("EditActive"),
+        FishPhoto: localStorage.getItem("EditPhoto"),
         token:localStorage.getItem('token'),
         selectcolor:null,
         selectactive:localStorage.getItem("EditActive"),
@@ -225,11 +226,24 @@ function TranActive(active) {
       goBack() {
         window.history.back();
       },
-      getImageSource(id) {
-        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      getImageSource(id, photonum) {
+        const idNumber = parseInt(id, 10);
+        const photonumNumber = parseInt(photonum, 10);
+
+        if (idNumber === 3002 || idNumber === 3009 || idNumber === 3013) {
+          return require("../assets/新花色" + idNumber + ".png");
+        } else if (idNumber <= 4000) {
+          return require("../assets/fishimage" + (photonumNumber + 1) + ".png");
+        } else {
+          return require("../assets/海龜.png");
+        }
       },
-      imageScale(id) {
-        return id <= 4000 ? "scale(1)" : "scale(0.7)";
+      /*getImageSource(id) {
+        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      },*/
+      imageScale(id, photonum) {
+        const photonumNumber = parseInt(photonum, 10);
+        return id <= 4000 ? photonumNumber ==1 ? "scale(1)":"scale(0.9)" : "scale(0.7)";
       },
       errorcode(err){
         const errorMapping = {

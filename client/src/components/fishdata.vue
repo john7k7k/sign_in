@@ -452,9 +452,18 @@
                 this.$Message.error('控制失敗');
             })
           },
-          getImageSource(id ,photonum) {
-          return id <= 4000 ? require("../assets/fishimage"+(photonum+1)+".png") : require("../assets/海龜.png");
-        },
+          getImageSource(id, photonum) {
+            if (id === 3002 || id === 3009 || id === 3013) {
+              return require("../assets/新花色" + id + ".png");
+            } else if (id <= 4000) {
+              return require("../assets/fishimage" + (photonum + 1) + ".png");
+            } else {
+              return require("../assets/海龜.png");
+            }
+          },
+          /*getImageSource(id ,photonum) {
+          return id <= 4000 ?  require("../assets/fishimage"+(photonum+1)+".png") : require("../assets/海龜.png");
+        },*/
         imageScale(id,photonum) {
           if (photonum === 0 && id <= 4000) {
             return "scale(1.2)";
