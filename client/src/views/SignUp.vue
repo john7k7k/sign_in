@@ -45,7 +45,7 @@
 }
 .signupinput {
   position: absolute;
-  padding-top: 4%;
+  padding-top: 5%;
   left: 60%;
   transform: scale(0.95);
 }

@@ -2,19 +2,19 @@
   <div class="Swiper" >
       <div class="father1">
         
-      <v-card v-if="poolsName.length <2" cover class="three" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+      <v-card v-if="poolsName.length <2" cover class="three" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
         <div class="notyet-bg2-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
       <div class="Swiper-content" >
-        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item"  min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
-          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[index].EnPoolName }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
       </div>
-      <v-card v-if="poolsName.length <=2"  cover class="one" width="400px" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+      <v-card v-if="poolsName.length <=2"  cover class="one" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
           <div class="notyet-bg1-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
@@ -91,11 +91,12 @@ needfixnum:[],
 bc: [],
 err: [],
 active: [],
+photoCode:[],
 token:localStorage.getItem('token'),
 time: localStorage.getItem("NewTime"),
 poolsdata:[
             {
-                EnPoolName:"National Taipei University of Technology",
+                EnPoolName:"Taipei World Trade Center Exhibition Hall 1",
                 imageurl: require("../assets/主頁魚池33.png")
             },
             {
@@ -118,6 +119,7 @@ IP:process.env.VUE_APP_IP,
 poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
 poolsName:JSON.parse(localStorage.getItem("PoolsName")),
 isMobileScreen:localStorage.getItem("isMobileScreen"),
+section:localStorage.getItem('UserSection'),
 titleName:"",
 EntitleName:"",
 centercardNum:0,
@@ -168,9 +170,11 @@ processData(ids, data) {
 const bcvalue = ids.map((id) => data[id].bc);
 const errvalue = ids.map((id) => data[id].err);
 const activevalue = ids.map((id) => data[id].active);
+const photovalue = ids.map((id) => data[id].photoCode);
 this.bc.push(bcvalue);
 this.err.push(errvalue);
 this.active.push(activevalue);
+this.photoCode.push(photovalue);
 },
 async refresh() {
   this.isRefreshing = true;
@@ -311,10 +315,12 @@ const FishId1num = this.FishId[i].length
 let bcdatas = [];
 let errdatas = [];
 let activedatas = [];
+let photodatas = [];
 if(FishId1num !== 0){
   bcdatas = this.bc[i].slice(0, FishId1num);
   errdatas = this.err[i].slice(0, FishId1num);
   activedatas = this.active[i].slice(0, FishId1num);
+  photodatas = this.photoCode[i].slice(0,FishId1num);
 }
 
 if(level === 1){
@@ -323,6 +329,7 @@ if(level === 1){
   localStorage.setItem("Bc", bcdatas);
   localStorage.setItem("Erro", errdatas);
   localStorage.setItem("Active", activedatas);
+  localStorage.setItem("FishPhoto", photodatas);
 }  else if (level === 2){
   const fish0Data = localStorage.getItem(fish0);
   const parsedFish0Data = JSON.parse(fish0Data);
@@ -331,6 +338,7 @@ if(level === 1){
   let idResult = [];
   let bcResult = [];
   let errResult = [];
+  let photoResult = [];
   if (this.FishId[i].length !== 0){
     active0 = this.active[i].filter(value => value < 1);
     const active0index = this.active[i].map((value, index) => {
@@ -341,34 +349,40 @@ if(level === 1){
     idResult = active0index.map(index => this.FishId[i][index]);
     bcResult = active0index.map(index => this.bc[i][index]);
     errResult = active0index.map(index => this.err[i][index]);
+    photoResult = active0index.map(index => this.photoCode[i][index]);
   }
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idResult)
   localStorage.setItem("Bc", bcResult);
   localStorage.setItem("Erro", errResult);
   localStorage.setItem("Active", active0);
+  localStorage.setItem("FishPhoto", photoResult);
 }else if(level === 4){
   const needcharge = bcdatas.filter(value => value < 20);
   const needchargeindex = needcharge.map((value) => bcdatas.indexOf(value));
   const idbcResult = needchargeindex.map(index => this.FishId[i][index]);
   const errbcResult = needchargeindex.map(index => errdatas[index]);
   const activebcResult = needchargeindex.map(index => activedatas[index]);
+  const photobcResult = needchargeindex.map(index => photodatas[index]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idbcResult)
   localStorage.setItem("Bc", needcharge);
   localStorage.setItem("Erro", errbcResult);
   localStorage.setItem("Active", activebcResult);
+  localStorage.setItem("FishPhoto", photobcResult);
 }else if(level === 5){
   const needfix = errdatas.filter(value => value > 0);
   const needfixindex = needfix.map((value) => errdatas.indexOf(value));
   const idErrResult = needfixindex.map(index => this.FishId[i][index]);
   const bcErrResult = needfixindex.map(index => bcdatas[index]);
   const activeErrResult = needfixindex.map(index => activedatas[index]);
+  const photoErrResult = needfixindex.map(index => photodatas[index]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idErrResult)
   localStorage.setItem("Bc", bcErrResult);
   localStorage.setItem("Erro", needfix);
   localStorage.setItem("Active", activeErrResult);
+  localStorage.setItem("FishPhoto", photoErrResult);
 } else{
   const fish0Data = localStorage.getItem(fish0);
   const parsedFish0Data = JSON.parse(fish0Data);
@@ -379,6 +393,7 @@ if(level === 1){
   let idResult = [];
   let bcResult = [];
   let errResult = [];
+  let photoResult = [];
   let fixing = [];
   if(this.FishId[i].length !== 0){
     fixing = this.active[i].filter(value => value > 1);
@@ -390,12 +405,14 @@ if(level === 1){
     idResult = fixindex.map(index => this.FishId[i][index]);
     bcResult = fixindex.map(index => this.bc[i][index]);
     errResult = fixindex.map(index => this.err[i][index]);
+    photoResult = fixindex.map(index => this.poolsCode[i][index]);
   }
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idResult)
   localStorage.setItem("Bc", bcResult);
   localStorage.setItem("Erro", errResult);
   localStorage.setItem("Active", fixing);
+  localStorage.setItem("FishPhoto", photoResult);
 }
 
 },
@@ -464,7 +481,9 @@ this.RefreshDatas2();
 for (var i = 0; i < this.poolsCode.length; i++) {
 await this.RefreshDatas(i);
 }
-
+if(this.section == "003"){
+  this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology"
+}
 
 },
 };
@@ -582,7 +601,7 @@ await this.RefreshDatas(i);
 .nodisplay{
   display: none;
 }
-@media screen and  (min-width: 960px) {
+@media screen and  (min-width: 1601px){
 .Swiper{
   display: flex;
   width: 100%;
@@ -604,6 +623,82 @@ await this.RefreshDatas(i);
   width: 48%;
   align-items: flex-end;
   margin-top: 4%;
+}
+.Swiper-content{
+  width: 55%;
+  height: 30%;
+}
+.one{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 260px;
+  
+}
+.two{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 260px;
+}
+.three{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 260px;
+}
+
+
+.titel-Name{
+    font-size: 60px;
+    letter-spacing: 4px;
+    margin-top: 2%;
+  }
+  .en-titelName{
+    font-size: 25px;
+    letter-spacing: 3px;
+    width: 385px;
+  }
+  .recordtext{
+  background-color: rgba(255, 255, 255, 0); 
+  font-size: 17px;
+  margin-top: 2%;
+}
+.poolsdatacard{
+  width: 100%;
+  height: 200%;
+  flex: auto;
+  background-color: rgba(255, 255, 255, 0);
+  transform: scale(1.2);
+  margin-right: 7%;
+  margin-top: 8%;
+}
+
+
+}
+@media screen and  (min-width: 960px) and (max-width: 1600px){
+.Swiper{
+  display: flex;
+  width: 100%;
+  max-height: 100%;
+  
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 50%;
+  height: 50%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  align-items: flex-end;
+  margin-top: 4%;
+}
+.Swiper-content{
+  width: 400px;
 }
 .one{
   z-index: 2;

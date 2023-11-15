@@ -1,20 +1,33 @@
 <template>
-  
-  <div  class="text-white  idtext  font-weight-medium">ID</div>
-  <div class="text-white  font-weight-medium fishIDtext">{{ FishId }}</div>
   <v-btn  class="  mt-5 ml-6 text-white btn-bg "   icon="mdi mdi-chevron-left" size="45" @click="goBack" ></v-btn>
-  <div  class="activetext text-grey font-weight-medium"><h3>[{{ selectactive }}]</h3></div>
+  <div class="father0">
+    <div class="son1">
+      <v-avatar class="fishimage" size="450" rounded="0" style="">
+        <v-img  :src="getImageSource(FishId,FishPhoto)" :style="{ transform: imageScale(FishId,FishPhoto) }"></v-img>
+      </v-avatar>
+    </div>
+    <div class="son2">
+      <div  class="text-white ml-3 idtext   font-weight-medium">ID</div>
+  <div class="d-flex">
+    <div class="text-white  font-weight-medium fishIDtext">{{ FishId }}</div>
+  <div  class="activetext text-grey font-weight-medium ml-10 mt-16"><h3>[{{ selectactive }}]</h3></div>
+  </div>
   <div class="titelbctext text-grey font-weight-medium">電量</div>
-  <div  class=" mx-1 text-h1 bcvalue-bg1" :style="{  color: getbccolor(FishBc,1)}">.</div>
-  <div  class=" mx-1 text-h1 bcvalue-bg2" :style="{  color: getbccolor(FishBc,2)}">.</div>
-  <div  class=" mx-1 text-h1 bcvalue-bg3" :style="{  color: getbccolor(FishBc,3)}">.</div>
-  <div  class=" mx-1 text-h1 bcvalue-bg4" :style="{  color: getbccolor(FishBc,4)}">.</div>
-  <div  class=" mx-1 text-h1 bcvalue-bg5" :style="{  color: getbccolor(FishBc,5)}">.</div>
-  <div class="  text-h5 text-white fishbc-bg" >{{FishBc}}%</div>
-  <div  class="titelerrortext  text-grey font-weight-medium">錯誤</div>
-  <v-card  class="errorcard pa-3 pt-2 pl-4 text-white">{{ errorcode(FishErr) }}</v-card>
-  <div  class="titelcolortext text-grey font-weight-medium">LED顏色設定</div>
-  <v-card width="530" class="colorcard pa-5 pb-7 pl-8 text-grey">
+  <div class="d-flex" >
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mr-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,1) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,2) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,3) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,4) }"></v-btn>
+    <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,5) }"></v-btn>
+    <div class="  text-h5 text-white fishbc-bg mb-1 pb-1 mt-1" >{{FishBc}}%</div>
+  </div>
+  
+  <div  class="titelerrortext  text-grey font-weight-medium bcdisplay">錯誤</div>
+  <div>
+    <v-card  class="errorcard pa-3 pt-3 pl-4 text-white mt-2">{{ errorcode(FishErr) }}</v-card>
+  <div  class="titelcolortext text-grey mt-3 font-weight-medium ">LED顏色設定</div>
+  <div class="colorsetfather">
+    <v-card  class="colorcard pa-5 pb-7 pl-8 text-grey mt-2">
      <v-row>
       <v-col>
         <t3> 左眼  <v-dialog
@@ -138,15 +151,17 @@
      </v-col>
   </v-row>
   </v-card>
+  </div>
+  </div>
   <v-btn 
-            class="mt-4 ml-4 setcolorbuttom "
+            class=" ml-1 setcolorbuttom mt-10"
             variant="outlined"
             width="130"
             @click="editColor" >  </v-btn>
-      <v-avatar class="fishimage" size="450" rounded="0" style="">
-      <v-img class="mt-6 pt-3 pr-7 " :src="getImageSource(FishId)" :style="{ transform: imageScale(FishId) }"></v-img>
+    </div>
       
-    </v-avatar>
+  </div>
+  
 </template>
 
 <script>
@@ -181,6 +196,7 @@ function TranActive(active) {
         FishBc: localStorage.getItem("EditBc"),
         FishErr: localStorage.getItem("EditErr"),
         FishActive: localStorage.getItem("EditActive"),
+        FishPhoto: localStorage.getItem("EditPhoto"),
         token:localStorage.getItem('token'),
         selectcolor:null,
         selectactive:localStorage.getItem("EditActive"),
@@ -210,11 +226,24 @@ function TranActive(active) {
       goBack() {
         window.history.back();
       },
-      getImageSource(id) {
-        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      getImageSource(id, photonum) {
+        const idNumber = parseInt(id, 10);
+        const photonumNumber = parseInt(photonum, 10);
+
+        if (idNumber === 3002 || idNumber === 3009 || idNumber === 3013) {
+          return require("../assets/新花色" + idNumber + ".png");
+        } else if (idNumber <= 4000) {
+          return require("../assets/fishimage" + (photonumNumber + 1) + ".png");
+        } else {
+          return require("../assets/海龜.png");
+        }
       },
-      imageScale(id) {
-        return id <= 4000 ? "scale(1)" : "scale(0.7)";
+      /*getImageSource(id) {
+        return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      },*/
+      imageScale(id, photonum) {
+        const photonumNumber = parseInt(photonum, 10);
+        return id <= 4000 ? photonumNumber ==1 ? "scale(1)":"scale(0.9)" : "scale(0.7)";
       },
       errorcode(err){
         const errorMapping = {
@@ -388,34 +417,22 @@ function TranActive(active) {
   border: 3px solid rgba(255, 255, 255, 0.2);
 }
 .idtext{
-  font-size: 55px;
-  margin-left: 60%;
+  font-size: 35px;
+  transform: scale(1.7);
 }
 .fishIDtext{
   font-size: 80px;
-  position: absolute;
-  margin-left: 60%;
-  top: 18%;
   letter-spacing: 5px;
 }
 .activetext{
-    position: absolute;
     letter-spacing: 3px;
     font-size: 18px;
-    margin-left: 75%;
-    margin-top: 2.4%;
   }
 .titelbctext{
-    position: absolute;
-    margin-left: 60%;
-    top: 35%;
     letter-spacing: 3px;
     font-size: 18px;
   }
 .titelerrortext{
-    position: absolute;
-    margin-left: 60%;
-    top: 45%;
     letter-spacing: 3px;
     font-size: 18px;
   }
@@ -426,16 +443,9 @@ function TranActive(active) {
   backdrop-filter: blur(1px);
   border: 3px solid rgba(255, 255, 255, 0.2);
   font-size: 25px;
-  transform: scale(0.8);
-  position: absolute;
-  margin-left: 56.5%;
-  margin-top: 13%;
   width:530px;
 }
 .titelcolortext{
-  position: absolute;
-  margin-left: 60%;
-  top: 62%;
   letter-spacing: 3px;
   font-size: 18px;
 }
@@ -446,10 +456,7 @@ function TranActive(active) {
   backdrop-filter: blur(1px);
   border: 3px solid rgba(255, 255, 255, 0.2);
   z-index: 2;
-  transform: scale(0.8);
-  position: absolute;
-  margin-left: 56.5%;
-  margin-top: 20.8%;
+  width: 530px;
 }
 .setcolorbuttom{
     border-radius: 80px;
@@ -457,130 +464,152 @@ function TranActive(active) {
     background-position: center;
     background-size: 100% 100%;
     transform: scale(1.1);
-    left: 78%;
-    top: 62%;
-}
-.fishimage{
-  position: absolute;
-  left: 14%;
-  top: 16%;
-  transform: scale(1.4);
-}
-.bcvalue-bg1{
-   position: absolute;
-   top: 29%;
-   left: 60.2%;
-   transform: translateX(-50%) scale(1.5);
-}
-.bcvalue-bg2{
-   position: absolute;
-   top: 29%;
-   left: 63.2%;
-   transform: translateX(-50%) scale(1.5);
-}
-.bcvalue-bg3{
-   position: absolute;
-   top: 29%;
-   left: 66.2%;
-   transform: translateX(-50%) scale(1.5);
-}
-.bcvalue-bg4{
-   position: absolute;
-   top: 29%;
-   left: 69.2%;
-   transform: translateX(-50%) scale(1.5);
-}
-.bcvalue-bg5{
-   position: absolute;
-   top: 29%;
-   left: 72.2%;
-   transform: translateX(-50%) scale(1.5);
-}
-.fishbc-bg{
-  position: absolute;
-  top: 39.8%;
-  left: 75%;
 }
 
 
-
-@media screen and (max-width: 600px){
-.btn-bg{
-  z-index: 2;
+@media screen and (min-width: 1601px) {
+  .idtext{
+  font-size: 40px;
+  transform: scale(2);
+}
+.fishIDtext{
+  font-size: 100px;
+  letter-spacing: 5px;
+}
+.activetext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+.titelbctext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+.titelerrortext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+  .titelcolortext{
+  letter-spacing: 3px;
+  font-size: 28px;
+}
+  .bcdisplay{
+    margin-top: 20px;
+  }
+  .btn-bg{
   position: relative;
   font-size: 23px;
-  top: -2%;
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
   border: 3px solid rgba(255, 255, 255, 0.2);
 }
-.idtext{
-  position: absolute;
-  top: 8%;
-  font-size: 40px;
-  margin-left: 7%;
+.father0{
+  display: flex;
+  width: 100%;
 }
-.fishIDtext{
-  font-size: 65px;
-  position: relative;
-  margin-left: 7%;
-  top: 3%;
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 55%;
+  height: 50%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  width: 43%;
+  align-items: flex-start;
 }
 .fishimage{
-  margin-top: -16%;
-  transform: scale(0.85) translateX(-20%);
+  transform: scale(1.4);
+  margin-top: 6%;
 }
-.activetext{
-    position: absolute;
-    letter-spacing: 2px;
-    font-size: 15px;
-    margin-left: 50%;
-    margin-top: -24.5%;
-    transform: scale(0.8);
+}
+@media screen and (min-width: 1200px) and (max-width: 1600px){
+.father0{
+  display: flex;
+  width: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 55%;
+  height: 50%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  width: 43%;
+  align-items: flex-start;
+}
+.fishimage{
+  transform: scale(1.4);
+  margin-top: 6%;
+}
+}
+@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
 
-  }
-  .titelbctext{
-    position: relative;
-    margin-left: 15%;
-    margin-top: -17%;
-    letter-spacing: 3px;
-    font-size: 18px;
-  }
-  .bcvalue-bg1{
-    position: absolute;
-    left: 16%;
-    margin-top: 42%;
 }
-.bcvalue-bg2{
-    position: absolute;
-    left: 26%;
-    margin-top: 42%;
+@media screen and (min-width: 601px) and (max-width: 1024px){
 }
-.bcvalue-bg3{
-    position: absolute;
-    left: 36%;
-    margin-top: 42%;
+@media screen and (max-width: 600px){
+  .btn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
 }
-.bcvalue-bg4{
-    position: absolute;
-    left: 46%;
-    margin-top: 42%;
+
+.father0{
+  display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
 }
-.bcvalue-bg5{
-    position: absolute;
-    left: 56%;
-    margin-top: 42%;
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+  margin-top: -15%;
 }
-.fishbc-bg{
-  position: absolute;
-  left: 66%;
-  margin-top: 43%;
+.son2{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: 15%;
+  margin-right: 5%;
+  margin-top: -15%;
+}
+.fishimage{
+  transform: scale(1);
+}
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  width:80%;
+}
+.colorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  width: 530px;
+  transform: scale(0.9) ;
 }
 .titelerrortext{
-    position: relative;
-    margin-left: 15%;
-    margin-top: -10%;
     letter-spacing: 3px;
     font-size: 18px;
   }
@@ -592,94 +621,28 @@ function TranActive(active) {
   border: 3px solid rgba(255, 255, 255, 0.2);
   font-size: 25px;
   transform: scale(0.7);
-  position: absolute;
-  margin-left: -2%;
-  margin-top: 78%;
+  transform-origin: left top;
   width: 420px;
 }
   .titelcolortext{
-    position: relative;
-    margin-left: 15%;
-    margin-top: -13%;
     letter-spacing: 3px;
     font-size: 18px;
 }
 .colorcard{
   transform: scale(0.55);
-  position: relative;
-  margin-left: -17%;
-  margin-top: 103%;
-}
-.setcolorbuttom{
-  border-radius: 80px;
-    background-image: url('../assets/顏色設定鈕.png');
-    background-position: center;
-    background-size: 100% 100%;
-    transform: scale(1.1);
-    left: 27%;
-    top: -6%;
-}
-}
-@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-.idtext{
-  font-size: 50px;
-  margin-left: 3%;
-}
-.fishIDtext{
-  font-size: 85px;
-  position: absolute;
-  margin-left: 2.8%;
-  top: 25%;
-}
-.colorcard{
-  z-index: 2;
-  transform: scale(0.8);
-  position: absolute;
-  left: 55.5%;
-  margin-top: 33%;
-}
-.fishimage{
-  position: absolute;
-  left: 37%;
-  top: 10%;
-  transform: scale(1.4);
-}
-}
-@media screen and (min-width: 601px) and (max-width: 1024px){
-  .controlbutton{
-  margin-top: 12%;
-  position: absolute;
-  left: 80.5%;
+  transform-origin: left top;
 }
 .idtext{
-  position: absolute;
-  top: 2.5%;
-  font-size: 60px;
-  margin-left: 7%;
-}
-.vector {
-  display: none;
+  font-size: 30px;
 }
 .fishIDtext{
-  font-size: 105px;
-  position: relative;
-  margin-left: 7%;
-  margin-top: 4%;
+  font-size: 65px;
 }
-.fishimage{
-  margin-top: 3%;
-  transform: scale(1.5) translateX(-20%);
-}
-.colorcard{
-  z-index: 2;
-  transform: scale(0.8);
-  position: relative;
-  left: 15%;
-  margin-top: 3%;
-}
-.setcolorbuttom{
-  left: 75%;
-}
+.activetext{
+    letter-spacing: 1px;
+    font-size: 15px;
+    margin-top: -20px;
+  }
 }
   </style>
 

@@ -102,8 +102,6 @@
           .catch(err=> {
               console.log(err);
               this.loading = false;
-              
-              alert('註冊失敗');
           })
         },
         onSubmit () {
