@@ -128,14 +128,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 {
     "fishControl":{
         "led":{
-            "23":{
-                "led1": {"r":11,"g":21,"b":22,"a":40},
-                "led2": {"r":20,"g":21,"b":22,"a":40}
-            },
-            "24":{
-                "led1": {"r":21,"g":21,"b":22,"a":40},
-                "led2": {"r":22,"g":21,"b":22,"a":40}
-            }
+            "23":"K0",
+            "24":"K1"
         },
         "motion":{
             "id": "23",
