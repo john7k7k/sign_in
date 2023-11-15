@@ -50,8 +50,7 @@ export default {
 
 @media screen and (max-width: 600px) {
   .logininput {
-    padding-left: 15px;
-    transform: scale(0.85) translateY(52%);
+    transform: scale(0.75) translateX(-79%) translateY(53%);
   }
 
 

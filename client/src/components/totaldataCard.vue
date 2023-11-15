@@ -96,7 +96,7 @@ token:localStorage.getItem('token'),
 time: localStorage.getItem("NewTime"),
 poolsdata:[
             {
-                EnPoolName:"Taipei World Trade Center Exhibition Hall 1",
+                EnPoolName:"National Taipei University of Technology",
                 imageurl: require("../assets/主頁魚池33.png")
             },
             {
@@ -217,7 +217,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -420,7 +420,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "/api/v1/account",
+    "https://pre.aifish.cc"+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`

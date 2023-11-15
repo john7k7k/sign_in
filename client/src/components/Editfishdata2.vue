@@ -28,136 +28,77 @@
   <div  class="titelcolortext text-grey mt-3 font-weight-medium ">LED顏色設定</div>
   <div class="colorsetfather">
     <v-card  class="colorcard pa-5 pb-7 pl-8 text-grey mt-2">
+      <RadioGroup v-model="chooseColor">
      <v-row>
       <v-col>
-        <t3> 左眼  <v-dialog
-                  v-model="dialogs[0]"
-                  width="1024"
-                  transition="dialog-bottom-transition">
-                    <template v-slot:activator="{ props }">
+        <t3> <Radio label="紅色" ></Radio>  
                       <v-btn
                         flat
                         class="mt-2"
-                        v-bind="props"
-                        :color="pickers[0]"
+                        color="#E53935FF"
                         size="small"
                       ></v-btn>
-                    </template>
-                    <v-row justify="center">
-                      <v-color-picker
-                        hide-inputs
-                        v-model="pickers[0]"
-                        elevation="15"
-                      ></v-color-picker>
-                    </v-row>
-                  </v-dialog>
+        </t3>
+      </v-col>
+      
+      <v-col>
+        <t3> <Radio label="綠色" ></Radio>  
+                      <v-btn
+                        flat
+                        class="mt-2"
+                        color="#00E676"
+                        size="small"
+                      ></v-btn>
         </t3>
       </v-col>
       <v-col>
-        <t3> 右眼  <v-dialog
-                  v-model="dialogs[1]"
-                  width="1024"
-                  transition="dialog-bottom-transition">
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                          flat
-                          class="mt-2"
-                          v-bind="props"
-                          :color="pickers[1]"
-                          size="small"
-                        ></v-btn>
-                    </template>
-                    <v-row justify="center">
-                      <v-color-picker
-                        hide-inputs
-                        v-model="pickers[1]"
-                        elevation="15"
-                      ></v-color-picker>
-                    </v-row>
-                    </v-dialog>
-       </t3>
-     </v-col>
-     <v-col>
-        <t3> 上魚鰭<v-dialog
-                  v-model="dialogs[2]"
-                  width="1024"
-                  transition="dialog-bottom-transition">
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                          flat
-                          class="mt-2"
-                          v-bind="props"
-                          :color="pickers[2]"
-                          size="small"
-                        ></v-btn>
-                    </template>
-                    <v-row justify="center">
-                      <v-color-picker
-                        hide-inputs
-                        v-model="pickers[2]"
-                        elevation="15"
-                      ></v-color-picker>
-                    </v-row>
-                    </v-dialog>
-       </t3>
-     </v-col>
-     <v-col>
-        <t3> 左後導光柱<v-dialog
-                  v-model="dialogs[3]"
-                  width="1024"
-                  transition="dialog-bottom-transition">
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                          flat
-                          class="mt-2"
-                          v-bind="props"
-                          :color="pickers[3]"
-                          size="small"
-                        ></v-btn>
-                    </template>
-                    <v-row justify="center">
-                      <v-color-picker
-                        hide-inputs
-                        v-model="pickers[3]"
-                        elevation="15"
-                      ></v-color-picker>
-                    </v-row>
-                    </v-dialog>
-       </t3>
-     </v-col>
-     <v-col>
-        <t3> 右後導光柱<v-dialog
-                  v-model="dialogs[4]"
-                  width="1024"
-                  transition="dialog-bottom-transition">
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                          flat
-                          class="mt-2"
-                          v-bind="props"
-                          :color="pickers[4]"
-                          size="small"
-                        ></v-btn>
-                    </template>
-                    <v-row justify="center">
-                      <v-color-picker
-                        hide-inputs
-                        v-model="pickers[4]"
-                        elevation="15"
-                      ></v-color-picker>
-                    </v-row>
-                    </v-dialog>
-       </t3>
-     </v-col>
+        <t3> <Radio label="藍色" ></Radio>  
+                      <v-btn
+                        flat
+                        class="mt-2"
+                        color="#00B0FF"
+                        size="small"
+                      ></v-btn>
+        </t3>
+      </v-col>
+      <v-col>
+        <t3> <Radio label="紫色" ></Radio>  
+                      <v-btn
+                        flat
+                        class="mt-2"
+                        color="#7E57C2"
+                        size="small"
+                      ></v-btn>
+        </t3>
+      </v-col>
+      <v-col>
+        <t3> <Radio label="白色" ></Radio>  
+                      <v-btn
+                        flat
+                        class="mt-2"
+                        color="#FAFAFA"
+                        size="small"
+                      ></v-btn>
+        </t3>
+      </v-col>
   </v-row>
+</RadioGroup>
   </v-card>
   </div>
-  </div>
-  <v-btn 
-            class=" ml-1 setcolorbuttom mt-10"
+  </div >
+  <div class="d-flex">
+    <v-btn 
+            class=" ml-1 setcolorbuttom mt-5"
             variant="outlined"
             width="130"
-            @click="editColor" >  </v-btn>
+            @click="editColor(0)" >  </v-btn>
+      <v-btn 
+            class=" ml-8 cancelcolorbuttom mt-5 text-white"
+            variant="outlined"
+            width="130"
+            @click="editColor(1)" >取消顏色設定  </v-btn>
+  
+  </div>
     </div>
       
   </div>
@@ -166,17 +107,7 @@
 
 <script>
 import axios from 'axios';
-function hexToRGBA(hex) {
-    hex = hex.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-  let alpha = 1; 
-  if (hex.length === 8) {
-    alpha = (parseInt(hex.substring(6, 8), 16) / 255).toFixed(2);
-  }
-  return `"r":${r},"g":${g},"b":${b},"a":${alpha}`;
-}
+
 function TranActive(active) {
   if (active == "功能正常-待機中") {
     return 0;
@@ -204,7 +135,6 @@ function TranActive(active) {
         afterEditBc:null,
         afterEditErr:null,
         dialogs: [false, false, false, false, false],
-        pickers: ["#E53935FF", "#FFA726FF", "#FDD835FF", "#43A047FF", "#29B6F6FF"],
         active:[
             "功能正常-待機中",
             "活動中",
@@ -220,6 +150,7 @@ function TranActive(active) {
           "急速悠游",
           "沿牆",
         ],
+        chooseColor:""
         }
       },
       methods:{
@@ -240,6 +171,16 @@ function TranActive(active) {
       },
       /*getImageSource(id) {
         return id <= 4000 ? require("../assets/fishimage1.png") : require("../assets/海龜.png");
+      },
+      imageScale(id,photonum) {
+        const photoCode = parseInt(photonum, 10);
+        if (photoCode === 0 && id <= 4000) {
+            return "scale(1)";
+          } else if (photoCode > 0 && id <= 4000) {
+            return "scale(1.3) translateY(20px)";
+          } else {
+            return "scale(0.7)";
+          }
       },*/
       imageScale(id, photonum) {
         const photonumNumber = parseInt(photonum, 10);
@@ -275,24 +216,24 @@ function TranActive(active) {
         };
         return errorMapping[err];
       },
-      editColor () {
-        const rgbaColor =["","","","",""]
-        for (let i = 0; i < 5; i++){
-          rgbaColor[i] = hexToRGBA(this.pickers[i])
-        }
-        axios.post(
-            "/api/v1/fish/control/?section="+this.poolname,{
+      editColor (type) {
+        let choseColor = ""
+        if(type == 1) choseColor = "K0"
+        else if(this.chooseColor == "紅色") choseColor = "K1"
+        else if(this.chooseColor == "白色") choseColor = "K2"
+        else if(this.chooseColor == "綠色") choseColor = "K3"
+        else if(this.chooseColor == "藍色") choseColor = "K4"
+        else choseColor = "K5"
+        if(this.chooseColor !== "" || choseColor == "K0"){
+          axios.post(
+            "https://pre.aifish.cc"+"/api/v1/fish/control/?section="+this.poolname,{
               "fishControl":{
         "led":{
             [this.FishId]:{
-                "led1": rgbaColor[0],
-                "led2": rgbaColor[1],
-                "led3": rgbaColor[2],
-                "led4": rgbaColor[3],
-                "led5": rgbaColor[4],
+              choseColor
             },
         },
-        "action":{
+        "motion":{
             
         },
         "mode":{
@@ -308,15 +249,27 @@ function TranActive(active) {
           .then(res=> {
               console.log(res);
               if(res.status == 200){
-                this.$Message.success('變更顏色成功');
+                if(type == 1) {
+                  this.$Message.success('取消顏色成功');
+                  this.chooseColor = ""
+                }
+                else this.$Message.success('變更顏色成功');
               }
-              else
-              this.$Message.error('變更顏色失敗');
+              else{
+                if(type == 1) this.$Message.success('取消顏色失敗');
+                else this.$Message.success('變更顏色失敗');
+              }
+              
           })
           .catch(err=> {
               console.log(err);
-              this.$Message.error('變更顏色失敗');
+              if(type == 1) this.$Message.success('取消顏色失敗');
+                else this.$Message.success('變更顏色失敗');
           })
+        }else{
+          this.$Message.error('請選擇顏色');
+        }
+        
         },
         ChangeDatas(){
           if(this.afterEditBc == null){
@@ -461,6 +414,19 @@ function TranActive(active) {
 .setcolorbuttom{
     border-radius: 80px;
     background-image: url('../assets/顏色設定鈕.png');
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.2);
+}
+.cancelcolorfather{
+  height: 40px;
+  border-radius: 100px;
+  background-image: linear-gradient(to right, red, blue);
+}
+.cancelcolorbuttom{
+  border-radius: 100px;
+  border-color: aqua;
+    background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
     background-position: center;
     background-size: 100% 100%;
     transform: scale(1.1);
@@ -639,7 +605,7 @@ function TranActive(active) {
   font-size: 65px;
 }
 .activetext{
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     font-size: 15px;
     margin-top: -20px;
   }
