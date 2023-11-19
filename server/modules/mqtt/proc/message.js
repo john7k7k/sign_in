@@ -65,5 +65,8 @@ async function messageProcess(topic,mqtt_data){
                 }))
             })
         }
+        else if(topic.type === 'control'){
+            global.controlAble = True;
+        }
     }catch(err){console.log(err)}
 }
