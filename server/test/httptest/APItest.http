@@ -17,7 +17,7 @@ POST https://pre.aifish.cc/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "123",
+    "username": "1234",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
@@ -275,15 +275,15 @@ POST https://pre.aifish.cc/api/v1/account/reset_password
 Content-Type: application/json
 
 {
-    "username": "123",
+    "username": "1234",
     "mail": "ppp1244qqq@gmail.com",
-    "password": "789"
+    "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
 POST https://pre.aifish.cc/api/v1/account/reset_password_check
 Content-Type: application/json
 
 {
-    "username": "123",
-    "code": "226295"
+    "username": "1234",
+    "code": "929345"
 }

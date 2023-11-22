@@ -1,0 +1,11 @@
+[Unit]
+Description=This service set up GPIO for updating STM32 MCU firmware.
+
+[Service]
+Environment="HOME=root"
+Restart=on-failure
+RestartSec=30s
+ExecStart=/home/aifi-fish/aifi-fota/aifi_setup_gpio.sh
+
+[Install]
+WantedBy=multi-user.target
