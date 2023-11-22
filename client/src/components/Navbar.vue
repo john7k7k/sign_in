@@ -263,7 +263,7 @@ methods: {
     async loadnewdata() {
           try {
             const res = await axios.get(
-              "https://pre.aifish.cc"+"/api/v1/account",
+              "/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`
