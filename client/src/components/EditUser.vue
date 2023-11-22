@@ -9,9 +9,18 @@
           <v-row class="ml-3 mt-4">
             <v-avatar :image="imageUrl" size="100"></v-avatar>
             <div class="mt-19  custom-margin"  style="color: blue;" @click="executeFunction"><v-btn @click="modal = true" flat class="text-decoration-underline">更改頭貼照片</v-btn></div>
+            <div class="mt-19  custom-margin"  style="color: blue;" @click="executeFunction"><v-btn @click="passwordmodal = true" flat class="text-decoration-underline">更改密碼</v-btn></div>
             <Modal
               v-model="modal"
               title="變更頭貼"
+              :closable="false"
+              @on-ok="uploadImage"
+              @on-cancel="cancel">
+              <input type="file" ref="fileInput" @change="select" />
+          </Modal>
+          <Modal
+              v-model="passwordmodal"
+              title="變更帳戶密碼"
               :closable="false"
               @on-ok="uploadImage"
               @on-cancel="cancel">
@@ -100,6 +109,7 @@
             registrationTime: localStorage.getItem('registrationTime'),
             IP:process.env.VUE_APP_IP,
             modal:false,
+            passwordmodal:false,
             token:localStorage.getItem('token'),
             imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
         }

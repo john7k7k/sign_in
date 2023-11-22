@@ -18,10 +18,11 @@
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
       <v-btn class="ml-5 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
-      <v-btn href="/select/instruction" v-if="SelectSectionshow" class="navbartext font-weight-bold">選擇機構</v-btn>
+      <v-btn  v-if="SelectSectionshow" class="navbartext font-weight-bold text-white" @click="loadnewdata">選擇機構</v-btn>
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext font-weight-bold">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
+      <v-btn  v-if="controllershow" value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
@@ -67,7 +68,7 @@
         title="選擇機構"
         value="select"
         class="text-white "
-        route to = "/select/instruction"
+        @click="loadnewdata"
       ></v-list-item>
         <v-list-item
           prepend-icon="mdi-square-edit-outline"
@@ -133,6 +134,7 @@ data() {
     userlistshow:false,
     fishlistshow:false,
     signupSectionshow:false,
+    controllershow:false,
     links: [
       { icon: "", text: "", route: "/" },
       { icon: "", text: "", route: "/" },
@@ -172,12 +174,14 @@ methods: {
       this.userlistshow = true;
       this.fishlistshow = true;
       this.signupSectionshow = true;
+      this.controllershow = true;
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP54Z1Z-evI0ehyLLk56FXAlFwVHskrj7CmQ&usqp=CAU"
       return "最高管理員";
     } else if (this.level === "10" && this.section === "001"){
       this.SelectSectionshow = true ;
       this.fishlistshow = true;
       this.userlistshow = true;
+      this.controllershow = true;
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
       return "總管理員";
     } else if (this.level === "20" && this.section === "001"){
@@ -256,6 +260,40 @@ methods: {
             console.log(err);
         })
     },
+    async loadnewdata() {
+          try {
+            const res = await axios.get(
+              "https://pre.aifish.cc"+"/api/v1/account",
+              {
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+            );
+
+            console.log(res);
+            if (res.status === 200) {
+                const poolTable = res.data.poolTable;
+                const poolLocations = poolTable.map(pool => pool.id);
+                const poolnames = poolTable.map(pool => pool.name);
+                const instructiontable = res.data.instructionTable;
+                const instructioncode =  instructiontable.map(ins => ins.id);
+                const instructionname =  instructiontable.map(ins => ins.name);
+                const departTable = res.data.departTable;
+                const departcode =  departTable.map(ins => ins.id);
+                const departname =  departTable.map(ins => ins.name);
+                localStorage.setItem("PoolsCode", JSON.stringify(poolLocations));
+                localStorage.setItem("PoolsName", JSON.stringify(poolnames));
+                localStorage.setItem("InstructionCode", JSON.stringify(instructioncode));
+                localStorage.setItem("InstructionName", JSON.stringify(instructionname));
+                localStorage.setItem("DepartCode", JSON.stringify(departcode));
+                localStorage.setItem("DepartName", JSON.stringify(departname));
+                window.location.replace(`/select/instruction`);
+            }
+          } catch (error) {
+            //console.log(error);
+          }
+          },
 },
 computed: {
   screenWidth() {

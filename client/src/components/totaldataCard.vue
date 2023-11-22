@@ -296,7 +296,9 @@ try {
         localStorage.setItem("Active", "");
       }
 } catch (error) {
-  console.error('Error', error);
+  //console.error('Error', error);
+  this.needchargenum.push(0);
+  this.needfixnum.push(0);
 }
 },
 async SaveIndividualData(i,level,route){
@@ -481,7 +483,7 @@ this.RefreshDatas2();
 for (var i = 0; i < this.poolsCode.length; i++) {
 await this.RefreshDatas(i);
 }
-if(this.section == "003"){
+if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
   this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology"
 }
 

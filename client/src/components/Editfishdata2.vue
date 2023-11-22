@@ -231,7 +231,6 @@ function TranActive(active) {
         "led":{
             [this.FishId]:
               choseColor
-            ,
         },
         "motion":{
             

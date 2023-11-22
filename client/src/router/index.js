@@ -8,6 +8,7 @@ import Accountlist from '../views/AccountList.vue'
 import FishDatalist from '../views/FishDatalist.vue'
 import SuSectionview from '../views/SignupSectionview.vue'
 import SelectInstruction from '../views/SelectInstruction.vue'
+import Controllerview from '../views/Controllerview.vue'
 const routes = [
   {
     name: "Nav",
@@ -35,6 +36,11 @@ const routes = [
       name: "SignupSection",
       path: "/sign/up/pool", 
       component: SuSectionview
+    },
+    {
+      name: "Controllerview",
+      path: "/controller", 
+      component: Controllerview
     },
     
    ]
