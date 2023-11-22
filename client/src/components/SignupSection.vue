@@ -169,7 +169,7 @@ export default {
       async loadnewdata() {
           try {
             const res = await axios.get(
-              "https://pre.aifish.cc"+"/api/v1/account",
+              "/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -254,7 +254,7 @@ export default {
           })
         }else if(tab === "two"){
           axios.post(
-            "https://pre.aifish.cc"+"/api/v1/depart",{
+            "/api/v1/depart",{
             "depart":{"code": this.NewDepartCode,
                       "name": this.NewDepart
                       },
@@ -282,7 +282,7 @@ export default {
           let deparAllcode = this.getKeyByValue(this.keyvalueMapping[1], this.SelectDepart)
           const deparcode = deparAllcode.substring(deparAllcode.length - 3);
           axios.post(
-            "https://pre.aifish.cc"+"/api/v1/pool",{
+            "/api/v1/pool",{
             "instruction":{"code": this.getKeyByValue(this.keyvalueMapping[0], this.SelectInstruction)},
             "depart":{"code": deparcode},
             "pool":{"code": this.NewPoolCode,

@@ -476,7 +476,7 @@
         },
         fetchImage(){
         axios.get(
-          "https://pre.aifish.cc"+"/api/v1/fish/photosURL", { responseType: 'blob', headers: {
+          "/api/v1/fish/photosURL", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {

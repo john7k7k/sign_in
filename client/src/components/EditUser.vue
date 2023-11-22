@@ -24,7 +24,32 @@
               :closable="false"
               @on-ok="uploadImage"
               @on-cancel="cancel">
-              <input type="file" ref="fileInput" @change="select" />
+              <div class="text-black  d-flex align-center justify-space-between ml-2 mb-1 textdistance" >新密碼</div>
+              <v-text-field
+                dark
+                :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="visible ? 'text' : 'password'"
+                v-model="newpassword"
+                :readonly="loading"
+                :rules="[required]"
+                density="compact"
+                placeholder=""
+                class="ml-2 mr-2 text-black"
+                @click:append-inner="visible = !visible"
+              ></v-text-field>
+              <div class="text-black  d-flex align-center justify-space-between ml-2 mb-1 textdistance" >確認新密碼</div>
+              <v-text-field
+                dark
+                :append-inner-icon="visible2 ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="visible2 ? 'text' : 'password'"
+                v-model="newpassword2"
+                :readonly="loading"
+                :rules="[required]"
+                density="compact"
+                placeholder=""
+                class="ml-2 mr-2 text-black"
+                @click:append-inner="visible2 = !visible2"
+              ></v-text-field>
           </Modal>
           </v-row>
         
@@ -111,7 +136,11 @@
             modal:false,
             passwordmodal:false,
             token:localStorage.getItem('token'),
-            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
+            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU",
+            visible: false,
+            visible2: false,
+            newpassword:"",
+            newpassword2:""
         }
       },
       methods: {
