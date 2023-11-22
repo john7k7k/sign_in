@@ -25,8 +25,7 @@
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
-    <div v-if="false" class=" text-white navbartext font-weight-bold mt-2">{{ username }}</div>
-    <div  class=" text-white navbartext font-weight-bold mt-2">台北科大</div>
+    <div  class=" text-white navbartext font-weight-bold mt-2">{{ username }}</div>
     <div>
       <v-btn  value="about" href="/user" ><v-avatar class=" mr-4 " :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn>
       

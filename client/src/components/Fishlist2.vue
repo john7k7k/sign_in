@@ -118,16 +118,11 @@
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
-      <Modal v-model="row.modal" :title="'變更' + row.id + '照片'" :closable="false" @on-ok="changeFishPhoto(row.id,row.photo)" @on-cancel="cancel">
-        <RadioGroup class="radio-group" v-model="row.photo">
-          <Radio class="radio" label="0">紅色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage5.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-          <Radio class="radio" label="1">橘色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage2.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-          <Radio class="radio" label="2">藍色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage3.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-          <Radio class="radio" label="3">黃色<div style=" background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage4.png" width="100%" height="100%" style="transform: scale(1.4);"></v-img></div></Radio>
-        </RadioGroup>     
-        
-                 
-            </Modal>
+      <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel">
+                <input type="file" ref="fileInput" @change="selectfile" />
+                <div class="mt-4 font-weight-bold text-h6">上傳照片範例:</div>
+                <div style="width: 30%; height: 30%; background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage1.png" width="100%" height="100%" ></v-img></div>   
+              </Modal>
    </template>
    <template #active="{ row}">
     <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
@@ -480,7 +475,7 @@ import axios from 'axios';
         formData.append('version', this.NewversionFileName)
         formData.append('bin',this.selectFile)
         axios.post(
-          "/api/v1/ota/bin",formData,{
+          "https://pre.aifish.cc"+"/api/v1/ota/bin",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -516,7 +511,7 @@ import axios from 'axios';
     },
         newdatas () {
         axios.post(
-          "/api/v1/fish/?section="+this.SelectSection,{
+          "https://pre.aifish.cc"+"/api/v1/fish/?section="+this.SelectSection,{
             "fishUID": this.NewId,
                         },{
                 headers: {
@@ -583,7 +578,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "https://pre.aifish.cc"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -674,7 +669,7 @@ import axios from 'axios';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "/api/v1/account",
+          "https://pre.aifish.cc"+"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -730,7 +725,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-          "/api/v1/fish/delete/",
+          "https://pre.aifish.cc"+"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -782,7 +777,7 @@ import axios from 'axios';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          "https://pre.aifish.cc"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -809,7 +804,7 @@ import axios from 'axios';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "/api/v1/fish/data/",
+        "https://pre.aifish.cc"+"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -836,7 +831,7 @@ import axios from 'axios';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "/api/v1/fish/photo/change",
+        "https://pre.aifish.cc"+"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

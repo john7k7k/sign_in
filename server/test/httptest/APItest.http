@@ -123,13 +123,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST https://pre.aifish.cc/api/v1/fish/control/?section=002001001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5OTk3NTg3MywiZXhwIjoxNjk5OTg0ODczfQ.HClS3VO25DmlE9N0gdyZJVj_ILB1ZzDejW6bw606fnA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMDA1NTU1MSwiZXhwIjoxNzAwMDY0NTUxfQ.j08OLs09kAT7yzOiiod8rKLWorediGpLWuUdkfHXrxs
 
 {
     "fishControl":{
         "led":{
-            "23":"K0",
-            "24":"K1"
+            "3001":"K0",
+            "3002":"K2"
         },
         "motion":{
             "id": "23",
@@ -269,3 +269,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET https://pre.aifish.cc/api/v1/fish/photos/?time=1693947214153.jpg&fishUID=0023001
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMDAzMzM1NCwiZXhwIjoxNzAwMDQyMzU0fQ.I54Tk5py4Y_9Cu90fAHbmM0tscMg5bLrJRU1TwUm-sk
+
+###
+POST https://pre.aifish.cc/api/v1/account/reset_password
+Content-Type: application/json
+
+{
+    "username": "123",
+    "mail": "ppp1244qqq@gmail.com",
+    "password": "789"
+}
+###
+POST https://pre.aifish.cc/api/v1/account/reset_password_check
+Content-Type: application/json
+
+{
+    "username": "123",
+    "code": "226295"
+}

@@ -475,7 +475,7 @@
         },
         fetchImage(){
         axios.get(
-          "/api/v1/account/sticker", { responseType: 'blob', headers: {
+          "https://pre.aifish.cc"+"/api/v1/fish/photosURL", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
@@ -503,6 +503,7 @@
       },
       created() {
       this.RefreshFishDatas();
+      //this.fetchImage();
     },
       
     }
@@ -561,6 +562,11 @@
     .recordtext{
     padding-top: 10px;
     font-size: 15px;
+  }
+  .pooltext{
+    font-size:large;
+    padding-left: 37px;
+    padding-top: 15px;
   }
   }  
   
