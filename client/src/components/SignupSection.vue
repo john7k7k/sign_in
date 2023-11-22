@@ -125,6 +125,9 @@ export default {
         poolName: JSON.parse(localStorage.getItem("PoolsName")),
         instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
         InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
+        DepartCode:JSON.parse(localStorage.getItem("DepartCode")),
+        DepartName:JSON.parse(localStorage.getItem("DepartName")),
+        token:localStorage.getItem('token'),
         NewInstruction:null,
         NewInstructionCode:null,
         SelectInstruction:null,
@@ -134,13 +137,16 @@ export default {
         NewPool:null,
         NewPoolCode:null,
         tab:null,
-        keyvalueMapping :[],
+        keyvalueMapping :[],  //keyvalueMapping[0]代表機構對照表，keyvalueMapping[1]代表部門對照表，keyvalueMapping[2]代表水池對照表
+        //對照表形式為 "code":"code對應的名稱"
 
       }
 
     },
-    created() {
+    async created() {
+        await this.loadnewdata();
         this.formNameMapping(this.instructionCode,this.InstructionName);
+        this.formNameMapping(this.DepartCode,this.DepartName);
         this.formNameMapping(this.poolsCode,this.poolName);
     },
     computed:{
@@ -160,6 +166,39 @@ export default {
       },
     },
     methods:{
+      async loadnewdata() {
+          try {
+            const res = await axios.get(
+              "https://pre.aifish.cc"+"/api/v1/account",
+              {
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+            );
+
+            console.log(res);
+            if (res.status === 200) {
+                const poolTable = res.data.poolTable;
+                const poolLocations = poolTable.map(pool => pool.id);
+                const poolnames = poolTable.map(pool => pool.name);
+                const instructiontable = res.data.instructionTable;
+                const instructioncode =  instructiontable.map(ins => ins.id);
+                const instructionname =  instructiontable.map(ins => ins.name);
+                const departTable = res.data.departTable;
+                const departcode =  departTable.map(ins => ins.id);
+                const departname =  departTable.map(ins => ins.name);
+                localStorage.setItem("PoolsCode", JSON.stringify(poolLocations));
+                localStorage.setItem("PoolsName", JSON.stringify(poolnames));
+                localStorage.setItem("InstructionCode", JSON.stringify(instructioncode));
+                localStorage.setItem("InstructionName", JSON.stringify(instructionname));
+                localStorage.setItem("DepartCode", JSON.stringify(departcode));
+                localStorage.setItem("DepartName", JSON.stringify(departname));
+            }
+          } catch (error) {
+            //console.log(error);
+          }
+          },
         formNameMapping(code,name,){
           const keyValueMapping = {};
           for (let i = 0; i < code.length; i++) {
@@ -169,6 +208,9 @@ export default {
             keyValueMapping[key] = value;
           }
           this.keyvalueMapping.push(keyValueMapping);
+        },
+        getKeyByValue(object, value) {
+          return Object.keys(object).find(key => object[key] === value);
         },
         processSectionName(str) {
             for (const key in this.keyvalueMapping[0]) {
@@ -212,11 +254,11 @@ export default {
           })
         }else if(tab === "two"){
           axios.post(
-            "/api/v1/depart",{
+            "https://pre.aifish.cc"+"/api/v1/depart",{
             "depart":{"code": this.NewDepartCode,
                       "name": this.NewDepart
                       },
-            "instruction":{"code": this.SelectInstruction}
+            "instruction":{"code": this.getKeyByValue(this.keyvalueMapping[0], this.SelectInstruction)}
                         },{
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -237,10 +279,12 @@ export default {
               this.$Message.error('新增失敗');
           })
         }else{
+          let deparAllcode = this.getKeyByValue(this.keyvalueMapping[1], this.SelectDepart)
+          const deparcode = deparAllcode.substring(deparAllcode.length - 3);
           axios.post(
-            "/api/v1/pool",{
-            "instruction":{"code": this.SelectInstruction},
-            "depart":{"code": this.SelectDepart},
+            "https://pre.aifish.cc"+"/api/v1/pool",{
+            "instruction":{"code": this.getKeyByValue(this.keyvalueMapping[0], this.SelectInstruction)},
+            "depart":{"code": deparcode},
             "pool":{"code": this.NewPoolCode,
                     "name": this.NewPool }
                         },{

@@ -123,13 +123,25 @@
                 const instructiontable = res.data.instructionTable;
                 const instructioncode =  instructiontable.map(ins => ins.id);
                 const instructionname =  instructiontable.map(ins => ins.name);
+                const departTable = res.data.departTable;
+                const departcode =  departTable.map(ins => ins.id);
+                const departname =  departTable.map(ins => ins.name);
                 localStorage.setItem("PoolsCode", JSON.stringify(poolLocations));
                 localStorage.setItem("PoolsName", JSON.stringify(poolnames));
                 localStorage.setItem("InstructionCode", JSON.stringify(instructioncode));
                 localStorage.setItem("InstructionName", JSON.stringify(instructionname));
+                localStorage.setItem("DepartCode", JSON.stringify(departcode));
+                localStorage.setItem("DepartName", JSON.stringify(departname));
                 localStorage.setItem("UserImage", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
-                if(res.data.section == "001" && res.data.level <=10) window.location.replace(`/select/instruction`);
-                else window.location.replace(`/home`);
+                if (res.data.section == "001" && res.data.level <= 10) {
+                  if (window.innerWidth <= 600) { 
+                      window.location.replace(`/home`);
+                  } else {
+                      window.location.replace(`/select/instruction`);
+                  }
+                } else {
+                    window.location.replace(`/home`);
+                }
               }
               else
               this.$Message.error('登入失敗');

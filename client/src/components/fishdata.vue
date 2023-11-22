@@ -107,7 +107,7 @@
                   class="ms-2 bg-black"
                   width="85"
                   variant="outlined"
-                  :to="'/'+poolname+'/fish/edit'"
+                  :to="'/'+poolsCode+'/fish/edit'"
                   size="small"
                   @click="editFish(fish.id, $event)"
                   :style="{  position: 'absolute', top: '77%', left: '66%', transform: 'translateX(-50%)' }"
@@ -220,6 +220,7 @@
           videoUrl: null,
           IP:process.env.VUE_APP_IP,
           poolname:localStorage.getItem('Poolname'),
+          poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
           photoUrl:["../assets/fishimage1.png","../assets/fishimage2.png","../assets/fishimage3.png","../assets/fishimage4.png"]
         }
       },

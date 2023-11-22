@@ -1,7 +1,7 @@
 <template>
   <div class="font-weight-black text-white titel-Name">{{ titel }}</div>
   <div class=" text-white en-titelName" style="white-space: pre-wrap;">{{ entitel }}</div>
-  <v-btn variant="elevated" class="mb-10 loginbuttom"  width="150" href="/home"></v-btn>
+  <v-btn variant="elevated" class="mb-10 loginbuttom"  width="150" @click="gotohomepage(this.titel)"></v-btn>
    <div class="Swiper" @mouseenter="showButtons = true"
         @mouseleave="showButtons = false">
       <v-btn class="upbutton " v-if="showButtons"  @click="leftSwipe" icon="mdi mdi-chevron-up"></v-btn>
@@ -34,25 +34,37 @@
                 imageurl: require("../assets/機構北科.png")
             },
             {
+                instruction:"海科館",
+                Eninstruction:"Museum of Marine Science and Technology",
+                imageurl: require("../assets/機構海科.png")
+            },
+            {
                 instruction:"世貿一館",
                 Eninstruction:"Taipei World Trade Center Exhibition Hall 1",
                 imageurl: require("../assets/世貿電腦圖2.png")
             },
-            
-            
-            {
-                instruction:"海科館",
-                Eninstruction:"Museum of Marine Science and Technology",
-                imageurl: require("../assets/機構海科.png")
-            }
         ],
         titel:"",
         entitel:"",
-        centercardNum:0
+        centercardNum:0,
+        poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+        poolName: JSON.parse(localStorage.getItem("PoolsName")),
+        instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
+        InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
+        DepartCode:JSON.parse(localStorage.getItem("DepartCode")),
+        DepartName:JSON.parse(localStorage.getItem("DepartName")),
+        keyvalueMapping :[],  //keyvalueMapping[0]代表機構對照表，keyvalueMapping[1]代表部門對照表，keyvalueMapping[2]代表水池對照表
+        //對照表形式為 "code":"code對應的名稱"
+        token:localStorage.getItem('token'),
       }),
       mounted(){
           this.swiper();
       },
+      created() {
+        this.formNameMapping(this.instructionCode,this.InstructionName);
+        this.formNameMapping(this.DepartCode,this.DepartName);
+        this.formNameMapping(this.poolsCode,this.poolName);
+    },
       methods: {
         swiper(){
               this.swiperInstance = new Swiper({
@@ -77,6 +89,42 @@
               this.entitel = this.instructionName[this.centercardNum].Eninstruction;
               this.swiperInstance.__rightMove();
           },
+          formNameMapping(code,name,){
+          const keyValueMapping = {};
+          for (let i = 0; i < code.length; i++) {
+            const key = code[i];
+            const value = name[i];
+            
+            keyValueMapping[key] = value;
+          }
+          this.keyvalueMapping.push(keyValueMapping);
+        },
+        getKeyByValue(object, value) {
+          return Object.keys(object).find(key => object[key] === value);
+        },
+        filterAndSaveToLocalStorage(prefix) {
+            const poolLocations = [];
+            const poolnames = [];
+            for (const key in this.keyvalueMapping[2]) {
+              if (key.startsWith(prefix)) {
+                poolLocations.push(key);
+                poolnames.push(this.keyvalueMapping[2][key]);
+              }
+            }
+            localStorage.setItem("PoolsCode", JSON.stringify(poolLocations));
+            localStorage.setItem("PoolsName", JSON.stringify(poolnames));
+            window.location.replace(`/home`);
+          },
+          gotohomepage(selectsection){
+            if(selectsection == this.instructionName[0].instruction) selectsection = "002"
+            else if(selectsection == this.instructionName[1].instruction) selectsection = "003"
+            
+            if(selectsection == "002" || selectsection == "003"){
+              this.filterAndSaveToLocalStorage(selectsection);
+            }
+            
+          },
+          
       }
     }
   </script>
