@@ -8,6 +8,7 @@ module.exports = async (req, res) => {
             data: {
                 id: req.body.controllerID,
                 fish: req.body.fish,
+                location: req.body.location,
                 exist: 1,
                 forward: 1,
                 left: 1,

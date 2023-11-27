@@ -12,12 +12,17 @@ const execute = async (req,res,next) => {
         }
     })
     const binName = `${time}_${version}`;
-    console.log(`rsync -r ../uploads/ota/${ binName } @$2:/home/$1/aifi_ota/`);
-    /*
-    exec(`rsync -r ../uploads/ota/${ binName } @$2:/home/$1/aifi_ota/`, (err, stdout, stderr) => {
+    const options = {
+        cwd: path.join(__dirname,'sh','flash')
+      };
+    console.log(`start flash`);
+    const port = fetch('https://frp.aifish.cc/api/proxy/tcp');
+    const bash = `remote_flash.sh 10.2.0.5 ${port}`;
+    //const bash = `test.sh`
+    exec(bash, options, (err, stdout, stderr) => {
         if(err) { console.log(err); return;}
         console.log(stdout);
-    })*/
+    })
     next();
 }
 

@@ -85,6 +85,7 @@ model Instruction{
 model Controller{
   id String @id
   fish String
+  location String
   exist Int
   forward Int
   left Int

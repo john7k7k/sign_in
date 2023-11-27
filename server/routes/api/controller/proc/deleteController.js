@@ -4,8 +4,8 @@ const dotenv = require("dotenv").config();
 module.exports = async (req, res) => {
     const prisma = new PrismaClient();
     try{
-        await prisma.user.delete({
-            where: {id: req.payload.controllerID}
+        await prisma.controller.delete({
+            where: {id: req.body.controllerID}
         })
     }
     catch(e) {console.log(e);res.sendStatus(403)}

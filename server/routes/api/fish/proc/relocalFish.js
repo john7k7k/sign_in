@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = async (req,res) => {
-   // try{
+   try{
       await prisma.fish.update({
         where: {
             fishUID: req.body.fishUID
@@ -12,5 +12,5 @@ module.exports = async (req,res) => {
         }
       })
       res.sendStatus(200)
-   // }catch{ res.sendStatus(500);}
+   }catch{ res.sendStatus(500);}
   }
