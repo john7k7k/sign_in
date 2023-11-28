@@ -196,7 +196,9 @@ methods: {
       return "全區工程師";
     }else if (this.level === "10"){
       this.fishlistshow = true;
-      this.userlistshow = true;
+      if(this.section === "002"){
+        this.userlistshow = true;
+      }
       this.userimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU"
       return "分區總管";
     }else if (this.level === "20"){
@@ -218,7 +220,7 @@ methods: {
   },
   logout(){
     axios.post(
-      "/api/v1/account/logout",{},{
+      "https://pre.aifish.cc"+"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -247,7 +249,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "https://pre.aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
@@ -263,7 +265,7 @@ methods: {
     async loadnewdata() {
           try {
             const res = await axios.get(
-              "/api/v1/account",
+              "https://pre.aifish.cc"+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`

@@ -134,9 +134,15 @@
         </RadioGroup>           
     </Modal>
   </template>
-    <template #action="{ row: { id } }">
-    <Button  type="primary" size="small" @click="fishdatas[i][id].show = true" class="mr-2">查看</Button>
-    <v-dialog v-model="fishdatas[i][id].show" width="auto">
+    <template #action="{ row }">
+    <Button v-if="showchangepool" type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
+    <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel">
+      
+        <RadioGroup v-model="row.section">
+                <Radio v-for="poolname in poolsCode" :key="poolname" :label="poolname" class="d-flex mt-3 ">{{ processSectionName(poolname) }}</Radio>
+              </RadioGroup>         
+    </Modal>
+    <v-dialog v-if="false"  width="auto">
       <v-card>
         <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
         <v-card-text v-for="fish in fishdatas[i][id]" :key="fish">
@@ -148,12 +154,13 @@
           <v-divider class="ma-2"></v-divider>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" block @click="fishdatas[i][id].show = false"
+          <v-btn color="primary" block @click="fishdatas[i][row.id].show = false"
             >關閉</v-btn
           >
         </v-card-actions>
       </v-card>
     </v-dialog>
+    
     <Button  type="error" size="small" @click="confirm(id)">刪除</Button>
     </template>
   </Table>
@@ -337,6 +344,8 @@ import axios from 'axios';
             showBurnBtn:false,
             showNewfishBtn:false,
             level: localStorage.getItem('UserLevel'),
+            section:localStorage.getItem('UserSection'),
+            showchangepool: false,
         }
       },
       async created() {
@@ -345,6 +354,7 @@ import axios from 'axios';
         this.RefreshDatas2();
         if(this.level < 10) this.showBurnBtn = true;
         if(this.level <= 30) this.showNewfishBtn = true;
+        if(this.level <=10 && this.section =="001") this.showchangepool = true;
         await this.accountdata();
       },
       mounted() {
@@ -578,7 +588,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "https://pre.aifish.cc"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -633,6 +643,7 @@ import axios from 'axios';
                     modal:false,
                     ActiveModal:false,
                     selectActive: this.proccesactive(this.active[i][index]),
+                    section:this.poolsCode[i],
                 }));
                 datas.sort((a, b) => {
                     const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
@@ -669,7 +680,7 @@ import axios from 'axios';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "/api/v1/account",
+          "https://pre.aifish.cc"+"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -725,7 +736,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-          "/api/v1/fish/delete/",
+          "https://pre.aifish.cc"+"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -777,7 +788,7 @@ import axios from 'axios';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          "https://pre.aifish.cc"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -804,7 +815,7 @@ import axios from 'axios';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "/api/v1/fish/data/",
+        "https://pre.aifish.cc"+"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -828,10 +839,35 @@ import axios from 'axios';
               this.$Message.error('變更狀態失敗');
           })
     },
+    changefishpool(id,newsection){
+        axios.post(
+        "https://pre.aifish.cc"+"/api/v1/fish/relocal",
+            {
+              "fishUID": id,
+              "newPool": newsection
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(async res=> {
+              console.log(res);
+              this.$Message.success('變更水池成功');
+              await this.loadnewdata();
+              location.reload();
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              this.$Message.error('變更水池失敗');
+          })
+    },
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "/api/v1/fish/photo/change",
+        "https://pre.aifish.cc"+"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

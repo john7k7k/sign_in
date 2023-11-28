@@ -2,19 +2,33 @@
   <div class="Swiper" >
       <div class="father1">
         
-      <v-card v-if="poolsName.length <2" cover class="three" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+      <v-card v-if="poolsName.length <1" cover class="three" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
         <div class="notyet-bg2-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
-      <div class="Swiper-content" >
-        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item"  min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+      <div v-if="poolsName.length == 1" >
+        <v-card v-for="(name, index) in poolsName"  :key="name" cover class="four "  min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
       </div>
-      <v-card v-if="poolsName.length <=2"  cover class="one" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
+        <v-card  v-if="poolsName.length == 2" width="50%" cover class="five "   min-height="230"   :style="{ backgroundImage: `url(${poolsdata[centerforTwo1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+          <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ poolsName[centerforTwo1] }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
+      </v-card>
+        <v-card v-if="poolsName.length == 2"   cover class="three " width="50%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[centerforTwo2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+          <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ poolsName[centerforTwo2] }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
+      </v-card>
+      <div class="Swiper-content" v-if="poolsName.length > 2">
+        <v-card v-for="(name, index) in poolsName" :key="name" cover class="Swiper-item "  min-height="230"   :style="{ backgroundImage: `url(${poolsdata[index].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+          <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ name }}</div>
+          <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
+      </v-card>
+      </div>
+      <v-card v-if="poolsName.length <1"  cover class="one" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
           <div class="notyet-bg1-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
             <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
@@ -100,11 +114,11 @@ poolsdata:[
                 imageurl: require("../assets/主頁魚池33.png")
             },
             {
-                EnPoolName:"",
+                EnPoolName:"National Taipei University of Technology",
                 imageurl: require("../assets/主頁魚池22.png")
             },
             {
-                EnPoolName:"",
+                EnPoolName:"National Taipei University of Technology",
                 imageurl: require("../assets/主頁魚池11.png")
             }
         ],
@@ -123,6 +137,8 @@ section:localStorage.getItem('UserSection'),
 titleName:"",
 EntitleName:"",
 centercardNum:0,
+centerforTwo1:0,
+centerforTwo2:1,
 };
 },
 props:{
@@ -133,7 +149,7 @@ props:{
         },
 },
 mounted(){
-          this.swiper();
+          if(this.poolsName.length >2) this.swiper();
       },
 methods: {
   swiper(){
@@ -142,11 +158,21 @@ methods: {
               SwiperContent: ".Swiper-content",
           });
           },
-          leftSwipe() {
-              this.swiperInstance.__leftMove();
+  leftSwipe() {
+              if(this.poolsName.length>3) this.swiperInstance.__leftMove();
+              else if(this.poolsName.length == 2) {
+                let a =this.centerforTwo1;
+                this.centerforTwo1 = this.centerforTwo2;
+                this.centerforTwo2 = a;
+              }
           },
-          rightSwipe() {
-              this.swiperInstance.__rightMove();
+  rightSwipe() {
+              if(this.poolsName.length>3) this.swiperInstance.__rightMove();
+              else if(this.poolsName.length == 2) {
+                let a =this.centerforTwo1;
+                this.centerforTwo1 = this.centerforTwo2;
+                this.centerforTwo2 = a;
+              }
           },
 generateClassLink(count){
   if (count > 3) {
@@ -217,7 +243,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -422,7 +448,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "/api/v1/account",
+    "https://pre.aifish.cc"+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -484,7 +510,9 @@ for (var i = 0; i < this.poolsCode.length; i++) {
 await this.RefreshDatas(i);
 }
 if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
-  this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology"
+  this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology";
+  this.poolsdata[1].EnPoolName = "Museum of Marine Science and Technology"
+  this.poolsdata[2].EnPoolName = "Museum of Marine Science and Technology"
 }
 
 },
@@ -647,6 +675,12 @@ if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
   transform: scale(0.8);
   height: 260px;
 }
+.four{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 260px;
+}
 
 
 .titel-Name{
@@ -717,6 +751,19 @@ if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
 .three{
   z-index: 2;
   transform: scale(0.8);
+  height: 33%;
+}
+.four{
+  z-index: 9;
+  transform: scale(1.5);
+  margin-top: 50%;
+  height: 33%;
+}
+.five{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-top: 20%;
+  margin-bottom: 4%;
   height: 33%;
 }
 

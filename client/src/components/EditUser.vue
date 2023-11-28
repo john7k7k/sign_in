@@ -22,7 +22,7 @@
               v-model="passwordmodal"
               title="變更帳戶密碼"
               :closable="false"
-              @on-ok="uploadImage"
+              @on-ok="changepassword"
               @on-cancel="cancel">
               <div class="text-black  d-flex align-center justify-space-between ml-2 mb-1 textdistance" >新密碼</div>
               <v-text-field
@@ -49,6 +49,21 @@
                 placeholder=""
                 class="ml-2 mr-2 text-black"
                 @click:append-inner="visible2 = !visible2"
+              ></v-text-field>
+          </Modal>
+          <Modal
+              v-model="checkmodal"
+              title="變更帳戶密碼"
+              :closable="false"
+              @on-ok="checkpassword"
+              @on-cancel="cancel">
+              <div class="text-black  d-flex align-center justify-space-between ml-2 mb-1 textdistance" >驗證碼</div>
+              <v-text-field
+                dark
+                v-model="checkcode"
+                density="compact"
+                placeholder=""
+                class="ml-2 mr-2 text-black"
               ></v-text-field>
           </Modal>
           </v-row>
@@ -124,6 +139,7 @@
   
   <script>
   import axios from 'axios';
+  const CryptoJS = require("crypto-js");
     export default {
       data() {
         return {
@@ -140,7 +156,10 @@
             visible: false,
             visible2: false,
             newpassword:"",
-            newpassword2:""
+            newpassword2:"",
+            salt:  "kowkoww151s5ww",
+            checkmodal:false,
+            checkcode:"",
         }
       },
       methods: {
@@ -188,7 +207,7 @@
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "/api/v1/account/sticker",formData,{
+          "https://pre.aifish.cc"+"/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -211,7 +230,7 @@
       },
       fetchImage(){
         axios.get(
-          "/api/v1/account/sticker", { responseType: 'blob', headers: {
+          "https://pre.aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
@@ -224,6 +243,60 @@
               console.log(err);
           })
       },
+      changepassword () {
+          const saltedPassword = this.newpassword + this.salt;
+          const hashedPassword = CryptoJS.MD5(saltedPassword).toString();
+          if (this.newpassword != this.newpassword2) {
+            this.$Message.error('密碼不相同 請重新輸入!');
+            return
+          }
+          axios.post(
+            "https://pre.aifish.cc"+"/api/v1/account/reset_password",
+            {
+              "username":this.username,
+              "mail": this.email,
+              "password":hashedPassword
+            },
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.$Message.success('已寄出驗證信到個人信箱以便做進一步驗證');
+                this.checkmodal = true;
+                
+              }
+              else
+              this.$Message.error('變更密碼失敗');
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              this.$Message.error('變更密碼失敗');
+          })
+        },
+        checkpassword () {
+          axios.post(
+            "https://pre.aifish.cc"+"/api/v1/account/reset_password_check",
+            {
+              "username":this.username,
+              "code": this.checkcode
+            },
+          )
+          .then(res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.$Message.success('變更密碼成功');
+                
+              }
+              else
+              this.$Message.error('變更密碼失敗');
+          })
+          .catch(err=> {
+              console.log(err);
+              this.loading = false;
+              this.$Message.error('變更密碼失敗');
+          })
+        },
     },
     
     mounted() {
