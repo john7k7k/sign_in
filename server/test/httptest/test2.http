@@ -17,7 +17,7 @@ POST http://localhost:3000/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "123456",
+    "username": "123",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
@@ -243,8 +243,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQ1NiIsImlhdCI6MTcwMTE1MTE5MCwiZXhwIjoxNzAxMTYwMTkwfQ.YNY0UOI-p9ai_UsbgJ7JDKUWwUCwOIWtOk7ufvj8Ows
 
 {
-    "fishUID": "0023999",
-    "newPool": "999002002"
+    "fishUID": "0023998",
+    "newPool": "002001001"
 }
 ###
 POST http://localhost:3000/api/v1/ota/burn
@@ -335,5 +335,6 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/v1/fish/reviseTime?fishUID=3001
+POST http://localhost:3000/api/v1/fish/reviseTime?fishUID=0023999
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE2NDg1NywiZXhwIjoxNzAxMTczODU3fQ.ZiOfvBuodOHBsKsvLJ_LhWP_jxOBh0l1EpBf3l2J0h0
