@@ -8,8 +8,8 @@ module.exports = (mqttConnection) => {
         const pools = await prisma.pool.findMany();
         pools.forEach(({ id }) => {
             sub_topic_group.forEach(sub_topic => {
-            mqttConnection.subscribe(sub_topic.replace('<poolID>', `${id.slice(0,3)}/${id.slice(3,6)}/${id.slice(6)}`))
-            console.log(sub_topic.replace('<poolID>', `${id.slice(0,3)}/${id.slice(3,6)}/${id.slice(6)}`))
+            mqttConnection.subscribe(sub_topic.replace('<poolID>', `${id.slice(0,3)}${id.slice(3,6)}${id.slice(6)}`))
+            console.log(sub_topic.replace('<poolID>', `${id.slice(0,3)}${id.slice(3,6)}${id.slice(6)}`))
             })
         })
     }

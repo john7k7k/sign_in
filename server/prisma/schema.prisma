@@ -82,5 +82,21 @@ model Instruction{
   depart Depart[]
 }
 
+model Controller{
+  id String @id
+  fish String
+  location String
+  exist Int
+  forward Int
+  left Int
+  right Int
+  floating Int
+  diving Int
+  middle Int
+  switch_mode Int
+  led Int
+  auto Int
+  leave_auto Int
+}
 
 
