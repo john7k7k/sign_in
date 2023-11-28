@@ -57,11 +57,25 @@ async function messageProcess(topic,mqtt_data){
                     delete mqtt_data[fishID];
                 }
             })
+            const fishes = await prisma.fish.findMany({
+                where: {fishUID: {in: thisPoolFishesUID}},
+                include: { 
+                  fishData: {
+                    take: 1,
+                    orderBy: { dataID: 'desc' }
+                  }
+                }
+              })
+              const now = Math.floor((new Date()).getTime()/1000)
+            
+            const fishesData = fishes.map(({ fishData }) => fishData)
             await prisma.fishData.createMany({
             data: Object.keys(mqtt_data).map(fishID => ({
                     fishUID: '002' + fishID,
-                    time: Math.floor((new Date()).getTime()/1000),
-                    ...(mqtt_data[fishID])
+                    time: now,
+                    ...(mqtt_data[fishID]),
+                    accumulationTime:
+                    fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].accumulationTime +( now - fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].time)
                 }))
             })
         }

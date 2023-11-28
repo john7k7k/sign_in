@@ -20,9 +20,8 @@ const get = (req, res) => {
     console.log(dir)
     fs.readdir(dir , (err, photos) => {
         console.log(photos)
-        if(!photos.includes(req.query.time)) return res.sendStatus(403);
         console.log('a');
-        res.sendFile(path.join(dir,req.query.time));
+        res.sendFile(path.join(dir,photos[0]));
     })
 }
 

@@ -28,6 +28,7 @@ const get = async (req, res) => {
 
 const preProcess = async (req, res, next) => {
     try{
+        await fs.rename(`../../../../uploads`)
         await prisma.bin.create({
             data: {
                 time: req.time,

@@ -51,6 +51,7 @@ model FishData{
   err Int
   active Int
   version String
+  accumulationTime Int @default(0)
 }
 
 model Bin{

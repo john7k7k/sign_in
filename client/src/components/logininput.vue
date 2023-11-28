@@ -91,7 +91,7 @@
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            "https://pre.aifish.cc"+"/api/v1/account/login",
+            "http://localhost:3000"+"/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword

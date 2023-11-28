@@ -17,7 +17,7 @@ POST https://pre.aifish.cc/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "1234",
+    "username": "123456",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
