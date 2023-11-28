@@ -28,7 +28,6 @@ const get = async (req, res) => {
 
 const preProcess = async (req, res, next) => {
     try{
-        await fs.rename(`../../../../uploads`)
         await prisma.bin.create({
             data: {
                 time: req.time,
@@ -40,6 +39,9 @@ const preProcess = async (req, res, next) => {
 }
 
 const process = async (req, res) => {
+    const otaBinName = path.join(__dirname, `sh/flash/remote_flash.sh`)
+    await fs.rename(path.join(__dirname,`../../../../uploads/ota/${req.time  + '_' + req.body.version}`), otaBinName, () => {
+    })
     res.sendStatus(200);
 }
 

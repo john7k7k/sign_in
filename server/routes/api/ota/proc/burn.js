@@ -11,21 +11,24 @@ const execute = async (req,res,next) => {
             version: req.body.version
         }
     })
-    const binName = `${time}_${version}`;
-    const options = {
-        cwd: path.join(__dirname,'sh','flash')
-      };
-    console.log(`start flash`);
-   // const port = fetch('https://frp.aifish.cc/api/proxy/tcp');
-    //const bash = `remote_flash.sh 10.2.0.5 ${port}`;
-    const bash = `test.sh`
-    exec(bash, options,  (err, stdout, stderr) => {
-        if(err) { console.log("錯誤"+err)}
-        console.log('輸出'+stdout);
-        console.log('輸'+stderr);
+    const otaBinName = path.join(__dirname, `sh/flash/remote_flash.sh`);
+    fs.rename(path.join(__dirname,`../../../../uploads/ota/${req.time  + '_' + req.body.version}`), otaBinName, () => {
+        const binName = `${time}_${version}`;
+        const options = {
+            cwd: path.join(__dirname,'/sh','/flash')
+        };
+        console.log(`start flash`);
+        // const port = fetch('https://frp.aifish.cc/api/proxy/tcp');
+        //const bash = `remote_flash.sh 10.2.0.5 ${port}`;
+        const bash = `test.sh`
+        exec(bash, options,  (err, stdout, stderr) => {
+            if(err) { console.log("錯誤"+err)}
+            console.log('輸出'+stdout);
+            console.log('輸'+stderr);
+        })
+        next(); 
     })
-
-    next();
+    
 }
 
 const process = async (req, res) => {
