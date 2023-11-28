@@ -15,6 +15,7 @@ const verifyAdmin = require('../../../modules/middleware/verifyAdmin');
 const fishPhoto = require('./proc/fishPhoto');
 const relocalFish = require('./proc/relocalFish');
 const changePhoto = require('./proc/changePhoto.js');
+const reviseTime = require('./proc/reviseTime.js');
 
 router.post(`/`, verifyTokenBy('Header')(30), addFish);
 
@@ -58,5 +59,7 @@ router.post(`/relocal`, verifyTokenBy('Header')(), relocalFish);
 router.post('/photo/delete', verifyTokenBy('Header')(), fishPhoto.remove)
 
 router.post('/photo/change', verifyTokenBy('Header')(), changePhoto)
+
+router.post('/reviseTime', verifyTokenBy('Header')(), reviseTime)
 
 module.exports = router;
