@@ -132,7 +132,13 @@
                 localStorage.setItem("InstructionName", JSON.stringify(instructionname));
                 localStorage.setItem("DepartCode", JSON.stringify(departcode));
                 localStorage.setItem("DepartName", JSON.stringify(departname));
-                localStorage.setItem("UserImage", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
+                localStorage.setItem("PoolsCode2", JSON.stringify(poolLocations));
+                localStorage.setItem("PoolsName2", JSON.stringify(poolnames));
+                localStorage.setItem("InstructionCode2", JSON.stringify(instructioncode));
+                localStorage.setItem("InstructionName2", JSON.stringify(instructionname));
+                localStorage.setItem("DepartCode2", JSON.stringify(departcode));
+                localStorage.setItem("DepartName2", JSON.stringify(departname));
+                localStorage.setItem("UserImage2", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
                 if (res.data.section == "001" && res.data.level <= 10) {
                   if (window.innerWidth <= 600) { 
                       window.location.replace(`/home`);

@@ -481,7 +481,7 @@ import axios from 'axios';
             },
         burnBin () {
         axios.post(
-          "/api/v1/ota/burn",{
+          "http://localhost:3000"+"/api/v1/ota/burn",{
             "fishesUID": this.BurnFishId,
                         },{
                 headers: {
@@ -508,9 +508,10 @@ import axios from 'axios';
 
         },
         clearfishhour(){
-          alert(this.ClearFishId)
+          //alert("http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString())
+          console.log(this.token);
           axios.post(
-          "http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId,{
+          "http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
                   Authorization: `Bearer ${this.token}`
                 }
@@ -535,7 +536,7 @@ import axios from 'axios';
         },
         fetchBin() {
           axios.get(
-            "/api/v1/ota/bin",{
+            "http://localhost:3000"+"/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -543,6 +544,7 @@ import axios from 'axios';
           )
           .then(res=> {
               console.log(res);
+              alert(res.data[0].version)
               if(res.status == 200){
                 this.BinName = res.data[0].version;
                 this.BinTime = this.formatDate(res.data[0].time);
@@ -569,7 +571,7 @@ import axios from 'axios';
         formData.append('version', this.NewversionFileName)
         formData.append('bin',this.selectFile)
         axios.post(
-          "/api/v1/ota/bin",formData,{
+         "http://localhost:3000"+ "/api/v1/ota/bin",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
