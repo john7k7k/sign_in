@@ -6,12 +6,11 @@ const path = require('path');
 const multer = require('multer');
 
 const execute = async (req,res,next) => {
-    const { time, version } = await prisma.bin.findUnique({
-        where: {
-            version: req.body.version
-        }
-    })
-    const otaBinName = path.join(__dirname, `sh/flash/remote_flash.sh`);
+    const { time, version } = (await prisma.bin.findMany({
+        take: 1,
+        orderBy: { time: 'desc' }
+    }))[0]
+    const otaBinName = path.join(__dirname, `sh/flash/aifi_core_stm32_MPU_loopTest_20230920.bin`);
     fs.rename(path.join(__dirname,`../../../../uploads/ota/${req.time  + '_' + req.body.version}`), otaBinName, () => {
         const binName = `${time}_${version}`;
         const options = {
@@ -41,6 +40,9 @@ const process = async (req, res) => {
         data: {
             version: req.body.version
         }
+    })
+    await prisma.fishData.updateMany({
+        
     })
     res.sendStatus(200);
 }

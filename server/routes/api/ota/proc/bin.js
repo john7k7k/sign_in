@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs')
 
 const uploadBin = multer({
     storage: multer.diskStorage({
@@ -17,13 +18,14 @@ const uploadBin = multer({
 })
 
 const get = async (req, res) => {
-    const bins = await prisma.bin.findMany({
-        select: {
-            version: true,
-            time: true
-        }
-    });
-    res.send(bins)
+    fs.readdir(path.join(__dirname, `../../../../uploads/ota`), (err, filesname) => {
+        const bins = [];
+        filesname.forEach((filename) => {
+           bins.push({version: filename.slice(filename.indexOf('_')+1), time: filename.split('_')[0]})
+        })
+        res.send(bins)
+    })
+    
 }
 
 const preProcess = async (req, res, next) => {
@@ -39,7 +41,7 @@ const preProcess = async (req, res, next) => {
 }
 
 const process = async (req, res) => {
-    const otaBinName = path.join(__dirname, `sh/flash/remote_flash.sh`)
+    const otaBinName = path.join(__dirname, `sh/flash/aifi_core_stm32_MPU_loopTest_20230920.bin`)
     await fs.rename(path.join(__dirname,`../../../../uploads/ota/${req.time  + '_' + req.body.version}`), otaBinName, () => {
     })
     res.sendStatus(200);
