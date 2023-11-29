@@ -509,10 +509,10 @@ import axios from 'axios';
         },
         clearfishhour(){
           //alert("http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString())
+          console.log(this.token);
           axios.post(
-          "http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {
+          "http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
-
                   Authorization: `Bearer ${this.token}`
                 }
               }
@@ -544,6 +544,7 @@ import axios from 'axios';
           )
           .then(res=> {
               console.log(res);
+              alert(res.data[0].version)
               if(res.status == 200){
                 this.BinName = res.data[0].version;
                 this.BinTime = this.formatDate(res.data[0].time);

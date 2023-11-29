@@ -41,10 +41,7 @@ const process = async (req, res) => {
             version: req.body.version
         }
     })
-    await prisma.fishData.updateMany({
-        
-    })
-    res.sendStatus(200);
+    setTimeout( () => res.sendStatus(200),3900);
 }
 
 module.exports = {

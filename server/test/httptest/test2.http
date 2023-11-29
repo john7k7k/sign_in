@@ -336,4 +336,4 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3000/api/v1/fish/reviseTime?fishUID=0023999
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE2NDg1NywiZXhwIjoxNzAxMTczODU3fQ.ZiOfvBuodOHBsKsvLJ_LhWP_jxOBh0l1EpBf3l2J0h0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTI0MzQ1MCwiZXhwIjoxNzAxMjUyNDUwfQ.-mR0Mfu3TV4kZ19fD9rBVgNaegYMADaFzUEl7Uso_XQ

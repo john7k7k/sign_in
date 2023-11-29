@@ -18,14 +18,16 @@ const uploadBin = multer({
 })
 
 const get = async (req, res) => {
-    fs.readdir(path.join(__dirname, `../../../../uploads/ota`), (err, filesname) => {
-        const bins = [];
-        filesname.forEach((filename) => {
-           bins.push({version: filename.slice(filename.indexOf('_')+1), time: filename.split('_')[0]})
-        })
-        res.send(bins)
-    })
-    
+    fs.readdir(path.join(__dirname, `../../../../uploads/ota`),() => {})
+    const bins = await prisma.bin.findMany({
+        select: {
+            version: true,
+            time: true
+        },
+        take: 1,
+        orderBy: {time: 'desc'}
+    });
+    res.send(bins)
 }
 
 const preProcess = async (req, res, next) => {
