@@ -7,7 +7,7 @@ const fishAssign = require('./proc/fishAssign');
 const fishControl = require('./proc/fishControl');
 const fishDelete = require('./proc/fishDelete');
 const fishDisassign = require('./proc/fishDisassign');
-const getFishData = require('./proc/getFishData');
+const getFishData = require('./proc/getFIshData.js');
 const getFishTable = require('./proc/getFishTable');
 const getHistoryData = require('./proc/getHistoryData');
 const verifyTokenBy = require('../../../modules/middleware/verifyToken');
@@ -15,8 +15,12 @@ const verifyAdmin = require('../../../modules/middleware/verifyAdmin');
 const fishPhoto = require('./proc/fishPhoto');
 const relocalFish = require('./proc/relocalFish');
 const changePhoto = require('./proc/changePhoto.js');
+<<<<<<< HEAD
 const reviseTime = require('./proc/reviseTime.js');
 
+=======
+const reviseTime = require('./proc/reviseTime.js')
+>>>>>>> 884b0a1e2d3142fdea5edff28acb806dcaf35f71
 router.post(`/`, verifyTokenBy('Header')(30), addFish);
 
 //此API可新增fish的data

@@ -243,7 +243,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "https://pre.aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "http://localhost:3000"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -448,7 +448,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "https://pre.aifish.cc"+"/api/v1/account",
+    "http://localhost:3000"+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`

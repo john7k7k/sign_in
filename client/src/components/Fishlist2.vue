@@ -114,6 +114,24 @@
     </v-card>
   </v-dialog> 
 </div> 
+<v-btn v-if="showBurnBtn" @click="clearmodal = true" size="large" class="ml-7 mr-8 mt-6 " color="orange-darken-3">歸零</v-btn>
+      <Modal
+          v-model="clearmodal"
+          title="游動時數歸零"
+          :closable="false"
+          ok-text="歸零"
+          @on-ok="clearfishhour"
+          @on-cancel="cancel">
+          <Checkbox
+            :indeterminate="indeterminate"
+            :model-value="checkAll"
+            @click.prevent="handleCheckAllforclear">全部</Checkbox>
+          <CheckboxGroup v-model="ClearFishId">
+            <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
+                <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
+              </div>
+        </CheckboxGroup>
+          </Modal>
     <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
@@ -197,6 +215,7 @@ import axios from 'axios';
             bc:[],
             error:[],
             photoCode:[],
+            swimtime:[],
             columns: [
                     {
                         title: 'ID',
@@ -215,6 +234,10 @@ import axios from 'axios';
                     {
                         title: '資料更新時間',
                         key: 'time'
+                    },
+                    {
+                        title: '游動時數(hr)',
+                        key: 'swimtime'
                     },
                     {
                         title: '編輯',
@@ -246,6 +269,10 @@ import axios from 'axios';
                         key: 'time'
                     },
                     {
+                        title: '游動時數(hr)',
+                        key: 'swimtime'
+                    },
+                    {
                         title: '編輯',
                         slot: 'action',
                         width: 78,
@@ -269,6 +296,10 @@ import axios from 'axios';
                     {
                         title: '資料更新時間',
                         key: 'time'
+                    },
+                    {
+                        title: '游動時數(hr)',
+                        key: 'swimtime'
                     },
                     {
                         title: '編輯',
@@ -296,6 +327,10 @@ import axios from 'axios';
                         key: 'time'
                     },
                     {
+                        title: '游動時數(hr)',
+                        key: 'swimtime'
+                    },
+                    {
                         title: '編輯',
                         key: 'time',
                         width: 80,
@@ -312,7 +347,8 @@ import axios from 'axios';
                 id: " ",
                 version: '無資料',
                 time: " ",
-                active: " "
+                active: " ",
+                swimtime:""
               }
             ],
             dialognew:false,
@@ -339,6 +375,7 @@ import axios from 'axios';
             BinName:"",
             BinTime:"",
             BurnFishId:[],
+            ClearFishId:[],
             indeterminate: true,
             checkAll: false,
             showBurnBtn:false,
@@ -346,6 +383,7 @@ import axios from 'axios';
             level: localStorage.getItem('UserLevel'),
             section:localStorage.getItem('UserSection'),
             showchangepool: false,
+            clearmodal:false,
         }
       },
       async created() {
@@ -409,6 +447,26 @@ import axios from 'axios';
                     this.BurnFishId = [];
                 }
             },
+        handleCheckAllforclear () {
+                if (this.indeterminate) {
+                    this.checkAll = false;
+                } else {
+                    this.checkAll = !this.checkAll;
+                }
+                this.indeterminate = false;
+
+                if (this.checkAll) {
+                    this.ClearFishId = [];
+                    for (var i = 0; i < this.FishId.length; i++) {
+                      var subArray = this.FishId[i];
+                      for (var j = 0; j < subArray.length; j++) {
+                        this.ClearFishId.push(subArray[j]);
+                      }
+                    }
+                } else {
+                    this.ClearFishId = [];
+                }
+            },
             checkAllGroupChange (data) {
                 if (data.length === 3) {
                     this.indeterminate = false;
@@ -448,6 +506,32 @@ import axios from 'axios';
               this.$Message.error('燒錄失敗');
           })
 
+        },
+        clearfishhour(){
+          alert(this.ClearFishId)
+          axios.post(
+          "http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId,{
+                headers: {
+                  Authorization: `Bearer ${this.token}`
+                }
+              }
+          )
+          .then(async res=> {
+              console.log(res);
+              if(res.status == 200){
+                this.$Message.success('歸零成功');
+                
+              }
+              else{
+                this.$Message.error('歸零失敗');
+              }
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.dialog = false
+              this.$Message.error('歸零失敗');
+          })
         },
         fetchBin() {
           axios.get(
@@ -588,7 +672,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "https://pre.aifish.cc"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "http://localhost:3000"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -604,6 +688,7 @@ import axios from 'axios';
                 let bcarray = [];
                 let errarray = [];
                 let photoarray = [];
+                let swimtimearray = [];
                 for (const id in response.data[this.poolsCode[i]]) {
                     if (!Array.isArray(response.data[this.poolsCode[i]][id])) continue;
                     const dataArray = response.data[this.poolsCode[i]][id];
@@ -617,13 +702,14 @@ import axios from 'axios';
                     const reversedLastFive = lastFiveObjects.reverse();
                     this.fishdatas[i][id] = reversedLastFive;
                     this.fishdatas[i][id].show = false;
-                    const { version, time, active, bc, err, photoCode } = dataArray[dataArray.length - 1];
+                    const { version, time, active, bc, err, photoCode,accumulationTime } = dataArray[dataArray.length - 1];
                     vertionarray.push(version);
                     timearray.push(time);
                     activearray.push(active);
                     bcarray.push(bc);
                     errarray.push(err);
                     photoarray.push(photoCode);
+                    swimtimearray.push(accumulationTime);
                 }
                 this.version.push(vertionarray);
                 this.time.push(timearray);
@@ -631,6 +717,7 @@ import axios from 'axios';
                 this.bc.push(bcarray);
                 this.error.push(errarray);
                 this.photoCode.push(photoarray);
+                this.swimtime.push(swimtimearray);
 
                 let datas = this.FishId[i].map((item, index) => ({
                     id: this.FishId[i][index],
@@ -644,6 +731,7 @@ import axios from 'axios';
                     ActiveModal:false,
                     selectActive: this.proccesactive(this.active[i][index]),
                     section:this.poolsCode[i],
+                    swimtime:this.secondToHour(this.swimtime[i][index]),
                 }));
                 datas.sort((a, b) => {
                     const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
@@ -658,6 +746,11 @@ import axios from 'axios';
     },
     toggleShow(index) {
       this.fishdatas[index].show = !this.fishdatas[index].show
+    },
+    secondToHour(seconds){
+      const hour = seconds /3600;
+      const newhour = hour.toFixed(1);
+      return parseFloat(newhour);
     },
     fishformatDate(timestamp) {
       const dateObj = new Date(timestamp * 1000); 
@@ -680,7 +773,7 @@ import axios from 'axios';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "https://pre.aifish.cc"+"/api/v1/account",
+          "http://localhost:3000"+"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -736,7 +829,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-          "https://pre.aifish.cc"+"/api/v1/fish/delete/",
+          "http://localhost:3000"+"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -788,7 +881,7 @@ import axios from 'axios';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "https://pre.aifish.cc"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          "http://localhost:3000"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -815,7 +908,7 @@ import axios from 'axios';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "https://pre.aifish.cc"+"/api/v1/fish/data/",
+        "http://localhost:3000"+"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -841,7 +934,7 @@ import axios from 'axios';
     },
     changefishpool(id,newsection){
         axios.post(
-        "https://pre.aifish.cc"+"/api/v1/fish/relocal",
+        "http://localhost:3000"+"/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -867,7 +960,7 @@ import axios from 'axios';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "https://pre.aifish.cc"+"/api/v1/fish/photo/change",
+        "http://localhost:3000"+"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

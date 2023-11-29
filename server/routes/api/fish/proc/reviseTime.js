@@ -11,6 +11,7 @@ module.exports = async (req,res) => {
             orderBy: { dataID: 'desc' }
         }))[0];
         oldData.accumulationTime = 0;
+        delete oldData.dataID;
         await prisma.fishData.create({
             data: oldData
         })
