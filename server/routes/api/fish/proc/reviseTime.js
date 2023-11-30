@@ -5,7 +5,7 @@ module.exports = async (req,res) => {
    try{
         const oldData = (await prisma.fishData.findMany({
             where: {
-                fishUID: req.body.fishUID,
+                fishUID: req.query.fishUID,
             },
             take: 1,
             orderBy: { dataID: 'desc' }

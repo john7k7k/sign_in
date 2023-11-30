@@ -41,7 +41,7 @@ const process = async (req, res) => {
             version: req.body.version
         }
     })
-    setTimeout( () => res.sendStatus(200),3900);
+    setTimeout( () => res.sendStatus(200),3700);
 }
 
 module.exports = {
