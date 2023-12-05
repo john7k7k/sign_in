@@ -44,7 +44,7 @@ const preProcess = async (req, res, next) => {
 
 const process = async (req, res) => {
     const otaBinName = path.join(__dirname, `sh/flash/aifi_core_stm32_MPU_loopTest_20230920.bin`)
-    await fs.rename(path.join(__dirname,`../../../../uploads/ota/${req.time  + '_' + req.body.version}`), otaBinName, () => {
+    await fs.copyFile(path.join(__dirname,`../../../../uploads/ota/${req.time  + '_' + req.body.version}`), otaBinName, () => {
     })
     res.sendStatus(200);
 }
