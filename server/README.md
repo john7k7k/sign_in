@@ -58,6 +58,29 @@
         ```
         sudo apt install mosquitto
         sudo systemctl start mosquitto
+        sudo systemctl enable mosquitto.service
+        mosquitto -v
+        systemctl status mosquitto
+        sudo vim /etc/mosquitto/mosquitto.conf
+        ```
+        此時會開啟mosquitto的配置檔，在最底部加上
+        ```
+        listener 1883
+        ```
+        按 : 鍵，然後按 w q Enter 退出vim編輯器
+        ```
+        sudo systemctl restart mosquitto
+        sudo mosquitto_passwd -c /etc/mosquitto/passwd <username>
+        #<username>改成你要的使用者帳戶名
+        sudo vim /etc/mosquitto/mosquitto.conf
+        #開啟vim後在最頂端加入
+        per_listener_settings true
+        #在最底端加入
+        allow_anonymous false
+        password_file /etc/mosquitto/passwd
+        #退出vim
+        sudo systemctl restart mosquitto
+        systemctl status mosquitto
         ```
 
 4. 安裝項目依賴的模組
@@ -106,7 +129,11 @@
     ```
     sudo apt install apache2
     sudo systemctl start apache2
-    sudo systemctl start httpd
+    sudo systemctl enable apache2
+    sudo a2enmod proxy
+    sudo systemctl enable httpd
+    sudo systemctl status apache2
+    sudo systemctl restart apache2
     cd /etc/apache2/sites-available
     sudo vim 000-default.conf
     ```

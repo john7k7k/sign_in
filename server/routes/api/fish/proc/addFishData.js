@@ -13,7 +13,8 @@ module.exports = async (req, res) => {
         data: fishesUID.map(fishUID => ({
           fishUID,
           time: Math.floor((new Date()).getTime()/1000),
-          ...(fishData[fishUID])
+          ...(fishData[fishUID]),
+          accumulationTime:3856
         })) 
       })
       res.sendStatus(200);

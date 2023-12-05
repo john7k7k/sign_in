@@ -211,7 +211,7 @@ import axios from 'axios';
       },
     accountdata(){
         axios.get(
-          "http://localhost:3000"+"/api/v1/controller/",{
+          "/api/v1/controller/",{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -281,7 +281,7 @@ import axios from 'axios';
           return;
         }
         axios.post(
-          "http://localhost:3000"+"/api/v1/controller/add",{
+          "/api/v1/controller/add",{
             "controllerID": this.NewcontrollerID,
             "fish": this.Newcontrollid,
             "location": "002001001"
