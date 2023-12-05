@@ -1,8 +1,15 @@
-let obj0 = {a: 1, b: {c: 2}};
-mul10(obj0);
-console.log(obj0.a, obj0.b.c)
+const axios = require('axios');
 
-function mul10(obj0){
-    obj0.a = 10;
-    obj0.b.c = 20;
-}
+// 定義要請求的URL
+const url = 'https://frp.aifish.cc/api/proxy/tcp';
+
+// 使用 Axios 發送 GET 請求
+axios.get(url)
+  .then(response => {
+    // 處理回應數據
+    console.log('成功取得資料:', response.data);
+  })
+  .catch(error => {
+    // 處理錯誤
+    console.error('錯誤:', error);
+  });

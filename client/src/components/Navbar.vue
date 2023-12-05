@@ -220,7 +220,7 @@ methods: {
   },
   logout(){
     axios.post(
-      "http://localhost:3000"+"/api/v1/account/logout",{},{
+"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -249,7 +249,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "http://localhost:3000"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
@@ -265,7 +265,7 @@ methods: {
     async loadnewdata() {
           try {
             const res = await axios.get(
-              "http://localhost:3000"+"/api/v1/account",
+              "/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`

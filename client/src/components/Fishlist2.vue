@@ -481,7 +481,7 @@ import axios from 'axios';
             },
         burnBin () {
         axios.post(
-          "http://localhost:3000"+"/api/v1/ota/burn",{
+          "/api/v1/ota/burn",{
             "fishesUID": this.BurnFishId,
                         },{
                 headers: {
@@ -511,7 +511,7 @@ import axios from 'axios';
           //alert("http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString())
           console.log(this.token);
           axios.post(
-          "http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
+          "/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
                   Authorization: `Bearer ${this.token}`
                 }
@@ -536,7 +536,7 @@ import axios from 'axios';
         },
         fetchBin() {
           axios.get(
-            "http://localhost:3000"+"/api/v1/ota/bin",{
+            "/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -571,7 +571,7 @@ import axios from 'axios';
         formData.append('version', this.NewversionFileName)
         formData.append('bin',this.selectFile)
         axios.post(
-         "http://localhost:3000"+ "/api/v1/ota/bin",formData,{
+          "/api/v1/ota/bin",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -674,7 +674,7 @@ import axios from 'axios';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "http://localhost:3000"+"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -775,7 +775,7 @@ import axios from 'axios';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "http://localhost:3000"+"/api/v1/account",
+          "/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -831,7 +831,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-          "http://localhost:3000"+"/api/v1/fish/delete/",
+           "/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -883,7 +883,7 @@ import axios from 'axios';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "http://localhost:3000"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -910,7 +910,7 @@ import axios from 'axios';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "http://localhost:3000"+"/api/v1/fish/data/",
+        "/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -936,7 +936,7 @@ import axios from 'axios';
     },
     changefishpool(id,newsection){
         axios.post(
-        "http://localhost:3000"+"/api/v1/fish/relocal",
+        "/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -962,7 +962,7 @@ import axios from 'axios';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "http://localhost:3000"+"/api/v1/fish/photo/change",
+        "/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode
