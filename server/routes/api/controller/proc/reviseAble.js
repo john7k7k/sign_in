@@ -56,6 +56,7 @@ module.exports = async (req, res) => {
             if(message.joysticks.enable[en]) message.joysticks.enable[en] = true;
             else message.joysticks.enable[en] = false;
         }
+        console.log(message)
         message = JSON.stringify(message);
         mqttConnection.publish(topic, message)
         console.log(`publiced topic: ${topic}, message: ${message}`);
