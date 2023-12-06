@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
         })
         const topic = `Monitor/config/${joysticks.location}/set`;
         console.log(topic)
-        const message = JSON.stringify({ joysticks:{  
+        let message = { joysticks:{  
             [req.body.controllerID]:{
                 ids:[joysticks.fish.slice(3)],
                 priority: 30,
@@ -51,11 +51,12 @@ module.exports = async (req, res) => {
                     "leave_auto"].includes(key))
                 )
             }
-        } })
+        } }
         for (let en in message.joysticks.enable){
             if(message.joysticks.enable[en]) message.joysticks.enable[en] = true;
             else message.joysticks.enable[en] = false;
         }
+        message = JSON.stringify(message);
         mqttConnection.publish(topic, message)
         console.log(`publiced topic: ${topic}, message: ${message}`);
     }catch(e) {console.log(e);res.sendStatus(403);}
