@@ -31,7 +31,7 @@ const execute = async (req,res,next) => {
                 console.log('成功取得資料:', response.data);
                 data = response.data
                 //console.log(data.proxies[0].conf);
-                fishFrp = data.proxies.find(fishesFrp => fishesFrp.name === `ssh-fish-xxxx-pizero_OTATEST`);
+                fishFrp = data.proxies.find(fishesFrp => fishesFrp.name === `ssh-fish-${req.body.fishesUID[0].slice(3)}-pizero`);
                 if(!fishFrp) return res.status(503).send(`沒有${req.body.fishesUID}`)
                 console.log(fishFrp)
                 if(!fishFrp.conf) return res.status(503).send(`${req.body.fishesUID}不在線`)
