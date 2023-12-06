@@ -131,7 +131,6 @@
                 <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
               </div>
         </CheckboxGroup>
-        <loading class="forloading"></loading>
         
           </Modal>
           <v-dialog width="300px" v-model="dialogOpen" >
@@ -140,11 +139,15 @@
           <v-card title="" >
             <span class="mdi mdi-check-outline text-green text-h1 mb-16 text-center mt-16" v-if="burnfinish"></span>
             <div v-if="burnfinish" class="burnfinishcss text-center mb-8">燒錄完成</div>
+            <span class="mdi mdi-close-outline text-red text-h1 mb-16 text-center mt-16" v-if="burnerroshow"></span>
+            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">燒錄失敗</div>
+            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">原因:{{ burnerroword }}</div>
+            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">詳細原因請到 <a href="https:frp.aifish.cc">這裡查看</a></div>
             <loading v-if="burnning"></loading>
               <v-btn
                 text="確定"
                 color="blue"
-                v-if="burnfinish"
+                v-if="burnbtn"
                 @click="isActive.value = false"
               ></v-btn>
           </v-card>
@@ -408,7 +411,9 @@ import loading from '@/components/loading.vue';
             dialogOpen:false,
             burnning:true,
             burnfinish:false,
-            
+            burnerroword:"",
+            burnerroshow:false,
+            burnbtn:false,
             
         }
       },
@@ -507,6 +512,15 @@ import loading from '@/components/loading.vue';
             },
         burnBin () {
           this.dialogOpen = true;
+          this.burnning = true;
+          this.burnfinish = false;
+          this.burnerroshow = false;
+          this.burnbtn = false;
+         /* axios.get('https://frp.aifish.cc/api/proxy/tcp').then(
+            res => {
+              console.log(res)
+            }
+          ).catch(err => console.log(err))*/
         axios.post(
           "/api/v1/ota/burn",{
             "fishesUID": this.BurnFishId,
@@ -521,18 +535,23 @@ import loading from '@/components/loading.vue';
               if(res.status == 200){
                 this.burnning = false;
                 this.burnfinish = true;
+                this.burnbtn = true;
                 this.$Message.success('燒錄成功');
                 
               }
               else{
                 this.dialogOpen = false;
+                
                 this.$Message.error('燒錄失敗');
               }
               
           })
           .catch(err=> {
               console.log(err);
-              this.dialogOpen = false;
+              this.burnning = false;
+              this.burnerroword = err.response.data;
+              this.burnerroshow = true;
+              this.burnbtn = true;
               this.$Message.error('燒錄失敗');
           })
 
@@ -573,7 +592,6 @@ import loading from '@/components/loading.vue';
           )
           .then(res=> {
               console.log(res);
-              alert(res.data[0].version)
               if(res.status == 200){
                 this.BinName = res.data[0].version;
                 this.BinTime = this.formatDate(res.data[0].time);
@@ -703,7 +721,7 @@ import loading from '@/components/loading.vue';
                 }
                 this.FishId[i].sort((a, b) => a - b);
                 const response = await axios.get(
-                  "/api/v1/fish/table/?fishesUID=" + this.FishId[i],
+                  /*ip*/"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`
@@ -733,6 +751,7 @@ import loading from '@/components/loading.vue';
                     const reversedLastFive = lastFiveObjects.reverse();
                     this.fishdatas[i][id] = reversedLastFive;
                     this.fishdatas[i][id].show = false;
+                    
                     const { version, time, active, bc, err, photoCode,accumulationTime } = dataArray[dataArray.length - 1];
                     vertionarray.push(version);
                     timearray.push(time);
@@ -764,6 +783,7 @@ import loading from '@/components/loading.vue';
                     section:this.poolsCode[i],
                     swimtime:this.secondToHour(this.swimtime[i][index]),
                 }));
+                
                 datas.sort((a, b) => {
                     const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
                     return order[a.active] - order[b.active];
@@ -804,7 +824,7 @@ import loading from '@/components/loading.vue';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "/api/v1/account",
+          /*ip*/"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -860,7 +880,7 @@ import loading from '@/components/loading.vue';
             },
     remove(id){
         axios.post(
-          "/api/v1/fish/delete/",
+          /*ip*/"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -912,7 +932,7 @@ import loading from '@/components/loading.vue';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          /*ip*/"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -939,7 +959,7 @@ import loading from '@/components/loading.vue';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "/api/v1/fish/data/",
+        /*ip*/"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -965,7 +985,7 @@ import loading from '@/components/loading.vue';
     },
     changefishpool(id,newsection){
         axios.post(
-          "/api/v1/fish/relocal",
+          /*ip*/"/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -991,7 +1011,7 @@ import loading from '@/components/loading.vue';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "/api/v1/fish/photo/change",
+        /*ip*/"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

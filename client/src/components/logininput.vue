@@ -92,7 +92,7 @@
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            "/api/v1/account/login",
+            /*ip*/"/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword
@@ -165,7 +165,7 @@
       async loadnewdata() {
           try {
             const response = await axios.get(
-              "/api/v1/account",
+              /*ip*/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`
