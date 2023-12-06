@@ -93,7 +93,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://20.205.133.140//api/v1/fish/data/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTc1MzMwMSwiZXhwIjoxNzAxNzYyMzAxfQ.wRD4lpPTRZ1dBzl80E4R9sOIn7cmdX992Ol2CVaVPgI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTg2NzcyNywiZXhwIjoxNzAxODc2NzI3fQ.Vx5AekI3pxKmOl2u0Jksrtsvh_hq3r3y2ZQcLapo59M
 
 {
     "fishData": {
@@ -106,7 +106,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
         "0023011": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
         "0023012": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
         "0023013": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
-        "0023036": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"}
+        "0023019": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"}
     }
 }
 

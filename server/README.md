@@ -112,15 +112,13 @@
 
     *  windows環境:
         ```
-        npm install prisma --save-dev
-        npx prisma init
+        npm install @prisma/cli --save-dev
         npx prisma migrate dev
         npx prisma generate
         ```
     *  linux環境:
         ```
-        sudo npm install prisma --save-dev
-        sudo npx prisma init
+        sudo npm install @prisma/cli --save-dev
         sudo npx prisma migrate dev
         sudo npx prisma generate
         ```
@@ -131,7 +129,7 @@
     sudo systemctl start apache2
     sudo systemctl enable apache2
     sudo a2enmod proxy
-    sudo systemctl enable httpd
+    sudo a2enmod proxy_http
     sudo systemctl status apache2
     sudo systemctl restart apache2
     cd /etc/apache2/sites-available
