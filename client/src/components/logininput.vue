@@ -2,7 +2,7 @@
     <v-container>
       <v-card class=" pa-3 cardbg" max-width="400"    >
         <v-form v-model="form" @submit.prevent="onSubmit" >
-          <v-btn variant="text" route to = "/sign/up" class="mt-2   d-flex justify-end " color="indigo-accent-4"><div class="sign-up-text">註冊</div></v-btn>
+          <v-btn v-if="signupshow" variant="text" route to = "/sign/up" class="mt-2   d-flex justify-end " color="indigo-accent-4"><div class="sign-up-text">註冊</div></v-btn>
           
         <div class="titleword mb-5 ml-2 text-white">使用者登入</div>
         <div class=" ml-2 mb-1 text-blue-grey-lighten-5 textdistance">使用者ID</div>  
@@ -78,6 +78,7 @@
         loading: false,
         IP:process.env.VUE_APP_IP,
         usertoken:localStorage.getItem('token'),
+        signupshow:false,
       }),
       async created() {
         await this.loadnewdata();
@@ -174,7 +175,8 @@
 
             console.log(response);
             if (response.status === 200) {
-              window.location.replace(`/home`);
+              if(response.data.username == "123") this.signupshow = true;
+              else window.location.replace(`/home`);
             }
           } catch (error) {
             //console.log(error);

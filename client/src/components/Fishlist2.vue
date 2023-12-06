@@ -131,7 +131,25 @@
                 <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
               </div>
         </CheckboxGroup>
+        <loading class="forloading"></loading>
+        
           </Modal>
+          <v-dialog width="300px" v-model="dialogOpen" >
+      
+        <template v-slot:default="{ isActive }">
+          <v-card title="" >
+            <span class="mdi mdi-check-outline text-green text-h1 mb-16 text-center mt-16" v-if="burnfinish"></span>
+            <div v-if="burnfinish" class="burnfinishcss text-center mb-8">燒錄完成</div>
+            <loading v-if="burnning"></loading>
+              <v-btn
+                text="確定"
+                color="blue"
+                v-if="burnfinish"
+                @click="isActive.value = false"
+              ></v-btn>
+          </v-card>
+        </template>
+      </v-dialog>
     <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
     <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
@@ -179,15 +197,17 @@
       </v-card>
     </v-dialog>
     
-    <Button  type="error" size="small" @click="confirm(id)">刪除</Button>
+    <Button  type="error" size="small" @click="confirm(row.id)">刪除</Button>
     </template>
   </Table>
   <Table  v-if="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="ml-7 mr-7"></Table>
   </div>
+  
   </template>
   
   <script>
 import axios from 'axios';
+import loading from '@/components/loading.vue';
 /*function TranActive(active) {
   if (active == "功能正常-待機中") {
     return 0;
@@ -200,6 +220,7 @@ import axios from 'axios';
   }
 }*/
     export default {
+      components: { loading },
       data() {
         return {
             userdatas:[],
@@ -384,6 +405,11 @@ import axios from 'axios';
             section:localStorage.getItem('UserSection'),
             showchangepool: false,
             clearmodal:false,
+            dialogOpen:false,
+            burnning:true,
+            burnfinish:false,
+            
+            
         }
       },
       async created() {
@@ -480,6 +506,7 @@ import axios from 'axios';
                 }
             },
         burnBin () {
+          this.dialogOpen = true;
         axios.post(
           "/api/v1/ota/burn",{
             "fishesUID": this.BurnFishId,
@@ -492,26 +519,28 @@ import axios from 'axios';
           .then(async res=> {
               console.log(res);
               if(res.status == 200){
+                this.burnning = false;
+                this.burnfinish = true;
                 this.$Message.success('燒錄成功');
                 
               }
               else{
+                this.dialogOpen = false;
                 this.$Message.error('燒錄失敗');
               }
               
           })
           .catch(err=> {
               console.log(err);
-              this.dialog = false
+              this.dialogOpen = false;
               this.$Message.error('燒錄失敗');
           })
 
         },
         clearfishhour(){
-          //alert("http://localhost:3000"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString())
           console.log(this.token);
           axios.post(
-          "/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
+            "/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
                   Authorization: `Bearer ${this.token}`
                 }
@@ -831,7 +860,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-           "/api/v1/fish/delete/",
+          "/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -936,7 +965,7 @@ import axios from 'axios';
     },
     changefishpool(id,newsection){
         axios.post(
-        "/api/v1/fish/relocal",
+          "/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -992,6 +1021,10 @@ import axios from 'axios';
   </script>
   
   <style>
+  .burnfinishcss{
+    letter-spacing: 6px;
+    font-size: larger;
+  }
   .radio-group {
     display: flex;
     flex-wrap: wrap;
@@ -1016,6 +1049,10 @@ import axios from 'axios';
 
   .searchdisplay > *:nth-child(n + 3) {
     grid-column: span 3; 
+  }
+  .forloading{
+    z-index: 100;
+    position: absolute;
   }
   }
   </style>

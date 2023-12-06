@@ -31,23 +31,23 @@
         <template #ID="{ row }">
             <strong>{{ row.id }}</strong>
         </template>
-        <template #action="{row, index }">
+        <template #action="{row,index}">
             <Button type="primary" size="small" style="margin-right: 5px" @click="row.changeactive = true">編輯</Button>
-            <Modal  v-model="row.changeactive" :title="'控制器' + row.ID + ' 功能管理'" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
-              <Table border :columns="activecolumns" :data="acitvedata">
+            <Modal :styles="{top: '20px'}"  v-model="row.changeactive" :title="'控制器' + row.id + ' 功能管理'" ok-text="變更" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" >
+              <Table border :columns="activecolumns" :data="acitvedata[index]">
                 <template #control="{ row }">
                     <strong>{{ row.control }}</strong>
                 </template>
                 <template #controlaction="{row}">
-                  <RadioGroup class="radio-group " v-model="row.selectActive">
-                <Radio class="radio" label="true">開啟</Radio>
-                <Radio class="radio" label="false">關閉</Radio>
+                  <RadioGroup class="radio-group " v-model="row.selectActive" @input="handleRadioInput(row,index, $event)">
+                <Radio class="radio" label="1">開啟</Radio>
+                <Radio class="radio" label="0">關閉</Radio>
               </RadioGroup> 
                 </template>
             </Table>
                         
           </Modal>
-            <Button type="warning" size="small" @click="remove(index)">刪除</Button>
+            <Button type="warning" size="small" @click="confirm(row.id)">刪除</Button>
         </template>
     </Table>
     
@@ -105,58 +105,7 @@ import axios from 'axios';
                         align: 'center'
                     }
                 ],
-                acitvedata: [
-                    {
-                      control: '前進',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '左轉',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '右轉',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '上浮',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '平游',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '下潛',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '變換LED顏色',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '切換模式',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '進入自動',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                    {
-                      control: '退出自動',
-                      changeactive:false,
-                      selectActive:"true",
-                    },
-                ],
+                acitvedata:[],
                 Newcontrollermodal:false,
                 keyvalueMapping :[],
                 FishId:[],
@@ -238,7 +187,58 @@ import axios from 'axios';
                     leave_auto: item.leave_auto,
                   });
                 
-                
+                this.acitvedata.push([
+                    {
+                      control: '前進',
+                      changeactive:false,
+                      selectActive:item.forward.toString(),
+                    },
+                    {
+                      control: '左轉',
+                      changeactive:false,
+                      selectActive:item.left.toString(),
+                    },
+                    {
+                      control: '右轉',
+                      changeactive:false,
+                      selectActive:item.right.toString(),
+                    },
+                    {
+                      control: '上浮',
+                      changeactive:false,
+                      selectActive:item.floating.toString(),
+                    },
+                    {
+                      control: '平游',
+                      changeactive:false,
+                      selectActive:item.middle.toString(),
+                    },
+                    {
+                      control: '下潛',
+                      changeactive:false,
+                      selectActive:item.diving.toString(),
+                    },
+                    {
+                      control: '變換LED顏色',
+                      changeactive:false,
+                      selectActive:item.led.toString(),
+                    },
+                    {
+                      control: '切換模式',
+                      changeactive:false,
+                      selectActive:item.switch_mode.toString(),
+                    },
+                    {
+                      control: '進入自動',
+                      changeactive:false,
+                      selectActive:item.auto.toString(),
+                    },
+                    {
+                      control: '退出自動',
+                      changeactive:false,
+                      selectActive:item.leave_auto.toString(),
+                    },
+                ])
                 
               });
               })
@@ -258,17 +258,6 @@ import axios from 'axios';
           }
           this.keyvalueMapping.push(keyValueMapping);
         },
-      confirm (name,index,num) {
-                this.$Modal.confirm({
-                    title: '確定要刪除此帳號嗎?',
-                    onOk: () => {
-                        this.remove(name,index,num);
-                    },
-                    onCancel: () => {
-                        
-                    }
-                });
-            },
       updateScreenSize() {
         this.isMobileScreen = window.innerWidth <= 768; 
       },
@@ -295,21 +284,104 @@ import axios from 'axios';
               console.log(res);
               if(res.status == 200){
                 this.$Message.success('新增遙控器成功');
-                
+                location.reload();
               }
               else{
-                this.dialog = false
                 this.$Message.error('新增遙控器失敗');
               }
               
           })
           .catch(err=> {
               console.log(err);
-              this.dialog = false
               this.$Message.error('新增遙控器失敗');
           })
 
         },
+        confirm (id) {
+                this.$Modal.confirm({
+                    title: `確定要刪除遙控器 ${id} 嗎?`,
+                    onOk: () => {
+                        this.remove(id);
+                    },
+                    okText:"確定",
+                    onCancel: () => {
+                        
+                    }
+                });
+            },
+    remove(id){
+        axios.post(
+          "/api/v1/controller/delete",
+            {
+              "controllerID":id,
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(async res=> {
+              console.log(res);
+              this.$Message.success('刪除成功');
+              location.reload();
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('刪除失敗');
+          })
+      },
+      changeControlActive(index){
+        axios.post(
+          "/api/v1/controller/revise",
+            {
+              "controllerID": this.datas[index].id,
+              "enble": {
+                  "fish": this.datas[index].fish,
+                  "location":this.datas[index].location,
+                  "exist": 1,
+                  "forward": Number(this.acitvedata[index][0].selectActive),
+                  "left": Number(this.acitvedata[index][1].selectActive),
+                  "right": Number(this.acitvedata[index][2].selectActive),
+                  "floating": Number(this.acitvedata[index][3].selectActive),
+                  "diving": Number(this.acitvedata[index][5].selectActive),
+                  "middle": Number(this.acitvedata[index][4].selectActive),
+                  "switch_mode": Number(this.acitvedata[index][7].selectActive),
+                  "led": Number(this.acitvedata[index][6].selectActive),
+                  "auto": Number(this.acitvedata[index][8].selectActive),
+                  "leave_auto": Number(this.acitvedata[index][9].selectActive)
+              }
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(async res=> {
+              console.log(res);
+              this.$Message.success('更改功能成功');
+              setTimeout(function() {
+                location.reload();
+              }, 1500);
+              
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('更改功能失敗');
+          })
+      },
+      handleRadioInput(row,index) {
+        row.selectActive = row.selectActive === "1" ? "0" : "1";
+        this.acitvedata[index].forEach((item) => {
+      if (item.control === row.control) {
+        item.selectActive = row.selectActive;
+      }
+    });
+      },
+      cancel(){
+        location.reload();
+      }
 
     },
     }

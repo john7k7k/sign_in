@@ -22,6 +22,7 @@
   </template>
   
   <script>
+  import axios from 'axios';
   import { Swiper } from '@/swiper/Swiper';
     export default {
       data: () => ({
@@ -123,6 +124,25 @@
               this.filterAndSaveToLocalStorage(selectsection);
             }
             
+          },
+          async loadnewdata() {
+          try {
+            const response = await axios.get(
+              "/api/v1/account",
+              {
+                headers: {
+                  Authorization: `Bearer ${this.usertoken}`
+                }
+              }
+            );
+
+            console.log(response);
+            if (response.status === 200) {
+              window.location.replace(`/home`);
+            }
+          } catch (error) {
+            //console.log(error);
+          }
           },
           
       }

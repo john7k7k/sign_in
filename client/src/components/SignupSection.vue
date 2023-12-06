@@ -244,7 +244,7 @@ export default {
               if(res.status == 200){
                 this.dialognew = false
                 this.$Message.success('新增成功');
-                
+                location.reload();
               }
           })
           .catch(err=> {
@@ -270,7 +270,7 @@ export default {
               if(res.status == 200){
                 this.dialognew = false
                 this.$Message.success('新增成功');
-                
+                location.reload();
               }
           })
           .catch(err=> {
@@ -298,7 +298,7 @@ export default {
               if(res.status == 200){
                 this.dialognew = false
                 this.$Message.success('新增成功');
-                
+                location.reload();
               }
           })
           .catch(err=> {
