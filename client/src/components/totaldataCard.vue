@@ -193,10 +193,11 @@ for (let i = 1; i <= count; i++) {
 }
 },
 processData(ids, data) {
-const bcvalue = ids.map((id) => data[id].bc);
-const errvalue = ids.map((id) => data[id].err);
-const activevalue = ids.map((id) => data[id].active);
-const photovalue = ids.map((id) => data[id].photoCode);
+const validIds = ids.filter(id => data[id]?.bc !== undefined);
+const bcvalue = validIds.map((id) => data[id].bc);
+const errvalue = validIds.map((id) => data[id].err);
+const activevalue = validIds.map((id) => data[id].active);
+const photovalue = validIds.map((id) => data[id].photoCode);
 this.bc.push(bcvalue);
 this.err.push(errvalue);
 this.active.push(activevalue);
@@ -243,7 +244,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          /*ip*/"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -448,7 +449,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "/api/v1/account",
+    /*ip*/"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
