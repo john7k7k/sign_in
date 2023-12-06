@@ -52,11 +52,11 @@ module.exports = async (req, res) => {
                 )
             }
         } }
-        for (let en in message.joysticks.enable){
-            if(message.joysticks.enable[en]) message.joysticks.enable[en] = true;
-            else message.joysticks.enable[en] = false;
+        for (let en in message.joysticks[req.body.controllerID].enable){
+            if(message.joysticks[req.body.controllerID].enable[en]) message.joysticks[req.body.controllerID].enable[en] = true;
+            else message.joysticks[req.body.controllerID].enable[en] = false;
         }
-        console.log(message)
+        console.log(message.joysticks)
         message = JSON.stringify(message);
         mqttConnection.publish(topic, message)
         console.log(`publiced topic: ${topic}, message: ${message}`);
