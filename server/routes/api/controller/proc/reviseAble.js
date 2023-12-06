@@ -32,7 +32,8 @@ module.exports = async (req, res) => {
             }
         })
         const topic = `Monitor/config/${joysticks.location}/set`;
-        const message = JSON.stringify({ joysticks:{  
+        console.log(topic)
+        let message = { joysticks:{  
             [req.body.controllerID]:{
                 ids:[joysticks.fish.slice(3)],
                 priority: 30,
@@ -44,14 +45,20 @@ module.exports = async (req, res) => {
                     "floating",
                     "diving",
                     "middle",
-                    "switch mode",
+                    "switch_mode",
                     "led",
                     "auto",
-                    "leave auto"].includes(key))
+                    "leave_auto"].includes(key))
                 )
             }
-        } })
-        mqttConnection.publish(`Monitor/config/${req.body.section}/set`, message)
+        } }
+        for (let en in message.joysticks[req.body.controllerID].enable){
+            if(message.joysticks[req.body.controllerID].enable[en]) message.joysticks[req.body.controllerID].enable[en] = true;
+            else message.joysticks[req.body.controllerID].enable[en] = false;
+        }
+        console.log(message.joysticks)
+        message = JSON.stringify(message);
+        mqttConnection.publish(topic, message)
         console.log(`publiced topic: ${topic}, message: ${message}`);
     }catch(e) {console.log(e);res.sendStatus(403);}
     finally{
