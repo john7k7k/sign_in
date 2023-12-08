@@ -82,7 +82,7 @@ const execute = async (req,res,next) => {
             // 處理錯誤
             const topic = `Ota/fishid`;
             const message = { id: req.body.fishesUID[0] }
-            mqttConnection.publish(topic, message);
+            mqttConnection.publish(topic, JSON.stringify(message));
             console.log(`publiced: ${topic}, message: ${JSON.stringify(message)}`);
             global.awaitMqttTime = 0;
             awaitMqtt(req,res);

@@ -24,7 +24,7 @@ function topicDecode(topic){
 
 async function messageProcess(topic,mqtt_data){
     try{
-        console.log(topic + ' 收到訊息')
+        console.log(topic + ' 收到訊息' + `message: ${JSON.stringify(mqtt_data)}`)
         if(topic = 'Ota/port'){
             global.fishPort = mqtt_data.port;
             return;
