@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const dotenv = require("dotenv").config();
-const mqttConnection = require('../../../../modules/util/mqtt')();
+const mqttConnection = require('../../../../modules/util/mqtt');
 
 module.exports = async (req, res) => {
     const prisma =  global.prisma;

@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const dotenv = require("dotenv").config();
+const mqttConnection = require('../../../../modules/util/mqtt.js');
 
 module.exports = async (req, res) => {
     const prisma =  global.prisma;
@@ -50,10 +51,8 @@ module.exports = async (req, res) => {
             if(message.joysticks[req.body.controllerID].enable[en]) message.joysticks[req.body.controllerID].enable[en] = true;
             else message.joysticks[req.body.controllerID].enable[en] = false;
         }
-        const topic = `Monitor/config/${req.body.location}/set`
-        const mqttConnection = require('../../../../modules/util/mqtt')();
-        mqttConnection.publish(topic, message)
-        mqttConnection.end()
+        const topic = `Monitor/config/${req.body.location}/set`;
+        mqttConnection.publish(topic, message);
     }catch(e) {console.log(e);res.sendStatus(403);}
     finally{
         await prisma.$disconnect();

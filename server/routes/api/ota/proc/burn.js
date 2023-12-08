@@ -5,6 +5,7 @@ const path = require('path');
 const multer = require('multer');
 const fetch = require('node-fetch');
 const axios = require('axios');
+const mqttConnection = require('../../../../modules/util/mqtt');
 
 const awaitMqtt = (req ,res) => {
     try{
@@ -27,7 +28,10 @@ const awaitMqtt = (req ,res) => {
             })*/
 
         }
-        else if(global.awaitMqttTime > 30) return res.status(500).send('iot端逾時30秒');
+        else if(global.awaitMqttTime > 30) {
+            global.awaitMqttTime = 0;
+            return res.status(500).send('iot端逾時30秒');
+        }
         else setTimeout(() => awaitMqtt(req ,res), 1000);
     }catch(e){console.log(e);return res.status(500).send('不明問題')}
 }
@@ -76,12 +80,10 @@ const execute = async (req,res,next) => {
         })
         .catch(error => {
             // 處理錯誤
-            const mqttConnection = require('../../../../modules/util/mqtt')();
             const topic = `Ota/fishid`;
             const message = { id: req.body.fishesUID[0] }
             mqttConnection.publish(topic, message);
             console.log(`publiced: ${topic}, message: ${JSON.stringify(message)}`);
-            mqttConnection.end()
             awaitMqtt(req,res);
         });
     })
