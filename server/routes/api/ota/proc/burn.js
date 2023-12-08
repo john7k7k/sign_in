@@ -19,13 +19,13 @@ const awaitMqtt = (req ,res) => {
             global.awaitMqttTime = 0;
             const bash = `remote_flash.sh 4.216.216.249 ${ports}`;
             console.log(bash);res.status(200).send("燒錄成功");
-            /*
+            
             console.log(`start flash`);
             exec(bash, options,  (err, stdout, stderr) => {
                 if(err) { console.log("錯誤"+err);return res.status(500).send('燒錄時發生問題')}
                 console.log('輸出'+stdout);
                 res.status(200).send("燒錄成功");
-            })*/
+            })
 
         }
         else if(global.awaitMqttTime > 30) {
@@ -68,14 +68,14 @@ const execute = async (req,res,next) => {
             
             const bash = `remote_flash.sh 4.216.216.249 ${ports}`;
             //const bash = `test.sh`
-            console.log(bash)/*
+            console.log(bash)
             console.log(`start flash`);
             exec(bash, options,  (err, stdout, stderr) => {
                 if(err) { console.log("錯誤"+err)}
                 console.log('輸出'+stdout);
                 console.log('輸'+stderr);
                 next(); 
-            })*/
+            })
             next(); 
         })
         .catch(error => {
