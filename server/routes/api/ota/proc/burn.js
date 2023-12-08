@@ -18,8 +18,8 @@ const awaitMqtt = (req ,res) => {
             delete global.fishPort;
             global.awaitMqttTime = 0;
             const bash = `remote_flash.sh 4.216.216.249 ${ports}`;
-            console.log(bash);res.status(200).send("燒錄成功");
-            
+            console.log(bash);
+            const options = { cwd: path.join(__dirname, 'sh/flash/') }
             console.log(`start flash`);
             exec(bash, options,  (err, stdout, stderr) => {
                 if(err) { console.log("錯誤"+err);return res.status(500).send('燒錄時發生問題')}
@@ -76,7 +76,6 @@ const execute = async (req,res,next) => {
                 console.log('輸'+stderr);
                 next(); 
             })
-            next(); 
         })
         .catch(error => {
             // 處理錯誤
