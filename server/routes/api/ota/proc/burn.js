@@ -17,7 +17,7 @@ const awaitMqtt = (req ,res) => {
             ports = Number(global.fishPort);
             delete global.fishPort;
             global.awaitMqttTime = 0;
-            const bash = `remote_flash.sh 4.216.216.249 ${ports}`;
+            const bash = `sudo bash remote_flash.sh 4.216.216.249 ${ports}`;
             console.log(bash);
             const options = { cwd: path.join(__dirname, 'sh/flash/') }
             console.log(`start flash`);
