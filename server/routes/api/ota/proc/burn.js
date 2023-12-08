@@ -84,6 +84,7 @@ const execute = async (req,res,next) => {
             const message = { id: req.body.fishesUID[0] }
             mqttConnection.publish(topic, message);
             console.log(`publiced: ${topic}, message: ${JSON.stringify(message)}`);
+            global.awaitMqttTime = 0;
             awaitMqtt(req,res);
         });
     })
