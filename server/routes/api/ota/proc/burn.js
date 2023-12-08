@@ -85,6 +85,7 @@ const execute = async (req,res,next) => {
             mqttConnection.publish(topic, JSON.stringify(message));
             console.log(`publiced: ${topic}, message: ${JSON.stringify(message)}`);
             global.awaitMqttTime = 0;
+            delete global.fishPort;
             awaitMqtt(req,res);
         });
     })
