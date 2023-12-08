@@ -114,8 +114,8 @@ const subTopics = require('./config/subTopics');
             await prisma.pool.create({
                 data: {
                     id: '002001001',
-                    mac: 'CSL水池',
-                    name: '',
+                    name: 'CSL水池',
+                    mac: '',
                     depart: {
                         connect: {
                             id: '002001'

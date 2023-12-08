@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const allowDomainOnly = require('../middleware/verifyDomin');
 const bodyParser = require('body-parser');
+const { PrismaClient } = require('@prisma/client');
 
 module.exports = (app, task = () => void 0) => {
     app.use(express.json())
@@ -15,7 +16,8 @@ module.exports = (app, task = () => void 0) => {
     app.use("/fonts", express.static('../public/fonts/'));
     app.use("/css", express.static('../public/css/'));
     app.use("/index", express.static('../public/'));
-    app.use("/uploads", express.static('../uploads'))
+    app.use("/uploads", express.static('../uploads'));
+    global.prisma = new PrismaClient();
     const port = 3000;
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`)

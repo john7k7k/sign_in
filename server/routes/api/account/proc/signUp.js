@@ -1,7 +1,6 @@
 const md5 = require('blueimp-md5');
 const transporter = require('../../../../modules/util/nodeMailer')();
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const dotenv = require("dotenv").config();
 const fs = require('fs');
 

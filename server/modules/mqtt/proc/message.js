@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 module.exports = async (topic, rec_message) => { //接收到IOT端訊息
 
         const json_data = JSON.parse(rec_message.toString()); //parse資料
-        messageProcess(topicDecode(topic),json_data);
+        messageProcess(topic,json_data);
     
 }
 
@@ -24,6 +24,12 @@ function topicDecode(topic){
 
 async function messageProcess(topic,mqtt_data){
     try{
+        console.log(topic + ' 收到訊息')
+        if(topic = 'Ota/port'){
+            global.fishPort = mqtt_data.port;
+            return;
+        }
+        topic = topicDecode(topic);
         if(topic.type === 'alarm'){
             const { name: instruction, depart: [{name: depart, pool: [{name: pool}]}] } = 
             await prisma.instruction.findUnique({ 

@@ -1,8 +1,7 @@
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs')
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 
 const upload = multer({
     storage: multer.diskStorage({
