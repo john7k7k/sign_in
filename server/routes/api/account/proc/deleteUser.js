@@ -1,5 +1,4 @@
 const transporter = require('../../../../modules/util/nodeMailer')();
-const { PrismaClient } = require('@prisma/client');
 const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const dotenv = require("dotenv").config();
 

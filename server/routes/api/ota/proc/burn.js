@@ -1,5 +1,5 @@
 const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
-const { exec, spawn , execSync, execFile} = require('child_process');
+const { exec } = require('child_process');
 const fs = require('fs')
 const path = require('path');
 const multer = require('multer');
@@ -49,9 +49,6 @@ const execute = async (req,res,next) => {
         };
         
         const apiUrl = 'https://frp.aifishf.cc/api/proxy/tcp'; // 替换为实际的API端点
-        const username = 'frpslab314';
-        const password = 'lab314frp';
-        const basicAuth = 'Basic ZnJwc2xhYjMxNDpsYWIzMTRmcnA=';
         let ports = 0;
         let data = 0;
         await axios.get(apiUrl)
