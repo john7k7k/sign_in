@@ -101,6 +101,14 @@
           route to = "/sign/up/pool"
           class="text-white"
         ></v-list-item>
+        <v-list-item
+          v-show="controllershow"
+          prepend-icon="mdi mdi-clipboard-text-search-outline"
+          title="遙控器設定"
+          value="controller"
+          route to = "/controller"
+          class="text-white"
+        ></v-list-item>
       <v-list-item
         prepend-icon="mdi-export"
         title="登出"
@@ -124,7 +132,7 @@ data() {
     sound: true,
     widgets: false,
     drawer: null,
-    userimage: "",
+    userimage: require("../assets/nabarlogo.png"),
     imageUrl: localStorage.getItem('UserImage'),
     username: localStorage.getItem('UserName'),
     level: localStorage.getItem('UserLevel'),
@@ -220,7 +228,7 @@ methods: {
   },
   logout(){
     axios.post(
-"/api/v1/account/logout",{},{
+"http://20.205.133.140"+"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -249,7 +257,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "http://20.205.133.140"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
@@ -265,7 +273,7 @@ methods: {
     async loadnewdata() {
           try {
             const res = await axios.get(
-              "/api/v1/account",
+              "http://20.205.133.140"+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`

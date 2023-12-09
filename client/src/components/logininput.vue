@@ -92,7 +92,7 @@
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            /*ip*/"/api/v1/account/login",
+            "http://20.205.133.140"+"/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword
@@ -139,7 +139,6 @@
                 localStorage.setItem("InstructionName2", JSON.stringify(instructionname));
                 localStorage.setItem("DepartCode2", JSON.stringify(departcode));
                 localStorage.setItem("DepartName2", JSON.stringify(departname));
-                localStorage.setItem("UserImage2", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU");
                 if (res.data.section == "001" && res.data.level <= 10) {
                   if (window.innerWidth <= 600) { 
                       window.location.replace(`/home`);
@@ -165,7 +164,7 @@
       async loadnewdata() {
           try {
             const response = await axios.get(
-              /*ip*/"/api/v1/account",
+              "http://20.205.133.140"+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`

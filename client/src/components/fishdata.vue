@@ -398,7 +398,7 @@
       },
       searchvideo(){
   axios.get(
-          "/api/v1/video/?video_uid=0021",
+          "http://20.205.133.140"+"/api/v1/video/?video_uid=0021",
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -421,7 +421,7 @@
       },
       ControlFish(move) {
           axios.post(
-                  "/api/v1/fish/control/?section="+this.poolname,{
+                  "http://20.205.133.140"+"/api/v1/fish/control/?section="+this.poolname,{
                     "fishControl":{
               "led":{
               },
@@ -454,6 +454,30 @@
             })
           },
           getImageSource(id, photonum) {
+            axios.get(
+        "https://pre.aifish.cc"+"/api/v1/fish/photos/?fishUID=0023001", { responseType: 'blob', headers: {
+        Authorization: `Bearer ${this.token}`
+      }}) 
+            .then(res=> {
+            console.log(res);
+            
+            if(res.data != undefined){
+              const imageUrl = URL.createObjectURL(new Blob([res.data]));
+              return require(imageUrl);
+            }else if (id === 3002 || id === 3009 || id === 3013) {
+              return require("../assets/新花色" + id + ".png");
+            } else if (id <= 4000) {
+              return require("../assets/fishimage" + (photonum + 1) + ".png");
+            } else {
+              return require("../assets/海龜.png");
+            }
+        })
+        .catch(err=> {
+            console.log(err);
+        })
+            
+          },
+          /*getImageSource(id, photonum) {
             if (id === 3002 || id === 3009 || id === 3013) {
               return require("../assets/新花色" + id + ".png");
             } else if (id <= 4000) {
@@ -461,7 +485,7 @@
             } else {
               return require("../assets/海龜.png");
             }
-          },
+          },*/
           /*getImageSource(id ,photonum) {
           return id <= 4000 ?  require("../assets/fishimage"+(photonum+1)+".png") : require("../assets/海龜.png");
         },*/
@@ -475,18 +499,7 @@
           }
         },
         fetchImage(){
-        axios.get(
-          "/api/v1/fish/photosURL", { responseType: 'blob', headers: {
-          Authorization: `Bearer ${this.token}`
-        }}) 
-              .then(res=> {
-              console.log(res);
-              const imageUrl = URL.createObjectURL(new Blob([res.data]));
-              alert(imageUrl)
-          })
-          .catch(err=> {
-              console.log(err);
-          })
+          
       },
         
       },

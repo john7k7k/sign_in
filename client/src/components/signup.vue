@@ -86,7 +86,7 @@
         
         fetchInstruction(){
           axios.get(
-            "/api/v1/section",{
+            "http://20.205.133.140"+"/api/v1/section",{
               headers: {
                 Authorization: `Bearer `
               },
@@ -109,7 +109,7 @@
           this.loading = true
           
             axios.post(
-            "/api/v1/account/sign_up",
+            "http://20.205.133.140"+"/api/v1/account/sign_up",
             {
               "username":this.account,
               "mail":this.email,

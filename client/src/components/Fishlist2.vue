@@ -43,7 +43,7 @@
           ></v-text-field>
           <input type="file" ref="fileInput" @change="select" />
           </Modal>
-          <v-btn v-if="showBurnBtn" @click="Burnmodal = true" size="large" class="ml-7 mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
+          <v-btn  @click="Burnmodal = true" size="large" class="ml-7 mr-8 mt-6" color="orange-darken-3">燒錄</v-btn>
       <Modal
           v-model="Burnmodal"
           title="燒錄更新檔"
@@ -142,7 +142,7 @@
             <span class="mdi mdi-close-outline text-red text-h1 mb-16 text-center mt-16" v-if="burnerroshow"></span>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">燒錄失敗</div>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">原因:{{ burnerroword }}</div>
-            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">詳細原因請到 <a href="https:frp.aifish.cc">這裡查看</a></div>
+            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">詳細原因請到 <a href="https://frp.aifish.cc">這裡查看</a></div>
             <loading v-if="burnning"></loading>
               <v-btn
                 text="確定"
@@ -387,10 +387,10 @@ import loading from '@/components/loading.vue';
             "活動中",
             "維修中"
         ],
-            poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
-            poolName: JSON.parse(localStorage.getItem("PoolsName")),
-            instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
-            InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
+            poolsCode:JSON.parse(localStorage.getItem("PoolsCode2")),
+            poolName: JSON.parse(localStorage.getItem("PoolsName2")),
+            instructionCode:JSON.parse(localStorage.getItem("InstructionCode2")),
+            InstructionName:JSON.parse(localStorage.getItem("InstructionName2")),
             keyvalueMapping :[],
             Binmodal:false,
             Burnmodal:false,
@@ -713,88 +713,76 @@ import loading from '@/components/loading.vue';
           }
       },
       async accountdata() {
-        try {
-            for (var i = 0; i < this.poolsCode.length; i++) {
-                if(this.FishId[i].length === 0) {
-                  this.Tableshow.push(false);
-                  continue;
-                }
-                this.FishId[i].sort((a, b) => a - b);
-                const response = await axios.get(
-                  /*ip*/"/api/v1/fish/table/?fishesUID=" + this.FishId[i],
-                    {
-                        headers: {
-                            Authorization: `Bearer ${this.token}`
-                        }
-                    }
-                );
-
-                console.log(response);
-
-                let vertionarray = [];
-                let timearray = [];
-                let activearray = [];
-                let bcarray = [];
-                let errarray = [];
-                let photoarray = [];
-                let swimtimearray = [];
-                for (const id in response.data[this.poolsCode[i]]) {
-                    if (!Array.isArray(response.data[this.poolsCode[i]][id])) continue;
-                    const dataArray = response.data[this.poolsCode[i]][id];
-                    if (!this.fishdatas[i]) {
-                        this.fishdatas[i] = {};
-                    }
-                    if (!this.fishdatas[i][id]) {
-                        this.fishdatas[i][id] = [];
-                    }
-                    const lastFiveObjects = dataArray.slice(-5);
-                    const reversedLastFive = lastFiveObjects.reverse();
-                    this.fishdatas[i][id] = reversedLastFive;
-                    this.fishdatas[i][id].show = false;
-                    
-                    const { version, time, active, bc, err, photoCode,accumulationTime } = dataArray[dataArray.length - 1];
-                    vertionarray.push(version);
-                    timearray.push(time);
-                    activearray.push(active);
-                    bcarray.push(bc);
-                    errarray.push(err);
-                    photoarray.push(photoCode);
-                    swimtimearray.push(accumulationTime);
-                }
-                this.version.push(vertionarray);
-                this.time.push(timearray);
-                this.active.push(activearray);
-                this.bc.push(bcarray);
-                this.error.push(errarray);
-                this.photoCode.push(photoarray);
-                this.swimtime.push(swimtimearray);
-
-                let datas = this.FishId[i].map((item, index) => ({
-                    id: this.FishId[i][index],
-                    bc: this.bc[i][index],
-                    err: this.error[i][index],
-                    version: this.version[i][index],
-                    photo: this.photoCode[i][index].toString(),
-                    time: this.fishformatDate(this.time[i][index]),
-                    active: this.proccesactive(this.active[i][index]),
-                    modal:false,
-                    ActiveModal:false,
-                    selectActive: this.proccesactive(this.active[i][index]),
-                    section:this.poolsCode[i],
-                    swimtime:this.secondToHour(this.swimtime[i][index]),
-                }));
-                
-                datas.sort((a, b) => {
-                    const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
-                    return order[a.active] - order[b.active];
-                });
-                this.data.push(datas);
-                this.Tableshow.push(true);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    },
+          try {
+              for (var i = 0; i < this.poolsCode.length; i++) {
+                  if(this.FishId[i].length === 0) {
+                    this.Tableshow.push(false);
+                    continue;
+                  }
+                  this.FishId[i].sort((a, b) => a - b);
+                  const response = await axios.get(
+                    "http://20.205.133.140"+"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
+                      {
+                          headers: {
+                              Authorization: `Bearer ${this.token}`
+                          }
+                      }
+                  );
+  
+                  console.log(response);
+  
+                  let vertionarray = [];
+                  let timearray = [];
+                  let activearray = [];
+                  let bcarray = [];
+                  let errarray = [];
+                  let photoarray = [];
+                  for (const id in response.data[this.poolsCode[i]]) {
+                      const dataArray = response.data[this.poolsCode[i]][id];
+                      if (!this.fishdatas[i]) {
+                          this.fishdatas[i] = {};
+                      }
+                      if (!this.fishdatas[i][id]) {
+                          this.fishdatas[i][id] = [];
+                      }
+                      const { version, time, active, bc, err, photoCode } = dataArray;
+                      vertionarray.push(version);
+                      timearray.push(time);
+                      activearray.push(active);
+                      bcarray.push(bc);
+                      errarray.push(err);
+                      photoarray.push(photoCode);
+                  }
+                  this.version.push(vertionarray);
+                  this.time.push(timearray);
+                  this.active.push(activearray);
+                  this.bc.push(bcarray);
+                  this.error.push(errarray);
+                  this.photoCode.push(photoarray);
+  
+                  let datas = this.FishId[i].map((item, index) => ({
+                      id: this.FishId[i][index],
+                      bc: this.bc[i][index],
+                      err: this.error[i][index],
+                      version: this.version[i][index],
+                      photo: this.photoCode[i][index].toString(),
+                      time: this.fishformatDate(this.time[i][index]),
+                      active: this.proccesactive(this.active[i][index]),
+                      modal:false,
+                      ActiveModal:false,
+                      selectActive: this.proccesactive(this.active[i][index]),
+                  }));
+                  datas.sort((a, b) => {
+                      const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
+                      return order[a.active] - order[b.active];
+                  });
+                  this.data.push(datas);
+                  this.Tableshow.push(true);
+              }
+          } catch (error) {
+              console.log(error);
+          }
+      },
     toggleShow(index) {
       this.fishdatas[index].show = !this.fishdatas[index].show
     },
@@ -824,7 +812,7 @@ import loading from '@/components/loading.vue';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          /*ip*/"/api/v1/account",
+          "http://20.205.133.140"+"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -880,7 +868,7 @@ import loading from '@/components/loading.vue';
             },
     remove(id){
         axios.post(
-          /*ip*/"/api/v1/fish/delete/",
+          "http://20.205.133.140"+"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -932,7 +920,7 @@ import loading from '@/components/loading.vue';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          /*ip*/"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          "http://20.205.133.140"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -959,7 +947,7 @@ import loading from '@/components/loading.vue';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        /*ip*/"/api/v1/fish/data/",
+        "http://20.205.133.140"+"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -985,7 +973,7 @@ import loading from '@/components/loading.vue';
     },
     changefishpool(id,newsection){
         axios.post(
-          /*ip*/"/api/v1/fish/relocal",
+          "http://20.205.133.140"+"/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -1011,7 +999,7 @@ import loading from '@/components/loading.vue';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        /*ip*/"/api/v1/fish/photo/change",
+        "http://20.205.133.140"+"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

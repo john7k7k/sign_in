@@ -152,7 +152,7 @@
             modal:false,
             passwordmodal:false,
             token:localStorage.getItem('token'),
-            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1f4J_Qn_tU9gsrwEcIxIdFzgGYVt_mbCjDg&usqp=CAU",
+            imageUrl: require("../assets/nabarlogo.png"),
             visible: false,
             visible2: false,
             newpassword:"",
@@ -207,7 +207,7 @@
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "/api/v1/account/sticker",formData,{
+          "http://20.205.133.140"+"/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -218,7 +218,7 @@
               
               if(res.status == 200){
                 this.$Message.success('變更成功');
-                this.fetchImage();
+                location.reload();
               }
               else
               this.$Message.error('變更失敗');
@@ -230,14 +230,13 @@
       },
       fetchImage(){
         axios.get(
-          "/api/v1/account/sticker", { responseType: 'blob', headers: {
+          "http://20.205.133.140"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
               console.log(res);
               const imageUrl = URL.createObjectURL(new Blob([res.data]));
               this.imageUrl = imageUrl;
-              localStorage.setItem("UserImage", this.imageUrl);
           })
           .catch(err=> {
               console.log(err);
@@ -251,7 +250,7 @@
             return
           }
           axios.post(
-            "/api/v1/account/reset_password",
+            "http://20.205.133.140"+"/api/v1/account/reset_password",
             {
               "username":this.username,
               "mail": this.email,
@@ -276,7 +275,7 @@
         },
         checkpassword () {
           axios.post(
-            "/api/v1/account/reset_password_check",
+            "http://20.205.133.140"+"/api/v1/account/reset_password_check",
             {
               "username":this.username,
               "code": this.checkcode

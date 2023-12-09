@@ -226,7 +226,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            "/api/v1/fish/control/?section=002001001",{
+            "http://20.205.133.140"+"/api/v1/fish/control/?section=002001001",{
               "fishControl":{
         "led":{
             [this.FishId]:
@@ -255,15 +255,15 @@ function TranActive(active) {
                 else this.$Message.success('變更顏色成功');
               }
               else{
-                if(type == 1) this.$Message.success('取消顏色失敗');
-                else this.$Message.success('變更顏色失敗');
+                if(type == 1) this.$Message.error('取消顏色失敗');
+                else this.$Message.error('變更顏色失敗');
               }
               
           })
           .catch(err=> {
               console.log(err);
-              if(type == 1) this.$Message.success('取消顏色失敗');
-                else this.$Message.success('變更顏色失敗');
+              if(type == 1) this.$Message.error('取消顏色失敗');
+                else this.$Message.error('變更顏色失敗');
           })
         }else{
           this.$Message.error('請選擇顏色');
@@ -278,7 +278,7 @@ function TranActive(active) {
             this.afterEditErr = this.FishErr
           }
           axios.post(
-            "/api/v1/fish/data/?section=001",{
+            "http://20.205.133.140"+"/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }
@@ -320,7 +320,7 @@ function TranActive(active) {
   },
     ControlFish(move) {
         axios.post(
-                "/api/v1/fish/control/?section="+this.poolname,{
+                "http://20.205.133.140"+"/api/v1/fish/control/?section="+this.poolname,{
                   "fishControl":{
             "led":{
             },

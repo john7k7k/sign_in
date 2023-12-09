@@ -128,7 +128,7 @@
           async loadnewdata() {
           try {
             const response = await axios.get(
-              "/api/v1/account",
+              "http://20.205.133.140"+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`

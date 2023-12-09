@@ -15,11 +15,17 @@
               :closable="false"
               @on-ok="changelevel(row.selectedlevel,row.name)"
               @on-cancel="cancel">
-              <RadioGroup v-model="row.selectedlevel">
-                <Radio label="測試管理員"></Radio>
+              <RadioGroup v-if="name == '全區'" v-model="row.selectedlevel">
                 <Radio label="總管理員"></Radio>
                 <Radio label="全區管理員"></Radio>
                 <Radio label="全區工程師"></Radio>
+                <Radio label="作業員"></Radio>
+                <Radio label="用戶"></Radio>
+              </RadioGroup>
+              <RadioGroup v-if="name != '全區'" v-model="row.selectedlevel">
+                <Radio label="分區管理員"></Radio>
+                <Radio label="分區管理員"></Radio>
+                <Radio label="分區工程師"></Radio>
                 <Radio label="作業員"></Radio>
                 <Radio label="用戶"></Radio>
               </RadioGroup>
@@ -43,7 +49,7 @@
           </Modal>
         </template>
       <template #action="{row}">
-        <Button v-show="row.showbtn" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button>
+        <Button v-show="row.showbtn && row.level != '總管理員'" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button>
         <Modal
           v-model="Assignmodal"
           title="分配此帳戶仿生魚UID權限"
@@ -312,7 +318,7 @@ import axios from 'axios';
     },
     accountdata(){
         axios.get(
-          "/api/v1/account/list/?section="+this.sectionOrigin,{
+          "http://20.205.133.140"+"/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -335,12 +341,13 @@ import axios from 'axios';
                 let datas = [];
                 res.data.forEach(item => {
                 const sectionResult = this.processSectionName(item.section); //產生用戶所屬區域名稱
+                var firstThreeChars = item.section.substring(0, 3);
                 let showbtn = true;
                 if (sectionResult.startsWith(this.sectionName[i])) {
                   if(item.username === "123" || item.username == this.Username) showbtn = false //使123帳號不能被更改
                   datas.push({
                     email: item.email,
-                    level: this.Tranlevel(item.level,item.username,0), //用戶權限名稱
+                    level: this.Tranlevel(item.level,item.username,firstThreeChars), //用戶權限名稱
                     passcode: item.passcode,
                     registrationTime: this.formatDate(item.registrationTime),
                     section: sectionResult,
@@ -403,6 +410,7 @@ import axios from 'axios';
         }
       },
       Tranlevel(level,name,section){
+        section = Number(section)
         if(name === "123" || level === 5){
           return "最高管理員"
         }else if (level === 10 && section === 0) {
@@ -425,7 +433,7 @@ import axios from 'axios';
       },
       remove(username){
         axios.post(
-          "/api/v1/account/remove_user/",
+          "http://20.205.133.140"+"/api/v1/account/remove_user/",
             {
               "username":username,
             },
@@ -465,7 +473,7 @@ import axios from 'axios';
           level = 80;
         }
         axios.post(
-          "/api/v1/account/revise/level",
+          "http://20.205.133.140"+"/api/v1/account/revise/level",
             {
               "username":name,
               "newLevel":level
@@ -501,7 +509,7 @@ import axios from 'axios';
           section = "004" + newsection.substring(2);
         }
         axios.post(
-          "/api/v1/account/revise/section",
+          "http://20.205.133.140"+"/api/v1/account/revise/section",
             {
               "username":name,
               "newSection":section

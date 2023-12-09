@@ -160,7 +160,7 @@ import axios from 'axios';
       },
     accountdata(){
         axios.get(
-          /*ip*/"/api/v1/controller/",{
+          "http://20.205.133.140"+"/api/v1/controller/",{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -270,7 +270,7 @@ import axios from 'axios';
           return;
         }
         axios.post(
-          /*ip*/"/api/v1/controller/add",{
+          "http://20.205.133.140"+"/api/v1/controller/add",{
             "controllerID": this.NewcontrollerID,
             "fish": this.Newcontrollid,
             "location": "002001001"
@@ -311,7 +311,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-          /*ip*/"/api/v1/controller/delete",
+          "http://20.205.133.140"+"/api/v1/controller/delete",
             {
               "controllerID":id,
             },
@@ -333,7 +333,7 @@ import axios from 'axios';
       },
       changeControlActive(index){
         axios.post(
-          /*ip*/"/api/v1/controller/revise",
+          "http://20.205.133.140"+"/api/v1/controller/revise",
             {
               "controllerID": this.datas[index].id,
               "enble": {

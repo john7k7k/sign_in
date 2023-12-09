@@ -244,7 +244,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          /*ip*/"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "http://20.205.133.140"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -449,7 +449,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    /*ip*/"/api/v1/account",
+    "http://20.205.133.140"+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -513,7 +513,8 @@ await this.RefreshDatas(i);
 if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
   this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology";
   this.poolsdata[1].EnPoolName = "Museum of Marine Science and Technology"
-  this.poolsdata[2].EnPoolName = "Museum of Marine Science and Technology"
+  this.poolsdata[2].EnPoolName = "Museum of Marine Science and Technology";
+  this.poolsdata[0].imageurl = require("../assets/主頁機構海科.png");
 }
 
 },
