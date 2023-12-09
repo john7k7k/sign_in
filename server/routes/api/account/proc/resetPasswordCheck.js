@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const md5 = require('blueimp-md5');
-const prisma =  global.prisma;
+const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 
 module.exports = async function(req, res) {
     console.log(req.body)
