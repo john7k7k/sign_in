@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 
 const path = require('path');
 const multer = require('multer');

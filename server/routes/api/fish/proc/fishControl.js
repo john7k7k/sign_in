@@ -1,4 +1,4 @@
-const mqttConnection = require('../../../../modules/util/mqtt')();
+const mqttConnection = require('../../../../modules/util/mqtt');
 
 module.exports = async (req, res) => {
     try{

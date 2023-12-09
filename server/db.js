@@ -114,8 +114,8 @@ const subTopics = require('./config/subTopics');
             await prisma.pool.create({
                 data: {
                     id: '002001001',
-                    mac: 'CSL水池',
-                    name: '',
+                    name: 'CSL水池',
+                    mac: '',
                     depart: {
                         connect: {
                             id: '002001'
@@ -174,6 +174,16 @@ const subTopics = require('./config/subTopics');
                         }
                     }
                 });
+                await prisma.fishData.create({
+                    data: {
+                        fishUID,
+                        time: Math.floor((new Date()).getTime()/1000),
+                        bc: 0,
+                        err: 0,
+                        active: 0,
+                        version: "init"
+                    }
+                })
             }
         }
     }

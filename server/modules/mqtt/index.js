@@ -1,4 +1,4 @@
-const mqttConnection = require('../util/mqtt')();
+const mqttConnection = require('../util/mqtt');
 const messageProcess = require('./proc/message');
 const onConnect = require('./proc/connect');
 

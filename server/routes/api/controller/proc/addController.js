@@ -1,8 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
 const dotenv = require("dotenv").config();
+const mqttConnection = require('../../../../modules/util/mqtt.js');
+const { prisma } =  require('../../../../modules/util/myPrisma.js');
 
 module.exports = async (req, res) => {
-    const prisma = new PrismaClient();
+    
     try{
         await prisma.controller.create({
             data: {
@@ -22,9 +24,36 @@ module.exports = async (req, res) => {
                 leave_auto: 1
             }
         })
+        const joysticks = await prisma.controller.findUnique({
+            where:{
+                id: req.body.controllerID
+            }
+        })
+        let message = { joysticks:{  
+            [req.body.controllerID]:{
+                ids:[joysticks.fish.slice(3)],
+                priority: 30,
+                timeout: 180,
+                enable:  Object.fromEntries(
+                    Object.entries(joysticks).filter(([key]) => [ "forward",
+                    "left",
+                    "right",
+                    "floating",
+                    "diving",
+                    "middle",
+                    "switch_mode",
+                    "led",
+                    "auto",
+                    "leave_auto"].includes(key))
+                )
+            }
+        } }
+        for (let en in message.joysticks[req.body.controllerID].enable){
+            if(message.joysticks[req.body.controllerID].enable[en]) message.joysticks[req.body.controllerID].enable[en] = true;
+            else message.joysticks[req.body.controllerID].enable[en] = false;
+        }
+        const topic = `Monitor/config/${req.body.location}/set`;
+        mqttConnection.publish(topic, message);
     }catch(e) {console.log(e);res.sendStatus(403);}
-    finally{
-        await prisma.$disconnect();
-    }
     res.sendStatus(200);
 }

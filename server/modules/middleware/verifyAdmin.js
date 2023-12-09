@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma } =  require('../../modules/util/myPrisma.js') ;
 
 module.exports = function (){
     return async (req, res, next) => {

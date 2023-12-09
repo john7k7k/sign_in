@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma } =  require('../../modules/util/myPrisma.js') ;
 
 module.exports = function (tokenFrom = 'URL'){
     return (threshold = 0, verifySection = true) => {

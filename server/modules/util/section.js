@@ -1,8 +1,7 @@
 const infoMap = require('./infoMap');
 const fs = require('fs');
 const path = require('path')
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma } =  require('../../modules/util/myPrisma.js') ;
 
 module.exports = () => {
     const fishError = JSON.parse(fs.readFileSync(path.join(__dirname,'../../config/fishError.json'), 'utf8'))

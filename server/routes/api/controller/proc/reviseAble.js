@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const dotenv = require("dotenv").config();
-const mqttConnection = require('../../../../modules/util/mqtt')();
+const mqttConnection = require('../../../../modules/util/mqtt');
+const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 
 module.exports = async (req, res) => {
-    const prisma = new PrismaClient();
     try{
         await prisma.controller.update({
             where: {
@@ -61,8 +61,5 @@ module.exports = async (req, res) => {
         mqttConnection.publish(topic, message)
         console.log(`publiced topic: ${topic}, message: ${message}`);
     }catch(e) {console.log(e);res.sendStatus(403);}
-    finally{
-        await prisma.$disconnect();
-    }
     res.sendStatus(200);
 }
