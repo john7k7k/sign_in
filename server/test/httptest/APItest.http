@@ -17,8 +17,8 @@ POST https://pre.aifish.cc/api/v1/account/login
 Content-Type: application/json
 
 {
-    "username": "lab314",
-    "password": "8cc22a1b4ea8657f44aec7e27317d0f7"
+    "username": "123",
+    "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
 POST https://pre.aifish.cc/api/v1/fish/assign
@@ -114,7 +114,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET https://pre.aifish.cc/api/v1/fish/table/?fishesUID=0023001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3MDIwMzI2OTgsImV4cCI6MTcwMjA0MTY5OH0.WOy5O1IRqmwbmdJHkS6noJhHPE6FhuhJYWt61B_0ogc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYjMxNCIsImlhdCI6MTcwMjExOTA4OCwiZXhwIjoxNzAyMTI4MDg4fQ.9BZH1ZLybrtBIVsG1MCPyB1Z5XdGzzMBBIhML9pTfKs
 
 
 ###
@@ -225,7 +225,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 ###
 GET https://pre.aifish.cc/api/v1/account/sticker
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTc1OTU4NCwiZXhwIjoxNzAxNzY4NTg0fQ.rLhMM8lozoWIv7wd6yDtHASTyuxk5JWqSgk3FeY0hD4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjEyMjkwNywiZXhwIjoxNzAyMTMxOTA3fQ.Sy44v_BOdxi4p4MM9df2MoRJKqLBJnr6_payQp4pIVc
 
 ###
 GET https://pre.aifish.cc/api/v1/fish/photosURL
@@ -275,8 +275,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "version": "v1.3.4test"
 }
 ###
-GET https://pre.aifish.cc/api/v1/fish/photos/?time=1693947214153.jpg&fishUID=0023001
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMDAzMzM1NCwiZXhwIjoxNzAwMDQyMzU0fQ.I54Tk5py4Y_9Cu90fAHbmM0tscMg5bLrJRU1TwUm-sk
+GET https://pre.aifish.cc/api/v1/fish/photos/?fishUID=0023001
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjEyMDQ5NSwiZXhwIjoxNzAyMTI5NDk1fQ.orOP4SJ3M0o3vhlsmO-W6FLK3elBEF6KKOfbZd8AXTE
 
 ###
 POST https://pre.aifish.cc/api/v1/account/reset_password
