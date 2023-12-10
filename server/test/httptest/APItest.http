@@ -295,3 +295,5 @@ Content-Type: application/json
     "username": "110310322",
     "code": "494934"
 }
+###
+GET https://pre.aifish.cc/home

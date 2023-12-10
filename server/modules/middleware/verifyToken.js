@@ -12,13 +12,13 @@ module.exports = function (tokenFrom = 'URL', redirect = false){
           else if(tokenFrom === 'Cookie') token = req.cookies.token;
         }
         catch{
-          if(redirect) return res.redirect('/login');
+          if(redirect) return res.redirect(redirect);
           return res.sendStatus(403);
         }
         jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
           if (err) {
             console.log(err);
-            if(redirect) return res.redirect('/login');
+            if(redirect) return res.redirect(redirect);
             return res.sendStatus(403);;
           }
           req.payload = payload;
