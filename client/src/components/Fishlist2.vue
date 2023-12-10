@@ -15,7 +15,7 @@
         style="width: 200px;"
         bg-color="rgba(255, 255, 255, 0.15)"
       ></v-text-field>
-      <v-btn v-if="showBurnBtn" @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
+      <v-btn  @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
       <v-dialog v-model="SearchBinmodal"  width="40%">
         <v-card>
           <v-card-text>
@@ -51,15 +51,11 @@
           ok-text="燒錄"
           @on-ok="burnBin"
           @on-cancel="cancel">
-          <Checkbox
-            :indeterminate="indeterminate"
-            :model-value="checkAll"
-            @click.prevent="handleCheckAll">全部</Checkbox>
-          <CheckboxGroup v-model="BurnFishId">
+          <RadioGroup v-model="BurnFishId">
             <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
-                <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
+                <Radio v-for="id in FishId[i]" :key="id" :label="id"></Radio>
               </div>
-        </CheckboxGroup>
+              </RadioGroup>
           </Modal>
       <v-dialog
     v-model="dialognewSection"
@@ -141,8 +137,8 @@
             <div v-if="burnfinish" class="burnfinishcss text-center mb-8">燒錄完成</div>
             <span class="mdi mdi-close-outline text-red text-h1 mb-16 text-center mt-16" v-if="burnerroshow"></span>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">燒錄失敗</div>
-            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">原因:{{ burnerroword }}</div>
-            <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">詳細原因請到 <a href="https://frp.aifish.cc">這裡查看</a></div>
+            <div v-if="burnerroshow" class="burnfinishcss text-center mb-4">原因:{{ burnerroword }}</div>
+            <div v-if="burnerroshow" class="burnfinishcss text-center mb-4">詳細原因請到 <a href="https://frp.aifish.cc">這裡查看</a></div>
             <loading v-if="burnning"></loading>
               <v-btn
                 text="確定"
@@ -421,9 +417,11 @@ import loading from '@/components/loading.vue';
         this.formNameMapping(this.instructionCode,this.InstructionName);
         this.formNameMapping(this.poolsCode,this.poolName);
         this.RefreshDatas2();
-        if(this.level < 10) this.showBurnBtn = true;
         if(this.level <= 30) this.showNewfishBtn = true;
-        if(this.level <=10 && this.section =="001") this.showchangepool = true;
+        if(this.level <=10 && this.section =="001") {
+          this.showBurnBtn = true;
+          this.showchangepool = true;
+        }
         await this.accountdata();
       },
       mounted() {
@@ -584,7 +582,7 @@ import loading from '@/components/loading.vue';
         },
         fetchBin() {
           axios.get(
-            "/api/v1/ota/bin",{
+            /**/"/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }

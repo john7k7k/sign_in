@@ -158,7 +158,7 @@
       z-index: 2;
       position: absolute;
       transform: scale(1) ;
-      top: 4%;
+      top: 5.9%;
       left: 60%;
       width: 50%;
   }
@@ -166,7 +166,7 @@
       z-index: 9;
       position: absolute;
       transform: scale(1.2) ;
-      top: 42%;
+      top: 42.5%;
       left: 60%;
       width: 50%;
   }
