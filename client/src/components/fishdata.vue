@@ -76,7 +76,7 @@
             <v-card class="pa-2 mb-14 mx-auto cardbg" cover width="320">
           <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
             <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
-        <v-img class="mr-12 mb-6" :src="getImageSource(fish.id,fish.photo)" width="50" height="150" :style="{ transform: imageScale(fish.id ,fish.photo) }"></v-img>
+        <v-img class="mr-12 mb-6" :src="fish.imageurl" width="50" height="150" :style="{ transform: imageScale(fish.id ,fish.photo) }"></v-img>
         <v-btn
           icon="mdi-numeric-null"
           height="9"
@@ -184,6 +184,7 @@
       data() {
         return {
           token:localStorage.getItem('token'),
+          fishid:localStorage.getItem("Id"),
           FishId:[],
           bc: [],
           err: [],
@@ -221,7 +222,8 @@
           IP:process.env.VUE_APP_IP,
           poolname:localStorage.getItem('Poolname'),
           poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
-          photoUrl:["../assets/fishimage1.png","../assets/fishimage2.png","../assets/fishimage3.png","../assets/fishimage4.png"]
+          photoUrl:["../assets/fishimage1.png","../assets/fishimage2.png","../assets/fishimage3.png","../assets/fishimage4.png"],
+          fishurl:[],
         }
       },
       methods:{
@@ -248,7 +250,8 @@
                 errornum:this.countNumbersInString(this.err[index]),
                 dialogerr: false,
                 bellshow: this.bellshowfunction(this.err[index],this.FishActive[index]),
-                activeword: this.getactiveword(this.FishActive[index],this.err[index])
+                activeword: this.getactiveword(this.FishActive[index],this.err[index]),
+                imageurl:this.fishurl[index]
               }));
   
           },
@@ -398,7 +401,7 @@
       },
       searchvideo(){
   axios.get(
-          "http://20.205.133.140"+"/api/v1/video/?video_uid=0021",
+          /**/"/api/v1/video/?video_uid=0021",
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -421,7 +424,7 @@
       },
       ControlFish(move) {
           axios.post(
-                  "http://20.205.133.140"+"/api/v1/fish/control/?section="+this.poolname,{
+                  /**/"/api/v1/fish/control/?section="+this.poolname,{
                     "fishControl":{
               "led":{
               },
@@ -453,7 +456,7 @@
                 this.$Message.error('控制失敗');
             })
           },
-          getImageSource(id, photonum) {
+          /*fetchImageSource(id, photonum) {
             axios.get(
         "https://pre.aifish.cc"+"/api/v1/fish/photos/?fishUID=0023001", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
@@ -476,8 +479,41 @@
             console.log(err);
         })
             
-          },
-          /*getImageSource(id, photonum) {
+          },*/
+          async fetchImageSource(id) {
+    try {
+        const res = await axios.get(
+            /**/"/api/v1/fish/photos/?fishUID="+id, { responseType: 'blob', headers: {
+                Authorization: `Bearer ${this.token}`
+            }}
+        );
+
+        console.log(res);
+
+        if (res.data !== undefined) {
+            this.fishurl.push(URL.createObjectURL(res.data));
+        }else{
+          id = parseInt(id.toString().slice(-4))
+        if (id === 3002 || id === 3009 || id === 3013) {
+            this.fishurl.push(require("../assets/新花色" + id + ".png"));
+        } else if (id <= 4000) {
+            this.fishurl.push(require("../assets/fishimage1.png"));
+        } else {
+            this.fishurl.push(require("../assets/海龜.png"));
+        }
+        }
+    } catch (err) {
+        id = parseInt(id.toString().slice(-4))
+        if (id === 3002 || id === 3009 || id === 3013) {
+            this.fishurl.push(require("../assets/新花色" + id + ".png"));
+        } else if (id <= 4000) {
+            this.fishurl.push(require("../assets/fishimage1.png"));
+        } else {
+            this.fishurl.push(require("../assets/海龜.png"));
+        }
+    }
+},
+          getImageSource(id, photonum) {
             if (id === 3002 || id === 3009 || id === 3013) {
               return require("../assets/新花色" + id + ".png");
             } else if (id <= 4000) {
@@ -485,7 +521,7 @@
             } else {
               return require("../assets/海龜.png");
             }
-          },*/
+          },
           /*getImageSource(id ,photonum) {
           return id <= 4000 ?  require("../assets/fishimage"+(photonum+1)+".png") : require("../assets/海龜.png");
         },*/
@@ -498,9 +534,6 @@
             return "scale(0.95)";
           }
         },
-        fetchImage(){
-          
-      },
         
       },
       
@@ -515,7 +548,12 @@
         },
         
       },
-      created() {
+      async created() {
+        this.fishid = this.fishid.split(',')
+        for (const id of this.fishid) {
+          await  this.fetchImageSource(id);
+        }
+      
       this.RefreshFishDatas();
       //this.fetchImage();
     },

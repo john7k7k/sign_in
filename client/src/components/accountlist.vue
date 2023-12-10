@@ -23,7 +23,7 @@
                 <Radio label="用戶"></Radio>
               </RadioGroup>
               <RadioGroup v-if="name != '全區'" v-model="row.selectedlevel">
-                <Radio label="分區管理員"></Radio>
+                <Radio label="分區總管"></Radio>
                 <Radio label="分區管理員"></Radio>
                 <Radio label="分區工程師"></Radio>
                 <Radio label="作業員"></Radio>
@@ -318,7 +318,7 @@ import axios from 'axios';
     },
     accountdata(){
         axios.get(
-          "http://20.205.133.140"+"/api/v1/account/list/?section="+this.sectionOrigin,{
+          /**/"/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -356,7 +356,7 @@ import axios from 'axios';
                     showbtn,
                     modal:false,
                     sectionmodal:false,
-                    selectedlevel:this.Tranlevel(item.level,item.username,0),
+                    selectedlevel:this.Tranlevel(item.level,item.username,firstThreeChars),
                     selectsection:sectionResult,
                   });
                 }
@@ -410,14 +410,13 @@ import axios from 'axios';
         }
       },
       Tranlevel(level,name,section){
-        section = Number(section)
         if(name === "123" || level === 5){
           return "最高管理員"
-        }else if (level === 10 && section === 0) {
+        }else if (level === 10 && section === "001") {
           return "總管理員"
-        }else if (level === 20 && section === 0) {
+        }else if (level === 20 && section === "001") {
           return "全區管理員"
-        }else if (level === 30 && section === 0) {
+        }else if (level === 30 && section === "001") {
           return "全區工程師"
         }else if (level === 10 || level === 5) {
           return "分區總管"
@@ -433,7 +432,7 @@ import axios from 'axios';
       },
       remove(username){
         axios.post(
-          "http://20.205.133.140"+"/api/v1/account/remove_user/",
+          /**/"/api/v1/account/remove_user/",
             {
               "username":username,
             },
@@ -473,7 +472,7 @@ import axios from 'axios';
           level = 80;
         }
         axios.post(
-          "http://20.205.133.140"+"/api/v1/account/revise/level",
+          /**/"/api/v1/account/revise/level",
             {
               "username":name,
               "newLevel":level
@@ -503,13 +502,17 @@ import axios from 'axios';
           section = "001" + newsection.substring(2);
         }else if (newsection.startsWith("北科")) {
           section = "002" + newsection.substring(2);
+        }else if(newsection.startsWith("台北科大")){
+          section = "002" + newsection.substring(4);
         }else if (newsection.startsWith("海科")) {
           section = "003" + newsection.substring(2);
+        }else if(newsection.startsWith("海洋科技博物館")){
+          section = "003" + newsection.substring(7);
         }else{
           section = "004" + newsection.substring(2);
         }
         axios.post(
-          "http://20.205.133.140"+"/api/v1/account/revise/section",
+          /**/"/api/v1/account/revise/section",
             {
               "username":name,
               "newSection":section

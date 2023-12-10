@@ -114,7 +114,7 @@ poolsdata:[
                 imageurl: require("../assets/主頁魚池33.png")
             },
             {
-                EnPoolName:"National Taipei University of Technology",
+                EnPoolName:"Museum of Marine Science and Technology",
                 imageurl: require("../assets/主頁魚池22.png")
             },
             {
@@ -244,7 +244,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "http://20.205.133.140"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          /**/"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -449,7 +449,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "http://20.205.133.140"+"/api/v1/account",
+    /**/"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -498,7 +498,10 @@ try {
 async routefishdata(index,name){
 await this.SaveIndividualData(index,0,'/total');
 this.$router.push(`/${name}/total/fish`);
-}
+},
+getKeyByValue(object, value) {
+          return Object.keys(object).find(key => object[key] === value);
+        },
 },
 async created() {
 if(this.isMobileScreen == "true") this.isMobileScreen = true;
@@ -510,6 +513,7 @@ this.RefreshDatas2();
 for (var i = 0; i < this.poolsCode.length; i++) {
 await this.RefreshDatas(i);
 }
+
 if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
   this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology";
   this.poolsdata[1].EnPoolName = "Museum of Marine Science and Technology"

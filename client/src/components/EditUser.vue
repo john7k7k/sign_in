@@ -207,7 +207,7 @@
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "http://20.205.133.140"+"/api/v1/account/sticker",formData,{
+          /**/"/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -230,7 +230,7 @@
       },
       fetchImage(){
         axios.get(
-          "http://20.205.133.140"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+          /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
@@ -250,7 +250,7 @@
             return
           }
           axios.post(
-            "http://20.205.133.140"+"/api/v1/account/reset_password",
+            /**/"/api/v1/account/reset_password",
             {
               "username":this.username,
               "mail": this.email,
@@ -275,7 +275,7 @@
         },
         checkpassword () {
           axios.post(
-            "http://20.205.133.140"+"/api/v1/account/reset_password_check",
+            /**/"/api/v1/account/reset_password_check",
             {
               "username":this.username,
               "code": this.checkcode

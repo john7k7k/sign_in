@@ -119,7 +119,11 @@
           gotohomepage(selectsection){
             if(selectsection == this.instructionName[0].instruction) selectsection = "002"
             else if(selectsection == this.instructionName[1].instruction) selectsection = "003"
-            
+            if(selectsection == "002"){
+              localStorage.setItem("chooseSectionname", "北科");
+            }else if(selectsection == "003"){
+              localStorage.setItem("chooseSectionname", "海科");
+            }
             if(selectsection == "002" || selectsection == "003"){
               this.filterAndSaveToLocalStorage(selectsection);
             }
@@ -128,7 +132,7 @@
           async loadnewdata() {
           try {
             const response = await axios.get(
-              "http://20.205.133.140"+"/api/v1/account",
+              /**/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`

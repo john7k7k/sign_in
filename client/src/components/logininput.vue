@@ -92,7 +92,7 @@
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            "http://20.205.133.140"+"/api/v1/account/login",
+            /**/"/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword
@@ -139,15 +139,8 @@
                 localStorage.setItem("InstructionName2", JSON.stringify(instructionname));
                 localStorage.setItem("DepartCode2", JSON.stringify(departcode));
                 localStorage.setItem("DepartName2", JSON.stringify(departname));
-                if (res.data.section == "001" && res.data.level <= 10) {
-                  if (window.innerWidth <= 600) { 
-                      window.location.replace(`/home`);
-                  } else {
-                      window.location.replace(`/select/instruction`);
-                  }
-                } else {
-                    window.location.replace(`/home`);
-                }
+                localStorage.setItem("chooseSectionname", "全部");
+                window.location.replace(`/home`);
               }
               else
               this.$Message.error('登入失敗');
@@ -164,7 +157,7 @@
       async loadnewdata() {
           try {
             const response = await axios.get(
-              "http://20.205.133.140"+"/api/v1/account",
+              /**/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`
