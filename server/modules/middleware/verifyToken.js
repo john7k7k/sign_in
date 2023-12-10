@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const { prisma } =  require('../../modules/util/myPrisma.js') ;
 
-module.exports = function (tokenFrom = 'URL'){
+module.exports = function (tokenFrom = 'URL', redirect = false){
     return (threshold = 0, verifySection = true) => {
       return (req, res, next) => {
         let token = '';
@@ -12,14 +12,14 @@ module.exports = function (tokenFrom = 'URL'){
           else if(tokenFrom === 'Cookie') token = req.cookies.token;
         }
         catch{
-          res.sendStatus(403);
-          return;
+          if(redirect) return res.redirect('/login');
+          return res.sendStatus(403);
         }
         jwt.verify(token, process.env.DB_JWTKEY, async (err, payload) => {
           if (err) {
-            res.sendStatus(403);
             console.log(err);
-            return;
+            if(redirect) return res.redirect('/login');
+            return res.sendStatus(403);;
           }
           req.payload = payload;
           if(threshold === 0) {

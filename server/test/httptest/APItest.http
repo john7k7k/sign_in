@@ -2,14 +2,14 @@ POST https://pre.aifish.cc/api/v1/account/sign_up
 Content-Type: application/json
 
 {
-    "username": "lab314",
+    "username": "110310322",
     "mail": "ppp1244qqq@gmail.com",
     "password": "8cc22a1b4ea8657f44aec7e27317d0f7",
     "section": "001",
     "level": 10
 }
 ###
-GET https://pre.aifish.cc/api/v1/account/verify/?username=lab314
+GET https://pre.aifish.cc/api/v1/account/verify/?username=110310322
 Content-Type: application/json
 
 ###123:"735434cae08df8e591c1549da88c6d87" , 110310322:"dd79f98b3f8b63c94246beb7c75658a7" , lab314:"8cc22a1b4ea8657f44aec7e27317d0f7"
@@ -23,10 +23,10 @@ Content-Type: application/json
 ###
 POST https://pre.aifish.cc/api/v1/fish/assign
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA3MjAzOCwiZXhwIjoxNjk4MDgxMDM4fQ.Zd8sTqeHteLXwpuCB8ghAhnFN3pGBtvUIQYDaMv8R5U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjE0MzExNiwiZXhwIjoxNzAyMTUyMTE2fQ.CP-ZfO3J1QgDwVXw7M4ekDj3r9KwXwO4CHREnts8Taw
 
 {
-    "username": "1234",
+    "username": "110310322",
     "fishUID": "0023001"
 }
 
@@ -48,10 +48,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST https://pre.aifish.cc/api/v1/account/remove_user/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjAzMTgxNSwiZXhwIjoxNzAyMDQwODE1fQ.UcoiwRdXzlq-GiC78nORuoaigAG7WOiwEquEGo7ES8A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjE4NzUxMiwiZXhwIjoxNzAyMTk2NTEyfQ.IMps1ijl1NhzcoR9o4P-pge6pspP1Jzn4YAhnXX-sxA
 
 {
-    "username": "lab314"
+    "username": "110310322"
 }
 ###
 GET https://pre.aifish.cc/api/v1/account
@@ -61,7 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET https://pre.aifish.cc/api/v1/account/list/?section=001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2MTQ1MCwiZXhwIjoxNjk4MTcwNDUwfQ.ipQ489He7Lbtgq2Iw4vXGj2wjkPa2EzKdwPKgnIqE84
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjE4NzUxMiwiZXhwIjoxNzAyMTk2NTEyfQ.IMps1ijl1NhzcoR9o4P-pge6pspP1Jzn4YAhnXX-sxA
 
 ###
 POST https://pre.aifish.cc/api/v1/account/revise/level
@@ -75,10 +75,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST https://pre.aifish.cc/api/v1/account/revise/section
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhYjMxNCIsImlhdCI6MTcwMjA0MTM0OCwiZXhwIjoxNzAyMDUwMzQ4fQ.QndmyMHJp0X0-JK3J0bGVW2nTfeJjJ1GKRxf0nfJHi4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjE4NzUxMiwiZXhwIjoxNzAyMTk2NTEyfQ.IMps1ijl1NhzcoR9o4P-pge6pspP1Jzn4YAhnXX-sxA
 
 {
-    "username": "lab314",
+    "username": "110310322",
     "newSection": "001"
 }
 
@@ -283,7 +283,7 @@ POST https://pre.aifish.cc/api/v1/account/reset_password
 Content-Type: application/json
 
 {
-    "username": "1234",
+    "username": "110310322",
     "mail": "ppp1244qqq@gmail.com",
     "password": "735434cae08df8e591c1549da88c6d87"
 }
@@ -292,6 +292,6 @@ POST https://pre.aifish.cc/api/v1/account/reset_password_check
 Content-Type: application/json
 
 {
-    "username": "1234",
-    "code": "929345"
+    "username": "110310322",
+    "code": "494934"
 }
