@@ -26,6 +26,7 @@
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
+    <div v-if="this.section == '001' && Number(this.level) <= 10"  class=" text-blue navbartext font-weight-bold mt-2 mr-2">目前選擇機構:{{ SectionName }}</div>
     <div  class=" text-white navbartext font-weight-bold mt-2">{{ username }}</div>
     <div>
       <v-btn  value="about" href="/user" ><v-avatar class=" mr-4 " :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn>
@@ -138,6 +139,7 @@ data() {
     level: localStorage.getItem('UserLevel'),
     token:localStorage.getItem('token'),
     section:localStorage.getItem('UserSection'),
+    SectionName:localStorage.getItem('chooseSectionname'),
     SelectSectionshow:false,
     userlistshow:false,
     fishlistshow:false,
@@ -228,7 +230,7 @@ methods: {
   },
   logout(){
     axios.post(
-"http://20.205.133.140"+"/api/v1/account/logout",{},{
+/**/"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -257,7 +259,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "http://20.205.133.140"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+        /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
@@ -271,9 +273,10 @@ methods: {
         })
     },
     async loadnewdata() {
+      localStorage.setItem("chooseSectionname", "全部");
           try {
             const res = await axios.get(
-              "http://20.205.133.140"+"/api/v1/account",
+              /**/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -315,7 +318,6 @@ computed: {
 },
 created(){
   this.fetchImage();
-  
 }
 }
 </script>

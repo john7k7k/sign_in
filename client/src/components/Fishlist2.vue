@@ -387,10 +387,10 @@ import loading from '@/components/loading.vue';
             "活動中",
             "維修中"
         ],
-            poolsCode:JSON.parse(localStorage.getItem("PoolsCode2")),
-            poolName: JSON.parse(localStorage.getItem("PoolsName2")),
-            instructionCode:JSON.parse(localStorage.getItem("InstructionCode2")),
-            InstructionName:JSON.parse(localStorage.getItem("InstructionName2")),
+            poolsCode:JSON.parse(localStorage.getItem("PoolsCode")),
+            poolName: JSON.parse(localStorage.getItem("PoolsName")),
+            instructionCode:JSON.parse(localStorage.getItem("InstructionCode")),
+            InstructionName:JSON.parse(localStorage.getItem("InstructionName")),
             keyvalueMapping :[],
             Binmodal:false,
             Burnmodal:false,
@@ -721,7 +721,7 @@ import loading from '@/components/loading.vue';
                   }
                   this.FishId[i].sort((a, b) => a - b);
                   const response = await axios.get(
-                    "http://20.205.133.140"+"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
+                    /**/"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
                       {
                           headers: {
                               Authorization: `Bearer ${this.token}`
@@ -737,6 +737,7 @@ import loading from '@/components/loading.vue';
                   let bcarray = [];
                   let errarray = [];
                   let photoarray = [];
+                  let swimtimearray = [];
                   for (const id in response.data[this.poolsCode[i]]) {
                       const dataArray = response.data[this.poolsCode[i]][id];
                       if (!this.fishdatas[i]) {
@@ -745,13 +746,14 @@ import loading from '@/components/loading.vue';
                       if (!this.fishdatas[i][id]) {
                           this.fishdatas[i][id] = [];
                       }
-                      const { version, time, active, bc, err, photoCode } = dataArray;
+                      const { version, time, active, bc, err, photoCode, accumulationTime } = dataArray;
                       vertionarray.push(version);
                       timearray.push(time);
                       activearray.push(active);
                       bcarray.push(bc);
                       errarray.push(err);
                       photoarray.push(photoCode);
+                      swimtimearray.push(accumulationTime);
                   }
                   this.version.push(vertionarray);
                   this.time.push(timearray);
@@ -759,6 +761,7 @@ import loading from '@/components/loading.vue';
                   this.bc.push(bcarray);
                   this.error.push(errarray);
                   this.photoCode.push(photoarray);
+                  this.swimtime.push(swimtimearray);
   
                   let datas = this.FishId[i].map((item, index) => ({
                       id: this.FishId[i][index],
@@ -771,6 +774,7 @@ import loading from '@/components/loading.vue';
                       modal:false,
                       ActiveModal:false,
                       selectActive: this.proccesactive(this.active[i][index]),
+                      swimtime:this.secondToHour(this.swimtime[i][index])
                   }));
                   datas.sort((a, b) => {
                       const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
@@ -812,7 +816,7 @@ import loading from '@/components/loading.vue';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "http://20.205.133.140"+"/api/v1/account",
+          /**/"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -868,7 +872,7 @@ import loading from '@/components/loading.vue';
             },
     remove(id){
         axios.post(
-          "http://20.205.133.140"+"/api/v1/fish/delete/",
+          /**/"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -920,7 +924,7 @@ import loading from '@/components/loading.vue';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "http://20.205.133.140"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          /**/"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -947,7 +951,7 @@ import loading from '@/components/loading.vue';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "http://20.205.133.140"+"/api/v1/fish/data/",
+        /**/"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -973,7 +977,7 @@ import loading from '@/components/loading.vue';
     },
     changefishpool(id,newsection){
         axios.post(
-          "http://20.205.133.140"+"/api/v1/fish/relocal",
+          /**/"/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -999,7 +1003,7 @@ import loading from '@/components/loading.vue';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "http://20.205.133.140"+"/api/v1/fish/photo/change",
+        /**/"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode

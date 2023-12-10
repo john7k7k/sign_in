@@ -226,7 +226,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            "http://20.205.133.140"+"/api/v1/fish/control/?section=002001001",{
+            /**/"/api/v1/fish/control/?section=002001001",{
               "fishControl":{
         "led":{
             [this.FishId]:
@@ -278,7 +278,7 @@ function TranActive(active) {
             this.afterEditErr = this.FishErr
           }
           axios.post(
-            "http://20.205.133.140"+"/api/v1/fish/data/?section=001",{
+            /**/"/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }
@@ -320,7 +320,7 @@ function TranActive(active) {
   },
     ControlFish(move) {
         axios.post(
-                "http://20.205.133.140"+"/api/v1/fish/control/?section="+this.poolname,{
+                /**/"/api/v1/fish/control/?section="+this.poolname,{
                   "fishControl":{
             "led":{
             },

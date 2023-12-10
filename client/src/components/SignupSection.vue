@@ -169,7 +169,7 @@ export default {
       async loadnewdata() {
           try {
             const res = await axios.get(
-              "http://20.205.133.140"+"/api/v1/account",
+              /**/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -229,7 +229,7 @@ export default {
         Signin(tab){
         if (tab === "one"){
           axios.post(
-            "http://20.205.133.140"+"/api/v1/instruction",{
+            /**/"/api/v1/instruction",{
             "instruction":{"code": this.NewInstructionCode,
                            "name": this.NewInstruction
                           },
@@ -254,7 +254,7 @@ export default {
           })
         }else if(tab === "two"){
           axios.post(
-            "http://20.205.133.140"+"/api/v1/depart",{
+            /**/"/api/v1/depart",{
             "depart":{"code": this.NewDepartCode,
                       "name": this.NewDepart
                       },
@@ -282,7 +282,7 @@ export default {
           let deparAllcode = this.getKeyByValue(this.keyvalueMapping[1], this.SelectDepart)
           const deparcode = deparAllcode.substring(deparAllcode.length - 3);
           axios.post(
-            "http://20.205.133.140"+"/api/v1/pool",{
+            /**/"/api/v1/pool",{
             "instruction":{"code": this.getKeyByValue(this.keyvalueMapping[0], this.SelectInstruction)},
             "depart":{"code": deparcode},
             "pool":{"code": this.NewPoolCode,
