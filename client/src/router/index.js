@@ -86,7 +86,27 @@ const routes = [
     name: "notFound",
     component: () => import("../views/error404.vue"),
   },
-  
+  {
+    path: "/homepage",
+    name: "homepage",
+    component: () => import("../views/john/Homepage.vue"),
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import("../views/john/About.vue"),
+  },
+  {
+    path: "/services",
+    name: "services",
+    component: () => import("../views/john/Services.vue"),
+  },
+  {
+    path: "/contact",
+    name: "contact",
+    component: () => import("../views/john/Contact.vue"),
+  },
+
 ]
 
 const router = createRouter({
