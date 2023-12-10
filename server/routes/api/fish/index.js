@@ -50,7 +50,7 @@ router.post(`/disassign`,
 
 router.get(`/photosURL`, verifyTokenBy('Header')(),  fishPhoto.getURL);
 
-router.get(`/photos`, verifyTokenBy('Header')(),  fishPhoto.get);
+router.get(`/photos`, fishPhoto.get);
 
 router.post(`/photos`, verifyTokenBy('Header')(),  fishPhoto.upload.single('image'), fishPhoto.process);
 
