@@ -13,7 +13,7 @@ const awaitMqtt = (req ,res) => {
         if(global.fishPort) {
             if(global.fishPort.slice(0,6) === "faiied") return res.status(503).send(`取得魚資料失敗`);
             else if(global.fishPort === "offline") return res.status(503).send(`${req.body.fishesUID}不在線`);
-            else if(global.fishPort === "no_fish") return res.status(503).send(`沒有${req.body.fishesUID}`);
+            else if(global.fishPort === "no_fish") return res.status(503).send(`${req.body.fishesUID}未啟用OTA`);
             ports = Number(global.fishPort);
             delete global.fishPort;
             global.awaitMqttTime = 0;

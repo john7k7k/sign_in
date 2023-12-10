@@ -296,4 +296,4 @@ Content-Type: application/json
     "code": "494934"
 }
 ###
-GET https://pre.aifish.cc/home
+GET https://pre.aifish.cc/
