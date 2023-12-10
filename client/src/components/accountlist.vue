@@ -49,7 +49,7 @@
           </Modal>
         </template>
       <template #action="{row}">
-        <Button v-show="row.showbtn && row.level != '總管理員'" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button>
+        <Button v-show="false" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button>
         <Modal
           v-model="Assignmodal"
           title="分配此帳戶仿生魚UID權限"
@@ -582,6 +582,7 @@ import axios from 'axios';
 
     },
     }
+    /*分配功能待開發:<Button v-show="row.showbtn && row.level != '總管理員'" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button> */
   </script>
   
   <style>
