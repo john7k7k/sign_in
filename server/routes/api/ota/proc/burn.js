@@ -37,7 +37,7 @@ const awaitMqtt = (req ,res) => {
 }
 
 const execute = async (req,res,next) => {
-    if(!req.body.fishUID[0]) return res.status(403).send('請')
+    if(!req.body.fishesUID[0]) return res.status(403).send('請選擇一條魚')
     const { time, version } = (await prisma.bin.findMany({
         take: 1,
         orderBy: { time: 'desc' }
