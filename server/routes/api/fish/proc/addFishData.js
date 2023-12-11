@@ -30,5 +30,5 @@ module.exports = async (req, res) => {
         })) 
       })
       res.sendStatus(200);
-    }catch{res.sendStatus(500);}
+    }catch(e){console.log(e);res.status(5000).send(e);}
   }
