@@ -228,7 +228,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            /**/"/api/v1/fish/control/?section=999001001",{
+            /**/"/api/v1/fish/control/?section="+this.poolcode,{
               "fishControl":{
         "led":{
             [this.FishId]:

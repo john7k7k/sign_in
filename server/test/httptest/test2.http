@@ -13,7 +13,7 @@ GET http://localhost:3000/api/v1/account/verify/?username=123456
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/api/v1/account/login
+POST https://www.aifish.cc/api/v1/account/login
 Content-Type: application/json
 
 {
@@ -127,23 +127,20 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2Mzg0OCwiZXhwIjoxNjk4MTcyODQ4fQ.853qp8OqQSXpjBHKySn0wZel__vonQVb8GtTdItDL8E
 
 ###
-POST http://localhost:3000/api/v1/fish/control/?section=002001001
+POST https://www.aifish.cc/api/v1/fish/control/?section=999001001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE3MDEwNzAzNzAsImV4cCI6MTcwMTA3OTM3MH0.4yEQ0Z3kJb3_pKs33GlDzPjONoBuYBmU3JDL3DVWNQI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjMwNTQ0MSwiZXhwIjoxNzAyMzE0NDQxfQ.KIzxcmxWo1CNskKzTpQ104iKwoxEHbc6JyglV6zIMAU
 
 {
     "fishControl":{
         "led":{
-            "3001":"K0",
-            "3002":"K2"
+            "3013": "K2"
         },
         "motion":{
-            "id": "23",
-            "motion": 2
+            
         },
         "mode":{
-            "id": "23,24",
-            "mode": 0
+            
         }
     }
 }
