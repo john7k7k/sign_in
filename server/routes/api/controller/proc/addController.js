@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
             else message.joysticks[req.body.controllerID].enable[en] = false;
         }
         const topic = `Monitor/config/${req.body.location}/set`;
-        mqttConnection.publish(topic, message);
+        mqttConnection.publish(topic, JSON.stringify(message));
         res.sendStatus(200);
     }catch(e) {console.log(e);res.sendStatus(403);}
 }
