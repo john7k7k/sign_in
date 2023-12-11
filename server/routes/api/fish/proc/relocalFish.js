@@ -18,7 +18,7 @@ module.exports = async (req,res) => {
           where: {
             userID_fishUID_key: {
               userID,
-              fishUID,
+              fishUID: req.body.fishUID,
             }
           }
         })) continue;
