@@ -70,7 +70,7 @@ async function messageProcess(topic,mqtt_data){
                   }
                 }
               })
-              const now = Math.floor((new Date()).getTime()/1000)
+            const now = Math.floor((new Date()).getTime()/1000)
             const fishesData = fishes.map(({ fishData }) => fishData[0]);
             await prisma.fishData.createMany({
             data: Object.keys(mqtt_data).map(fishID => ({
@@ -79,7 +79,7 @@ async function messageProcess(topic,mqtt_data){
                     ...(mqtt_data[fishID]),
                     accumulationTime:
                     fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].accumulationTime + 
-                    (fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].active?( now - fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].time):0)
+                    ((fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].active === 1)?( now - fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].time):0)
                 }))
             })
         }
