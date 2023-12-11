@@ -16,8 +16,10 @@ module.exports = async (req,res) => {
       for (let { userID } of admins){
         if(await prisma.fishAble.findUnique({
           where: {
-            userID,
-            fishUID: req.body.fishUID
+            userID_fishUID_key: {
+              userID,
+              fishUID,
+            }
           }
         })) continue;
         await prisma.fishAble.create({
