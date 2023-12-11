@@ -3,7 +3,7 @@
   <div class="father0">
     <div class="son1">
       <v-avatar class="fishimage" size="450" rounded="0" style="">
-        <v-img  :src="getImageSource(FishId,FishPhoto)" :style="{ transform: imageScale(FishId,FishPhoto) }"></v-img>
+        <v-img  :src="fishurl[0]" :style="{ transform: imageScale(FishId,FishPhoto) }"></v-img>
       </v-avatar>
     </div>
     <div class="son2">
@@ -150,7 +150,9 @@ function TranActive(active) {
           "急速悠游",
           "沿牆",
         ],
-        chooseColor:""
+        chooseColor:"",
+        fishurl:[],
+        poolcode:localStorage.getItem("Poolcode")
         }
       },
       methods:{
@@ -226,7 +228,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            /**/"/api/v1/fish/control/?section=002001001",{
+            /**/"/api/v1/fish/control/?section="+this.poolcode,{
               "fishControl":{
         "led":{
             [this.FishId]:
@@ -352,9 +354,44 @@ function TranActive(active) {
               this.$Message.error('控制失敗');
           })
         },
-        
+        async fetchImageSource(id) {
+    try {
+        const res = await axios.get(
+            /**/"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
+                Authorization: `Bearer ${this.token}`
+            }}
+        );
+
+        console.log(res);
+
+        if (res.data !== undefined) {
+            this.fishurl.push(URL.createObjectURL(res.data));
+        }else{
+          id = parseInt(id.toString().slice(-4))
+        if (id === 3002 || id === 3009 || id === 3013) {
+            this.fishurl.push(require("../assets/新花色" + id + ".png"));
+        } else if (id <= 4000) {
+            this.fishurl.push(require("../assets/fishimage1.png"));
+        } else {
+            this.fishurl.push(require("../assets/海龜.png"));
+        }
+        }
+    } catch (err) {
+        id = parseInt(id.toString().slice(-4))
+        if (id === 3002 || id === 3009 || id === 3013) {
+            this.fishurl.push(require("../assets/新花色" + id + ".png"));
+        } else if (id <= 4000) {
+            this.fishurl.push(require("../assets/fishimage1.png"));
+        } else {
+            this.fishurl.push(require("../assets/海龜.png"));
+        }
+    }
+},
         
       
+    },
+    async created() {
+        await this.fetchImageSource(this.FishId);
     },
     }
   </script>

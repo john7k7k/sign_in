@@ -56,5 +56,4 @@ module.exports = async (req, res) => {
         mqttConnection.publish(topic, message);
         res.sendStatus(200);
     }catch(e) {console.log(e);res.sendStatus(403);}
-    
 }
