@@ -170,7 +170,7 @@
     </Modal>
   </template>
     <template #action="{ row }">
-    <Button v-if="showchangepool" type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
+    <Button  type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
     <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel">
       
         <RadioGroup v-model="row.section">
@@ -539,7 +539,6 @@ import loading from '@/components/loading.vue';
                 this.burnfinish = true;
                 this.burnbtn = true;
                 this.$Message.success('燒錄成功');
-                location.reload();
                 
               }
               else{

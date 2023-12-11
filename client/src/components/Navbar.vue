@@ -22,7 +22,7 @@
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext font-weight-bold">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
-      <v-btn  v-if="controllershow" value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
+      <v-btn   value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
@@ -103,7 +103,6 @@
           class="text-white"
         ></v-list-item>
         <v-list-item
-          v-show="controllershow"
           prepend-icon="mdi mdi-clipboard-text-search-outline"
           title="遙控器設定"
           value="controller"
