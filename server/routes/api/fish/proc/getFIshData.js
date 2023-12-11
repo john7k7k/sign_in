@@ -16,7 +16,10 @@ module.exports = async (req, res) => {
       let datas = {};
       fishes.forEach(fish => {
         if(!datas[fish.location]) datas[fish.location] = {};
-        fish.fishData.forEach(data => delete data.fishUID);
+        fish.fishData.forEach(data => {
+          delete data.fishUID;
+          data.accumulationTime += ((data.active)?(Math.floor((new Date()).getTime()/1000) - data.time):0)
+        });
         datas[fish.location][fish.fishUID] = fish.fishData[0];
         datas[fish.location][fish.fishUID].photoCode = fish.photoCode;
       })

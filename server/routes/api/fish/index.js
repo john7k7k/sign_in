@@ -16,6 +16,7 @@ const fishPhoto = require('./proc/fishPhoto');
 const relocalFish = require('./proc/relocalFish');
 const changePhoto = require('./proc/changePhoto.js');
 const reviseTime = require('./proc/reviseTime.js');
+const fishExplore = require('./proc/fishExplore.js');
 
 router.post(`/`, verifyTokenBy('Header')(30), addFish);
 
@@ -61,5 +62,7 @@ router.post('/photo/delete', verifyTokenBy('Header')(), fishPhoto.remove)
 router.post('/photo/change', verifyTokenBy('Header')(), changePhoto)
 
 router.post('/reviseTime', verifyTokenBy('Header')(), reviseTime)
+
+router.get('/explore', verifyTokenBy('Header')(), fishExplore)
 
 module.exports = router;
