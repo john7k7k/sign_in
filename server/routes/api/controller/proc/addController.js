@@ -54,6 +54,6 @@ module.exports = async (req, res) => {
         }
         const topic = `Monitor/config/${req.body.location}/set`;
         mqttConnection.publish(topic, message);
+        res.sendStatus(200);
     }catch(e) {console.log(e);res.sendStatus(403);}
-    res.sendStatus(200);
 }

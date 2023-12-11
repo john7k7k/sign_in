@@ -296,13 +296,13 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/v1/controller/add
+POST https://www.aifish.cc/api/v1/controller/add
 Content-Type: application/json
 
 {
-    "controllerID": "BFF19B62",
-    "fish": "0023004",
-    "location": "002001001"
+    "controllerID": "08149935",
+    "fish": "0023036",
+    "location": "999001001"
 }
 
 ###

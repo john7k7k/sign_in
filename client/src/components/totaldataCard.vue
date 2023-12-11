@@ -353,6 +353,7 @@ if(FishId1num !== 0){
 }
 
 if(level === 1){
+  localStorage.setItem("Poolcode", this.poolsCode[i]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",this.FishId[i]);
   localStorage.setItem("Bc", bcdatas);
@@ -380,6 +381,7 @@ if(level === 1){
     errResult = active0index.map(index => this.err[i][index]);
     photoResult = active0index.map(index => this.photoCode[i][index]);
   }
+  localStorage.setItem("Poolcode", this.poolsCode[i]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idResult)
   localStorage.setItem("Bc", bcResult);
@@ -393,6 +395,7 @@ if(level === 1){
   const errbcResult = needchargeindex.map(index => errdatas[index]);
   const activebcResult = needchargeindex.map(index => activedatas[index]);
   const photobcResult = needchargeindex.map(index => photodatas[index]);
+  localStorage.setItem("Poolcode", this.poolsCode[i]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idbcResult)
   localStorage.setItem("Bc", needcharge);
@@ -406,6 +409,7 @@ if(level === 1){
   const bcErrResult = needfixindex.map(index => bcdatas[index]);
   const activeErrResult = needfixindex.map(index => activedatas[index]);
   const photoErrResult = needfixindex.map(index => photodatas[index]);
+  localStorage.setItem("Poolcode", this.poolsCode[i]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idErrResult)
   localStorage.setItem("Bc", bcErrResult);
@@ -436,6 +440,7 @@ if(level === 1){
     errResult = fixindex.map(index => this.err[i][index]);
     photoResult = fixindex.map(index => this.poolsCode[i][index]);
   }
+  localStorage.setItem("Poolcode", this.poolsCode[i]);
   localStorage.setItem("Poolname", this.poolsName[i]);
   localStorage.setItem("Id",idResult)
   localStorage.setItem("Bc", bcResult);

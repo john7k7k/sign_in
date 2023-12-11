@@ -152,6 +152,7 @@ function TranActive(active) {
         ],
         chooseColor:"",
         fishurl:[],
+        poolcode:localStorage.getItem("Poolcode")
         }
       },
       methods:{
@@ -227,7 +228,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            /**/"/api/v1/fish/control/?section=002001001",{
+            /**/"/api/v1/fish/control/?section=999001001",{
               "fishControl":{
         "led":{
             [this.FishId]:
