@@ -191,7 +191,7 @@
           this.section = "北科";
         } 
         else {
-          this.section = "海科";
+          this.section = "海洋科技博物館";
         }
 
         

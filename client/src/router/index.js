@@ -86,7 +86,7 @@ const routes = [
     name: "notFound",
     component: () => import("../views/error404.vue"),
   },
-  {
+  /*{
     path: "/homepage",
     name: "homepage",
     component: () => import("../views/john/Homepage.vue"),
@@ -105,7 +105,7 @@ const routes = [
     path: "/contact",
     name: "contact",
     component: () => import("../views/john/Contact.vue"),
-  },
+  },*/
 
 ]
 

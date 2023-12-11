@@ -41,9 +41,8 @@
               @on-cancel="cancel">
               <RadioGroup v-model="row.selectsection">
                 <Radio label="全區"></Radio>
-                <Radio label="北科"></Radio>
-                <Radio label="海科"></Radio>
-                <Radio label="先鋒"></Radio>
+                <Radio label="台北科大"></Radio>
+                <Radio label="海洋科技博物館"></Radio>
                 <Radio v-for="poolname in poolsCode" :key="poolname" :label="processSectionName(poolname)"></Radio>
               </RadioGroup>
           </Modal>

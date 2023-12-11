@@ -518,7 +518,8 @@ if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
   this.poolsdata[0].EnPoolName = "Museum of Marine Science and Technology";
   this.poolsdata[1].EnPoolName = "Museum of Marine Science and Technology"
   this.poolsdata[2].EnPoolName = "Museum of Marine Science and Technology";
-  this.poolsdata[0].imageurl = require("../assets/主頁機構海科.png");
+  this.poolsdata[0].imageurl =  require("../assets/海科展示圓缸.jpg")
+  this.poolsdata[1].imageurl = require("../assets/海科戶外廣場.jpg");
 }
 
 },

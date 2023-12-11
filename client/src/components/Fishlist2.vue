@@ -15,7 +15,7 @@
         style="width: 200px;"
         bg-color="rgba(255, 255, 255, 0.15)"
       ></v-text-field>
-      <v-btn  @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
+      <v-btn v-if="showBurnBtn"  @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
       <v-dialog v-model="SearchBinmodal"  width="40%">
         <v-card>
           <v-card-text>
@@ -53,7 +53,7 @@
           @on-cancel="cancel">
           <RadioGroup v-model="BurnFishId">
             <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
-                <Radio v-for="id in FishId[i]" :key="id" :label="id"></Radio>
+                <Radio v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Radio>
               </div>
               </RadioGroup>
           </Modal>
@@ -92,7 +92,7 @@
 
       <v-row class="d-flex justify-space-around">
         <v-col>
-          <v-list-item title="ID">
+          <v-list-item title="UID">
             <v-text-field
               v-model="NewId"
               title="ID:"
@@ -124,12 +124,12 @@
             @click.prevent="handleCheckAllforclear">全部</Checkbox>
           <CheckboxGroup v-model="ClearFishId">
             <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
-                <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
+                <Checkbox v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Checkbox>
               </div>
         </CheckboxGroup>
         
           </Modal>
-          <v-dialog width="300px" v-model="dialogOpen" >
+          <v-dialog width="300px" v-model="dialogOpen" persistent>
       
         <template v-slot:default="{ isActive }">
           <v-card title="" >
@@ -138,7 +138,7 @@
             <span class="mdi mdi-close-outline text-red text-h1 mb-16 text-center mt-16" v-if="burnerroshow"></span>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">燒錄失敗</div>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-4">原因:{{ burnerroword }}</div>
-            <div v-if="burnerroshow" class="burnfinishcss text-center mb-4">詳細原因請到 <a href="https://frp.aifish.cc">這裡查看</a></div>
+            <div v-if="burnerroshow" class=" text-center  text-red mb-4">若一直無法燒錄 請聯繫北科大管理員</div>
             <loading v-if="burnning"></loading>
               <v-btn
                 text="確定"
@@ -160,7 +160,7 @@
               </Modal>
    </template>
    <template #active="{ row}">
-    <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
+    <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button v-if="showBurnBtn"  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
     <Modal v-model="row.ActiveModal" :title="'變更 ' + row.id + ' 狀態'" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
         <RadioGroup class="radio-group" v-model="row.selectActive">
           <Radio class="radio" label="游動中">游動中</Radio>
@@ -196,7 +196,7 @@
       </v-card>
     </v-dialog>
     
-    <Button  type="error" size="small" @click="confirm(row.id)">刪除</Button>
+    <Button v-if="showBurnBtn"  type="error" size="small" @click="confirm(row.id)">刪除</Button>
     </template>
   </Table>
   <Table  v-if="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="ml-7 mr-7"></Table>
@@ -509,17 +509,21 @@ import loading from '@/components/loading.vue';
                 }
             },
         burnBin () {
-          this.dialogOpen = true;
-          this.burnning = true;
-          this.burnfinish = false;
-          this.burnerroshow = false;
-          this.burnbtn = false;
+          
          /* axios.get('https://frp.aifish.cc/api/proxy/tcp').then(
             res => {
               console.log(res)
             }
           ).catch(err => console.log(err))*/
-        axios.post(
+        if(this.BurnFishId == ""){
+          this.$Message.error('請選擇要燒錄的ID');
+        }else{
+          this.dialogOpen = true;
+          this.burnning = true;
+          this.burnfinish = false;
+          this.burnerroshow = false;
+          this.burnbtn = false;
+          axios.post(
           "/api/v1/ota/burn",{
             "fishesUID": this.BurnFishId,
                         },{
@@ -535,6 +539,7 @@ import loading from '@/components/loading.vue';
                 this.burnfinish = true;
                 this.burnbtn = true;
                 this.$Message.success('燒錄成功');
+                location.reload();
                 
               }
               else{
@@ -552,12 +557,13 @@ import loading from '@/components/loading.vue';
               this.burnbtn = true;
               this.$Message.error('燒錄失敗');
           })
+        }
+        
 
         },
         clearfishhour(){
-          console.log(this.token);
           axios.post(
-            "/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
+            /**/"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
                   Authorization: `Bearer ${this.token}`
                 }
@@ -567,7 +573,7 @@ import loading from '@/components/loading.vue';
               console.log(res);
               if(res.status == 200){
                 this.$Message.success('歸零成功');
-                
+                location.reload();
               }
               else{
                 this.$Message.error('歸零失敗');
@@ -772,7 +778,8 @@ import loading from '@/components/loading.vue';
                       modal:false,
                       ActiveModal:false,
                       selectActive: this.proccesactive(this.active[i][index]),
-                      swimtime:this.secondToHour(this.swimtime[i][index])
+                      swimtime:this.secondToHour(this.swimtime[i][index]),
+                      section:this.poolsCode[i]
                   }));
                   datas.sort((a, b) => {
                       const order = { "游動中": 1, "待機中": 2, "維修中": 3 };
