@@ -19,8 +19,8 @@ const get = (req, res) => {
     console.log(dir)
     fs.readdir(dir , (err, photos) => {
         console.log(photos)
-        console.log('a');
-        res.sendFile(path.join(dir,photos[0]));
+        if(err) return res.sendStatus(403);
+        res.sendFile(path.join(dir,photos.at(-1)));
     })
 }
 
