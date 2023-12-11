@@ -16,7 +16,7 @@ module.exports = async (req,res) => {
       for (let { userID } of admins){
         if(await prisma.fishAble.findUnique({
           where: {
-            userID_fishUID_key: {
+            userID_fishUID: {
               userID,
               fishUID: req.body.fishUID,
             }
