@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
           ...(fishData[fishUID]),
           accumulationTime:
           fishesData[fishesData.findIndex(fish => fish.fishUID === fishUID)].accumulationTime + 
-          ((fishesData[fishesData.findIndex(fish => fish.fishUID === fishUID)].active === 1)?( now - fishesData[fishesData.findIndex(fish => fish.fishUID === '002' + fishID)].time):0)
+          ((fishesData[fishesData.findIndex(fish => fish.fishUID === fishUID)].active === 1)?( now - fishesData[fishesData.findIndex(fish => fish.fishUID === fishUID)].time):0)
         })) 
       })
       res.sendStatus(200);
