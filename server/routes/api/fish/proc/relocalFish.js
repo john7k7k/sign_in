@@ -14,12 +14,12 @@ module.exports = async (req,res) => {
 
       const admins = users.filter(user => user.level <= 30 && (req.body.newPool.match('^' + user.section)));
       for (let { userID } of admins){
-        if(!(await prisma.fishAble.findUnique({
+        if(await prisma.fishAble.findUnique({
           where: {
             userID,
             fishUID: req.body.fishUID
           }
-        }))) continue;
+        })) continue;
         await prisma.fishAble.create({
           data: {
             user: {
