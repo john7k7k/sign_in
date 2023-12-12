@@ -94,7 +94,7 @@
 
       <v-row class="d-flex justify-space-around">
         <v-col>
-          <v-list-item title="UID">
+          <v-list-item title="ID">
             <v-text-field
               v-model="NewId"
               title="ID:"
@@ -153,7 +153,8 @@
         </template>
       </v-dialog>
     <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
-    <Table v-show="Tableshow[i]" :border="true" :columns="isMobileScreen ? mobileColumns : columns" :data="filteredData(i)" class="ml-7 mr-7">
+    <Table v-show="Tableshow[i]" :border="true" :columns="section === '003' ? (isMobileScreen ? mobileColumnsfor003 : columnsfor003) : (isMobileScreen ? mobileColumns : columns)" 
+    :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
       <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel">
@@ -172,7 +173,7 @@
         </RadioGroup>           
     </Modal>
   </template>
-    <template #action="{ row }">
+    <template #action="{ row }" v-if="section !='003'">
     <Button v-if="showBurnBtn" type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
     <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel">
       
@@ -202,7 +203,8 @@
     <Button v-if="showBurnBtn"  type="error" size="small" @click="confirm(row.id)">刪除</Button>
     </template>
   </Table>
-  <Table  v-if="!Tableshow[i]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="ml-7 mr-7"></Table>
+  <Table  v-if="!Tableshow[i]"  :columns="section === '003' ? (isMobileScreen ? nodatamobileColumnsfor003 : nodatacolumnsfor003) : (isMobileScreen ? nodatamobileColumns : nodatacolumns)" 
+  :data="fallbackRow" class="ml-7 mr-7"></Table>
   </div>
   
   </template>
@@ -269,6 +271,26 @@ import loading from '@/components/loading.vue';
                         align: 'center'
                     }
                 ],
+                columnsfor003: [
+                    {
+                        title: 'ID',
+                        slot: 'id'
+                    },
+                    {
+                        title: '狀態',
+                        slot: 'active',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '版本',
+                        key: 'version'
+                    },
+                    {
+                        title: '資料更新時間',
+                        key: 'time'
+                    },
+                ],
             mobileColumns:[
                     {
                         title: 'ID',
@@ -303,6 +325,29 @@ import loading from '@/components/loading.vue';
                         fixed: 'right'
                     }
             ],
+            mobileColumnsfor003:[
+                    {
+                        title: 'ID',
+                        slot: 'id',
+                        width:100,
+                        fixed: 'left'
+                    },
+                    {
+                        title: '狀態',
+                        width:82,
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        width:70,
+                        key: 'version'
+                    },
+                    {
+                        title: '資料更新時間',
+                        key: 'time',
+                        fixed: 'right'
+                    },
+            ],
             nodatacolumns: [
                     {
                         title: 'UID',
@@ -329,6 +374,25 @@ import loading from '@/components/loading.vue';
                         key: 'time',
                         width: 150,
                     }
+                ],
+                nodatacolumnsfor003: [
+                    {
+                        title: 'UID',
+                        key: 'id'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        key: 'version'
+                    },
+                    {
+                        title: '資料更新時間',
+                        key: 'time',
+                        width: 150,
+                    },
                 ],
                 nodatamobileColumns:[
                     {
@@ -361,6 +425,27 @@ import loading from '@/components/loading.vue';
                         fixed: 'right'
                     }
             ],
+            nodatamobileColumnsfor003:[
+                    {
+                        title: 'UID',
+                        key: 'id',
+                        fixed: 'left'
+                    },
+                    {
+                        title: '狀態',
+                        key: 'active'
+                    },
+                    {
+                        title: '版本',
+                        width:80,
+                        key: 'version'
+                    },
+                    {
+                        title: '資料更新時間',
+                        key: 'time',
+                        fixed: 'right'
+                    },
+            ],
             data: [],
             searchId:'',
             dialog: false,
@@ -368,9 +453,9 @@ import loading from '@/components/loading.vue';
             fallbackRow: [
               {
                 id: " ",
-                version: '無資料',
+                version: '',
                 time: " ",
-                active: " ",
+                active: "無資料 ",
                 swimtime:""
               }
             ],
@@ -459,6 +544,7 @@ import loading from '@/components/loading.vue';
       },
   },
       methods: {
+        
         handleCheckAll () {
                 if (this.indeterminate) {
                     this.checkAll = false;
@@ -661,7 +747,7 @@ import loading from '@/components/loading.vue';
         newdatas () {
         axios.post(
           "/api/v1/fish/?section="+this.SelectSection,{
-            "fishUID": this.NewId,
+            "fishUID": "002"+this.NewId,
                         },{
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -674,6 +760,7 @@ import loading from '@/components/loading.vue';
                 this.dialognew = false
                 this.$Message.success('新增成功');
                 await this.loadnewdata();
+                location.reload();
                 
               }
               else{

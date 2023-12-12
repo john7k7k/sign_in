@@ -24,9 +24,12 @@
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
       <v-btn   value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
       <v-btn class="navbartext font-weight-bold text-white">
-        <a href="../assets/仿生機器魚智慧監控系統說明書.pdf" download="仿生機器魚智慧監控系統說明書.pdf" style="color: white; text-decoration: none;">
-          說明書下載
-        </a>
+          <a href="https://drive.google.com/file/d/15zbHetz-nIHPVnFZnp6S9ndMYlSICoM1/view?usp=drive_link" 
+            download="仿生機器魚智慧監控系統說明書.pdf" 
+            style="color: white; text-decoration: none;" 
+            target="_blank">
+            說明書下載
+          </a>
       </v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
@@ -247,13 +250,12 @@ methods: {
               localStorage.setItem("token","")
               window.location.replace(`/login`); 
             }
-            else
-            this.$Message.error('登出失敗');
+            else window.location.replace(`/login`);
         })
         .catch(err=> {
             console.log(err);
             this.loading = false;
-            this.$Message.error('登出失敗');
+            window.location.replace(`/login`);
         })
   },
   routehome() {

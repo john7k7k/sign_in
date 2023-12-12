@@ -7,13 +7,13 @@
       </v-avatar>
     </div>
     <div class="son2">
-      <div  class="text-white ml-3 idtext   font-weight-medium">ID</div>
+      <div  class="text-white ml-3 idtext   font-weight-medium mb-4" >ID</div>
   <div class="d-flex">
     <div class="text-white  font-weight-medium fishIDtext">{{ FishId }}</div>
   <div  class="activetext text-grey font-weight-medium ml-10 mt-16"><h3>[{{ selectactive }}]</h3></div>
   </div>
-  <div class="titelbctext text-grey font-weight-medium">電量</div>
-  <div class="d-flex" >
+  <div class="titelbctext text-grey font-weight-medium" v-if="usersection != '003'">電量</div>
+  <div class="d-flex" v-if="usersection != '003'">
     <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mr-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,1) }"></v-btn>
     <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,2) }"></v-btn>
     <v-btn icon="mdi-numeric-null" height="9" width="9" class="mt-3 mx-5 bcdisplay" :style="{ backgroundColor: getbccolor(FishBc,3) }"></v-btn>
@@ -128,6 +128,7 @@ function TranActive(active) {
         FishErr: localStorage.getItem("EditErr"),
         FishActive: localStorage.getItem("EditActive"),
         FishPhoto: localStorage.getItem("EditPhoto"),
+        usersection:localStorage.getItem('UserSection'),
         token:localStorage.getItem('token'),
         selectcolor:null,
         selectactive:localStorage.getItem("EditActive"),

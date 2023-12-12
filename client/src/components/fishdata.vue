@@ -89,8 +89,9 @@
       <div :class="['ml-7 font-weight-bold',geterrcolor(fish.active,fish.errornum,1)]"   :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
             <div>
               <v-card-title class="mr-6 text-white " :style="{  position: 'absolute', top: '5%', left: '80.5%', transform: 'translateX(-50%) scale(1.2)', letterSpacing: '3px' }">ID</v-card-title>
-              <div class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px', letterSpacing: '3px' }">{{fish.id}}</div>
-              <v-card-actions>
+              <div v-if="usersection == '003'" class="text-white" :style="{  position: 'absolute', top: '27%', left: '67%', transform: 'translateX(-44%) scale(0.9)',fontSize:'55px', letterSpacing: '4px' }">{{fish.id}}</div>
+              <div v-if="usersection != '003'" class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px', letterSpacing: '3px' }">{{fish.id}}</div>
+              <v-card-actions v-if="usersection != '003'">
                 <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '49%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
                 <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
                 <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '61%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,3)}">.</div>
@@ -186,6 +187,7 @@
         return {
           token:localStorage.getItem('token'),
           fishid:localStorage.getItem("Id"),
+          usersection:localStorage.getItem('UserSection'),
           FishId:[],
           bc: [],
           err: [],

@@ -42,7 +42,7 @@
         </template>
         <template #fish="{ row,index}">
           <p class="d-flex flex-no-wrap justify-space-between">{{ row.fish.substring(3) }}<Button   icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
-          <Modal v-model="row.ActiveModal" :title="'變更遙控器 ' + row.id + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+          <Modal v-model="row.ActiveModal" :title="'變更' + row.name + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
               <RadioGroup class="radio-group" v-model="controlfishid[index]">
                 <Radio v-for="id in NewFishId" :key="id" :label="id">{{ id.substring(3) }}</Radio>
               </RadioGroup>           
@@ -50,7 +50,7 @@
         </template>
         <template #location="{ row,index}">
           <p class="d-flex flex-no-wrap justify-space-between">{{ keyvalueMapping[2][row.location] }}<Button  v-if="sectionOrigin != '003'" icon="md-create" size="small" @click="row.LocationModal = true"></Button></p>
-          <Modal v-model="row.LocationModal" :title="'變更遙控器 ' + row.id + ' 區域'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+          <Modal v-model="row.LocationModal" :title="'變更' + row.name + ' 區域'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
               <RadioGroup class="radio-group" v-model="controllocation[index]">
                 <Radio v-for="i in poolsCode.length" :key="poolsCode[i-1]" :label="poolsCode[i-1]">{{ poolName[i-1] }}({{ poolsCode[i-1] }})</Radio>
               </RadioGroup>           
@@ -58,7 +58,7 @@
         </template>
         <template #action="{row,index}">
             <Button type="primary" size="small" style="margin-right: 5px" @click="row.changeactive = true">編輯</Button>
-            <Modal :styles="{top: '20px'}"  v-model="row.changeactive" :title="'控制器' + row.id + ' 功能管理'" ok-text="變更" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" >
+            <Modal :styles="{top: '20px'}"  v-model="row.changeactive" :title="row.name  + ' 功能管理'" ok-text="變更" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" >
               <Table border :columns="activecolumns" :data="acitvedata[index]">
                 <template #control="{ row }">
                     <strong>{{ row.control }}</strong>
