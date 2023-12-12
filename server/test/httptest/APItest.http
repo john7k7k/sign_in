@@ -13,7 +13,7 @@ GET http://localhost:3000/api/v1/account/verify/?username=123456
 Content-Type: application/json
 
 ###
-POST https://www.aifish.cc/api/v1/account/login
+POST http://localhost:3000/api/v1/account/login
 Content-Type: application/json
 
 {
@@ -323,6 +323,7 @@ Content-Type: application/json
     "enble": {
         "fish": "0023004",
         "location":"002001001",
+        "name": "con",
         "exist": 1,
         "forward": 1,
         "left": 1,
@@ -343,4 +344,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 ###
 GET http://localhost:3000/api/v1/fish/explore
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjMyMDc3MSwiZXhwIjoxNzAyMzI5NzcxfQ.e0J24L8fVEPaYBTjbb7Hsm7aALOjFc8amuX6_CSh0qk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k

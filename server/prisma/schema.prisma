@@ -85,6 +85,7 @@ model Instruction{
 
 model Controller{
   id String @id
+  name String @default("新遙控器")
   fish String
   location String
   exist Int

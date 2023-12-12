@@ -34,6 +34,7 @@ module.exports = async (req, res) => {
                 ids:[joysticks.fish.slice(3)],
                 priority: 30,
                 timeout: 180,
+                name: req.body.name,
                 enable:  Object.fromEntries(
                     Object.entries(joysticks).filter(([key]) => [ "forward",
                     "left",
