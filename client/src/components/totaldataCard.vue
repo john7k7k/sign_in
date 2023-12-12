@@ -47,7 +47,7 @@
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
     
-      <v-btn class="  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+      <v-btn class="  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refreshnew" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
@@ -212,6 +212,29 @@ async refresh() {
   await this.RefreshDatas(i);
 }
 this.isRefreshing = false;
+},
+async refreshnew() {
+  this.isRefreshing = true;
+  try {
+  const response = await axios.get(
+    /**/"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
+    {
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
+    }
+  );
+
+  console.log(response);
+  if (response.status === 200) {
+    this.isRefreshing = false;
+    this.$Message.success('更新資料成功');
+  }
+} catch (error) {
+  console.log(error);
+  this.$Message.error('更新資料失敗');
+}
+
 },
 RefreshDatas2() {
 for (var i = 0; i < this.poolsCode.length; i++) {

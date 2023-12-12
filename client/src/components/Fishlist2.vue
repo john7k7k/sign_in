@@ -51,11 +51,13 @@
           ok-text="燒錄"
           @on-ok="burnBin"
           @on-cancel="cancel">
+          
           <RadioGroup v-model="BurnFishId">
             <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
                 <Radio v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Radio>
               </div>
               </RadioGroup>
+              <div  class=" text-center  text-red mb-4 mt-4 text-h7">在開始燒錄前，請確保仿生魚的電量高於30%以確保順利進行。</div>
           </Modal>
       <v-dialog
     v-model="dialognewSection"
@@ -134,7 +136,8 @@
         <template v-slot:default="{ isActive }">
           <v-card title="" >
             <span class="mdi mdi-check-outline text-green text-h1 mb-16 text-center mt-16" v-if="burnfinish"></span>
-            <div v-if="burnfinish" class="burnfinishcss text-center mb-8">燒錄完成</div>
+            <div v-if="burnfinish" class="burnfinishcss text-center mb-4">燒錄完成</div>
+            <div v-if="burnfinish" class="burnfinishcss text-center mb-4">更新仿生魚版本後，請注意資料更新可能需要一段時間。</div>
             <span class="mdi mdi-close-outline text-red text-h1 mb-16 text-center mt-16" v-if="burnerroshow"></span>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-8">燒錄失敗</div>
             <div v-if="burnerroshow" class="burnfinishcss text-center mb-4">原因:{{ burnerroword }}</div>
@@ -170,7 +173,7 @@
     </Modal>
   </template>
     <template #action="{ row }">
-    <Button  type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
+    <Button v-if="showBurnBtn" type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
     <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel">
       
         <RadioGroup v-model="row.section">

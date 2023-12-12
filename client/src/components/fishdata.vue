@@ -69,7 +69,7 @@
       
       <div class="text-white d-flex align-center justify-space-between  mb-10">
         <div class="recordtext text-grey font-weight-black">紀錄時間:{{ time }}</div>
-        <v-btn  class="mr-8 mb-5 mt-2 text-white btn-bg"   icon="mdi mdi-update" size="45" @click="RefreshFishDatas" ></v-btn>
+        <v-btn v-if="false"  class="mr-8 mb-5 mt-2 text-white btn-bg"   icon="mdi mdi-update" size="45" @click="RefreshFishDatas" ></v-btn>
       </div>
     <div>
         <v-row  no-gutters  class="d-flex align-content-start  flex-wrap ">

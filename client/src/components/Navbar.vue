@@ -11,18 +11,19 @@
         alt="logo"
         width="70"
         class="logoimage"
-        v-if="!isMobileScreen"
+        v-if="false"
       ></v-img>
     
       </template>
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
-      <v-btn class="ml-5 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
+      <v-btn class="ml-16 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
       <v-btn  v-if="SelectSectionshow" class="navbartext font-weight-bold text-white" @click="loadnewdata">選擇機構</v-btn>
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext font-weight-bold">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
       <v-btn   value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
+      <v-btn   value="wordr" href="/controller" class="navbartext font-weight-bold">說明書下載</v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>

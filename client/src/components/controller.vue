@@ -28,8 +28,33 @@
       </v-row>
           </Modal>
     <Table border :columns="columns" :data="datas">
-        <template #ID="{ row }">
-            <strong>{{ row.id }}</strong>
+        <template #ID="{ row,index }">
+            
+            <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.name }}</strong><Button   icon="md-create" size="small" @click="row.NameModal = true"></Button></p>
+          <Modal v-model="row.NameModal" :title="'變更遙控器名稱 '" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+                 
+              <v-list-item title="新遙控器名稱">
+            <v-text-field
+              v-model="changecontrolname[index]"
+            ></v-text-field>
+          </v-list-item>        
+          </Modal>
+        </template>
+        <template #fish="{ row,index}">
+          <p class="d-flex flex-no-wrap justify-space-between">{{ row.fish.substring(3) }}<Button   icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
+          <Modal v-model="row.ActiveModal" :title="'變更遙控器 ' + row.id + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+              <RadioGroup class="radio-group" v-model="controlfishid[index]">
+                <Radio v-for="id in NewFishId" :key="id" :label="id">{{ id.substring(3) }}</Radio>
+              </RadioGroup>           
+          </Modal>
+        </template>
+        <template #location="{ row,index}">
+          <p class="d-flex flex-no-wrap justify-space-between">{{ row.location }}<Button   icon="md-create" size="small" @click="row.LocationModal = true"></Button></p>
+          <Modal v-model="row.LocationModal" :title="'變更遙控器 ' + row.id + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+              <RadioGroup class="radio-group" v-model="controllocation[index]">
+                <Radio v-for="i in poolsCode.length" :key="poolsCode[i-1]" :label="poolsCode[i-1]">{{ poolName[i-1] }}({{ poolsCode[i-1] }})</Radio>
+              </RadioGroup>           
+          </Modal>
         </template>
         <template #action="{row,index}">
             <Button type="primary" size="small" style="margin-right: 5px" @click="row.changeactive = true">編輯</Button>
@@ -80,11 +105,15 @@ import axios from 'axios';
                     },
                     {
                         title: '當前控制的魚',
-                        key: 'fish'
+                        slot: 'fish',
+                        width: 250,
+                        align: 'left'
                     },
                     {
                         title: '區域',
-                        key: 'location'
+                        slot: 'location',
+                        width: 250,
+                        align: 'left'
                     },
                     {
                         title: '編輯功能',
@@ -113,7 +142,9 @@ import axios from 'axios';
                 NewcontrollerID:"",
                 Newcontrollid:"",
                 datas:[],
-
+                controlfishid:[],
+                controllocation:[],
+                changecontrolname:[],
               
         }
       },
@@ -185,8 +216,14 @@ import axios from 'axios';
                     led: item.led,
                     auto: item.auto,
                     leave_auto: item.leave_auto,
+                    ActiveModal:false,
+                    LocationModal:false,
+                    name:item.name,
+                    NameModal:false,
                   });
-                
+                this.controlfishid.push(item.fish);
+                this.controllocation.push(item.location);
+                this.changecontrolname.push(item.name);
                 this.acitvedata.push([
                     {
                       control: '前進',
@@ -273,6 +310,7 @@ import axios from 'axios';
           /**/"/api/v1/controller/add",{
             "controllerID": this.NewcontrollerID,
             "fish": this.Newcontrollid,
+            
             "location": "002001001"
                         },{
                 headers: {
@@ -332,13 +370,19 @@ import axios from 'axios';
           })
       },
       changeControlActive(index){
+        if(this.changecontrolname[index] == ""){
+          this.$Message.error('遙控器名稱不可留白');
+          return;
+        }
         axios.post(
           /**/"/api/v1/controller/revise",
             {
               "controllerID": this.datas[index].id,
+              
               "enble": {
-                  "fish": this.datas[index].fish,
-                  "location":this.datas[index].location,
+                  "fish": this.controlfishid[index],
+                  "location":this.controllocation[index],
+                  "name":this.changecontrolname[index],
                   "exist": 1,
                   "forward": Number(this.acitvedata[index][0].selectActive),
                   "left": Number(this.acitvedata[index][1].selectActive),
@@ -360,7 +404,7 @@ import axios from 'axios';
           )
           .then(async res=> {
               console.log(res);
-              this.$Message.success('更改功能成功');
+              this.$Message.success('更改成功');
               setTimeout(function() {
                 location.reload();
               }, 1500);
@@ -368,7 +412,7 @@ import axios from 'axios';
           })
           .catch(err=> {
               console.log(err);
-              this.$Message.error('更改功能失敗');
+              this.$Message.error('更改失敗');
           })
       },
       handleRadioInput(row,index) {
