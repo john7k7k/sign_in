@@ -712,8 +712,8 @@ if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
 }
 .four{
   z-index: 9;
-  transform: scale(1.1);
-  margin-bottom: 4%;
+  transform: scale(1.4);
+  margin-top: 55%;
   height: 260px;
 }
 

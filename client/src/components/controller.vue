@@ -1,7 +1,7 @@
 <template>
     <v-container>
-    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4">遙控器清單</div>
-    <v-btn  @click="Newcontrollermodal = true" size="large" class=" mr-8 mt-6  mb-6" color="green-darken-3">新增遙控器</v-btn>
+    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4 mb-5">遙控器清單</div>
+    <v-btn v-if="sectionOrigin != '003'" @click="Newcontrollermodal = true" size="large" class=" mr-8 mt-6  mb-6" color="green-darken-3">新增遙控器</v-btn>
     <Modal
           v-model="Newcontrollermodal"
           title="新增遙控器"
@@ -49,8 +49,8 @@
           </Modal>
         </template>
         <template #location="{ row,index}">
-          <p class="d-flex flex-no-wrap justify-space-between">{{ row.location }}<Button   icon="md-create" size="small" @click="row.LocationModal = true"></Button></p>
-          <Modal v-model="row.LocationModal" :title="'變更遙控器 ' + row.id + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+          <p class="d-flex flex-no-wrap justify-space-between">{{ keyvalueMapping[2][row.location] }}<Button  v-if="sectionOrigin != '003'" icon="md-create" size="small" @click="row.LocationModal = true"></Button></p>
+          <Modal v-model="row.LocationModal" :title="'變更遙控器 ' + row.id + ' 區域'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
               <RadioGroup class="radio-group" v-model="controllocation[index]">
                 <Radio v-for="i in poolsCode.length" :key="poolsCode[i-1]" :label="poolsCode[i-1]">{{ poolName[i-1] }}({{ poolsCode[i-1] }})</Radio>
               </RadioGroup>           
@@ -72,7 +72,7 @@
             </Table>
                         
           </Modal>
-            <Button type="warning" size="small" @click="confirm(row.id)">刪除</Button>
+            <Button v-if="sectionOrigin != '003'" type="warning" size="small" @click="confirm(row.id)">刪除</Button>
         </template>
     </Table>
     
