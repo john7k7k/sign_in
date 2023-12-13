@@ -890,14 +890,24 @@ import loading from '@/components/loading.vue';
       return parseFloat(newhour);
     },
     fishformatDate(timestamp) {
-      const dateObj = new Date(timestamp * 1000); 
-      const year = dateObj.getFullYear();
-      const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
-      const day = String(dateObj.getDate()).padStart(2, '0'); 
-      const hours = dateObj.getHours().toString().padStart(2, '0'); 
-      const minutes = dateObj.getMinutes().toString().padStart(2, '0'); 
-      const seconds = dateObj.getSeconds().toString().padStart(2, '0'); 
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        const dateObj = new Date(timestamp * 1000);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const hours = dateObj.getHours().toString().padStart(2, '0');
+        const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+        const seconds = dateObj.getSeconds().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        const currentTime = new Date();
+        const timeDifference = currentTime - dateObj;
+        const hoursDifference = timeDifference / (1000 * 60 * 60);
+        if (hoursDifference >= 24) {
+            const daysDifference = Math.floor(hoursDifference / 24);
+            return `${formattedDate} (${daysDifference}天前)`;
+        } else {
+            const roundedHours = Math.floor(hoursDifference);
+            return `${formattedDate} (${roundedHours}小時前)`;
+        }
     },
     formatDate(timestamp) {
       const dateObj = new Date(timestamp * 1000); 

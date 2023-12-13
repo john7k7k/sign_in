@@ -27,7 +27,7 @@
         </v-col>
       </v-row>
           </Modal>
-    <Table border :columns="columns" :data="datas">
+    <Table v-if="!nodatatableshow" border :columns="columns" :data="datas">
         <template #ID="{ row,index }">
             
             <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.name }}</strong><Button   icon="md-create" size="small" @click="row.NameModal = true"></Button></p>
@@ -75,7 +75,7 @@
             <Button v-if="sectionOrigin != '003'" type="warning" size="small" @click="confirm(row.id)">刪除</Button>
         </template>
     </Table>
-    
+    <Table  v-if="nodatatableshow"  :columns="nodatacolumns" :data="fallbackRow" border ></Table>
     </v-container>
     
     
@@ -134,6 +134,30 @@ import axios from 'axios';
                         align: 'center'
                     }
                 ],
+                nodatacolumns: [
+                {
+                        title: '遙控器編號',
+                        key: 'ID'
+                    },
+                    {
+                        title: '當前控制的魚',
+                        key: 'fish',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '區域',
+                        key: 'location',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '編輯功能',
+                        key: 'action',
+                        width: 250,
+                        align: 'center'
+                    }
+                ],
                 acitvedata:[],
                 Newcontrollermodal:false,
                 keyvalueMapping :[],
@@ -145,6 +169,29 @@ import axios from 'axios';
                 controlfishid:[],
                 controllocation:[],
                 changecontrolname:[],
+                nodatatableshow:true,
+                fallbackRow: [
+              {
+                id: "",
+                fish: "無資料",
+                location: "",
+                exist: "",
+                forward: "",
+                left: "",
+                right: "",
+                floating: "",
+                diving: "",
+                middle: "",
+                switch_mode: "",
+                led: "",
+                auto: "",
+                leave_auto: "",
+                ActiveModal:"",
+                LocationModal:"",
+                name:"",
+                NameModal:"",
+              }
+            ],
               
         }
       },
@@ -163,10 +210,15 @@ import axios from 'axios';
                 })
     this.accountdata();
   },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.updateScreenSize);
-  },
+  mounted() {
+        window.addEventListener('resize', this.updateScreenSize);
+        this.updateScreenSize();
+      },
+      beforeUnmount() {
+        window.removeEventListener('resize', this.updateScreenSize);
+      },
   methods: {
+    
     RefreshDatas2() {
           for (var i = 0; i < this.poolsCode.length; i++) {
             const fish0 = "fish0" + this.poolsCode[i];
@@ -276,7 +328,7 @@ import axios from 'axios';
                       selectActive:item.leave_auto.toString(),
                     },
                 ])
-                
+                this.nodatatableshow = false;
               });
               })
 

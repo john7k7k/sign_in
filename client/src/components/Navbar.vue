@@ -248,13 +248,18 @@ methods: {
             
             if(res.status == 200){
               localStorage.setItem("token","")
+
               window.location.replace(`/login`); 
             }
-            else window.location.replace(`/login`);
+            else {
+            localStorage.setItem("token","")
+            window.location.replace(`/login`);
+            }
         })
         .catch(err=> {
             console.log(err);
             this.loading = false;
+            localStorage.setItem("token","")
             window.location.replace(`/login`);
         })
   },

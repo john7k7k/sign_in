@@ -228,11 +228,10 @@ async refreshnew() {
   console.log(response);
   if (response.status === 200) {
     this.isRefreshing = false;
-    this.$Message.success('更新資料成功');
+    await this.refresh();
   }
 } catch (error) {
   console.log(error);
-  this.$Message.error('更新資料失敗');
 }
 
 },
