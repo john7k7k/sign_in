@@ -88,7 +88,7 @@
   </div >
   <div class="d-flex">
     <v-btn 
-            class=" ml-1 cancelcolorfather mt-5"
+            class=" ml-1 cancelcolorbuttom2 mt-5 text-white"
             variant="outlined"
             width="130"
             @click="editColor(0)" >顏色設定完成</v-btn>
@@ -463,6 +463,14 @@ function TranActive(active) {
 .cancelcolorbuttom{
   border-radius: 100px;
   border-color: aqua;
+    background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.1);
+}
+.cancelcolorbuttom2{
+  border-radius: 100px;
+  border-color: rgb(0, 255, 68);
     background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
     background-position: center;
     background-size: 100% 100%;
