@@ -88,10 +88,10 @@
   </div >
   <div class="d-flex">
     <v-btn 
-            class=" ml-1 setcolorbuttom mt-5"
+            class=" ml-1 cancelcolorfather mt-5"
             variant="outlined"
             width="130"
-            @click="editColor(0)" >  </v-btn>
+            @click="editColor(0)" >顏色設定完成</v-btn>
       <v-btn 
             class=" ml-8 cancelcolorbuttom mt-5 text-white"
             variant="outlined"
