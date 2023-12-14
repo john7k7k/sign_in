@@ -24,7 +24,7 @@
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
       <v-btn   value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
       <v-btn class="navbartext font-weight-bold text-white">
-          <a href="https://drive.google.com/file/d/15zbHetz-nIHPVnFZnp6S9ndMYlSICoM1/view?usp=drive_link" 
+          <a href="https://drive.google.com/file/d/16AKFrf10owAX6DQfb5hW09uFfF4uR9VL/view?usp=drive_link" 
             download="仿生機器魚智慧監控系統說明書.pdf" 
             style="color: white; text-decoration: none;" 
             target="_blank">
