@@ -49,6 +49,61 @@ npm run serve  啟動頁面
 </style>
 
 ```
+### 前端檔案架構
+```
+components
+│      404.vue
+│      accountlist.vue
+│      controller.vue
+│      Editfishdata2.vue
+│      EditUser.vue
+│      fishdata.vue
+│      Fishlist2.vue
+│      loading.vue
+│      logininput.vue
+│      loginnavbar.vue
+│      Navbar.vue
+│      selectInstruction.vue
+│      signinnavbar.vue
+│      signup.vue
+│      SignupSection.vue
+│      struct.txt
+│      totaldataCard.vue
+│      
+├─plugins
+│      vuetify.js
+│      webfontloader.js
+│      
+├─router
+│      index.js
+│      
+├─store
+│      actions.js
+│      getter.js
+│      index.js
+│      mutations.js
+│      mutations_type.js
+│      
+├─swiper
+│      Swiper.js
+│      
+└─views
+        AccountList.vue
+        Controllerview.vue
+        Editdatas.vue
+        error404.vue
+        FishDatalist.vue
+        FishdataView.vue
+        HomeView.vue
+        Login.vue
+        Nav.vue
+        SelectInstruction.vue
+        SignUp.vue
+        SignupSectionview.vue
+        UserData.vue
+
+
+```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
