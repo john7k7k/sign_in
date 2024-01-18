@@ -51,6 +51,7 @@ npm run serve  啟動頁面
 ```
 ### 前端檔案架構
 ```
+[ 404.vue](..\src\components\404.vue)
 components
 │      404.vue
 │      accountlist.vue
