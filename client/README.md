@@ -51,9 +51,9 @@ npm run serve  啟動頁面
 ```
 ### 前端檔案架構
 ```
-[ 404.vue](..\src\components\404.vue)
+[404.vue](components/404.vue) .................................................................................404畫面物件內容
 components
-│      404.vue
+│      404.vue -->404畫面物件內容
 │      accountlist.vue
 │      controller.vue
 │      Editfishdata2.vue
