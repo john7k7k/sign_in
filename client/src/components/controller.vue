@@ -1,7 +1,7 @@
 <template>
     <v-container>
-    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4">遙控器清單</div>
-    <v-btn  @click="Newcontrollermodal = true" size="large" class=" mr-8 mt-6  mb-6" color="green-darken-3">新增遙控器</v-btn>
+    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4 mb-5">遙控器清單</div>
+    <v-btn v-if="sectionOrigin != '003'" @click="Newcontrollermodal = true" size="large" class=" mr-8 mt-6  mb-6" color="green-darken-3">新增遙控器</v-btn>
     <Modal
           v-model="Newcontrollermodal"
           title="新增遙控器"
@@ -27,13 +27,38 @@
         </v-col>
       </v-row>
           </Modal>
-    <Table border :columns="columns" :data="datas">
-        <template #ID="{ row }">
-            <strong>{{ row.id }}</strong>
+    <Table v-if="!nodatatableshow" border :columns="columns" :data="datas">
+        <template #ID="{ row,index }">
+            
+            <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.name }}</strong><Button   icon="md-create" size="small" @click="row.NameModal = true"></Button></p>
+          <Modal v-model="row.NameModal" :title="'變更遙控器名稱 '" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+                 
+              <v-list-item title="新遙控器名稱">
+            <v-text-field
+              v-model="changecontrolname[index]"
+            ></v-text-field>
+          </v-list-item>        
+          </Modal>
+        </template>
+        <template #fish="{ row,index}">
+          <p class="d-flex flex-no-wrap justify-space-between">{{ row.fish.substring(3) }}<Button   icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
+          <Modal v-model="row.ActiveModal" :title="'變更' + row.name + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+              <RadioGroup class="radio-group" v-model="controlfishid[index]">
+                <Radio v-for="id in NewFishId" :key="id" :label="id">{{ id.substring(3) }}</Radio>
+              </RadioGroup>           
+          </Modal>
+        </template>
+        <template #location="{ row,index}">
+          <p class="d-flex flex-no-wrap justify-space-between">{{ keyvalueMapping[2][row.location] }}<Button  v-if="sectionOrigin != '003'" icon="md-create" size="small" @click="row.LocationModal = true"></Button></p>
+          <Modal v-model="row.LocationModal" :title="'變更' + row.name + ' 區域'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
+              <RadioGroup class="radio-group" v-model="controllocation[index]">
+                <Radio v-for="i in poolsCode.length" :key="poolsCode[i-1]" :label="poolsCode[i-1]">{{ poolName[i-1] }}({{ poolsCode[i-1] }})</Radio>
+              </RadioGroup>           
+          </Modal>
         </template>
         <template #action="{row,index}">
             <Button type="primary" size="small" style="margin-right: 5px" @click="row.changeactive = true">編輯</Button>
-            <Modal :styles="{top: '20px'}"  v-model="row.changeactive" :title="'控制器' + row.id + ' 功能管理'" ok-text="變更" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" >
+            <Modal :styles="{top: '20px'}"  v-model="row.changeactive" :title="row.name  + ' 功能管理'" ok-text="變更" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" >
               <Table border :columns="activecolumns" :data="acitvedata[index]">
                 <template #control="{ row }">
                     <strong>{{ row.control }}</strong>
@@ -47,10 +72,10 @@
             </Table>
                         
           </Modal>
-            <Button type="warning" size="small" @click="confirm(row.id)">刪除</Button>
+            <Button v-if="sectionOrigin != '003'" type="warning" size="small" @click="confirm(row.id)">刪除</Button>
         </template>
     </Table>
-    
+    <Table  v-if="nodatatableshow"  :columns="nodatacolumns" :data="fallbackRow" border ></Table>
     </v-container>
     
     
@@ -80,11 +105,15 @@ import axios from 'axios';
                     },
                     {
                         title: '當前控制的魚',
-                        key: 'fish'
+                        slot: 'fish',
+                        width: 250,
+                        align: 'left'
                     },
                     {
                         title: '區域',
-                        key: 'location'
+                        slot: 'location',
+                        width: 250,
+                        align: 'left'
                     },
                     {
                         title: '編輯功能',
@@ -105,6 +134,30 @@ import axios from 'axios';
                         align: 'center'
                     }
                 ],
+                nodatacolumns: [
+                {
+                        title: '遙控器編號',
+                        key: 'ID'
+                    },
+                    {
+                        title: '當前控制的魚',
+                        key: 'fish',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '區域',
+                        key: 'location',
+                        width: 250,
+                        align: 'left'
+                    },
+                    {
+                        title: '編輯功能',
+                        key: 'action',
+                        width: 250,
+                        align: 'center'
+                    }
+                ],
                 acitvedata:[],
                 Newcontrollermodal:false,
                 keyvalueMapping :[],
@@ -113,7 +166,32 @@ import axios from 'axios';
                 NewcontrollerID:"",
                 Newcontrollid:"",
                 datas:[],
-
+                controlfishid:[],
+                controllocation:[],
+                changecontrolname:[],
+                nodatatableshow:true,
+                fallbackRow: [
+              {
+                id: "",
+                fish: "無資料",
+                location: "",
+                exist: "",
+                forward: "",
+                left: "",
+                right: "",
+                floating: "",
+                diving: "",
+                middle: "",
+                switch_mode: "",
+                led: "",
+                auto: "",
+                leave_auto: "",
+                ActiveModal:"",
+                LocationModal:"",
+                name:"",
+                NameModal:"",
+              }
+            ],
               
         }
       },
@@ -132,10 +210,15 @@ import axios from 'axios';
                 })
     this.accountdata();
   },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.updateScreenSize);
-  },
+  mounted() {
+        window.addEventListener('resize', this.updateScreenSize);
+        this.updateScreenSize();
+      },
+      beforeUnmount() {
+        window.removeEventListener('resize', this.updateScreenSize);
+      },
   methods: {
+    
     RefreshDatas2() {
           for (var i = 0; i < this.poolsCode.length; i++) {
             const fish0 = "fish0" + this.poolsCode[i];
@@ -185,8 +268,14 @@ import axios from 'axios';
                     led: item.led,
                     auto: item.auto,
                     leave_auto: item.leave_auto,
+                    ActiveModal:false,
+                    LocationModal:false,
+                    name:item.name,
+                    NameModal:false,
                   });
-                
+                this.controlfishid.push(item.fish);
+                this.controllocation.push(item.location);
+                this.changecontrolname.push(item.name);
                 this.acitvedata.push([
                     {
                       control: '前進',
@@ -239,7 +328,7 @@ import axios from 'axios';
                       selectActive:item.leave_auto.toString(),
                     },
                 ])
-                
+                this.nodatatableshow = false;
               });
               })
 
@@ -273,6 +362,7 @@ import axios from 'axios';
           /**/"/api/v1/controller/add",{
             "controllerID": this.NewcontrollerID,
             "fish": this.Newcontrollid,
+            
             "location": "002001001"
                         },{
                 headers: {
@@ -332,13 +422,19 @@ import axios from 'axios';
           })
       },
       changeControlActive(index){
+        if(this.changecontrolname[index] == ""){
+          this.$Message.error('遙控器名稱不可留白');
+          return;
+        }
         axios.post(
           /**/"/api/v1/controller/revise",
             {
               "controllerID": this.datas[index].id,
+              
               "enble": {
-                  "fish": this.datas[index].fish,
-                  "location":this.datas[index].location,
+                  "fish": this.controlfishid[index],
+                  "location":this.controllocation[index],
+                  "name":this.changecontrolname[index],
                   "exist": 1,
                   "forward": Number(this.acitvedata[index][0].selectActive),
                   "left": Number(this.acitvedata[index][1].selectActive),
@@ -360,7 +456,7 @@ import axios from 'axios';
           )
           .then(async res=> {
               console.log(res);
-              this.$Message.success('更改功能成功');
+              this.$Message.success('更改成功');
               setTimeout(function() {
                 location.reload();
               }, 1500);
@@ -368,7 +464,7 @@ import axios from 'axios';
           })
           .catch(err=> {
               console.log(err);
-              this.$Message.error('更改功能失敗');
+              this.$Message.error('更改失敗');
           })
       },
       handleRadioInput(row,index) {

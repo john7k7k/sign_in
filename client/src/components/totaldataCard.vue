@@ -47,7 +47,7 @@
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
     
-      <v-btn class="  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refresh" :disabled="isRefreshing"></v-btn>
+      <v-btn class="  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refreshnew" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
@@ -212,6 +212,28 @@ async refresh() {
   await this.RefreshDatas(i);
 }
 this.isRefreshing = false;
+},
+async refreshnew() {
+  this.isRefreshing = true;
+  try {
+  const response = await axios.get(
+    /**/"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
+    {
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
+    }
+  );
+
+  console.log(response);
+  if (response.status === 200) {
+    this.isRefreshing = false;
+    await this.refresh();
+  }
+} catch (error) {
+  console.log(error);
+}
+
 },
 RefreshDatas2() {
 for (var i = 0; i < this.poolsCode.length; i++) {
@@ -689,8 +711,8 @@ if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
 }
 .four{
   z-index: 9;
-  transform: scale(1.1);
-  margin-bottom: 4%;
+  transform: scale(1.4);
+  margin-top: 55%;
   height: 260px;
 }
 

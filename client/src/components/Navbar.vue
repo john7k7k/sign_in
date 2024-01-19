@@ -11,18 +11,26 @@
         alt="logo"
         width="70"
         class="logoimage"
-        v-if="!isMobileScreen"
+        v-if="false"
       ></v-img>
     
       </template>
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
-      <v-btn class="ml-5 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
+      <v-btn class="ml-16 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
       <v-btn  v-if="SelectSectionshow" class="navbartext font-weight-bold text-white" @click="loadnewdata">選擇機構</v-btn>
       <v-btn  value="data" href="/fish/list" v-if="fishlistshow" class="navbartext font-weight-bold">仿生魚清單</v-btn>
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
       <v-btn   value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
+      <v-btn class="navbartext font-weight-bold text-white">
+          <a href="https://drive.google.com/file/d/16AKFrf10owAX6DQfb5hW09uFfF4uR9VL/view?usp=drive_link" 
+            download="仿生機器魚智慧監控系統說明書.pdf" 
+            style="color: white; text-decoration: none;" 
+            target="_blank">
+            說明書下載
+          </a>
+      </v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
@@ -240,15 +248,19 @@ methods: {
             
             if(res.status == 200){
               localStorage.setItem("token","")
+
               window.location.replace(`/login`); 
             }
-            else
-            this.$Message.error('登出失敗');
+            else {
+            localStorage.setItem("token","")
+            window.location.replace(`/login`);
+            }
         })
         .catch(err=> {
             console.log(err);
             this.loading = false;
-            this.$Message.error('登出失敗');
+            localStorage.setItem("token","")
+            window.location.replace(`/login`);
         })
   },
   routehome() {
