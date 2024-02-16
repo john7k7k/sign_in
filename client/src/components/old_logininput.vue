@@ -1,158 +1,68 @@
 <template>
-      <v-card class=" pa-3 cardbg"     >
+    <v-container>
+      <v-card class=" pa-3 cardbg" max-width="400"    >
         <v-form v-model="form" @submit.prevent="onSubmit" >
           <v-btn v-if="signupshow" variant="text" route to = "/sign/up" class="mt-2   d-flex justify-end " color="indigo-accent-4"><div class="sign-up-text">註冊</div></v-btn>
-            
-          <div class="titleword mb-5 ml-2 ">使用者登入</div>
-          <div class=" ml-2 mb-1 text-blue-grey-lighten-5 textdistance">使用者ID</div>  
-          <v-text-field density="compact" v-model="account" :readonly="loading" :rules="[required]"
-            class="mb-3 mr-2 ml-2 textfield " placeholder="" bg-color="rgba(255, 255, 255, 0.15)"></v-text-field>
-          <div class="text-blue-grey-lighten-5   d-flex align-center justify-space-between ml-2 mb-1 textdistance">密碼
-            <a class="text-caption text-decoration-underline text-blue ml-2 textdistance"
-            href="#" rel="noopener noreferrer" target="_blank" v-if="false">忘記密碼?</a
-          ></div>
+          
+        <div class="titleword mb-5 ml-2 text-white">使用者登入</div>
+        <div class=" ml-2 mb-1 text-blue-grey-lighten-5 textdistance">使用者ID</div>  
+        <v-text-field
+          density="compact"
+          v-model="account"
+          :readonly="loading"
+          :rules="[required]"
+          class="mb-3 mr-2 ml-2 textfield text-white"
+          placeholder=""
+          bg-color="rgba(255, 255, 255, 0.15)"
+        ></v-text-field>
+          <div
+        class="text-blue-grey-lighten-5   d-flex align-center justify-space-between ml-2 mb-1 textdistance"
+      >密碼
+        <a
+          class="text-caption text-decoration-underline text-blue ml-2 textdistance"
+          href="#"
+          rel="noopener noreferrer"
+          target="_blank"
+          v-if="false"
+        >
+          忘記密碼?</a
+        >
+      </div>
           <v-text-field
-              dark
-              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-              :type="visible ? 'text' : 'password'"
-              v-model="password"
-              :readonly="loading"
-              :rules="[required]"
-              density="compact"
-              placeholder=""
-              class="ml-2 mr-2 inputText-field "
-              @click:append-inner="visible = !visible"
-              bg-color="rgba(255, 255, 255, 0.15)"
+            dark
+            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="visible ? 'text' : 'password'"
+            v-model="password"
+            :readonly="loading"
+            :rules="[required]"
+            density="compact"
+            placeholder=""
+            class="ml-2 mr-2 text-white"
+            @click:append-inner="visible = !visible"
+            bg-color="rgba(255, 255, 255, 0.15)"
           ></v-text-field>
           <br>
+  
+          
           <v-snackbar :timeout="1000"  rounded="pill">
-            <template v-slot:activator="{ props }">
-              <v-btn :loading="loading" type="submit" variant="elevated" class="mb-12 loginbuttom " v-bind="props" width="150"></v-btn>
-            </template>
-          </v-snackbar>
-        </v-form>
+      <template v-slot:activator="{ props }">
+        <v-btn
+            :loading="loading"
+            type="submit"
+            variant="elevated"
+            class="mb-12 loginbuttom"
+            v-bind="props"
+            width="150"
+          > </v-btn>
+      </template>
+    </v-snackbar>
+          </v-form>
+      
+        
       </v-card>
+    
+    </v-container>
   </template>
-
-<style scoped>
-.cardbg {
-border-radius: 30px;
-background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-background-color: rgba(255, 255, 255, 0.05); 
-backdrop-filter: blur(1px);
-border: 3px solid rgba(255, 255, 255, 0.2);
-margin: auto;
-}
-.textfield{
-color: white;
-border-radius: 360px;
-}
-.titleword{
-color: white;
-font-size: 20px;
-letter-spacing: 6px;
-}
-.sign-up-text{
-margin-left: 50%;
-font-size: large;
-letter-spacing: 6px;
-}
-.textdistance{
-letter-spacing: 6px;
-}
-.inputText-field{
-  color: white;
-}
-
-.loginbuttom{
-border-radius: 80px;
-background-image: url('../assets/登入鈕改.png');
-background-position: center;
-background-size: 101% 101%;
-display: flex;
-margin: auto;
-transform: scale(1.1);
-}
-@media screen and  (min-width: 1681px){
-  .cardbg {
-border-radius: 30px;
-background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-background-color: rgba(255, 255, 255, 0.05); 
-backdrop-filter: blur(1px);
-border: 3px solid rgba(255, 255, 255, 0.2);
-margin: auto;
-max-width: 600px;
-}
-.titleword{
-font-size: 30px;
-}
-.textdistance{
-  font-size: 20px;
-  letter-spacing: 6px;
-}
-}
-@media screen and  (min-width: 1025px) and (max-width: 1680px){
-  .cardbg {
-border-radius: 30px;
-background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-background-color: rgba(255, 255, 255, 0.05); 
-backdrop-filter: blur(1px);
-border: 3px solid rgba(255, 255, 255, 0.2);
-margin: auto;
-width: 400px;
-max-width: 500px;
-}
-
-}
-@media screen and  (min-width: 601px) and (max-width: 1024px){
-  .cardbg {
-border-radius: 30px;
-background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-background-color: rgba(255, 255, 255, 0.05); 
-backdrop-filter: blur(1px);
-border: 3px solid rgba(255, 255, 255, 0.2);
-margin: auto;
-max-width: 500px;
-}
-.titleword{
-font-size: 30px;
-}
-.textdistance{
-  font-size: 20px;
-  letter-spacing: 6px;
-}
-}
-@media screen and (max-width: 600px){
-  .cardbg {
-border-radius: 30px;
-background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-background-color: rgba(255, 255, 255, 0.05); 
-backdrop-filter: blur(1px);
-border: 3px solid rgba(255, 255, 255, 0.2);
-margin: auto;
-max-width: 500px;
-}
-}
-@media screen and (max-width: 480px) {
-  .cardbg {
-border-radius: 30px;
-background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-background-color: rgba(255, 255, 255, 0.05); 
-backdrop-filter: blur(1px);
-border: 3px solid rgba(255, 255, 255, 0.2);
-margin: auto;
-max-width: 300px;
-}
-.titleword{
-font-size: 20px;
-}
-.textdistance{
-  font-size: 15px;
-  letter-spacing: 6px;
-}
-}
-
-</style>
   
   <script>
   import axios from 'axios';
@@ -269,4 +179,44 @@ font-size: 20px;
     }
   </script>
 
-  
+  <style scoped>
+  .cardbg {
+  border-radius: 30px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.textfield{
+  border-radius: 360px;
+}
+.titleword{
+  font-size: 20px;
+  letter-spacing: 6px;
+}
+.sign-up-text{
+  margin-left: 50%;
+  font-size: large;
+  letter-spacing: 6px;
+}
+.textdistance{
+  letter-spacing: 6px;
+}
+
+.loginbuttom{
+  border-radius: 80px;
+  background-image: url('../assets/登入鈕改.png');
+  background-position: center;
+  background-size: 101% 101%;
+  left: 30%;
+  transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+</style>

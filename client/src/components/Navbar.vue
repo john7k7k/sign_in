@@ -1,20 +1,8 @@
 <template>
-  <div>
-  <v-toolbar
-  :key="desktopKey"
-    class="  pb-2 navbar"
-    dark
-  >
+  <v-toolbar :key="desktopKey" class=" navbar" dark>
   <template v-slot:prepend> 
-      <v-img
-        src="../assets/logo北科.png"
-        alt="logo"
-        width="70"
-        class="logoimage"
-        v-if="false"
-      ></v-img>
-    
-      </template>
+      <v-img src="../assets/logo北科.png" alt="logo" width="70" class="logoimage" v-if="false"></v-img>
+  </template>
   <v-app-bar-nav-icon v-if="isMobileScreen"  class="ml-4" @click.stop="drawer = !drawer" color="white"></v-app-bar-nav-icon>
     <div v-if="!isMobileScreen" >
       <v-btn class="ml-16 navbartext font-weight-bold" value="home1"  href="/home">主頁</v-btn>
@@ -34,12 +22,10 @@
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
-    <div v-if="this.section == '001' && Number(this.level) <= 10"  class=" text-blue navbartext font-weight-bold mt-2 mr-2">目前選擇機構:{{ SectionName }}</div>
-    <div  class=" text-white navbartext font-weight-bold mt-2">{{ username }}</div>
-    <div>
-      <v-btn  value="about" href="/user" ><v-avatar class=" mr-4 " :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn>
-      
-      
+    <v-btn   v-if="this.section == '001' && Number(this.level) <= 10" class="text-blue navbartext font-weight-bold">目前選擇機構:{{ SectionName }}</v-btn>
+    <div class="box">
+      <div class="item1 mt-6"><v-btn  value="about" href="/user" ><v-avatar  :image="imageUrl" :size="isMobileScreen ? 41:45"></v-avatar></v-btn></div>
+      <div  class="item2  font-weight-bold">{{ username }}</div>
     </div>
     
     <v-btn v-show="false" icon>
@@ -47,8 +33,6 @@
     </v-btn>
     
   </v-toolbar>
-  
-</div>
 
 
   <v-navigation-drawer v-model="drawer" temporary class="drawerbg" width="300">
@@ -126,9 +110,92 @@
       ></v-list-item>
     </v-list>
   </v-navigation-drawer>
-  
-
 </template>
+
+<style scoped>
+.logoimage{
+  transform: scale(2.3);
+}
+.drawerbg{
+  background-color:  rgba(0, 0, 0, 0.8);
+}
+.navbar{
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 999; 
+  padding-bottom: 3%;
+  position: fixed;
+}
+.navbartext{
+  color: white;
+  font-size: 17px;
+}
+.box{
+  width: 8%;
+  display: flex;
+  flex-direction: column;
+}
+.item1{
+  margin: auto;
+  padding-top: 10%;
+}
+.item2{
+  color: white;
+  font-size: 17px;
+  margin: auto;
+  padding-top: 10%;
+}
+@media screen and (min-width: 1680px){
+  .item2{
+  font-size: 20px;
+}
+.navbartext{
+  font-size: 20px;
+}
+
+}
+@media screen and  (min-width: 1025px) and (max-width: 1680px){
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .box{
+  width: 15%;
+}
+.item2{
+  font-size: 20px;
+}
+.navbartext{
+  font-size: 20px;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+  .box{
+  width: 20%;
+}
+.item2{
+  font-size: 15px;
+}
+.navbartext{
+  font-size: 15px;
+}
+}
+@media screen and (max-width: 400px) {
+  .box{
+  width: 20%;
+}
+.item2{
+  font-size: 14px;
+}
+.navbartext{
+  font-size: 14px;
+}
+}
+  
+</style>
+
+
+
+
+
+
 <script>
 import axios from 'axios';
 
@@ -180,7 +247,7 @@ mounted() {
   },
 methods: {
   updateScreenSize() {
-        this.isMobileScreen = window.innerWidth <= 768; 
+        this.isMobileScreen = window.innerWidth <= 1300; //小於1300 navbar有些選項會跳行 所以用手機模式取代
         if (this.isMobileScreen) {
         this.desktopKey += 1;
       }
@@ -237,7 +304,7 @@ methods: {
   },
   logout(){
     axios.post(
-/**/"/api/v1/account/logout",{},{
+"https://aifish.cc"+"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -270,7 +337,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
+        "https://aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
@@ -287,7 +354,7 @@ methods: {
       localStorage.setItem("chooseSectionname", "全部");
           try {
             const res = await axios.get(
-              /**/"/api/v1/account",
+              "https://aifish.cc"+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -333,62 +400,6 @@ created(){
 }
 </script>
 
-<style>
-.logoimage{
-  transform: scale(2.3);
-}
-.drawerbg{
-  background-color:  rgba(0, 0, 0, 0.8);
-}
-.navbar{
-  z-index: 2;
-  background-color: rgba(0, 0, 0, 0); 
-}
-.navbartext{
-  color: white;
-  font-size: 17px;
-}
-.usernametext {
-  font-size: 18px;
-  position: absolute;
-  right: 1px;
-  z-index: 2;
-}
-  .dialog-bottom-transition-enter-active,
-  .dialog-bottom-transition-leave-active {
-    transition: transform 0.2s ease-in-out;
-  }
-  @media screen and (max-width: 600px) {
-    .usernametext {
-  font-size: 15px;
-  position: absolute; 
-  top: 70px;
-  left: 83%;
-  z-index: 2;
-}
 
-  }
-
-  @media screen and (min-width: 601px) and (max-width: 1024px){
-    .usernametext {
-      font-size: 18px;
-      position: absolute; 
-      top: 6.5%;
-      left: 91.4%;
-      z-index: 2;
-    }
-  }
-  
-  @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-    .usernametext {
-      font-size: 18px;
-      position: absolute; 
-      top: 9%;
-      left: 94%;
-      z-index: 2;
-    }
-  }
-  
-</style>
 
 

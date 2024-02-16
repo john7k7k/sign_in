@@ -14,12 +14,13 @@
           @click:append-inner="onClick"
           style=""
         ></v-text-field>
-        <v-btn class="upbutton ml-5" v-if="showButtons && poolsName.length > 1"  @click="triggerLeftSwipe" icon="mdi mdi-chevron-up" @mouseenter="showButtons = true"
+        
+        <v-btn class="upbutton" v-if="showButtons && poolsName.length > 1"  @click="triggerLeftSwipe" icon="mdi mdi-chevron-up" @mouseenter="showButtons = true"
         @mouseleave="showButtons = false"></v-btn>
-        <v-btn class="downbutton mr-5" v-if="showButtons && poolsName.length > 1"  @click="triggerRightSwipe" icon="mdi mdi-chevron-down" @mouseenter="showButtons = true"
+        <v-btn class="downbutton" v-if="showButtons && poolsName.length > 1"  @click="triggerRightSwipe" icon="mdi mdi-chevron-down" @mouseenter="showButtons = true"
         @mouseleave="showButtons = false"></v-btn>
         <totaldata class="item" :centerIndex="centerIndex" ref="totaldataRef" @mouseenter="showButtons = true"
-        @mouseleave="showButtons = false"></totaldata>
+        @mouseleave="showButtons = false" @swipeRight="triggerRightSwipe"></totaldata>
     </div>
   
   </template>
@@ -142,22 +143,61 @@
       display: block; 
       transform: translateY(-50px);
   }
+@media screen and  (min-width: 1681px){
   .upbutton {
       z-index: 10; 
-      position: fixed; 
-      left: 20%;
+      position: absolute; 
+      left: 23%;
+      top: 10%; 
+      transform: scale(1.2);
+  }
+  
+  .downbutton{
+      z-index: 10; 
+      position: absolute; 
+      left: 23%;
+      bottom: 4%;
+      transform: scale(1.2);
+  }
+}
+@media screen and  (min-width: 1025px) and (max-width: 1680px){
+  .upbutton {
+      z-index: 10; 
+      position: absolute; 
+      left: 23%;
       top: 10%; 
   }
   
   .downbutton{
       z-index: 10; 
-      position: fixed; 
-      left: 20%;
+      position: absolute; 
+      left: 23%;
       bottom: 4%;
   }
-
-  @media screen and (max-width: 600px) {
-    .home{
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+}
+@media screen and (max-width: 400px) {}
+	@media screen and  (min-width: 1681px){
+}
+@media screen and  (min-width: 1025px) and (max-width: 1680px){
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .home{
+    z-index: 0;
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+@media screen and (max-width: 600px){
+  .home{
     z-index: 0;
     background-image: url('../assets/background.jpg');
     background-size: cover;
@@ -186,31 +226,12 @@
     left: 50%;
     transform: translateX(-50%) scale(0.8);
   }
+  .upbutton ,.downbutton{
+      display: none;
   }
-  @media screen and (min-width: 601px) and (max-width: 1024px){
-    .home{
-    z-index: 0;
-    background-image: url('../assets/background.jpg');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-  }
-  }
-  @media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
-    .home{
-    z-index: 0;
-    background-image: url('../assets/background.jpg');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-  }
-  }
+  
+}
+
   
   </style>
   

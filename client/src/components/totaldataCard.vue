@@ -14,11 +14,11 @@
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
       </div>
-        <v-card  v-if="poolsName.length == 2" width="50%" cover class="five "   min-height="230"   :style="{ backgroundImage: `url(${poolsdata[centerforTwo1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <v-card  v-if="poolsName.length == 2"  cover class="five "   min-height="230"   :style="{ backgroundImage: `url(${poolsdata[centerforTwo1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ poolsName[centerforTwo1] }}</div>
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
-        <v-card v-if="poolsName.length == 2"   cover class="three " width="50%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[centerforTwo2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
+        <v-card v-if="poolsName.length == 2"   cover class="three "  min-height="230"   :style="{ backgroundImage: `url(${poolsdata[centerforTwo2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
           <div class="text-white ml-5 mt-5  font-weight-black " style="letter-spacing: 3px; font-size: 25px;">{{ poolsName[centerforTwo2] }}</div>
           <div class="text-white  ml-5   " style="white-space: pre-wrap; width: 60%;  font-size: 18px; ">{{ poolsdata[0].EnPoolName }}</div>
       </v-card>
@@ -30,24 +30,27 @@
       </div>
       <v-card v-if="poolsName.length <1"  cover class="one" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[2].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center'}">
           <div class="notyet-bg1-overlay">
-            <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
-            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+            <div class="text-white text-center  font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
+            <div class="text-white text-center  font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
       </div>
       <div class="father2">
-        <div class="font-weight-bold text-white titel-Name">{{ poolsName[centerIndex] }}</div>
-      <div class=" text-white en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
+        <div class="font-weight-bold  titel-Name">{{ poolsName[centerIndex] }}</div>
+      <div class="  en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
       <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
+      <div class="changebox">
+        <v-btn class="swichPool-btn"   @click="cellphoneSwipe" v-if="poolsName.length > 1 && isMobileScreen" @mouseenter="showButtons = true">切換水池</v-btn>
+      </div>
       <v-card  class="poolsdatacard "   >
           <v-card-text class="cardtextbg  ">
-            <div v-if="isMobileScreen" class="font-weight-bold text-white text-end mr-1 mt-7" style="font-size: 40px; letter-spacing: 3px;">{{ poolsName[centerIndex] }}</div>
-            <div v-if="isMobileScreen" class=" text-white  mt-4" style="white-space: pre-wrap; text-align: end;  font-size: 20px; letter-spacing: 2px;">{{ poolsdata[centerIndex].EnPoolName }}</div>
-            <div v-if="isMobileScreen" class="  text-blue-grey-lighten-1 text-end mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
+            <div v-if="isMobileScreen" class="font-weight-bold cellphonetitel-Name  mt-7" >{{ poolsName[centerIndex] }}</div>
+            <div v-if="isMobileScreen" class=" cellphoneEn-titelName mr-1 mt-4" >{{ poolsdata[centerIndex].EnPoolName }}</div>
+            <div v-if="isMobileScreen" class="cellphonerecordtext  text-blue-grey-lighten-1  mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
     
-      <v-btn class="  refreshbtn-bg text-white"  icon="mdi-refresh" size="small" @click="refreshnew" :disabled="isRefreshing"></v-btn>
+      <v-btn class="  refreshbtn-bg text-white mr-1"  icon="mdi-refresh" size="small" @click="refreshnew" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
@@ -69,25 +72,522 @@
       
       <v-row  no-gutters>
       <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center mt-1 ">
-        <v-btn class="needbcbtn-bg text-white mt-3" rounded="xl" size="small" prepend-icon="mdi-battery-charging-10"  v-show="n.alertbcbutton" @click="SaveIndividualData(centerIndex,4,'/needcharge')" :to="'/' + poolsName[centerIndex] + '/' + 'needcharge' + '/fish'"
+        <v-btn class="needbcbtn-bg mt-4" rounded="xl" size="small" prepend-icon="mdi-battery-charging-10"  v-show="n.alertbcbutton" @click="SaveIndividualData(centerIndex,4,'/needcharge')" :to="'/' + poolsName[centerIndex] + '/' + 'needcharge' + '/fish'"
           >{{needchargenum[centerIndex]}}條魚需充電</v-btn>
       </v-col>
     </v-row>
     <v-row  no-gutters >
       <v-col  v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center"  >
-        <v-btn class="mt-4 needfixbtn-bg text-white" rounded="xl" size="small" prepend-icon="mdi-alert"  v-show="n.alertbcbutton"  @click="SaveIndividualData(centerIndex,5,'/error')" :to="'/' + poolsName[centerIndex] + '/' + 'error' + '/fish'"
+        <v-btn class="mt-5 mb-4 needfixbtn-bg" rounded="xl" size="small" prepend-icon="mdi-alert"  v-show="n.alertbcbutton"  @click="SaveIndividualData(centerIndex,5,'/error')" :to="'/' + poolsName[centerIndex] + '/' + 'error' + '/fish'"
           >{{needfixnum[centerIndex]}}條魚有錯誤</v-btn>
       </v-col>
-      <div class="mt-4 mr-2 cardtext"></div>
     </v-row>
     </div>
     </v-card-text>
   </v-card>
       </div>
   </div>
-
-  
 </template>
+
+<style scoped>
+/*第一跟第二個css為水池卡片上面再覆蓋一層淺藍色的罩子*/ 
+.one::before,.two::before,.three::before,.four::before,.five::before {
+    content: "";
+    background-color: rgb(0, 0, 255,0.1); 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+}
+.one-overlay,.two-overlay,.three-overlay,.four-overlay,.five-overlay {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+}
+.forIpadcenter{
+    margin-top: -5%;
+      position: relative;
+      transform: scale(0.8);
+      width: 100%;
+  }
+  .forIpadcenter + .forIpadcenter {
+      margin-top: -5%; 
+  }
+
+.v-application__wrap{
+    background-color: black;
+  }
+.pooltext{
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0); 
+  color: white;
+}
+.refreshbtn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.12), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  transform:  scaleX(-1);
+}
+.btn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+}
+.cardimage{
+  transform: scale(0.98);
+  border-radius: 10px;
+}
+.cardtextbg {
+  background-color: rgba(255, 255, 255, 0); 
+}
+.cardtext{
+  background-color: rgba(255, 255, 255, 0);
+  letter-spacing: 2px;
+  
+}
+.recordtext{
+  background-color: rgba(255, 255, 255, 0); 
+  font-size: 17px;
+}
+.needbcbtn-bg{
+  color: white;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(249, 168, 37, 0.7);
+}
+.needfixbtn-bg{
+  color: white;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid #B71C1C;
+}
+.nodisplay{
+  display: none;
+}
+@media screen and  (min-width: 1601px){
+.Swiper{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 47.5%;
+  align-items: flex-end;
+  justify-content: center;
+}
+.Swiper-content{
+  width: 55%;
+  height: 30%;
+}
+.one{
+  transform: scale(0.8);
+  height: 260px;
+  width: 50%;
+}
+.two{
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 260px;
+  width: 50%;
+}
+.three{
+  transform: scale(1);
+  height: 260px;
+  margin-top: 5%;
+  width: 50%;
+}
+.four{
+  transform: scale(1.4);
+  margin-top: 55%;
+  height: 260px;
+  width: 50%;
+}
+.five{
+  transform: scale(1.1);
+  margin-top: 20%;
+  margin-bottom: 4%;
+  height: 33%;
+  width: 50%;
+}
+.titel-Name{
+    font-size: 70px;
+    letter-spacing: 6px;
+    margin-top: 2%;
+    color: white;
+  }
+  .en-titelName{
+    font-size: 30px;
+    letter-spacing: 3px;
+    width: 50%;
+    color: white;
+  }
+  .recordtext{
+  background-color: rgba(255, 255, 255, 0); 
+  font-size: 25px;
+  margin-top: 2%;
+}
+.poolsdatacard{
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  margin-top: 8%;
+}
+.cardtextbg {
+  font-size: 20px; 
+}
+.needbcbtn-bg,.needfixbtn-bg{
+  transform: scale(1.2);
+}
+.swichPool-btn{
+  display: none;
+}
+
+}
+@media screen and  (min-width: 960px) and (max-width: 1600px){
+.Swiper{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 48%;
+  height: 100%;
+  align-items: flex-end;
+}
+.Swiper-content{
+  width: 400px;
+}
+.one{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 33%;
+  width: 50%;
+}
+.two{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-bottom: 4%;
+  height: 33%;
+  width: 50%;
+}
+.three{
+  z-index: 2;
+  transform: scale(0.8);
+  height: 33%;
+  width: 50%;
+}
+.four{
+  z-index: 9;
+  transform: scale(1.5);
+  margin-top: 50%;
+  height: 33%;
+  width: 50%;
+}
+.five{
+  z-index: 9;
+  transform: scale(1.1);
+  margin-top: 20%;
+  margin-bottom: 4%;
+  height: 33%;
+  width: 50%;
+}
+
+
+.titel-Name{
+    font-size: 60px;
+    letter-spacing: 4px;
+    color: white;
+  }
+  .en-titelName{
+    font-size: 25px;
+    letter-spacing: 3px;
+    width: 385px;
+    color: white;
+  }
+
+.poolsdatacard{
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  position: relative;
+  left: 2%;
+}
+.swichPool-btn{
+  display: none;
+}
+
+}
+@media screen and (min-width: 601px) and (max-width: 1024px){
+  .titel-Name,.en-titelName,.recordtext,.Swiper-content,.one,.three{
+    display: none;
+  }
+  .Swiper{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70%;
+  align-items: center;
+  justify-content: center;
+}
+  .poolsdatacard{
+  width: 90%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 15px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  bottom: 40px;
+}
+.five{
+  margin-top: 15%;
+  width: 80%;
+}
+.four{
+  margin-top: 10%;
+  width: 80%;
+}
+.changebox{
+  width: 90%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+}
+.swichPool-btn{
+    position: relative;
+    bottom: 60px;
+    left: 2%;
+    text-decoration: underline;
+    background-color:rgb(0, 0, 0,0);
+    color: white;
+    font-size: 25px;
+  }
+  .cellphonetitel-Name{
+    text-align: end;  
+    font-size: 45px;
+    letter-spacing: 3px;
+    color: white;
+  }
+  .cellphoneEn-titelName{
+    white-space: pre-wrap; 
+    text-align: end;  
+    font-size: 25px; 
+    letter-spacing: 2px;
+    color: white;
+    position: relative;
+    margin-top: 2%;
+  }
+  .cellphonerecordtext{
+  font-size: 23px;
+  text-align: end;
+}
+}
+
+@media screen and (min-width: 390px) and (max-width: 600px){
+  .titel-Name,.en-titelName,.recordtext,.Swiper-content,.one,.three{
+    display: none;
+  }
+  .Swiper{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 40%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 60%;
+  align-items: center;
+  justify-content: center;
+}
+  .poolsdatacard{
+  width: 90%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 15px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  bottom: 20px;
+}
+.five{
+  margin-top: 15%;
+  width: 70%;
+}
+.four{
+  margin-top: 10%;
+}
+.changebox{
+  width: 90%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+}
+.swichPool-btn{
+    position: relative;
+    bottom: 25px;
+    left: 3%;
+    text-decoration: underline;
+    background-color:rgb(0, 0, 0,0);
+    color: white;
+    font-size: 20px;
+  }
+  .cellphonetitel-Name{
+    text-align: end;  
+    font-size: 40px;
+    letter-spacing: 3px;
+    color: white;
+  }
+  .cellphoneEn-titelName{
+    white-space: pre-wrap; 
+    text-align: end;  
+    font-size: 20px; 
+    letter-spacing: 2px;
+    color: white;
+  }
+  .cellphonerecordtext{
+  font-size: 18px;
+  text-align: end;
+}
+}
+@media screen and (max-width: 390px) {
+  .titel-Name,.en-titelName,.recordtext,.Swiper-content,.one,.three{
+    display: none;
+  }
+  .Swiper{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.father1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+}
+.father2{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70%;
+  align-items: center;
+  justify-content: center;
+}
+  .poolsdatacard{
+  width: 90%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 15px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  bottom: 8%;
+  transform: scale(0.9);
+}
+.five{
+  margin-top: 15%;
+  width: 70%;
+  transform: scale(0.8);
+}
+.four{
+  margin-top: 10%;
+  transform: scale(0.8);
+}
+.changebox{
+  width: 90%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+}
+.swichPool-btn{
+    position: relative;
+    bottom: 25px;
+    left: 3%;
+    text-decoration: underline;
+    background-color:rgb(0, 0, 0,0);
+    color: white;
+    font-size: 15px;
+  }
+  .cellphonetitel-Name{
+    text-align: end;  
+    font-size: 35px;
+    letter-spacing: 3px;
+    color: white;
+  }
+  .cellphoneEn-titelName{
+    white-space: pre-wrap; 
+    text-align: end;  
+    font-size: 18px; 
+    letter-spacing: 2px;
+    color: white;
+  }
+  .cellphonerecordtext{
+  font-size: 16px;
+  text-align: end;
+}
+}
+</style>
 
 <script>
 import axios from 'axios';
@@ -174,6 +674,9 @@ methods: {
                 this.centerforTwo2 = a;
               }
           },
+  cellphoneSwipe(){
+    this.$emit('swipeRight');
+  },
 generateClassLink(count){
   if (count > 3) {
       const extraCount = count - 3;
@@ -217,7 +720,7 @@ async refreshnew() {
   this.isRefreshing = true;
   try {
   const response = await axios.get(
-    /**/"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
+    "https://aifish.cc"+"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -266,7 +769,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          /**/"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          "https://aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -476,7 +979,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    /**/"/api/v1/account",
+    "https://aifish.cc"+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -553,331 +1056,3 @@ if(this.poolsCode[0] && this.poolsCode[0].startsWith("003")){
 };
 </script>
 
-<style scoped>
-.three::before {
-    content: "";
-    background-color: rgb(0, 0, 255,0.15); 
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; 
-}
-.three-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2; 
-}
-.one::before {
-    content: "";
-    background-color: rgb(0, 0, 255,0.1); 
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; 
-}
-.one-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2; 
-}
-
-.forIpadcenter{
-    margin-top: -5%;
-      position: relative;
-      transform: scale(0.8);
-      width: 100%;
-  }
-  .forIpadcenter + .forIpadcenter {
-      margin-top: -5%; 
-  }
-.needfixbtn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid #B71C1C;
-}
-.v-application__wrap{
-    background-color: black;
-  }
-  .upbutton {
-      z-index: 10; 
-      position: fixed; 
-      left: 20%;
-      top: 9%; 
-  }
-  
-  .downbutton{
-      z-index: 10; 
-      position: fixed; 
-      left: 20%;
-      bottom: 4%;
-  }
-.pooltext{
-  transform: scale(1.2);
-  background-color: rgba(255, 255, 255, 0); 
-  color: white;
-}
-.needbcbtn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(249, 168, 37, 0.7);
-}
-.refreshbtn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(6, 241, 22, 0.12), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.7);
-  transform:  scaleX(-1);
-}
-.btn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.7);
-}
-.cardimage{
-  transform: scale(0.98);
-  border-radius: 10px;
-}
-.cardtextbg {
-  background-color: rgba(255, 255, 255, 0); 
-}
-.cardtext{
-  background-color: rgba(255, 255, 255, 0);
-  letter-spacing: 2px;
-  
-}
-.recordtext{
-  background-color: rgba(255, 255, 255, 0); 
-  font-size: 17px;
-}
-.nodisplay{
-  display: none;
-}
-@media screen and  (min-width: 1601px){
-.Swiper{
-  display: flex;
-  width: 100%;
-  max-height: 100%;
-  
-}
-
-.father1{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 50%;
-  height: 50%;
-  align-items: center;
-}
-.father2{
-  display: flex;
-  flex-direction: column;
-  width: 48%;
-  align-items: flex-end;
-  margin-top: 4%;
-}
-.Swiper-content{
-  width: 55%;
-  height: 30%;
-}
-.one{
-  z-index: 2;
-  transform: scale(0.8);
-  height: 260px;
-  
-}
-.two{
-  z-index: 9;
-  transform: scale(1.1);
-  margin-bottom: 4%;
-  height: 260px;
-}
-.three{
-  z-index: 2;
-  transform: scale(0.8);
-  height: 260px;
-}
-.four{
-  z-index: 9;
-  transform: scale(1.4);
-  margin-top: 55%;
-  height: 260px;
-}
-
-
-.titel-Name{
-    font-size: 60px;
-    letter-spacing: 4px;
-    margin-top: 2%;
-  }
-  .en-titelName{
-    font-size: 25px;
-    letter-spacing: 3px;
-    width: 385px;
-  }
-  .recordtext{
-  background-color: rgba(255, 255, 255, 0); 
-  font-size: 17px;
-  margin-top: 2%;
-}
-.poolsdatacard{
-  width: 100%;
-  height: 200%;
-  flex: auto;
-  background-color: rgba(255, 255, 255, 0);
-  transform: scale(1.2);
-  margin-right: 7%;
-  margin-top: 8%;
-}
-
-
-}
-@media screen and  (min-width: 960px) and (max-width: 1600px){
-.Swiper{
-  display: flex;
-  width: 100%;
-  max-height: 100%;
-  
-}
-
-.father1{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 50%;
-  height: 50%;
-  align-items: center;
-}
-.father2{
-  display: flex;
-  flex-direction: column;
-  width: 48%;
-  align-items: flex-end;
-  margin-top: 4%;
-}
-.Swiper-content{
-  width: 400px;
-}
-.one{
-  z-index: 2;
-  transform: scale(0.8);
-  height: 33%;
-  
-}
-.two{
-  z-index: 9;
-  transform: scale(1.1);
-  margin-bottom: 4%;
-  height: 33%;
-}
-.three{
-  z-index: 2;
-  transform: scale(0.8);
-  height: 33%;
-}
-.four{
-  z-index: 9;
-  transform: scale(1.5);
-  margin-top: 50%;
-  height: 33%;
-}
-.five{
-  z-index: 9;
-  transform: scale(1.1);
-  margin-top: 20%;
-  margin-bottom: 4%;
-  height: 33%;
-}
-
-
-.titel-Name{
-    font-size: 60px;
-    letter-spacing: 4px;
-  }
-  .en-titelName{
-    font-size: 25px;
-    letter-spacing: 3px;
-    width: 385px;
-  }
-
-.poolsdatacard{
-  width: 100%;
-  height: 200%;
-  flex: auto;
-  background-color: rgba(255, 255, 255, 0);
-}
-
-
-}
-@media screen and (min-width: 601px) and (max-width: 1024px){
-}
-
-@media screen and (max-width: 600px) {
-  .titel-Name,.en-titelName,.recordtext,.Swiper-content{
-    display: none;
-  }
-  .Swiper{
-    display: flex;
-    flex-direction: column-reverse;
-    width: 90%;
-    justify-content: flex-start;
-  }
-  .father1{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 100%;
-  height: 50%;
-  align-items: center;
-  margin-top: 3%;
-}
-.father2{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-}
-  .poolsdatacard{
-  width: 90%;
-  height: auto;
-  background-color: rgba(255, 255, 255, 0);
-  border-radius: 15px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
-  border: 3px solid rgba(255, 255, 255, 0.2);
-}
-.one{
-  z-index: 2;
-  transform: scale(0.8);
-  height: 33%;
-  
-}
-.two{
-  z-index: 9;
-  transform: scale(1.1);
-  margin-bottom: 4%;
-  height: 33%;
-}
-.three{
-  z-index: 2;
-  transform: scale(0.8);
-  height: 33%;
-}
-}
-
-
-
-
-</style>

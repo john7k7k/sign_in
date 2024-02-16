@@ -11,9 +11,9 @@ export class Swiper{
         this.classList = this.$options.classList;
         this.center = this.$options.center;
         if (window.innerWidth <= 600) {
-            this.__moveformobile(this.classList);
+            //this.__moveformobile(this.classList);
         }else if(window.innerWidth<1200){
-            this.__moveforipad();
+            //this.__moveforipad();
         } else {
             this.__move(this.classList);
         }

@@ -1,30 +1,18 @@
 <template>
-  <div class="login">
-    <loginnavbar class="loginnavbar-bg"></loginnavbar>
-      <v-row class="">
-        <v-col
-          class="d-flex justify-center"
-          xs="12"
-        >
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no" />
+    <div class="login">
+      <loginnavbar class="loginnavbar-bg"></loginnavbar>
+      <div class="box">
+        <div class="item1"></div>
+        <div class="item2">
           <logininput class="logininput"></logininput>
-        </v-col>
-      </v-row>
+        </div>
+      </div>
   </div>
 </template>
 
-<script>
-import loginnavbar from '@/components/loginnavbar.vue';
-import logininput from '@/components/logininput.vue';
-export default {
-  name: 'login',
-  components: { logininput ,loginnavbar},
-  data: () => ({
-    //
-  }),
-};
-</script>
-
-<style>
+<style scoped>
 
 .login {
   background-image: url('../assets/登入頁面第二版.jpg');
@@ -39,21 +27,50 @@ export default {
 .loginnavbar-bg {
   height: 100px; 
   background-color: rgba(0, 0, 0, 0); 
-  position: absolute;
+  position: fixed;
 }
-
-.logininput {
-  position: absolute;
-  padding-top: 9%;
-  left: 60%;
+.box{
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
+.box .item1{
+  width: 50%;
+}
+.box .item2{
+  width: 50%;
+  margin: auto ;
 
-@media screen and (max-width: 600px) {
-  .logininput {
-    transform: scale(0.75) translateX(-79%) translateY(53%);
-  }
+}
+@media screen and  (min-width: 1025px) and (max-width: 1680px){
 
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .login {
+  background-image: url('../assets/登入畫面手機背景.jpg');
+  background-size:cover;
+  background-position:center;
+  background-position-y:25%;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden
+}
+.box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.box .item1{
+  width: 0%;
+  height: 40%;
+}
+.box .item2{
+  width: 100%;
 
+}
+}
+@media screen and (min-width: 401px)and (max-width: 600px) {
   .login {
   background-image: url('../assets/登入畫面手機背景.jpg');
   background-size: cover;
@@ -68,17 +85,24 @@ export default {
   bottom: 0;
   overflow-y: hidden
 }
+.box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
+.box .item1{
+  width: 0%;
+  height: 35%;
+}
+.box .item2{
+  width: 100%;
 
-@media screen and (min-width: 601px) and (max-width: 1024px) {
-  .logininput {
-    padding-left: 25%;
-    transform: scale(1.5);
-    margin-top: 25%;
-  }
-
+}
+}
+@media screen and (max-width: 400px) {
   .login {
-  background-image: url('../assets/background.jpg');
+  background-image: url('../assets/登入畫面手機背景.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -91,28 +115,39 @@ export default {
   bottom: 0;
   overflow-y: hidden
 }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
-  .logininput {
-    padding-left: 400px;
-    position: absolute;
-    transform: translateX(12%) scale(1.1);
-    margin-top: 7%;
-  }
-
-
-  .login {
-  background-image: url('../assets/登入頁平板背景.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.box{
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height:100%;
-  overflow-y: hidden;
-  overflow: hidden;
+  height: 100%;
 }
+.box .item1{
+  width: 0%;
+  height: 35%;
+}
+.box .item2{
+  width: 100%;
+
+}
+.logininput {
+  transform: scale(0.8);
+}
+
 }
 
 
 </style>
+
+<script>
+import loginnavbar from '@/components/loginnavbar.vue';
+import logininput from '@/components/logininput.vue';
+export default {
+  name: 'login',
+  components: { logininput ,loginnavbar},
+  data: () => ({
+    //
+  }),
+};
+</script>
+
+

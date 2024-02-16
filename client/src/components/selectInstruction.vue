@@ -1,25 +1,479 @@
 <template>
-  <div class="font-weight-black text-white titel-Name">{{ titel }}</div>
-  <div class=" text-white en-titelName" style="white-space: pre-wrap;">{{ entitel }}</div>
-  <v-btn variant="elevated" class="mb-10 loginbuttom"  width="150" @click="gotohomepage(this.titel)"></v-btn>
-   <div class="Swiper" @mouseenter="showButtons = true"
-        @mouseleave="showButtons = false">
+  <div class="box">
+    <div class="item1">
+      <div><v-img src="../assets/過渡頁面字.png" class="titelword"></v-img></div>
+      <div class="font-weight-black titel-Name">{{ titel }}</div>
+      <div class="en-titelName">{{entitel}}</div>
+      <v-btn variant="elevated" class=" loginbuttom"  width="150" @click="gotohomepage(this.titel)"></v-btn>
+    </div>
+    <div class="item2">
+      <div class="Swiper" @mouseenter="showButtons = true" @mouseleave="showButtons = false">
       <v-btn class="upbutton " v-if="showButtons"  @click="leftSwipe" icon="mdi mdi-chevron-up"></v-btn>
       <v-btn class="downbutton " v-if="showButtons"  @click="rightSwipe" icon="mdi mdi-chevron-down"></v-btn>
+      <div class="wordbox"><v-btn @click="leftSwipe" class="changepool font-weight-bold text-white">切換水池</v-btn></div>
       <div class="Swiper-content" >  
         <v-card v-for="name in instructionName" :key="name" class="Swiper-item" width="400" height="250px" variant="elevated">
-            <v-img
-            :src="name.imageurl"
-            class="align-end"
-            
-            cover>
+            <v-img :src="name.imageurl" class="align-end" cover>
             <div class="text-white  ml-5 text-h5 font-weight-black">{{ name.instruction }}</div>
             <div class="text-white mb-16 ml-5 text-h6 font-weight-black" style="white-space: pre-wrap; width: 60%;"> {{name.Eninstruction}} </div>
             </v-img>
         </v-card>   
       </div>
   </div>
-  </template>
+    </div>
+  </div>
+  
+</template>
+
+<style scoped>
+.box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.item1{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  margin: 0 5%;
+}
+.item2{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  padding-top: 5%;
+}
+.titelword{
+    width: 70%;
+    position: relative;
+    bottom: 30%;
+    right:1%
+    
+  }
+  .titel-Name{
+    color: white;
+    font-size: 60px;
+    letter-spacing: 7px;
+    position: relative;
+    top:2%;
+  }
+  .en-titelName{
+    width: 70%;
+    color: white;
+    font-size: 35px;
+    position: relative;
+    top:2%;
+    left: 1%;
+  }
+  .loginbuttom{
+    border-radius: 80px;
+    background-image: url('../assets/查看鈕改.png');
+    background-position: center;
+    background-size: 101% 101%;
+    margin-top: 15%;
+    position: relative;
+    left: 2%;
+    transform: scale(1.1);
+}
+  .upbutton {
+      z-index: 10; 
+      position: fixed; 
+      left: 71%;
+      top: 10%; 
+  }
+  
+  .downbutton{
+      z-index: 10; 
+      position: fixed; 
+      left: 71%;
+      bottom: 2%;
+  }
+@media screen and  (min-width: 1681px){
+  .titelword{
+    width: 75%;
+    
+  }
+  .titel-Name{
+    font-size: 65px;
+    letter-spacing: 8px;
+  }
+  .en-titelName{
+    font-size: 40px;
+  }
+  .one{
+        z-index: 2;
+        position: absolute;
+        transform: scale(1.2) ;
+        top: 9%;
+        left: 65%;
+        width: 50%;
+    }
+    .two{
+        z-index: 9;
+        position: absolute;
+        transform: scale(1.4) ;
+        top: 42.5%;
+        left: 65%;
+        width: 50%;
+    }
+    .three{
+        z-index: 2;
+        position: absolute;
+        transform: scale(1.2) ;
+        left: 65%;
+        top: 79%;
+        width: 50%;
+    
+    }
+    .upbutton {
+      left: 74%;
+  }
+  
+  .downbutton{
+      left: 74%;
+  }
+}
+@media screen and  (min-width: 1025px) and (max-width: 1680px){
+.one{
+  z-index: 2;
+  position: absolute;
+  transform: scale(1) ;
+  top: 7%;
+  left: 60%;
+  width: 50%;
+}
+.two{
+  z-index: 9;
+  position: absolute;
+  transform: scale(1.2) ;
+  top: 42.5%;
+  left: 60%;
+  width: 50%;
+}
+.three{
+  z-index: 2;
+  position: absolute;
+  transform: scale(1) ;
+  top: 79%;
+  left: 60%;
+  width: 50%;
+}
+.wordbox,.changepool{
+  display: none;
+}
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+  .item1{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5% 0% 0;
+}
+.item2{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+.titelword{
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+    top:2%;
+  }
+  .titel-Name{
+    color: white;
+    font-size: 45px;
+    letter-spacing: 5px;
+    position: relative;
+    top:1%;
+  }
+  .en-titelName{
+    width: auto;
+    color: white;
+    font-size: 25px;
+    
+  }
+  .loginbuttom{
+    border-radius: 80px;
+    background-image: url('../assets/查看鈕改.png');
+    background-position: center;
+    background-size: 101% 101%;
+    margin-top: 15%;
+    position: relative;
+    left: 0%;
+    margin-top: 5%;
+    transform: scale(1);
+}
+.wordbox{
+  transform: scale(1.2);
+  width: 400px;
+  position: absolute;
+  top:50%;
+  bottom: 0;
+  left: 0%;
+  right:0;
+  margin: auto;
+  display: flex;
+  justify-content: end;
+  z-index: 555;
+}
+.changepool{
+  background-color: rgba(0, 0, 0, 0);
+  text-decoration: underline;
+  font-size: 20px;
+}
+.one{
+  transform: scale(1.2);
+  position: absolute;
+  top:126%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+.two{
+  transform: scale(1.2);
+  position: absolute;
+  top:33%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+.three{
+  transform: scale(1.2);
+  position: absolute;
+  top:93%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+.upbutton,.downbutton{
+    display: none;
+  }
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+.box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.item1{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0% 0% 0;
+}
+.item2{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+.titelword{
+  width: 70%;
+  margin: 0 auto;
+  position: relative;
+}
+.titel-Name{
+  color: white;
+  font-size: 40px;
+  letter-spacing: 5px;
+  position: relative;
+  top:1%;
+}
+.en-titelName{
+  width: auto;
+  color: white;
+  font-size: 20px;
+    
+}
+.loginbuttom{
+  border-radius: 80px;
+  background-image: url('../assets/查看鈕改.png');
+  background-position: center;
+  background-size: 101% 101%;
+  margin-top: 15%;
+  position: relative;
+  left: 0%;
+  margin-top: 10%;
+  transform: scale(1);
+}
+.wordbox{
+  transform: scale(0.9);
+  width: 400px;
+  position: absolute;
+  top:35%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+  display: flex;
+  justify-content: end;
+  z-index: 555;
+}
+.changepool{
+  background-color: rgba(0, 0, 0, 0);
+  text-decoration: underline;
+  font-size: 20px;
+}
+.one{
+  transform: scale(0.9);
+  position: absolute;
+  top:106%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+.two{
+  transform: scale(0.9);
+  position: absolute;
+  top:13%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+.three{
+  transform: scale(0.9);
+  position: absolute;
+  top:63%;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+.upbutton,.downbutton{
+  display: none;
+}
+}
+@media screen and (max-width: 400px) {
+  .box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+  .item1{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 8% 0% 0;
+}
+.item2{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+.titelword{
+    width: 60%;
+    margin: 0 auto;
+    position: relative;
+  }
+  .titel-Name{
+    color: white;
+    font-size: 28px;
+    letter-spacing: 5px;
+    position: relative;
+    top:1%;
+  }
+  .en-titelName{
+    width: auto;
+    color: white;
+    font-size: 15px;
+    
+  }
+.loginbuttom{
+  border-radius: 80px;
+  background-image: url('../assets/查看鈕改.png');
+  background-position: center;
+  background-size: 101% 101%;
+  margin-top: 15%;
+  position: relative;
+  left: 0%;
+  margin-top: 10%;
+  transform: scale(1);
+}
+.wordbox{
+  transform: scale(0.7);
+  width: 400px;
+  position: absolute;
+  top:30%;
+  bottom: 0;
+  left: -2.5%;
+  right:0;
+  margin: auto;
+  display: flex;
+  justify-content: end;
+  z-index: 555;
+}
+.changepool{
+  background-color: rgba(0, 0, 0, 0);
+  text-decoration: underline;
+  font-size: 20px;
+}
+.one{
+  transform: scale(0.7);
+        position: absolute;
+        top:103%;
+        bottom: 0;
+        left: -2.5%;
+        right:0;
+        margin: auto;
+}
+.two{
+  transform: scale(0.7);
+  position: absolute;
+  top:15%;
+  bottom: 0;
+  left: -2.5%;
+  right:0%;
+  margin: auto;
+}
+.three{
+  transform: scale(0.7);
+  position: absolute;
+  top:60%;
+  bottom: 0;
+  left: -2.5%;
+  right:0;
+  margin: auto;
+}
+.upbutton,.downbutton{
+  display: none;
+}
+}
+</style>
   
   <script>
   import axios from 'axios';
@@ -60,11 +514,15 @@
       }),
       mounted(){
           this.swiper();
+          this.leftSwipe();
+          this.leftSwipe();
+          this.leftSwipe();
       },
       created() {
         this.formNameMapping(this.instructionCode,this.InstructionName);
         this.formNameMapping(this.DepartCode,this.DepartName);
         this.formNameMapping(this.poolsCode,this.poolName);
+        
     },
       methods: {
         swiper(){
@@ -153,144 +611,5 @@
     }
   </script>
 
-  <style scoped>
-.one{
-      z-index: 2;
-      position: absolute;
-      transform: scale(1) ;
-      top: 5.9%;
-      left: 60%;
-      width: 50%;
-  }
-  .two{
-      z-index: 9;
-      position: absolute;
-      transform: scale(1.2) ;
-      top: 42.5%;
-      left: 60%;
-      width: 50%;
-  }
-  .three{
-      z-index: 2;
-      position: absolute;
-      transform: scale(1) ;
-      top: 79%;
-      left: 60%;
-      width: 50%;
-  }
-  .forIpadcenter{
-    margin-top: -30%;
-    margin-left: 55%;
-      position: relative;
-      transform: scale(1);
-      width: 100%;
-  }
-  .forIpadcenter + .forIpadcenter {
-      margin-top: 1.5%; 
-  }
-  .upbutton {
-      z-index: 10; 
-      position: fixed; 
-      left: 71%;
-      top: 3%; 
-  }
   
-  .downbutton{
-      z-index: 9; 
-      position: fixed; 
-      left: 71%;
-      bottom: 2%;
-  }
-  .titel-Name{
-    font-size: 60px;
-    position: absolute;
-    left: 2.3%;
-    top: 45%;
-    letter-spacing: 7px;
-  }
-  .en-titelName{
-    font-size: 35px;
-    position: absolute;
-    left: 2.5%;
-    top: 58%;
-    width: 30%;
-  }
-  .loginbuttom{
-    border-radius: 80px;
-    background-image: url('../assets/查看鈕改.png');
-    background-position: center;
-    background-size: 101% 101%;
-    transform: scale(1.1);
-    left: 3.5%;
-    top: 22%;
-}
-@media screen and (max-width: 600px){
-  .one {
-      display: none;
-  }
-  .two {
-      margin-top: -10%;
-      position: relative;
-      transform: scale(0.8) translateX(-74%);
-      width: 100%;
-  }
-
-  .two + .two {
-      margin-top: -10%; 
-  }
-  .three{
-    margin-top: -5%;
-      position: relative;
-      transform: scale(0.8);
-      width: 100%;
-  }
-  .upbutton {
-      display: none;
-  }
-  
-  .downbutton{
-      display: none;
-  }
-  .titel-Name{
-    display: none;
-  }
-  .en-titelName{
-    display: none;
-  }
-  .loginbuttom{
-    border-radius: 80px;
-    background-image: url('../assets/查看鈕改.png');
-    background-position: center;
-    background-size: 101% 101%;
-    left: 30%;
-    top: -2%;
-    transform: scale(1);
-}
-}
-@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-  .titel-Name{
-    font-size: 60px;
-    position: absolute;
-    left: 2.3%;
-    top: 40%;
-    letter-spacing: 7px;
-  }
-  .en-titelName{
-    font-size: 35px;
-    position: absolute;
-    left: 2.5%;
-    top: 52%;
-    width: 50%;
-  }
-  .loginbuttom{
-    border-radius: 80px;
-    background-image: url('../assets/查看鈕改.png');
-    background-position: center;
-    background-size: 101% 101%;
-    left: 3.5%;
-    top: 40%;
-    transform: scale(1.1);
-}
-}
-</style>
 

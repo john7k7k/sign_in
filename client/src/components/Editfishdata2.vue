@@ -91,12 +91,17 @@
             class=" ml-1 cancelcolorbuttom mt-5 text-white"
             variant="outlined"
             width="130"
-            @click="editColor(0)" >顏色設定完成</v-btn>
-      <v-btn 
+            @click="editColor(1)" >取消顏色設定  </v-btn>
+    <v-btn 
+            class=" ml-8 setcolorbuttom mt-5 text-white"
+            width="130"
+            @click="editColor(0)" ></v-btn>
+    <v-btn 
             class=" ml-8 cancelcolorbuttom mt-5 text-white"
             variant="outlined"
             width="130"
-            @click="editColor(1)" >取消顏色設定  </v-btn>
+            @click="editColor(0)" >語音辨識</v-btn>
+      
   
   </div>
     </div>
@@ -229,7 +234,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            /**/"/api/v1/fish/control/?section="+this.poolcode,{
+            "https://aifish.cc"+"/api/v1/fish/control/?section="+this.poolcode,{
               "fishControl":{
         "led":{
             [this.FishId]:
@@ -281,7 +286,7 @@ function TranActive(active) {
             this.afterEditErr = this.FishErr
           }
           axios.post(
-            /**/"/api/v1/fish/data/?section=001",{
+            "https://aifish.cc"+"/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }
@@ -323,7 +328,7 @@ function TranActive(active) {
   },
     ControlFish(move) {
         axios.post(
-                /**/"/api/v1/fish/control/?section="+this.poolname,{
+                "https://aifish.cc"+"/api/v1/fish/control/?section="+this.poolname,{
                   "fishControl":{
             "led":{
             },
@@ -358,7 +363,7 @@ function TranActive(active) {
         async fetchImageSource(id) {
     try {
         const res = await axios.get(
-            /**/"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
+            "https://aifish.cc"+"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
                 Authorization: `Bearer ${this.token}`
             }}
         );
@@ -462,7 +467,7 @@ function TranActive(active) {
 }
 .cancelcolorbuttom{
   border-radius: 100px;
-  border-color: aqua;
+  border-color: rgb(250, 250, 250);
     background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
     background-position: center;
     background-size: 100% 100%;

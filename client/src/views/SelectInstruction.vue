@@ -1,7 +1,7 @@
 <template>
     <div class="selectinstruction" >
-        <Navbar></Navbar>
-        <v-img src="../assets/過渡頁面字.png" class="titelword  "></v-img>
+        <Navbar class="navbar"></Navbar>
+        
         <selectInstruction></selectInstruction>
     </div>
   </template>
@@ -19,6 +19,9 @@
   </script>
   
   <style scoped>
+  .navbar{
+    position: absolute;
+  }
   .selectinstruction {
     z-index: 0;
     background-image: url('../assets/過渡畫面背景.jpg');
@@ -30,11 +33,6 @@
     right: 0;
     bottom: 0;
     overflow-x: hidden;
-  }
-  .titelword{
-    transform: scale(0.3);
-    right: 33.2%;
-    bottom: 3%;
   }
   @media screen and (max-width: 600px){
     .selectinstruction {
@@ -48,11 +46,6 @@
     right: 0;
     bottom: 0;
     overflow-x: hidden;
-  }
-  .titelword{
-    transform: scale(0.4);
-    right: 2%;
-    bottom: 3%;
   }
   }
   

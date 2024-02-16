@@ -207,7 +207,7 @@
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          /**/"/api/v1/account/sticker",formData,{
+          "https://aifish.cc"+"/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -230,7 +230,7 @@
       },
       fetchImage(){
         axios.get(
-          /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
+          "https://aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
@@ -250,7 +250,7 @@
             return
           }
           axios.post(
-            /**/"/api/v1/account/reset_password",
+            "https://aifish.cc"+"/api/v1/account/reset_password",
             {
               "username":this.username,
               "mail": this.email,
@@ -275,7 +275,7 @@
         },
         checkpassword () {
           axios.post(
-            /**/"/api/v1/account/reset_password_check",
+            "https://aifish.cc"+"/api/v1/account/reset_password_check",
             {
               "username":this.username,
               "code": this.checkcode
