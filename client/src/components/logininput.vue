@@ -182,7 +182,7 @@ font-size: 20px;
           this.loading = true
           localStorage.setItem("username",this.account)
           axios.post(
-            "https://aifish.cc"+"/api/v1/account/login",
+            /**/"/api/v1/account/login",
             {
               "username":this.account,
               "password":hashedPassword
@@ -247,7 +247,7 @@ font-size: 20px;
       async loadnewdata() {
           try {
             const response = await axios.get(
-              "https://aifish.cc"+"/api/v1/account",
+              /**/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`

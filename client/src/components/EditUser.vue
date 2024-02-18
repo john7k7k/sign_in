@@ -1,15 +1,15 @@
 <template>
-    <v-container>
-      <v-row no-gutters justify="center" class="mt-10">
-        <v-card width="1024" class="mx-auto">
+      <v-container>
+      <v-row no-gutters justify="center" >
+        <v-card width="1024" class=" usercard">
           <v-toolbar class="text-white" color="teal-lighten-3">
-            <v-toolbar-title class="ml-5">個人基本資料</v-toolbar-title>
+            <v-toolbar-title class="text-t4">個人基本資料</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-row class="ml-3 mt-4">
             <v-avatar :image="imageUrl" size="100"></v-avatar>
-            <div class="mt-19  custom-margin"  style="color: blue;" @click="executeFunction"><v-btn @click="modal = true" flat class="text-decoration-underline">更改頭貼照片</v-btn></div>
-            <div class="mt-19  custom-margin"  style="color: blue;" @click="executeFunction"><v-btn @click="passwordmodal = true" flat class="text-decoration-underline">更改密碼</v-btn></div>
+            <div class="mt-19  custom-margin"  @click="executeFunction"><v-btn @click="modal = true" flat class="text-decoration-underline word">更改頭貼照片</v-btn></div>
+            <div class="mt-19  custom-margin"  @click="executeFunction"><v-btn @click="passwordmodal = true" flat class="text-decoration-underline word">更改密碼</v-btn></div>
             <Modal
               v-model="modal"
               title="變更頭貼"
@@ -67,75 +67,127 @@
               ></v-text-field>
           </Modal>
           </v-row>
-        
-          <v-row class="d-flex justify-start">
-            <v-list-item class="ml-6 mr-auto mt-8 font-weight-black"
-              >使用者名稱</v-list-item 
-            >
-            <v-list-item
-              class="mt-8 mr-4 text-center flex-grow-1"
-              style="margin-left: -230px"
-            >
-              <t4>{{ username }}</t4>
-            </v-list-item>
-          </v-row>
+          <div class="box">
+            <div class="item1">使用者名稱</div>
+            <div class="item2">{{ username }}</div>
+          </div>
           <v-divider class="ma-3"></v-divider>
-          <v-row class="d-flex justify-start">
-            <v-list-item class="ml-6 mt-5 mr-auto font-weight-black"
-              >Email</v-list-item
-            >
-            <v-list-item class="mt-5 mr-2 text-center flex-grow-1">
-              <t4>{{ email }}</t4>
-            </v-list-item>
-          </v-row>
+          <div class="box">
+            <div class="item1">Email</div>
+            <div class="item2">{{ email }}</div>
+          </div>
           <v-divider class="ma-3"></v-divider>
-          <v-row class="d-flex justify-start">
-            <v-list-item class="ml-6 mr-auto mt-5 font-weight-black"
-              >註冊時間</v-list-item
-            >
-            <v-list-item class="mt-5 mr-10 text-center flex-grow-1">
-              <t4>{{ registrationTime }}</t4>
-            </v-list-item>
-          </v-row>
+          <div class="box">
+            <div class="item1">註冊時間</div>
+            <div class="item2">{{ registrationTime }}</div>
+          </div>
           <v-divider class="ma-3"></v-divider>
-          <v-row class="d-flex justify-start">
-            <v-list-item class="ml-6 mr-auto mt-5 font-weight-black"
-              >權限</v-list-item
-            >
-            <v-list-item class="mt-5 mr-7 text-center flex-grow-1">
-              <t4>{{ level }}</t4>
-            </v-list-item>
-            <v-list-item class="mt-5">
-              <v-btn
-                v-show="false"
-                color="white"
-                icon="mdi-square-edit-outline"
-                size="small"
-              ></v-btn>
-            </v-list-item>
-          </v-row>
+          <div class="box">
+            <div class="item1">權限</div>
+            <div class="item2">{{ level }}</div>
+          </div>
           <v-divider class="ma-3"></v-divider>
-          <v-row class="d-flex justify-start">
-            <v-list-item class="ml-6 mr-auto mt-5 font-weight-black"
-              >所屬區域</v-list-item
-            >
-            <v-list-item class="mt-5 mr-14 pr-14 text-center flex-grow-1">
-              <t4>{{ section }}</t4>
-            </v-list-item>
-            <v-list-item class="mt-5">
-              <v-btn
-                v-show="false"
-                color="white"
-                icon="mdi-square-edit-outline"
-                size="small"
-              ></v-btn>
-            </v-list-item>
-          </v-row>
+          <div class="box">
+            <div class="item1">所屬區域</div>
+            <div class="item2">{{ section }}</div>
+          </div>
           <v-divider class="ma-3"></v-divider>
         </v-card>
       </v-row>
     </v-container>
   </template>
+
+<style scoped>
+.custom-margin {
+margin-top: 70px; 
+color: blue;
+}
+.usercard{
+margin-top: 8%;
+}
+.box{
+  display: flex;
+  width: 100%;
+  margin-top: 3%;
+}
+.item1{
+  width: 50%;
+  justify-content: start;
+  position: relative;
+  left: 3%;
+  font-weight: bold;
+  font-size: 16px;
+}
+.item2,.word{
+  font-size: 16px;
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .usercard{
+margin-top: 30%;
+
+}
+.box{
+  display: flex;
+  width: 100%;
+  margin-top: 8%;
+}
+.item1{
+  width: 50%;
+  justify-content: start;
+  position: relative;
+  left: 3%;
+  font-weight: bold;
+  font-size: 22px;
+}
+.item2,.word{
+  font-size: 22px;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+  .usercard{
+margin-top: 50%;
+
+}
+.box{
+  display: flex;
+  width: 100%;
+  margin-top: 8%;
+}
+.item1{
+  width: 50%;
+  justify-content: start;
+  position: relative;
+  left: 3%;
+  font-weight: bold;
+  font-size: 15px;
+}
+.item2,.word{
+  font-size: 15px;
+}
+}
+@media screen and (max-width: 400px) {
+  .usercard{
+margin-top: 20%;
+
+}
+.box{
+  display: flex;
+  width: 100%;
+  margin-top: 8%;
+}
+.item1{
+  width: 50%;
+  justify-content: start;
+  position: relative;
+  left: 3%;
+  font-weight: bold;
+  font-size: 12px;
+}
+.item2,.word{
+  font-size: 12px;
+}
+}
+</style>
   
   <script>
   import axios from 'axios';
@@ -207,7 +259,7 @@
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "https://aifish.cc"+"/api/v1/account/sticker",formData,{
+          /**/"/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -230,7 +282,7 @@
       },
       fetchImage(){
         axios.get(
-          "https://aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+          /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
@@ -250,7 +302,7 @@
             return
           }
           axios.post(
-            "https://aifish.cc"+"/api/v1/account/reset_password",
+            /**/"/api/v1/account/reset_password",
             {
               "username":this.username,
               "mail": this.email,
@@ -275,7 +327,7 @@
         },
         checkpassword () {
           axios.post(
-            "https://aifish.cc"+"/api/v1/account/reset_password_check",
+            /**/"/api/v1/account/reset_password_check",
             {
               "username":this.username,
               "code": this.checkcode
@@ -307,14 +359,5 @@
     }
   </script>
   
-  <style>
-    .dialog-bottom-transition-enter-active,
-    .dialog-bottom-transition-leave-active {
-      transition: transform 0.2s ease-in-out;
-    }
-    .custom-margin {
-  margin-top: 70px; 
-}
-
-  </style>
+  
   

@@ -304,7 +304,7 @@ methods: {
   },
   logout(){
     axios.post(
-"https://aifish.cc"+"/api/v1/account/logout",{},{
+/**/"/api/v1/account/logout",{},{
   headers: {
     Authorization: `Bearer ${this.token}`
   }
@@ -337,7 +337,7 @@ methods: {
   },
   fetchImage(){
       axios.get(
-        "https://aifish.cc"+"/api/v1/account/sticker", { responseType: 'blob', headers: {
+        /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
             .then(res=> {
@@ -354,7 +354,7 @@ methods: {
       localStorage.setItem("chooseSectionname", "全部");
           try {
             const res = await axios.get(
-              "https://aifish.cc"+"/api/v1/account",
+              /**/"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`

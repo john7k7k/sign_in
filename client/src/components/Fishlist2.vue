@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <div class="font-weight-black d-flex justify-center text-white text-h4">仿生魚清單</div>
+  <v-container >
+    <div class="font-weight-black d-flex justify-center text-white text-h4 fishList">仿生魚清單</div>
     
     
     </v-container>
@@ -208,6 +208,54 @@
   </div>
   
   </template>
+
+<style scoped>
+.fishList{
+  margin-top: 7%;
+}
+.burnfinishcss{
+  letter-spacing: 6px;
+  font-size: larger;
+}
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+}
+
+.radio {
+  flex-basis: calc(50% - 10px); 
+  margin: 5px; 
+  width: 45%;
+}
+.searchdisplay{
+  display: grid; 
+  grid-template-columns: 1fr auto auto auto auto;
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .fishList{
+  margin-top: 10%;
+}
+}
+@media screen and (max-width: 600px) {
+  .fishList{
+  margin-top: 15%;
+}
+  .searchdisplay {
+    grid-template-columns: 2fr 1fr; 
+  grid-auto-rows: auto; 
+}
+
+.searchdisplay > *:nth-child(n + 3) {
+  grid-column: span 3; 
+}
+.forloading{
+  z-index: 100;
+  position: absolute;
+}
+}
+</style>
   
   <script>
 import axios from 'axios';
@@ -651,7 +699,7 @@ import loading from '@/components/loading.vue';
         },
         clearfishhour(){
           axios.post(
-            "https://aifish.cc"+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
+            /**/"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
                   Authorization: `Bearer ${this.token}`
                 }
@@ -676,7 +724,7 @@ import loading from '@/components/loading.vue';
         },
         fetchBin() {
           axios.get(
-            "https://aifish.cc"+"/api/v1/ota/bin",{
+            /**/"/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -814,7 +862,7 @@ import loading from '@/components/loading.vue';
                   }
                   this.FishId[i].sort((a, b) => a - b);
                   const response = await axios.get(
-                    "https://aifish.cc"+"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
+                    /**/"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
                       {
                           headers: {
                               Authorization: `Bearer ${this.token}`
@@ -920,7 +968,7 @@ import loading from '@/components/loading.vue';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          "https://aifish.cc"+"/api/v1/account",
+          /**/"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -976,7 +1024,7 @@ import loading from '@/components/loading.vue';
             },
     remove(id){
         axios.post(
-          "https://aifish.cc"+"/api/v1/fish/delete/",
+          /**/"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -1028,7 +1076,7 @@ import loading from '@/components/loading.vue';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          "https://aifish.cc"+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          /**/"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -1055,7 +1103,7 @@ import loading from '@/components/loading.vue';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        "https://aifish.cc"+"/api/v1/fish/data/",
+        /**/"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -1081,7 +1129,7 @@ import loading from '@/components/loading.vue';
     },
     changefishpool(id,newsection){
         axios.post(
-          "https://aifish.cc"+"/api/v1/fish/relocal",
+          /**/"/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -1107,7 +1155,7 @@ import loading from '@/components/loading.vue';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        "https://aifish.cc"+"/api/v1/fish/photo/change",
+        /**/"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode
@@ -1136,42 +1184,7 @@ import loading from '@/components/loading.vue';
     }
   </script>
   
-  <style>
-  .burnfinishcss{
-    letter-spacing: 6px;
-    font-size: larger;
-  }
-  .radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    height: auto;
-  }
-
-  .radio {
-    flex-basis: calc(50% - 10px); 
-    margin: 5px; 
-    width: 45%;
-  }
-  .searchdisplay{
-    display: grid; 
-    grid-template-columns: 1fr auto auto auto auto;
-  }
-  @media screen and (max-width: 600px) {
-    .searchdisplay {
-      grid-template-columns: 2fr 1fr; 
-    grid-auto-rows: auto; 
-  }
-
-  .searchdisplay > *:nth-child(n + 3) {
-    grid-column: span 3; 
-  }
-  .forloading{
-    z-index: 100;
-    position: absolute;
-  }
-  }
-  </style>
+  
 
 
 

@@ -1,6 +1,6 @@
 <template>
     <v-container>
-    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4 mb-5">遙控器清單</div>
+    <div class="font-weight-black d-flex justify-center contrllerList  text-h4 mb-5">遙控器清單</div>
     <v-btn v-if="sectionOrigin != '003'" @click="Newcontrollermodal = true" size="large" class=" mr-8 mt-6  mb-6" color="green-darken-3">新增遙控器</v-btn>
     <Modal
           v-model="Newcontrollermodal"
@@ -495,7 +495,19 @@ import axios from 'axios';
     margin: 5px; 
     width: 45%;
   }
-  @media screen and (max-width: 600px){
+  .contrllerList{
+    color: white;
+    margin-top: 7%;
   }
+  @media screen and  (min-width: 601px) and (max-width: 1024px){
+  .contrllerList{
+  margin-top: 10%;
+}
+}
+@media screen and (max-width: 600px) {
+  .contrllerList{
+  margin-top: 25%;
+}
+}
   </style>
   

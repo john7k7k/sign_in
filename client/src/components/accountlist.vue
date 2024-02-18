@@ -1,6 +1,6 @@
 <template>
     <v-container>
-    <div class="font-weight-black d-flex justify-center mt-3 text-white text-h4">帳號清單</div>
+    <div class="font-weight-black d-flex justify-center text-h4 accountList">帳號清單</div>
     
     
     </v-container>
@@ -70,6 +70,30 @@
     </div>
     
   </template>
+
+<style>
+.accountList{
+  color: white;
+  margin-top: 7%;
+}
+.section1{
+  padding-left: 290px;
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .accountList{
+  margin-top: 10%;
+}
+}
+
+@media screen and (max-width: 600px){
+  .accountList{
+  margin-top: 15%;
+}
+  .section1{
+  padding-left: 10px;
+}
+}
+</style>
   
   <script>
 import axios from 'axios';
@@ -317,7 +341,7 @@ import axios from 'axios';
     },
     accountdata(){
         axios.get(
-          "https://aifish.cc"+"/api/v1/account/list/?section="+this.sectionOrigin,{
+          /**/"/api/v1/account/list/?section="+this.sectionOrigin,{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -431,7 +455,7 @@ import axios from 'axios';
       },
       remove(username){
         axios.post(
-          "https://aifish.cc"+"/api/v1/account/remove_user/",
+          /**/"/api/v1/account/remove_user/",
             {
               "username":username,
             },
@@ -471,7 +495,7 @@ import axios from 'axios';
           level = 80;
         }
         axios.post(
-          "https://aifish.cc"+"/api/v1/account/revise/level",
+          /**/"/api/v1/account/revise/level",
             {
               "username":name,
               "newLevel":level
@@ -511,7 +535,7 @@ import axios from 'axios';
           section = "004" + newsection.substring(2);
         }
         axios.post(
-          "https://aifish.cc"+"/api/v1/account/revise/section",
+          /**/"/api/v1/account/revise/section",
             {
               "username":name,
               "newSection":section
@@ -584,15 +608,5 @@ import axios from 'axios';
     /*分配功能待開發:<Button v-show="row.showbtn && row.level != '總管理員'" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button> */
   </script>
   
-  <style>
-  .section1{
-    padding-left: 290px;
-  }
-
-  @media screen and (max-width: 600px){
-    .section1{
-    padding-left: 10px;
-  }
-  }
-  </style>
+  
   

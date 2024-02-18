@@ -1,12 +1,13 @@
 <template>
-  <v-tabs v-model="tab" color="deep-purple-accent-4 " align-tabs="center" class="mt-6 ml-7 mr-7">
-      <v-tab value="one">註冊機構</v-tab>
-      <v-tab value="two">註冊部門</v-tab>
-      <v-tab value="three">新增水池</v-tab>
+    <v-container>
+      <v-tabs v-model="tab" color="deep-purple-accent-4 " align-tabs="center" class="SignupSection ml-7 mr-7">
+      <v-tab value="one" >註冊機構</v-tab>
+      <v-tab value="two" >註冊部門</v-tab>
+      <v-tab value="three" >新增水池</v-tab>
       
     </v-tabs>
     
-    <v-card-text class="ml-7 mr-7">
+    <v-card-text class="ml-7 mr-7 ">
       <v-window v-model="tab" >
         <v-window-item value="one" >
           <v-row class="d-flex justify-space-around">
@@ -111,10 +112,41 @@
     <div class="d-flex justify-end signinbuttombg ml-7 mr-7" >
         <v-btn  @click="Signin(tab)" :disabled="SigninButtonDisabled" v-model="tab" class="mt-3 mr-10 mb-16" color="blue-accent-2"> 註冊 </v-btn>
     </div>
+    </v-container>
 
 
 
 </template>
+
+<style scoped>
+.v-slide-group__content,.v-card-text,.signinbuttombg{
+  background-color: white;
+}
+.SignupSection{
+  margin-top: 13%;
+  background-color: white;
+}
+	@media screen and  (min-width: 1681px){
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .SignupSection{
+  margin-top: 20%;
+  background-color: white;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+  .SignupSection{
+  margin-top: 40%;
+  background-color: white;
+}
+}
+@media screen and (max-width: 400px) {
+  .SignupSection{
+  margin-top: 40%;
+  background-color: white;
+}
+}
+</style>
 
 <script>
 import axios from 'axios';
@@ -317,8 +349,3 @@ export default {
 
 
 </script>
-<style>
-.v-slide-group__content,.v-card-text,.signinbuttombg{
-  background-color: white;
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <div class="Fishdatas" >
     <navbar></navbar>
-    <fishdata></fishdata>
+    <fishdata class="fishdata"></fishdata>
   </div>
 </template>
 
@@ -31,6 +31,24 @@ export default {
   height: 100%;
   overflow-y: auto;
   background-attachment: fixed;
+}
+.fishdata{
+  margin-top: 5%;
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+  .fishdata{
+  margin-top: 8%;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+  .fishdata{
+  margin-top: 12%;
+}
+}
+@media screen and (max-width: 400px) {
+  .fishdata{
+  margin-top: 12%;
+}
 }
 
 </style>

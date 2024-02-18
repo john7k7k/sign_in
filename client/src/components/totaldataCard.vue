@@ -40,13 +40,13 @@
       <div class="  en-titelName font-weight-bold" style="white-space: pre-wrap; text-align: end;">{{ poolsdata[centerIndex].EnPoolName }}</div>
       <div class=" recordtext text-grey-darken-1 "> 紀錄時間:{{ time }} </div>
       <div class="changebox">
-        <v-btn class="swichPool-btn"   @click="cellphoneSwipe" v-if="poolsName.length > 1 && isMobileScreen" @mouseenter="showButtons = true">切換水池</v-btn>
+        <v-btn class="swichPool-btn"   @click="cellphoneSwipe" v-if="poolsName.length > 1" @mouseenter="showButtons = true">切換水池</v-btn>
       </div>
       <v-card  class="poolsdatacard "   >
           <v-card-text class="cardtextbg  ">
-            <div v-if="isMobileScreen" class="font-weight-bold cellphonetitel-Name  mt-7" >{{ poolsName[centerIndex] }}</div>
-            <div v-if="isMobileScreen" class=" cellphoneEn-titelName mr-1 mt-4" >{{ poolsdata[centerIndex].EnPoolName }}</div>
-            <div v-if="isMobileScreen" class="cellphonerecordtext  text-blue-grey-lighten-1  mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
+            <div  class="font-weight-bold cellphonetitel-Name  mt-7" >{{ poolsName[centerIndex] }}</div>
+            <div  class=" cellphoneEn-titelName mr-1 mt-4" >{{ poolsdata[centerIndex].EnPoolName }}</div>
+            <div  class="cellphonerecordtext  text-blue-grey-lighten-1  mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
     
@@ -218,11 +218,10 @@
   width: 50%;
 }
 .four{
-  transform: scale(1.4);
-  margin-top: 55%;
-  height: 260px;
-  width: 50%;
-}
+    z-index: 9;
+    transform: scale(2);
+    height: 33%;
+  }
 .five{
   transform: scale(1.1);
   margin-top: 20%;
@@ -258,12 +257,11 @@
 .needbcbtn-bg,.needfixbtn-bg{
   transform: scale(1.2);
 }
-.swichPool-btn{
+.swichPool-btn,.cellphonetitel-Name,.cellphonerecordtext,.cellphoneEn-titelName{
   display: none;
 }
-
 }
-@media screen and  (min-width: 960px) and (max-width: 1600px){
+@media screen and  (min-width: 1026px) and (max-width: 1600px){
 .Swiper{
   display: flex;
   width: 100%;
@@ -310,12 +308,11 @@
   width: 50%;
 }
 .four{
-  z-index: 9;
-  transform: scale(1.5);
-  margin-top: 50%;
-  height: 33%;
-  width: 50%;
-}
+    z-index: 9;
+    transform: scale(1.5);
+    margin-top: 20%;
+    height: 33%;
+  }
 .five{
   z-index: 9;
   transform: scale(1.1);
@@ -344,12 +341,11 @@
   position: relative;
   left: 2%;
 }
-.swichPool-btn{
+.swichPool-btn,.cellphonetitel-Name,.cellphonerecordtext,.cellphoneEn-titelName{
   display: none;
 }
-
 }
-@media screen and (min-width: 601px) and (max-width: 1024px){
+@media screen and (min-width: 601px) and (max-width: 1025px){
   .titel-Name,.en-titelName,.recordtext,.Swiper-content,.one,.three{
     display: none;
   }
@@ -391,9 +387,11 @@
   width: 80%;
 }
 .four{
-  margin-top: 10%;
-  width: 80%;
-}
+    z-index: 9;
+    transform: scale(1.5);
+    margin-top: 45%;
+    height: 20%;
+  }
 .changebox{
   width: 90%;
   height: auto;
@@ -470,9 +468,11 @@
 .five{
   margin-top: 15%;
   width: 70%;
+  transform: scale(0.95);
 }
 .four{
-  margin-top: 10%;
+  margin-top: 13%;
+  transform: scale(0.9);
 }
 .changebox{
   width: 90%;
@@ -720,7 +720,7 @@ async refreshnew() {
   this.isRefreshing = true;
   try {
   const response = await axios.get(
-    "https://aifish.cc"+"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
+    /**/"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -769,7 +769,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          "https://aifish.cc"+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          /**/"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -979,7 +979,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    "https://aifish.cc"+"/api/v1/account",
+    /**/"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`

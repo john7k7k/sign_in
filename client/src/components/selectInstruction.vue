@@ -136,6 +136,9 @@
   .downbutton{
       left: 74%;
   }
+  .wordbox,.changepool{
+  display: none;
+}
 }
 @media screen and  (min-width: 1025px) and (max-width: 1680px){
 .one{

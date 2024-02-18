@@ -1,6 +1,6 @@
 <template>
     <div class="UserData">
-      <EditUser></EditUser>
+      <EditUser ></EditUser>
     </div>
   
   </template>
@@ -20,7 +20,6 @@
   </script>
   
   <style>
-  
   
   </style>
   

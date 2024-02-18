@@ -1,6 +1,6 @@
 <template>
     <div class="FishDatalist">
-        <Fishlist2></Fishlist2>
+        <Fishlist2 class="Fishlist2"></Fishlist2>
     </div>
   
   </template>
@@ -17,6 +17,5 @@
   </script>
   
   <style>
-  
   </style>
   

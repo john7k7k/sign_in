@@ -7,7 +7,7 @@
       </v-avatar>
     </div>
     <div class="son2">
-      <div  class="text-white ml-3 idtext   font-weight-medium mb-4" >ID</div>
+      <div  class="text-white ml-3 idtext   font-weight-medium mb-1" >ID</div>
   <div class="d-flex">
     <div class="text-white  font-weight-medium fishIDtext">{{ FishId }}</div>
   <div  class="activetext text-grey font-weight-medium ml-10 mt-16"><h3>[{{ selectactive }}]</h3></div>
@@ -109,6 +109,356 @@
   </div>
   
 </template>
+
+<style scoped>
+  .btn-bg{
+  position: absolute;
+  font-size: 23px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.idtext{
+  font-size: 35px;
+  transform: scale(1.7);
+}
+.fishIDtext{
+  font-size: 80px;
+  letter-spacing: 5px;
+}
+.activetext{
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.titelbctext{
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.titelerrortext{
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  width:530px;
+}
+.titelcolortext{
+  letter-spacing: 3px;
+  font-size: 18px;
+}
+.colorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  width: 530px;
+}
+.setcolorbuttom{
+    border-radius: 80px;
+    background-image: url('../assets/顏色設定鈕.png');
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.2);
+}
+.cancelcolorfather{
+  height: 40px;
+  border-radius: 100px;
+  background-image: linear-gradient(to right, red, blue);
+}
+.cancelcolorbuttom{
+  border-radius: 100px;
+  border-color: rgb(250, 250, 250);
+    background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.1);
+}
+.cancelcolorbuttom2{
+  border-radius: 100px;
+  border-color: rgb(255, 153, 0);
+    background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
+    background-position: center;
+    background-size: 100% 100%;
+    transform: scale(1.1);
+}
+
+
+@media screen and (min-width: 1681px) {
+  .idtext{
+  font-size: 40px;
+  transform: scale(2);
+}
+.fishIDtext{
+  font-size: 100px;
+  letter-spacing: 5px;
+}
+.activetext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+.titelbctext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+.titelerrortext{
+    letter-spacing: 3px;
+    font-size: 28px;
+  }
+  .titelcolortext{
+  letter-spacing: 3px;
+  font-size: 28px;
+}
+  .bcdisplay{
+    margin-top: 20px;
+  }
+  .btn-bg{
+  position: absolute;
+  font-size: 23px;
+  transform: scale(1.3);
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  top:10%;
+  left: 3%;
+}
+.father0{
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 55%;
+  height: 100%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  width: 43%;
+  align-items: flex-start;
+}
+.fishimage{
+  transform: scale(1.4);
+}
+}
+@media screen and (min-width: 1025px) and (max-width: 1680px){
+  .idtext{
+  font-size: 40px;
+  margin-top: 3%;
+}
+.fishIDtext{
+  font-size: 90px;
+  letter-spacing: 5px;
+}
+.activetext{
+    letter-spacing: 3px;
+    font-size: 20px;
+  }
+.titelbctext,.titelerrortext,.titelcolortext{
+    letter-spacing: 3px;
+    font-size: 25px;
+  }
+  .bcdisplay{
+    margin-top: 20px;
+  }
+  .btn-bg{
+  position: absolute;
+  font-size: 23px;
+  transform: scale(1);
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  top:10%;
+  left: 3%;
+}
+.father0{
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 55%;
+  height: 100%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 43%;
+  align-items: flex-start;
+}
+.fishimage{
+  transform: scale(1.4);
+}
+}
+@media screen and (min-width: 601px) and (max-width: 1024px){
+  .idtext{
+  font-size: 40px;
+  margin-top: 3%;
+}
+.fishIDtext{
+  font-size: 90px;
+  letter-spacing: 5px;
+}
+.activetext{
+    letter-spacing: 3px;
+    font-size: 25px;
+  }
+.titelbctext,.titelerrortext,.titelcolortext{
+    letter-spacing: 3px;
+    font-size: 30px;
+  }
+  .bcdisplay{
+    margin-top: 20px;
+  }
+  .btn-bg{
+  position: absolute;
+  font-size: 23px;
+  transform: scale(1.3);
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  top:10%;
+  left: 3%;
+}
+.father0{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width:100%;
+  height: 70%;
+  align-items: flex-start;
+  margin-left: 18%;
+}
+.fishimage{
+  transform: scale(1.3);
+  position: relative;
+  top: 20%;
+}
+}
+@media screen and (max-width: 600px){
+  .btn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.father0{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width:100%;
+  height: 70%;
+  align-items: flex-start;
+  margin-left: 10%;
+}
+.fishimage{
+  transform: scale(1);
+}
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  width:80%;
+}
+.colorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  width: 530px;
+  transform: scale(0.9) ;
+}
+.titelerrortext{
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  transform: scale(0.7);
+  transform-origin: left top;
+  width: 420px;
+}
+  .titelcolortext{
+    letter-spacing: 3px;
+    font-size: 18px;
+}
+.colorcard{
+  transform: scale(0.55);
+  transform-origin: left top;
+}
+.idtext{
+  font-size: 30px;
+}
+.fishIDtext{
+  font-size: 65px;
+}
+.activetext{
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    margin-top: -20px;
+  }
+}
+  </style>
 
 <script>
 import axios from 'axios';
@@ -234,7 +584,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            "https://aifish.cc"+"/api/v1/fish/control/?section="+this.poolcode,{
+            /**/"/api/v1/fish/control/?section="+this.poolcode,{
               "fishControl":{
         "led":{
             [this.FishId]:
@@ -286,7 +636,7 @@ function TranActive(active) {
             this.afterEditErr = this.FishErr
           }
           axios.post(
-            "https://aifish.cc"+"/api/v1/fish/data/?section=001",{
+            /**/"/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }
@@ -328,7 +678,7 @@ function TranActive(active) {
   },
     ControlFish(move) {
         axios.post(
-                "https://aifish.cc"+"/api/v1/fish/control/?section="+this.poolname,{
+                /**/"/api/v1/fish/control/?section="+this.poolname,{
                   "fishControl":{
             "led":{
             },
@@ -363,7 +713,7 @@ function TranActive(active) {
         async fetchImageSource(id) {
     try {
         const res = await axios.get(
-            "https://aifish.cc"+"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
+            /**/"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
                 Authorization: `Bearer ${this.token}`
             }}
         );
@@ -402,265 +752,7 @@ function TranActive(active) {
     }
   </script>
   
-  <style scoped>
-  .btn-bg{
-  position: absolute;
-  font-size: 23px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-}
-.idtext{
-  font-size: 35px;
-  transform: scale(1.7);
-}
-.fishIDtext{
-  font-size: 80px;
-  letter-spacing: 5px;
-}
-.activetext{
-    letter-spacing: 3px;
-    font-size: 18px;
-  }
-.titelbctext{
-    letter-spacing: 3px;
-    font-size: 18px;
-  }
-.titelerrortext{
-    letter-spacing: 3px;
-    font-size: 18px;
-  }
-.errorcard{
-  border-radius: 20px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  font-size: 25px;
-  width:530px;
-}
-.titelcolortext{
-  letter-spacing: 3px;
-  font-size: 18px;
-}
-.colorcard{
-  border-radius: 20px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  z-index: 2;
-  width: 530px;
-}
-.setcolorbuttom{
-    border-radius: 80px;
-    background-image: url('../assets/顏色設定鈕.png');
-    background-position: center;
-    background-size: 100% 100%;
-    transform: scale(1.2);
-}
-.cancelcolorfather{
-  height: 40px;
-  border-radius: 100px;
-  background-image: linear-gradient(to right, red, blue);
-}
-.cancelcolorbuttom{
-  border-radius: 100px;
-  border-color: rgb(250, 250, 250);
-    background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
-    background-position: center;
-    background-size: 100% 100%;
-    transform: scale(1.1);
-}
-.cancelcolorbuttom2{
-  border-radius: 100px;
-  border-color: rgb(255, 153, 0);
-    background-image: linear-gradient(to right , rgba(255, 255, 255, 0.3), rgba(16, 12, 12, 1), rgba(255, 255, 255, 0.3));
-    background-position: center;
-    background-size: 100% 100%;
-    transform: scale(1.1);
-}
-
-
-@media screen and (min-width: 1601px) {
-  .idtext{
-  font-size: 40px;
-  transform: scale(2);
-}
-.fishIDtext{
-  font-size: 100px;
-  letter-spacing: 5px;
-}
-.activetext{
-    letter-spacing: 3px;
-    font-size: 28px;
-  }
-.titelbctext{
-    letter-spacing: 3px;
-    font-size: 28px;
-  }
-.titelerrortext{
-    letter-spacing: 3px;
-    font-size: 28px;
-  }
-  .titelcolortext{
-  letter-spacing: 3px;
-  font-size: 28px;
-}
-  .bcdisplay{
-    margin-top: 20px;
-  }
-  .btn-bg{
-  position: relative;
-  font-size: 23px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-}
-.father0{
-  display: flex;
-  width: 100%;
-}
-.son1{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 55%;
-  height: 50%;
-  align-items: center;
-}
-.son2{
-  display: flex;
-  flex-direction: column;
-  width: 43%;
-  align-items: flex-start;
-}
-.fishimage{
-  transform: scale(1.4);
-  margin-top: 6%;
-}
-}
-@media screen and (min-width: 1200px) and (max-width: 1600px){
-.father0{
-  display: flex;
-  width: 100%;
-}
-.son1{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 55%;
-  height: 50%;
-  align-items: center;
-}
-.son2{
-  display: flex;
-  flex-direction: column;
-  width: 43%;
-  align-items: flex-start;
-}
-.fishimage{
-  transform: scale(1.4);
-  margin-top: 6%;
-}
-}
-@media screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape){
-
-}
-@media screen and (min-width: 601px) and (max-width: 1024px){
-}
-@media screen and (max-width: 600px){
-  .btn-bg{
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-}
-
-.father0{
-  display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: flex-start;
-}
-.son1{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  height: 30%;
-  align-items: center;
-  margin-top: -15%;
-}
-.son2{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-left: 15%;
-  margin-right: 5%;
-  margin-top: -15%;
-}
-.fishimage{
-  transform: scale(1);
-}
-.errorcard{
-  border-radius: 20px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  font-size: 25px;
-  width:80%;
-}
-.colorcard{
-  border-radius: 20px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  z-index: 2;
-  width: 530px;
-  transform: scale(0.9) ;
-}
-.titelerrortext{
-    letter-spacing: 3px;
-    font-size: 18px;
-  }
-.errorcard{
-  border-radius: 20px;
-  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-  background-color: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(1px);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  font-size: 25px;
-  transform: scale(0.7);
-  transform-origin: left top;
-  width: 420px;
-}
-  .titelcolortext{
-    letter-spacing: 3px;
-    font-size: 18px;
-}
-.colorcard{
-  transform: scale(0.55);
-  transform-origin: left top;
-}
-.idtext{
-  font-size: 30px;
-}
-.fishIDtext{
-  font-size: 65px;
-}
-.activetext{
-    letter-spacing: 0.5px;
-    font-size: 15px;
-    margin-top: -20px;
-  }
-}
-  </style>
+  
 
 
 

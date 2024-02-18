@@ -1,6 +1,6 @@
 <template>
     <div class="Accountlist">
-      <Accounts></Accounts>
+      <Accounts ></Accounts>
     </div>
   
   </template>
@@ -18,7 +18,6 @@
   </script>
   
   <style>
-  
   
   </style>
   

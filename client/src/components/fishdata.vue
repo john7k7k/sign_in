@@ -404,7 +404,7 @@
       },
       searchvideo(){
   axios.get(
-          "https://aifish.cc"+"/api/v1/video/?video_uid=0021",
+          /**/"/api/v1/video/?video_uid=0021",
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -427,7 +427,7 @@
       },
       ControlFish(move) {
           axios.post(
-                  "https://aifish.cc"+"/api/v1/fish/control/?section="+this.poolname,{
+                  /**/"/api/v1/fish/control/?section="+this.poolname,{
                     "fishControl":{
               "led":{
               },
@@ -486,7 +486,7 @@
           async fetchImageSource(id) {
     try {
         const res = await axios.get(
-            "https://aifish.cc"+"/api/v1/fish/photos/?fishUID="+id, { responseType: 'blob', headers: {
+            /**/"/api/v1/fish/photos/?fishUID="+id, { responseType: 'blob', headers: {
                 Authorization: `Bearer ${this.token}`
             }}
         );
