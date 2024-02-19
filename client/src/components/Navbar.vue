@@ -82,7 +82,7 @@
         <v-list-item
           v-show="userlistshow"
           prepend-icon="mdi mdi-clipboard-text-search-outline"
-          title="帳號資料清單"
+          title="帳號清單"
           value="accountdata"
           route to = "/account/list"
           class="text-white"
@@ -100,6 +100,13 @@
           title="遙控器設定"
           value="controller"
           route to = "/controller"
+          class="text-white"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi mdi-clipboard-text-search-outline"
+          title="機器魚互動"
+          value="interact"
+          route to = "/interact"
           class="text-white"
         ></v-list-item>
       <v-list-item
