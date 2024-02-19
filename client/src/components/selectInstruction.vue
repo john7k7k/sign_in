@@ -593,7 +593,7 @@
           async loadnewdata() {
           try {
             const response = await axios.get(
-              /**/"/api/v1/account",
+              process.env.VUE_APP_SEVER+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.usertoken}`

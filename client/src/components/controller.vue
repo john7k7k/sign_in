@@ -243,7 +243,7 @@ import axios from 'axios';
       },
     accountdata(){
         axios.get(
-          /**/"/api/v1/controller/",{
+          process.env.VUE_APP_SEVER+"/api/v1/controller/",{
     headers: {
       Authorization: `Bearer ${this.token}`
     },
@@ -359,7 +359,7 @@ import axios from 'axios';
           return;
         }
         axios.post(
-          /**/"/api/v1/controller/add",{
+          process.env.VUE_APP_SEVER+"/api/v1/controller/add",{
             "controllerID": this.NewcontrollerID,
             "fish": this.Newcontrollid,
             
@@ -401,7 +401,7 @@ import axios from 'axios';
             },
     remove(id){
         axios.post(
-          /**/"/api/v1/controller/delete",
+          process.env.VUE_APP_SEVER+"/api/v1/controller/delete",
             {
               "controllerID":id,
             },
@@ -427,7 +427,7 @@ import axios from 'axios';
           return;
         }
         axios.post(
-          /**/"/api/v1/controller/revise",
+          process.env.VUE_APP_SEVER+"/api/v1/controller/revise",
             {
               "controllerID": this.datas[index].id,
               

@@ -584,7 +584,7 @@ function TranActive(active) {
         else choseColor = "K5"
         if(this.chooseColor !== "" || choseColor == "K0"){
           axios.post(
-            /**/"/api/v1/fish/control/?section="+this.poolcode,{
+            process.env.VUE_APP_SEVER+"/api/v1/fish/control/?section="+this.poolcode,{
               "fishControl":{
         "led":{
             [this.FishId]:
@@ -636,7 +636,7 @@ function TranActive(active) {
             this.afterEditErr = this.FishErr
           }
           axios.post(
-            /**/"/api/v1/fish/data/?section=001",{
+            process.env.VUE_APP_SEVER+"/api/v1/fish/data/?section=001",{
               "fishData": {
                 [this.FishId] : {"bc": this.afterEditBc, "err": this.afterEditErr,"active":TranActive(this.selectactive)},
     }
@@ -678,7 +678,7 @@ function TranActive(active) {
   },
     ControlFish(move) {
         axios.post(
-                /**/"/api/v1/fish/control/?section="+this.poolname,{
+                process.env.VUE_APP_SEVER+"/api/v1/fish/control/?section="+this.poolname,{
                   "fishControl":{
             "led":{
             },
@@ -713,7 +713,7 @@ function TranActive(active) {
         async fetchImageSource(id) {
     try {
         const res = await axios.get(
-            /**/"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
+            process.env.VUE_APP_SEVER+"/api/v1/fish/photos/?fishUID=002"+id, { responseType: 'blob', headers: {
                 Authorization: `Bearer ${this.token}`
             }}
         );

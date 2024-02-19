@@ -259,7 +259,7 @@ margin-top: 20%;
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          /**/"/api/v1/account/sticker",formData,{
+          process.env.VUE_APP_SEVER+"/api/v1/account/sticker",formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -282,7 +282,7 @@ margin-top: 20%;
       },
       fetchImage(){
         axios.get(
-          /**/"/api/v1/account/sticker", { responseType: 'blob', headers: {
+          process.env.VUE_APP_SEVER+"/api/v1/account/sticker", { responseType: 'blob', headers: {
           Authorization: `Bearer ${this.token}`
         }}) 
               .then(res=> {
@@ -302,7 +302,7 @@ margin-top: 20%;
             return
           }
           axios.post(
-            /**/"/api/v1/account/reset_password",
+            process.env.VUE_APP_SEVER+"/api/v1/account/reset_password",
             {
               "username":this.username,
               "mail": this.email,
@@ -327,7 +327,7 @@ margin-top: 20%;
         },
         checkpassword () {
           axios.post(
-            /**/"/api/v1/account/reset_password_check",
+            process.env.VUE_APP_SEVER+"/api/v1/account/reset_password_check",
             {
               "username":this.username,
               "code": this.checkcode

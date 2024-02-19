@@ -201,7 +201,7 @@ export default {
       async loadnewdata() {
           try {
             const res = await axios.get(
-              /**/"/api/v1/account",
+              process.env.VUE_APP_SEVER+"/api/v1/account",
               {
                 headers: {
                   Authorization: `Bearer ${this.token}`
@@ -261,7 +261,7 @@ export default {
         Signin(tab){
         if (tab === "one"){
           axios.post(
-            /**/"/api/v1/instruction",{
+            process.env.VUE_APP_SEVER+"/api/v1/instruction",{
             "instruction":{"code": this.NewInstructionCode,
                            "name": this.NewInstruction
                           },
@@ -286,7 +286,7 @@ export default {
           })
         }else if(tab === "two"){
           axios.post(
-            /**/"/api/v1/depart",{
+            process.env.VUE_APP_SEVER+"/api/v1/depart",{
             "depart":{"code": this.NewDepartCode,
                       "name": this.NewDepart
                       },
@@ -314,7 +314,7 @@ export default {
           let deparAllcode = this.getKeyByValue(this.keyvalueMapping[1], this.SelectDepart)
           const deparcode = deparAllcode.substring(deparAllcode.length - 3);
           axios.post(
-            /**/"/api/v1/pool",{
+            process.env.VUE_APP_SEVER+"/api/v1/pool",{
             "instruction":{"code": this.getKeyByValue(this.keyvalueMapping[0], this.SelectInstruction)},
             "depart":{"code": deparcode},
             "pool":{"code": this.NewPoolCode,

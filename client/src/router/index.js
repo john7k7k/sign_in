@@ -106,7 +106,11 @@ const routes = [
     name: "contact",
     component: () => import("../views/john/Contact.vue"),
   },*/
-
+  {
+    path: "/interact",
+    name: "interact",
+    component: () => import("../views/john/Interact.vue"),
+  }
 ]
 
 const router = createRouter({

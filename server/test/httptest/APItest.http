@@ -2,7 +2,7 @@ POST http://localhost:3000/api/v1/account/sign_up
 Content-Type: application/json
 
 {
-    "username": "123456",
+    "username": "123",
     "mail": "ppp1244qqq@gmail.com",
     "password": "735434cae08df8e591c1549da88c6d87",
     "section": "999002001",
@@ -56,7 +56,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET http://localhost:3000/api/v1/account
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDEwMDUxNCwiZXhwIjoxNjk0MTA5NTE0fQ.KDnX_Gvr8Li2cDkBpFT8WtVPDm_895QWQDSV_Nmmrck
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODMyOTkyNiwiZXhwIjoxNzA4MzM4OTI2fQ.w5nbxVlQusSeC6v1VX8zLy9r1fP_Lg5f-dqQ1IfTxyI
 
 ###
 GET http://localhost:3000/api/v1/account/list/?section=001
@@ -345,3 +345,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 GET http://localhost:3000/api/v1/fish/explore
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k
+
+POST http://localhost:3000/api/v1/fish/voice
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k
+
+{
+    "text": "往上游",
+    "fishUID": 0023001
+}

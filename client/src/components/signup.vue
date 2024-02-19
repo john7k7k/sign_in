@@ -86,7 +86,7 @@
         
         fetchInstruction(){
           axios.get(
-            /**/"/api/v1/section",{
+            process.env.VUE_APP_SEVER+"/api/v1/section",{
               headers: {
                 Authorization: `Bearer `
               },
@@ -109,7 +109,7 @@
           this.loading = true
           
             axios.post(
-            /**/"/api/v1/account/sign_up",
+            process.env.VUE_APP_SEVER+"/api/v1/account/sign_up",
             {
               "username":this.account,
               "mail":this.email,

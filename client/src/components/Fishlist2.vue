@@ -699,7 +699,7 @@ import loading from '@/components/loading.vue';
         },
         clearfishhour(){
           axios.post(
-            /**/"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
+            process.env.VUE_APP_SEVER+"/api/v1/fish/reviseTime?fishUID="+this.ClearFishId.toString() , {}, {
                 headers: {
                   Authorization: `Bearer ${this.token}`
                 }
@@ -724,7 +724,7 @@ import loading from '@/components/loading.vue';
         },
         fetchBin() {
           axios.get(
-            /**/"/api/v1/ota/bin",{
+            process.env.VUE_APP_SEVER+"/api/v1/ota/bin",{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -862,7 +862,7 @@ import loading from '@/components/loading.vue';
                   }
                   this.FishId[i].sort((a, b) => a - b);
                   const response = await axios.get(
-                    /**/"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
+                    process.env.VUE_APP_SEVER+"/api/v1/fish/data/?fishesUID=" + this.FishId[i],
                       {
                           headers: {
                               Authorization: `Bearer ${this.token}`
@@ -968,7 +968,7 @@ import loading from '@/components/loading.vue';
     async loadnewdata() {
       try {
         const response = await axios.get(
-          /**/"/api/v1/account",
+          process.env.VUE_APP_SEVER+"/api/v1/account",
           {
             headers: {
               Authorization: `Bearer ${this.token}`
@@ -1024,7 +1024,7 @@ import loading from '@/components/loading.vue';
             },
     remove(id){
         axios.post(
-          /**/"/api/v1/fish/delete/",
+          process.env.VUE_APP_SEVER+"/api/v1/fish/delete/",
             {
               "fishesUID":[id.toString()],
             },
@@ -1076,7 +1076,7 @@ import loading from '@/components/loading.vue';
         const formData = new FormData()
         formData.append('image',this.selectFile)
         axios.post(
-          /**/"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
+          process.env.VUE_APP_SEVER+"/api/v1/fish/photos/?fishUID="+UID.toString(),formData,{
     headers: {
       Authorization: `Bearer ${this.token}`
     }
@@ -1103,7 +1103,7 @@ import loading from '@/components/loading.vue';
         newActive = 2;
       }else newActive = 0;
       axios.post(
-        /**/"/api/v1/fish/data/",
+        process.env.VUE_APP_SEVER+"/api/v1/fish/data/",
             {
               "fishData": {
                           [fishdata.id]: {"bc": fishdata.bc, "err": fishdata.err,"active":newActive,"version":fishdata.version}
@@ -1129,7 +1129,7 @@ import loading from '@/components/loading.vue';
     },
     changefishpool(id,newsection){
         axios.post(
-          /**/"/api/v1/fish/relocal",
+          process.env.VUE_APP_SEVER+"/api/v1/fish/relocal",
             {
               "fishUID": id,
               "newPool": newsection
@@ -1155,7 +1155,7 @@ import loading from '@/components/loading.vue';
     changeFishPhoto(id,photonum){
       const photoCode = parseInt(photonum, 10);
       axios.post(
-        /**/"/api/v1/fish/photo/change",
+        process.env.VUE_APP_SEVER+"/api/v1/fish/photo/change",
             {
               "fishUID": id,
               "photoCode": photoCode
