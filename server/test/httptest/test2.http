@@ -1,0 +1,349 @@
+POST https://www.aifish.cc/api/v1/account/sign_up
+Content-Type: application/json
+
+{
+    "username": "123456",
+    "mail": "ppp1244qqq@gmail.com",
+    "password": "735434cae08df8e591c1549da88c6d87",
+    "section": "999002001",
+    "level": 10
+}
+###
+GET https://www.aifish.cc/api/v1/account/verify/?username=110310322
+Content-Type: application/json
+
+###
+POST https://www.aifish.cc/api/v1/account/login
+Content-Type: application/json
+
+{
+    "username": "123",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
+POST https://www.aifish.cc/api/v1/fish/assign
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA3MjAzOCwiZXhwIjoxNjk4MDgxMDM4fQ.Zd8sTqeHteLXwpuCB8ghAhnFN3pGBtvUIQYDaMv8R5U
+
+{
+    "username": "1234",
+    "fishUID": "0023001"
+}
+
+###
+POST https://www.aifish.cc/api/v1/fish/disassign
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE0MTI3NCwiZXhwIjoxNzAxMTUwMjc0fQ.ONVF8RJx-WgAwzKsEKDy8MSjv9rmuGYMszm_nxpWA9Q
+
+{
+    "username": "123456",
+    "fishUID": "0023999"
+}
+
+###
+POST https://www.aifish.cc/api/v1/account/delete_user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNTc1NCwiZXhwIjoxNjkzNDI0NzU0fQ.CTi99ThcxnfZ5MOcaFyjqA6fODQ5nsK-x2niEWzgRNg
+
+###
+POST https://www.aifish.cc/api/v1/account/remove_user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk3NDg4NiwiZXhwIjoxNjkyOTgzODg2fQ.9VrRSBOUu5VTRzEL2ZQRxGJ1SrmSnw6rNs922MbMZRs
+
+{
+    "username": "abc"
+}
+###
+GET https://www.aifish.cc/api/v1/account
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NDEwMDUxNCwiZXhwIjoxNjk0MTA5NTE0fQ.KDnX_Gvr8Li2cDkBpFT8WtVPDm_895QWQDSV_Nmmrck
+
+###
+GET https://www.aifish.cc/api/v1/account/list/?section=001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2MTQ1MCwiZXhwIjoxNjk4MTcwNDUwfQ.ipQ489He7Lbtgq2Iw4vXGj2wjkPa2EzKdwPKgnIqE84
+
+###
+POST https://www.aifish.cc/api/v1/account/revise/level
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEwMzk5OCwiZXhwIjoxNzAxMTEyOTk4fQ.zJul6WgECSGARIVJXr4U8eKf1OP17fuZLVJcA_V1UIE
+
+{
+    "username": "123456",
+    "newLevel": 10
+}
+###
+POST https://www.aifish.cc/api/v1/account/revise/section
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEwNDEzMSwiZXhwIjoxNzAxMTEzMTMxfQ.S6PpnBcPK2hKDk3AmDuu15RAZdUui4WWnyjXX5bJChU
+
+{
+    "username": "123456",
+    "newSection": "999002001"
+}
+###
+POST https://www.aifish.cc/api/v1/fish/?section=999002001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEwNDk4MiwiZXhwIjoxNzAxMTEzOTgyfQ.gKN7mBA_5IQLFFz2Q90Si_7MrWs5QIACJf0V1phSUG8
+
+{
+    "fishUID": "0023998"
+}
+
+###
+POST https://www.aifish.cc/api/v1/fish/data/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTc2MzA0NSwiZXhwIjoxNzAxNzcyMDQ1fQ.ehAO1rdnXikyFZZxxwDxBnEVmE5KQHFliZ91BQovihs
+
+{
+    "fishData": {
+        "0023001": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023002": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023004": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023006": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023009": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023010": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023011": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023012": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023013": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"},
+        "0023036": {"bc": 0, "err": 0,"active":0, "version":"V1_7_3_LORA_TEST_CH10"}
+    }
+}
+
+###
+GET https://www.aifish.cc/api/v1/fish/table/?fishesUID=0023001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2Mzg0OCwiZXhwIjoxNjk4MTcyODQ4fQ.853qp8OqQSXpjBHKySn0wZel__vonQVb8GtTdItDL8E
+
+
+###
+GET https://www.aifish.cc/api/v1/fish/data/?fishesUID=0023999
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQ1NiIsImlhdCI6MTcwMTE1NTUxOCwiZXhwIjoxNzAxMTY0NTE4fQ.ZJKAYPAWScKLdoFS1Q9IQYM0MNwrmyExKLM90D9-KZQ
+
+###
+GET https://www.aifish.cc/api/v1/fish/history_data/?fishesUID=0023001&versions=1697002072:1698064041
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2Mzg0OCwiZXhwIjoxNjk4MTcyODQ4fQ.853qp8OqQSXpjBHKySn0wZel__vonQVb8GtTdItDL8E
+
+###
+POST https://www.aifish.cc/api/v1/fish/control/?section=999001001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjMwNTQ0MSwiZXhwIjoxNzAyMzE0NDQxfQ.KIzxcmxWo1CNskKzTpQ104iKwoxEHbc6JyglV6zIMAU
+
+{
+    "fishControl":{
+        "led":{
+            "3013": "K2"
+        },
+        "motion":{
+            
+        },
+        "mode":{
+            
+        }
+    }
+}
+
+###
+POST https://www.aifish.cc/api/v1/fish/delete/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NzI2NzA1OSwiZXhwIjoxNjk3Mjc2MDU5fQ.qObweChHUn4SQLJImtS8ramb_8dmLLi0WkusTgFmBZk
+
+{
+    "fishesUID": ["0023999"]
+}
+###
+GET https://www.aifish.cc/api/v1/video/?video_uid=1&section=002
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTkxMzc5MywiZXhwIjoxNjkxOTIyNzkzfQ.y2vpad0KlqtVWPELBdUGQ7eKYmaw0kY4BdprzMQV0LM
+
+###
+GET https://www.aifish.cc/home
+Cookie:token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTc2ODczMCwiZXhwIjoxNjkxNzc3NzMwfQ.x-S_txC02B18EY56ZIBeGvZTrN7GmibB491IVhV9ym0
+###
+POST https://www.aifish.cc/api/v1/instruction
+Content-Type: application/json
+
+{
+    "instruction":{
+        "code": "999",
+        "name": "測試用"
+    }
+}
+###
+POST https://www.aifish.cc/api/v1/depart
+Content-Type: application/json
+
+{
+    "depart":{
+        "code": "999",
+        "name": "測試部門"
+    },
+    "instruction":{
+        "code": "001"
+    }
+}
+###
+POST https://www.aifish.cc/api/v1/pool
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzEzMDUzNCwiZXhwIjoxNjkzMTM5NTM0fQ.vlz8hjB7zM2kIaHweRTO5RnDWuxLzdwIdw9Wyj_i-w0
+
+{   
+    "instruction":{
+        "code": "999"
+    },
+    "depart":{
+        "code": "001"
+    },
+    "pool":{
+        "code": "001",
+        "name": "測試水池1"
+    }
+}
+###
+POST https://www.aifish.cc/api/v1/fish/?section=002001001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
+
+{
+    "fish":{
+        "uid": "002001"
+    },
+    "pool":{
+        "id": "002001001"
+    }
+}
+
+###
+
+POST https://www.aifish.cc/api/v1/account/sticker
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NDk1NSwiZXhwIjoxNjkzNzYzOTU1fQ.k48udhky0SI6RR9pWmEhMYOR_Xb6a0t1a2bFOky_X5Y
+
+###
+GET https://www.aifish.cc/api/v1/account/sticker
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
+
+###
+GET https://www.aifish.cc/api/v1/fish/photosURL
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEzODcwNiwiZXhwIjoxNzAxMTQ3NzA2fQ.0WoJ5emqXm1_diL4I-HbSv0DyP8B9hLxlg64pY6L6Fc
+
+###
+GET https://www.aifish.cc/api/v1/section
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
+
+###
+POST https://www.aifish.cc/api/v1/fish/photo/change
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE1MjU2MywiZXhwIjoxNjk4MTYxNTYzfQ.qwdd8_JDnm9r52joSG0xh-clTYixJBRp-Zc1VebReyw
+Content-Type: application/json
+
+{
+    "fishUID": "0023001",
+    "photoCode": 1
+}
+###
+POST http://20.205.133.140/api/v1/fish/relocal
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjI5MTgxNSwiZXhwIjoxNzAyMzAwODE1fQ.r35lZBh7Lm5efod3wqP1liEq7bUcL_7Jc7AAeOSI95s
+
+{
+    "fishUID": "0023036",
+    "newPool": "002001001"
+}
+###
+POST https://www.aifish.cc/api/v1/ota/burn
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE3MDEwNzM1ODAsImV4cCI6MTcwMTA4MjU4MH0.KV09E086JbD3B5xSwhebuGveJ35hfxP52nhhzwxrFME
+
+{
+    "fishesUID": ["0023001","0023002"],
+    "version": "test_2"
+}
+
+###
+GET https://www.aifish.cc/api/v1/ota/bin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE5MDg1NiwiZXhwIjoxNzAxMTk5ODU2fQ.FWmPvcUXGH5_v1m_kD72PgGMC6u1__t_SgkBw-EYtow
+
+###
+POST https://www.aifish.cc/api/v1/ota/bin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NDk1NSwiZXhwIjoxNjkzNzYzOTU1fQ.k48udhky0SI6RR9pWmEhMYOR_Xb6a0t1a2bFOky_X5Y
+
+{
+    "version": "v1.3.4test"
+}
+###
+GET https://www.aifish.cc/api/v1/fish/photos/?fishUID=0023001
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjEyMDM4MSwiZXhwIjoxNzAyMTI5MzgxfQ.owzVtNB0vXAC-DXvGESDIx3SRsCebDiVz00uJHDYVlU
+
+###
+POST https://www.aifish.cc/api/v1/account/reset_password
+Content-Type: application/json
+
+{
+    "username": "123",
+    "mail": "pp1244qqq@gmail.com",
+    "password": "735434cae08df8e591c1549da88c6d87"
+}
+###
+POST https://www.aifish.cc/api/v1/account/reset_password_check
+Content-Type: application/json
+
+{
+    "username": "123",
+    "code": "429007"
+}
+
+###
+POST https://www.aifish.cc/api/v1/controller/add
+Content-Type: application/json
+
+{
+    "controllerID": "08149935test",
+    "fish": "0023036",
+    "location": "999001001",
+    "name": "mm"
+}
+
+###
+POST https://www.aifish.cc/api/v1/controller/delete
+Content-Type: application/json
+
+{
+    "controllerID": "BFF19B62"
+}
+
+###
+GET https://www.aifish.cc/api/v1/controller/
+Content-Type: application/json
+
+###
+POST https://www.aifish.cc/api/v1/controller/revise
+Content-Type: application/json
+
+{
+    "controllerID": "08149935test",
+    "name": "123",
+    "enble": {
+        "fish": "0023004",
+        "location":"002001001",
+        "name": "con",
+        "exist": 1,
+        "forward": 1,
+        "left": 1,
+        "right": 1,
+        "floating": 1,
+        "diving": 1,
+        "middle": 1,
+        "switch_mode": 1,
+        "led": 1,
+        "auto": 1,
+        "leave_auto": 1
+    }
+}
+
+###
+POST https://www.aifish.cc/api/v1/fish/reviseTime?fishUID=0023999
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTI0MzQ1MCwiZXhwIjoxNzAxMjUyNDUwfQ.-mR0Mfu3TV4kZ19fD9rBVgNaegYMADaFzUEl7Uso_XQ
+
+###
+GET https://www.aifish.cc/api/v1/fish/explore/?section=003001001
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k
