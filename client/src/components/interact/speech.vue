@@ -15,7 +15,6 @@
     <br/>
     <button @click="startSpeechRecognition">開始辨識</button>
     <p>{{ "辨識結果: " +  recognitionResult}}</p>
-    <button @click=" submit">提交結果</button>
   </div>
 </template>
 
@@ -44,8 +43,8 @@ export default {
 
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
-        this.recognitionResult = event.results[0][0].transcript;
-        
+            this.recognitionResult = event.results[0][0].transcript;
+            this.submit();
         };
     },
     methods: {
@@ -68,6 +67,8 @@ export default {
                 { headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }}
+            ).then(
+                ({data}) => alert('辨識結果: '+data)
             )
         },
         handleChange() {
