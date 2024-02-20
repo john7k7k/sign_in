@@ -4,7 +4,6 @@ const { prisma } =  require('../../util/myPrisma.js') ;
 module.exports = async (topic, rec_message) => { //接收到IOT端訊息
     const json_data = JSON.parse(rec_message.toString()); //parse資料
     messageProcess(topic,json_data);
-    
 }
 
 function topicDecode(topic){

@@ -281,6 +281,8 @@ API測試文件: [APItest.http](httptest/APItest.http)
     - [APItest.http](test/httptest/APItest.http) .........................................................................API測試文件
     - [db.js](db.js) .......................................................................................資料庫測試腳本
     - [test.js](test/test.js)......................................................................................開發測試用
+## Link
+[線上簡報](https://www.canva.com/design/DAF9T5eazdM/07bxDsgYrGoUraGYSz6TvQ/view?utm_content=DAF9T5eazdM&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 ## develop diary
 * README版本: 2
 * 未開發功能:
