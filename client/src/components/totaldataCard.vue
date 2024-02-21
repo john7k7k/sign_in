@@ -720,7 +720,7 @@ async refreshnew() {
   this.isRefreshing = true;
   try {
   const response = await axios.get(
-    /**/"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
+    process.env.VUE_APP_SEVER+"/api/v1/fish/explore/?section="+this.poolsCode[this.centerIndex],
     {
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -769,7 +769,7 @@ async RefreshDatas(i) {
 try {
       if (this.FishId[i].length !== 0) {
         const response = await axios.get(
-          /**/"/api/v1/fish/data/?fishesUID="+this.FishId[i],
+          process.env.VUE_APP_SEVER+"/api/v1/fish/data/?fishesUID="+this.FishId[i],
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
@@ -979,7 +979,7 @@ if(level === 1){
 async loadnewdata() {
 try {
   const response = await axios.get(
-    /**/"/api/v1/account",
+    process.env.VUE_APP_SEVER+"/api/v1/account",
     {
       headers: {
         Authorization: `Bearer ${this.token}`

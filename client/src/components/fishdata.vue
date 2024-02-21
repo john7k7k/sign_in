@@ -1,5 +1,5 @@
 <template>
-  <div class="fishdata-bg">
+  <div >
     <div class="d-flex align-center justify-space-between">
         <div class="text-white  pooltext"><h1>{{ poolname }}</h1></div>
         <v-dialog

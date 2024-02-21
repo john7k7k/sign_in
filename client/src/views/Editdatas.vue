@@ -33,7 +33,6 @@ import navbar from '@/components/Navbar.vue'
     left: 0;
     right: 0;
     bottom: 0;
-    overflow-y: hidden;
     overflow-x: hidden;
 }
 @media screen and  (min-width: 1025px) and (max-width: 1680px){
@@ -58,7 +57,6 @@ import navbar from '@/components/Navbar.vue'
 @media screen and (min-width: 401px) and (max-width: 600px){
 }
 @media screen and (max-width: 400px) {}
-		分支主題 1
 @media screen and (max-width: 600px) {
   .editdatas{
   z-index: 0;
@@ -73,7 +71,6 @@ import navbar from '@/components/Navbar.vue'
     left: 0;
     right: 0;
     bottom: 0;
-    overflow-y: auto;
     overflow-x: hidden;
 }
 }
