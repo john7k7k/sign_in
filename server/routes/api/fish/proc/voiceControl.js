@@ -1,5 +1,14 @@
 const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
+const instruction = {
+  "X":"停止",
+  "O":"前進",
+  "L":"左轉",
+  "R":"右轉",
+  "U":"往上",
+  "D":"往下",
+  "M":"平衡"
+}
 function recognize(text){
   const chineseKeyword = {
     "X":['停','廷','庭','亭'],
@@ -38,6 +47,6 @@ module.exports = async (req, res) => {
       })
       console.log(`topic: ${topic}, mes: ${mes}`);
       mqttConnection.publish(topic, mes);
-      res.send('控制方向:' + motion);
+      res.send(instruction[ motion ]);
     }catch{res.status(402).send("資料有誤");}
   }
