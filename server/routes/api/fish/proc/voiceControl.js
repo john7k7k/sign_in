@@ -1,5 +1,7 @@
 const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
+const franc = import('franc');
+
 const instruction = {
   "X":"停止",
   "O":"前進",
@@ -9,6 +11,7 @@ const instruction = {
   "D":"往下",
   "M":"平衡"
 }
+
 function recognize(text){
   const chineseKeyword = {
     "X":['停','廷','庭','亭','靜','定'],
@@ -19,11 +22,33 @@ function recognize(text){
     "D":['下', '底'],
     "M":['平','衡','橫']
   }
-  for(word of text){
-    for(let control in  chineseKeyword){
-      for(let keyword of chineseKeyword[control]){
-        if(keyword === word){
+  const englishKeyword = {
+    "X":['stop'],
+    "O":['go','forward'],
+    "L":['left'],
+    "R":['right'],
+    "U":['up','on'],
+    "D":['down'],
+    "M":['balance','poise']
+  }
+  const lang = franc(text)
+  if(lang === 'eng'){
+    text = text.toLowerCase();
+    for(let control in  englishKeyword){
+      for(let keyword of englishKeyword[control]){
+        if(text.includes(keyword)){
           return control;
+        }
+      }
+    }
+  }
+  else{
+    for(word of text){
+      for(let control in  chineseKeyword){
+        for(let keyword of chineseKeyword[control]){
+          if(keyword === word){
+            return control;
+          }
         }
       }
     }
