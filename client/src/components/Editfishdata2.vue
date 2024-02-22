@@ -96,11 +96,6 @@
             class=" ml-8 setcolorbuttom mt-5 text-white"
             width="130"
             @click="editColor(0)" ></v-btn>
-    <v-btn 
-            class=" ml-8 cancelcolorbuttom mt-5 text-white"
-            variant="outlined"
-            width="130"
-            @click="editColor(0)" >語音辨識</v-btn>
       
   
   </div>
@@ -361,8 +356,8 @@
   justify-content: center;
   width:100%;
   height: 70%;
+  padding: 0 18%;
   align-items: flex-start;
-  margin-left: 18%;
 }
 .fishimage{
   transform: scale(1.3);
@@ -370,12 +365,15 @@
   top: 20%;
 }
 }
-@media screen and (max-width: 600px){
+@media screen and (min-width: 401px) and (max-width: 600px){
   .btn-bg{
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
   background-color: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(1px);
   border: 3px solid rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top:8%;
+  left: 2%;
 }
 
 .father0{
@@ -399,10 +397,12 @@
   width:100%;
   height: 70%;
   align-items: flex-start;
-  margin-left: 10%;
+  padding: 0 15%;
 }
 .fishimage{
-  transform: scale(1);
+  transform: scale(0.9);
+  position: relative;
+  top:20%;
 }
 .errorcard{
   border-radius: 20px;
@@ -457,6 +457,113 @@
     font-size: 15px;
     margin-top: -20px;
   }
+.cancelcolorbuttom,.setcolorbuttom{
+    transform: scale(0.9);
+}
+}
+@media screen and (max-width: 400px){
+  .btn-bg{
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top:8%;
+  left: 2%;
+  transform: scale(0.9);
+}
+
+.father0{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.son1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+}
+.son2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width:100%;
+  height: 70%;
+  align-items: flex-start;
+  padding: 0 13%;
+}
+.fishimage{
+  transform: scale(0.8);
+  position: relative;
+  top:25%;
+}
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  width:80%;
+}
+.colorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  width: 530px;
+  transform: scale(0.9) ;
+}
+.titelerrortext{
+    letter-spacing: 3px;
+    font-size: 18px;
+  }
+.errorcard{
+  border-radius: 20px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(1px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  font-size: 25px;
+  transform: scale(0.7);
+  transform-origin: left top;
+  width: 420px;
+}
+  .titelcolortext{
+    letter-spacing: 3px;
+    font-size: 18px;
+}
+.colorcard{
+  transform: scale(0.55);
+  transform-origin: left top;
+}
+.idtext{
+  font-size: 30px;
+  position: relative;
+  top:5%;
+}
+.fishIDtext{
+  font-size: 60px;
+  position: relative;
+  top:20%;
+}
+.activetext{
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    position: relative;
+    bottom: 15%;
+  }
+.cancelcolorbuttom,.setcolorbuttom{
+    transform: scale(0.9);
+    position: relative;
+    bottom: 70%;
+}
 }
   </style>
 

@@ -1,22 +1,258 @@
 <template>
-  <div>
+    <div class="box">
+        <div class="tital">語音控制</div>
     <div>
-      <label for="dropdown">選擇控制魚的ID:</label>
+      <label for="dropdown" style="color: white;" v-show="false">選擇控制魚的ID:</label>
       <select id="dropdown" v-model="selectedfishUID" @change="handleChange">
         <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.label }}</option>
       </select>
     </div>
-    <label for="languageSelect">選擇語言:</label>
-    <select id="languageSelect" v-model="selectedLanguage" @change="changeLanguage">
-      <option value="en-US">英文</option>
-      <option value="zh-CN">中文</option>
+    <label for="languageSelect" style="color: white;" v-show="false">選擇語言:</label>
+    <select id="languageSelect" v-model="selectedLanguage" @change="changeLanguage" style="color: white;" v-show="false">
+      <option value="en-US" style="color: white;">英文</option>
+      <option value="zh-CN" style="color: white;">中文</option>
       <!-- 其他語言選項 -->
     </select>
     <br/>
-    <button @click="startSpeechRecognition">開始辨識</button>
-    <p>{{ "辨識結果: " +  recognitionResult}}</p>
-  </div>
+    
+    <p  class="resultTital">辨識結果</p>
+    <v-card class="resultcard"><div class="Resultsword">{{ recognitionResult }}</div></v-card>
+    <v-btn class="btn-bg text-white" @click="startSpeechRecognition"  icon="mdi mdi-microphone" size="80"></v-btn>
+    <div style="color: white;" class="beginWord">開始辨識</div>
+    </div>
 </template>
+<style scoped>
+.box{
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+@media screen and  (min-width: 1681px){
+    .tital{
+    font-weight: bold;
+    margin-top: 8%;
+    font-size: 60px;
+    color: white;
+}
+.resultTital{
+    color: white;
+    font-size: 40px;
+    margin-top: 6%;
+}
+.resultcard{
+    width: 60%;
+    height: 30%;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-top: 1%;
+}
+.Resultsword{
+    font-size: 55px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+.btn-bg{
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+    background-color: black; 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 30px;
+    margin-top: 6%;
+  }
+.beginWord{
+    font-size:25px;
+    margin-top: 1%;
+}
+}
+@media screen and  (min-width: 1025px) and (max-width: 1680px){
+    .tital{
+    font-weight: bold;
+    margin-top: 8%;
+    font-size: 45px;
+    color: white;
+}
+.resultTital{
+    color: white;
+    font-size: 25px;
+    margin-top: 3%;
+}
+.resultcard{
+    width: 60%;
+    height: 30%;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-top: 1%;
+}
+.Resultsword{
+    font-size: 35px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+.btn-bg{
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+    background-color: black; 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 30px;
+    margin-top: 4%;
+  }
+.beginWord{
+    font-size:20px;
+    margin-top: 1%;
+}
+}
+@media screen and  (min-width: 601px) and (max-width: 1024px){
+    .tital{
+    font-weight: bold;
+    margin-top: 18%;
+    font-size: 60px;
+    color: white;
+}
+.resultTital{
+    color: white;
+    font-size: 30px;
+    margin-top: 10%;
+}
+.resultcard{
+    width: 75%;
+    height: 30%;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-top: 1%;
+}
+.Resultsword{
+    font-size: 45px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+.btn-bg{
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+    background-color: black; 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 30px;
+    transform: scale(1.2);
+    margin-top: 15%;
+  }
+.beginWord{
+    font-size:25px;
+    margin-top: 3%;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 600px){
+    .tital{
+    font-weight: bold;
+    margin-top: 30%;
+    font-size: 45px;
+    color: white;
+}
+.resultTital{
+    color: white;
+    font-size: 25px;
+    margin-top: 20%;
+}
+.resultcard{
+    width: 90%;
+    height: 20%;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-top: 3%;
+}
+.Resultsword{
+    font-size: 35px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+
+.btn-bg{
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+    background-color: black; 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 30px;
+    margin-top: 20%;
+  }
+.beginWord{
+    font-size:20px;
+    margin-top: 3%;
+}
+}
+@media screen and (max-width: 400px) {
+    .tital{
+    font-weight: bold;
+    margin-top: 30%;
+    font-size: 40px;
+    color: white;
+}
+.resultTital{
+    color: white;
+    font-size: 20px;
+    margin-top: 20%;
+}
+.resultcard{
+    width: 90%;
+    height: 20%;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-top: 3%;
+}
+.Resultsword{
+    font-size: 30px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+
+.btn-bg{
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+    background-color: black; 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 30px;
+    margin-top: 20%;
+    transform: scale(0.9);
+  }
+.beginWord{
+    font-size:15px;
+    margin-top: 3%;
+}
+}
+</style>
 
 <script>
 import axios from 'axios';
@@ -31,7 +267,7 @@ export default {
                 { value: 'option3', label: '選項 3' }
             ],
             recognition: null,
-            selectedLanguage: 'en-US', // 預設語言為英文
+            selectedLanguage: 'zh-CN', // 預設語言為中文
             recognitionResult: ''
         };
     },
@@ -110,8 +346,4 @@ export default {
 };
 </script>
 
-  <style>
-  div {
-  background-color: white;
-}
-  </style>
+ 
