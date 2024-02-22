@@ -1,37 +1,16 @@
 const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
 const franc = import('franc');
-
-const instruction = {
-  "X":"停止",
-  "O":"前進",
-  "L":"左轉",
-  "R":"右轉",
-  "U":"往上",
-  "D":"往下",
-  "M":"平衡"
+const { instruction, chineseKeyword, englishKeyword } = require('../../../../config/voiceKeyword.js')
+function isletter(character) {
+  return /^[a-zA-Z]$/.test(character);
 }
 
 function recognize(text){
-  const chineseKeyword = {
-    "X":['停','廷','庭','亭','靜','定'],
-    "O":['前', '進', '走'],
-    "L":['左'],
-    "R":['右'],
-    "U":['上','水面','抬','浮'],
-    "D":['下', '底'],
-    "M":['平','衡','橫']
+  let lang = 'ch'
+  if(isletter(text[0])) {
+    lang = 'eng';
   }
-  const englishKeyword = {
-    "X":['stop'],
-    "O":['go','forward'],
-    "L":['left'],
-    "R":['right'],
-    "U":['up','on'],
-    "D":['down'],
-    "M":['balance','poise']
-  }
-  const lang = franc(text)
   if(lang === 'eng'){
     text = text.toLowerCase();
     for(let control in  englishKeyword){
@@ -61,6 +40,7 @@ module.exports = async (req, res) => {
       console.log(req.body);
       const fishUID = '0023001';
       const motion = recognize(req.body.text);
+      console.log(motion)
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
       const { location: section } = await prisma.fish.findUnique({
         where: { fishUID }
