@@ -16,9 +16,10 @@
     <br/>
     
     <p  class="resultTital">辨識結果</p>
-    <v-card class="resultcard"><div class="Resultsword">{{ recognitionResult }}</div></v-card>
-    <v-btn class="btn-bg text-white" @click="startSpeechRecognition"  icon="mdi mdi-microphone" size="80"></v-btn>
-    <div style="color: white;" class="beginWord">開始辨識</div>
+    <v-card class="resultcard"><div class="Resultsword">{{ command }}</div></v-card>
+    <v-btn class="btn-bg text-white" @click="toggleSpeechRecognition"  :icon="icon" size="80"></v-btn>
+    <div v-show="!isListening" style="color: white;" class="beginWord">開始辨識</div>
+    <div v-show="isListening" style="color: white;" class="beginWord">結束辨識</div>
     </div>
 </template>
 <style scoped>
@@ -268,7 +269,10 @@ export default {
             ],
             recognition: null,
             selectedLanguage: 'zh-CN', // 預設語言為中文
-            recognitionResult: ''
+            recognitionResult: '',
+            command:"",
+            isListening:false,
+            icon : "mdi mdi-microphone",
         };
     },
     mounted() {
@@ -284,10 +288,31 @@ export default {
         };
     },
     methods: {
+        toggleSpeechRecognition() {
+            if (this.isListening) {
+                // 如果正在聽，則停止
+                
+            this.icon = "mdi mdi-microphone";
+                this.endSpeechRecognition();
+            } else {
+                // 如果未聽，則開始
+                this.icon = "mdi mdi-microphone-off";
+                this.startSpeechRecognition();
+            }
+            },
         startSpeechRecognition() {
+        this.isListening = true;
+        
         // 開始語音辨識
         this.recognition.start();
             this.recognitionResult = "辨識中";
+            this.command = "辨識中";
+        },
+        endSpeechRecognition(){
+            this.isListening = false;
+            this.recognition.stop();
+            this.recognition.onresult;
+
         },
         changeLanguage() {
         // 使用者改變語言時更新辨識的語言設定
@@ -304,7 +329,7 @@ export default {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }}
             ).then(
-                ({data}) => alert('辨識結果: '+data)
+                ({data}) => this.command = data
             )
         },
         handleChange() {
