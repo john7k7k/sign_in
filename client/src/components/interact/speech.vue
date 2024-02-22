@@ -280,10 +280,10 @@ export default {
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
         this.recognition.lang = this.selectedLanguage; // 使用使用者選擇的語言
-
+        this.recognition.continuous = true;
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
-            this.recognitionResult = event.results[0][0].transcript;
+            this.recognitionResult = event.results[event.results.length - 1][0].transcript;
             this.submit();
         };
     },
