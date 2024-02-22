@@ -19,7 +19,7 @@ const chineseKeyword = {
 }
 const englishKeyword = {
   "X":['stop'],
-  "O":['go','forward'],
+  "O":['forward'],
   "L":['left'],
   "R":['right'],
   "U":['up','on'],
