@@ -285,6 +285,7 @@ export default {
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[event.results.length - 1][0].transcript;
             this.submit();
+            setTimeout(this.recognition.start, 1000);
         };
     },
     methods: {
