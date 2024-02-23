@@ -285,8 +285,10 @@ export default {
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[event.results.length - 1][0].transcript;
             this.submit();
-            setTimeout(this.startSpeechRecognition.bind(this), 1000);
         };
+        this.recognition.onend = () => {
+            setTimeout(this.startSpeechRecognition.bind(this), 1000);
+        }
     },
     methods: {
         toggleSpeechRecognition() {
