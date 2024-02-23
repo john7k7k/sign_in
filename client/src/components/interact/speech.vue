@@ -294,6 +294,7 @@ export default {
                 // 如果正在聽，則停止
                 
             this.icon = "mdi mdi-microphone";
+            this.recognitionResult = '請點下方按鈕繼續'
                 this.endSpeechRecognition();
             } else {
                 // 如果未聽，則開始
