@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `fish` ADD COLUMN `nickName` VARCHAR(191) NOT NULL DEFAULT '';

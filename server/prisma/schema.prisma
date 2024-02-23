@@ -31,6 +31,7 @@ model Fish {
   fishData FishData[]
   fishAble FishAble[]
   version String @default("")
+  nickName String @default("")
 }
 
 model FishAble{
@@ -100,5 +101,4 @@ model Controller{
   auto Int
   leave_auto Int
 }
-
 

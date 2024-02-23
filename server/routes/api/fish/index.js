@@ -18,6 +18,7 @@ const changePhoto = require('./proc/changePhoto.js');
 const reviseTime = require('./proc/reviseTime.js');
 const fishExplore = require('./proc/fishExplore.js');
 const voiceControl = require("./proc/voiceControl.js");
+const nickName = require("./proc/nickName.js");
 
 router.post(`/`, verifyTokenBy('Header')(30), addFish);
 
@@ -67,5 +68,7 @@ router.post('/reviseTime', verifyTokenBy('Header')(), reviseTime)
 router.get('/explore', verifyTokenBy('Header')(), fishExplore)
 
 router.post('/voice', verifyTokenBy('Header')(), voiceControl)
+
+router.post('/nickname', verifyTokenBy('Header')(), nickName.setNickName)
 
 module.exports = router;

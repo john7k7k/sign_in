@@ -354,3 +354,13 @@ Content-Type: application/json
 {
     "text": "停止"
 }
+
+###
+POST http://localhost:3000/api/v1/fish/nickName
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+Content-Type: application/json
+
+{
+    "fishUID": "0023001",
+    ""
+}
