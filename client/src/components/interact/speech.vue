@@ -280,12 +280,12 @@ export default {
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
         this.recognition.lang = this.selectedLanguage; // 使用使用者選擇的語言
-        this.recognition.continuous = true;
+        //this.recognition.continuous = true;
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[event.results.length - 1][0].transcript;
             this.submit();
-            setTimeout(this.recognition.start, 1000);
+            setTimeout(this.startSpeechRecognition.bind(this), 1000);
         };
     },
     methods: {
@@ -302,10 +302,10 @@ export default {
             }
             },
         startSpeechRecognition() {
-        this.isListening = true;
-        
-        // 開始語音辨識
-        this.recognition.start();
+            this.isListening = true;
+            
+            // 開始語音辨識
+            this.recognition.start();
             this.recognitionResult = "辨識中";
             this.command = "辨識中";
         },
