@@ -287,7 +287,7 @@ export default {
             this.submit();
         };
         this.recognition.onend = () => {
-            setTimeout(this.startSpeechRecognition.bind(this), 1000);
+            if(this.isListening) setTimeout(this.startSpeechRecognition.bind(this), 1000);
         }
     },
     methods: {
