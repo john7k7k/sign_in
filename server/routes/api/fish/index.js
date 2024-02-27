@@ -71,4 +71,6 @@ router.post('/voice', verifyTokenBy('Header')(), voiceControl)
 
 router.post('/nickname', verifyTokenBy('Header')(), nickName.setNickName)
 
+
+
 module.exports = router;

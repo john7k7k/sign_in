@@ -364,3 +364,5 @@ Content-Type: application/json
     "fishUID": "0023001",
     ""
 }
+
+POST http://localhost:3000/api/v1/fish/abc

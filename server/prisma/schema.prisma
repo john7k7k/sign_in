@@ -22,6 +22,8 @@ model User{
   verifyCode String?
 }
 
+
+
 model Fish {
   fishUID String @id
   location String

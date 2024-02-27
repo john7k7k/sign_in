@@ -2,6 +2,7 @@ const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
 const franc = import('franc');
 const { instruction, chineseKeyword, englishKeyword } = require('../../../../config/voiceKeyword.js')
+
 function isletter(character) {
   return /^[a-zA-Z]$/.test(character);
 }
@@ -38,7 +39,7 @@ function recognize(text){
 module.exports = async (req, res) => { 
     try{
       console.log(req.body);
-      const fishUID = '0023001';
+      const fishUID = '0023017';
       const motion = recognize(req.body.text);
       console.log(motion)
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
