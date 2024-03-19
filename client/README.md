@@ -69,6 +69,7 @@ npm run serve  啟動頁面
 - [signup.vue](src/components/signup.vue) .................................................................................註冊輸入框物件
 - [SignupSection.vue](src/components/SignupSection.vue) ...............................................................註冊區域物件
 - [totaldataCard.vue](src/components/totaldataCard.vue) ...............................................................主頁物件
+- [maintenanceList.vue](src/components/maintenanceList.vue) ...............................................................維修清單物件
 
 - router
 - [index.js](src/router/index.js) .....................................................所有畫面的路由設定資訊
@@ -91,6 +92,7 @@ npm run serve  啟動頁面
 - [SignUp.vue](src/views/SignUp.vue) .....................................................註冊畫面
 - [SignupSectionview.vue](src/views/SignupSectionview.vue) .....................................................註冊區域畫面
 - [UserData.vue](src/views/UserData.vue) .....................................................個人資料畫面
+- [Maintenance-list](src/views/Maintenance-list) .....................................................維修清單畫面
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
