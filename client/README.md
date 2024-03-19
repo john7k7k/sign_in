@@ -8,16 +8,18 @@ npm install//會自動下載所有所需的函式檔
 ### 查看網頁頁面
 ```
 cd .\aifiweb\client\  進到client資料夾
+到.env檔中 把VUE_APP_SEVER=""改成VUE_APP_SEVER="https://pre.aifish.cc"
 npm run serve  啟動頁面
 ```
 
 ### 前端上傳網頁準備
 ```
-1.npm run build //在client資料夾中進行，執行完回自動在public中產生index.html檔
-2.index.html檔中把<title>標題那行程式改成<link rel="icon" type="image/png" href="img/北科logo.ico">
+1.到.env檔中 把VUE_APP_SEVER="https://pre.aifish.cc"改成VUE_APP_SEVER=""
+2.npm run build //在client資料夾中進行，執行完回自動在public中產生index.html檔
+3.index.html檔中把<title>標題那行程式改成<link rel="icon" type="image/png" href="img/北科logo.ico">
         <title>仿生魚監控站</title>  
-3.上傳到github
-4.上傳伺服器
+4.上傳到github
+5.上傳伺服器
 ```
 
 ### 頁面程式架構
