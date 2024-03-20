@@ -104,3 +104,22 @@ model Controller{
   leave_auto Int
 }
 
+model Component {
+  dataID Int @id @default(autoincrement())
+  id String
+  type String
+  local String
+  hours Float
+  errReason String
+  time Int
+}
+
+model Motor {
+  dataID Int @id @default(autoincrement())
+  id String
+  local String
+  hours Float
+  errReason String
+  time Int
+  turn Int
+}

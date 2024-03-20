@@ -365,4 +365,40 @@ Content-Type: application/json
     ""
 }
 
-POST http://localhost:3000/api/v1/fish/abc
+###
+GET http://localhost:3000/api/v1/component/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+Content-Type: application/json
+
+{
+    "types": ["eye", "motor"]
+}
+
+###
+POST http://localhost:3000/api/v1/component/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+Content-Type: application/json
+
+{
+    "type": "eye",
+    "data":{
+        "id": "109",
+        "local": "fish.3002.left",
+        "errReason": "資13"
+    }
+}
+
+###
+POST http://localhost:3000/api/v1/component/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+Content-Type: application/json
+
+{
+    "type": "motor",
+    "data":{
+        "id": "10",
+        "local": "fish.3002.left",
+        "errReason": "資7",
+        "turn": 6
+    }
+}
