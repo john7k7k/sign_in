@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sendpage = require('./sendPage');
 const verifyTokenBy = require('../../modules/middleware/verifyToken');
+const path = require('path');
 
 router.get('/', function(req, res) { res.redirect('login'); });
   
@@ -12,6 +13,10 @@ router.get(
     verifyTokenBy('Cookie', redirect = '/login')(), 
     sendpage
 );
+
+router.get('/resume', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../resume/index.html'));
+});
 
 router.get('*', sendpage);
 
