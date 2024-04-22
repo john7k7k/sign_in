@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `motor` ADD COLUMN `abc` INTEGER NOT NULL DEFAULT 0;

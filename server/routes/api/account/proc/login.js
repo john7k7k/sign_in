@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const dotenv = require("dotenv").config();
 
-module.exports = async function(req, res) {
+module.exports = async function(req, res) { // 1.  收前端資料 2. 驗證資料 3. 資料庫拿資料 4. 解析資料 5. 回資料
     console.log(req.body);
     const userTable = await prisma.user.findMany();
     for (let user of userTable) {

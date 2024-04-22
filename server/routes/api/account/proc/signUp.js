@@ -27,7 +27,7 @@ module.exports = async function(req, res) {
                 exist: 1,
                 verify: 0,
                 fishAble: {
-                create: []
+                    create: []
                 }
             }
         })

@@ -402,3 +402,17 @@ Content-Type: application/json
         "turn": 6
     }
 }
+###
+POST http://localhost:3000/api/v1/component/updateCom
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+Content-Type: application/json
+
+{
+    "type": "motor2",
+    "data":{
+        "id": "9",
+        "local": "fish.3002",
+        "errReason": "老舊",
+        "turn": 1939
+    }
+}
