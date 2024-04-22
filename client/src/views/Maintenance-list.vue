@@ -1,10 +1,17 @@
 <template>
     <Navbar></Navbar>
-    <maintenanceList></maintenanceList>
+    <div class="Box">
+      <maintenanceList></maintenanceList>
+    </div>
 </template>
 
 <style scoped>
-
+.Box {
+  width: 95%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
 
 </style>
 
