@@ -7,7 +7,7 @@ module.exports = async (req,res) => {
       console.log(type)
       if(type !== "motor"){
         data.time = Math.floor((new Date()).getTime()/1000);
-        const ltasData = await prisma.component.findMany({
+        const lastData = await prisma.component.findMany({
           where: { type, id: data.id }
         });
         console.log(lastData)
