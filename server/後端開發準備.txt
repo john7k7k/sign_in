@@ -22,3 +22,14 @@ API開發流程:
     1. 設計模型
     2. 資料庫更新
     3. 讀寫資料庫(prisma)
+
+作業1: 
+    1. 複製專案到本地: git clone https://github.com/john7k7k/sign_in.git aifiweb -b master
+    2. 切換分支: git checkout ding
+    3. 查看 aifiweb/server/routes/api/component/proc/updateCom.json
+    4. 自行將相同功能，實現到updateCom2.js (可以暫時不接資料庫，實現資料串接即可)
+    5. 透過 aifiweb/server/test/httptest/APItest.http 測試功能是否與設計相同
+    6. 上傳專案 
+        git add .
+        git commit -m 'server hw1'
+        git push
