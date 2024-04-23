@@ -19,7 +19,7 @@ npm run serve  啟動頁面
 3.index.html檔中把<title>標題那行程式改成<link rel="icon" type="image/png" href="img/北科logo.ico">
         <title>仿生魚監控站</title>  
 4.git add .
-git commit -m "Updated"
+git commit -m "此次上傳的版本名稱"
 git branch //確認是否在dev 測試的要上傳到component分支
 git push 
 5.上傳伺服器
