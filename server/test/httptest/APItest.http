@@ -93,7 +93,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://localhost:3000/api/v1/fish/data/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTc2MzA0NSwiZXhwIjoxNzAxNzcyMDQ1fQ.ehAO1rdnXikyFZZxxwDxBnEVmE5KQHFliZ91BQovihs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxMzg3Mzg4NiwiZXhwIjoxNzEzODgyODg2fQ.ajegrCDtpPW0dmhugjkx9_gAdMLJTE0o_ESYnEZ_8TE
 
 {
     "fishData": {
@@ -117,9 +117,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 
 ###
-GET http://localhost:3000/api/v1/fish/data/?fishesUID=0023999
+GET http://localhost:3000/api/v1/fish/data/?fishesUID=0023001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQ1NiIsImlhdCI6MTcwMTE1NTUxOCwiZXhwIjoxNzAxMTY0NTE4fQ.ZJKAYPAWScKLdoFS1Q9IQYM0MNwrmyExKLM90D9-KZQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxMzg3Mzg4NiwiZXhwIjoxNzEzODgyODg2fQ.ajegrCDtpPW0dmhugjkx9_gAdMLJTE0o_ESYnEZ_8TE
 
 ###
 GET http://localhost:3000/api/v1/fish/history_data/?fishesUID=0023001&versions=1697002072:1698064041

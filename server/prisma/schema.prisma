@@ -112,7 +112,6 @@ model Component {
   hours Float
   errReason String
   time Int
-  abc Int @default(0)
 }
 
 model Motor {
@@ -123,5 +122,4 @@ model Motor {
   errReason String
   time Int
   turn Int
-  abc Int @default(0)
 }
