@@ -39,13 +39,15 @@ function recognize(text){
 module.exports = async (req, res) => { 
     try{
       console.log(req.body);
-      const fishUID = '0023017';
+      const fishUID = '0023007'
+      //const section = '002001001';
       const motion = recognize(req.body.text);
       console.log(motion)
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
       const { location: section } = await prisma.fish.findUnique({
         where: { fishUID }
       })
+
       const topic = 'Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion';
       const mes =  JSON.stringify({
         id: fishUID.slice(-4),
@@ -53,6 +55,7 @@ module.exports = async (req, res) => {
       })
       console.log(`topic: ${topic}, mes: ${mes}`);
       mqttConnection.publish(topic, mes);
+      console.log(instruction[motion]);
       res.send(instruction[ motion ]);
     }catch{res.status(402).send("資料有誤");}
   }
