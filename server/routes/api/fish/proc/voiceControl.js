@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
       const { location: section } = await prisma.fish.findUnique({
         where: { fishUID }
       })
-
+      if(!section) section = '002001001';
       const topic = 'Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion';
       const mes =  JSON.stringify({
         id: fishUID.slice(-4),
