@@ -39,7 +39,7 @@ function recognize(text){
 module.exports = async (req, res) => { 
     try{
       console.log(req.body);
-      const fishUID = '0023007'
+      const fishUID = '0023011'
       //const section = '002001001';
       const motion = recognize(req.body.text);
       console.log(motion)
