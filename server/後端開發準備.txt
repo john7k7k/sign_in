@@ -1,7 +1,7 @@
 先修: javascript、計算機網路
 
 學習步驟:
-    1. nodejs
+    1. node.js
     2. express
     3. mysql
     4. prisma
