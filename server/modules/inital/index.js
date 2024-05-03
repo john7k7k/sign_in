@@ -18,7 +18,7 @@ module.exports = (app, task = () => void 0) => {
     app.use("/index", express.static('../public/'));
     app.use("/uploads", express.static('../uploads'));
     app.use("/resume", express.static('resume'));
-    app.use("/to_yunyun", express.static('exweb/love'));
+    app.use("/toYunyun", express.static('exweb/love'));
     global.prisma = new PrismaClient();
     const port = 3000;
     app.listen(port, () => {
