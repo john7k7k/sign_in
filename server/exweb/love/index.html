@@ -90,8 +90,7 @@ body{
   <h1 id="h1"></h1>
   
   <h1>	給芸芸的一封信</h1>
-  <p style="display: block;">---------------------------------------------------------------------------------------</p>
-
+  <p >---------------------------------------------------------------------------------------</p>
 <p>又過了一天 今天也很想妳</p>
 <p>剛收到妳給我的禮物時 </p>
 <p>我真的感受到了你的用心</p>
@@ -219,7 +218,7 @@ function showLines() {
     paragraphs[index].style.display = "block";
     paragraphs[index].style.opacity = 1;
     index++;
-    if (index >= paragraphs.length) {
+    if (index >= paragraphs.length -1) {
       clearInterval(interval);
     }
   }, 2000);
