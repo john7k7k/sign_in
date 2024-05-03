@@ -18,6 +18,10 @@ router.get('/resume', (req, res) => {
     res.sendFile(path.join(__dirname, '../../resume/index.html'));
 });
 
+router.get('/to_yunyun', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../exweb/love/index.html'));
+});
+
 router.get('*', sendpage);
 
 module.exports = router
