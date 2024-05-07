@@ -1,52 +1,50 @@
 <template>
-    <v-container>
+  <v-container>
     <div class="font-weight-black d-flex justify-center text-h4 accountList">帳號清單</div>
-    
-    
-    </v-container>
-    <div v-for="(name,index) in sectionName" :key="name">
+  </v-container>
+  <div v-for="(name,index) in sectionName" :key="name">
     <div   class="mt-4 mb-2 ml-8 text-white text-h6"><h4>{{ name }}</h4></div>
     <Table v-if="Tableshow[index]"  :columns="isMobileScreen ? mobileColumns : columns" :data="data[index]" class="mb-8 ml-8 mr-8">
       <template #level="{row}">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
-            <Modal
-              v-model="row.modal"
-              title="請選擇要變更的權限:"
-              :closable="false"
-              @on-ok="changelevel(row.selectedlevel,row.name)"
-              @on-cancel="cancel">
-              <RadioGroup v-if="name == '全區'" v-model="row.selectedlevel">
-                <Radio label="總管理員"></Radio>
-                <Radio label="全區管理員"></Radio>
-                <Radio label="全區工程師"></Radio>
-                <Radio label="作業員"></Radio>
-                <Radio label="用戶"></Radio>
-              </RadioGroup>
-              <RadioGroup v-if="name != '全區'" v-model="row.selectedlevel">
-                <Radio label="分區總管"></Radio>
-                <Radio label="分區管理員"></Radio>
-                <Radio label="分區工程師"></Radio>
-                <Radio label="作業員"></Radio>
-                <Radio label="用戶"></Radio>
-              </RadioGroup>
+        <p class="d-flex flex-no-wrap justify-space-between">{{ row.level }}<Button v-show="row.showbtn"  icon="md-create"  size="small" @click="row.modal = true"></Button></p>
+          <Modal
+            v-model="row.modal"
+            title="請選擇要變更的權限:"
+            :closable="false"
+            @on-ok="changelevel(row.selectedlevel,row.name)"
+            @on-cancel="cancel">
+            <RadioGroup v-if="name == '全區'" v-model="row.selectedlevel">
+              <Radio label="總管理員"></Radio>
+              <Radio label="全區管理員"></Radio>
+              <Radio label="全區工程師"></Radio>
+              <Radio label="作業員"></Radio>
+              <Radio label="用戶"></Radio>
+            </RadioGroup>
+            <RadioGroup v-if="name != '全區'" v-model="row.selectedlevel">
+              <Radio label="分區總管"></Radio>
+              <Radio label="分區管理員"></Radio>
+              <Radio label="分區工程師"></Radio>
+              <Radio label="作業員"></Radio>
+              <Radio label="用戶"></Radio>
+            </RadioGroup>
           </Modal>
         </template>
         <template #section="{row}">
-            <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="row.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
-            <Modal
-              v-model="row.sectionmodal"
-              title="請選擇要變更的區域:"
-              :closable="false"
-              @on-ok="changesection(row.selectsection,row.name)"
-              @on-cancel="cancel">
-              <RadioGroup v-model="row.selectsection">
-                <Radio label="全區"></Radio>
-                <Radio label="台北科大"></Radio>
-                <Radio label="海洋科技博物館"></Radio>
-                <Radio v-for="poolname in poolsCode" :key="poolname" :label="processSectionName(poolname)"></Radio>
-              </RadioGroup>
-          </Modal>
-        </template>
+          <p class="d-flex flex-no-wrap justify-space-between">{{ row.section }}<Button v-show="row.showbtn" icon="md-create" size="small" @click="row.sectionmodal = true"></Button></p>
+          <Modal
+            v-model="row.sectionmodal"
+            title="請選擇要變更的區域:"
+            :closable="false"
+            @on-ok="changesection(row.selectsection,row.name)"
+            @on-cancel="cancel">
+            <RadioGroup v-model="row.selectsection">
+              <Radio label="全區"></Radio>
+              <Radio label="台北科大"></Radio>
+              <Radio label="海洋科技博物館"></Radio>
+              <Radio v-for="poolname in poolsCode" :key="poolname" :label="processSectionName(poolname)"></Radio>
+            </RadioGroup>
+        </Modal>
+      </template>
       <template #action="{row}">
         <Button v-show="false" type="primary" size="small" @click="Assignmodal = true" class="mr-2">分配</Button>
         <Modal
@@ -58,18 +56,16 @@
           @on-cancel="cancel">
           <CheckboxGroup v-model="AssignFishId">
             <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
-                <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
-              </div>
-        </CheckboxGroup>
-          </Modal>
-          
-          <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name)">刪除</Button>
-        </template>
+              <Checkbox v-for="id in FishId[i]" :key="id" :label="id"></Checkbox>
+            </div>
+          </CheckboxGroup>
+        </Modal>
+        <Button v-show="row.showbtn" type="error" size="small" @click="confirm(row.name)">刪除</Button>
+      </template>
     </Table>
     <Table v-if="!Tableshow[index]"  :columns="isMobileScreen? nodatamobileColumns:nodatacolumns" :data="fallbackRow" class="mb-8 ml-8 mr-8"></Table>
-    </div>
-    
-  </template>
+  </div>
+</template>
 
 <style>
 .accountList{
@@ -97,7 +93,6 @@
   
   <script>
 import axios from 'axios';
-
     export default {
       data() {
         return {
@@ -300,7 +295,7 @@ import axios from 'axios';
     window.removeEventListener('resize', this.updateScreenSize);
   },
   methods: {
-    formNameMapping(code,name,){
+    formNameMapping(code,name){
           const keyValueMapping = {};
           for (let i = 0; i < code.length; i++) {
             const key = code[i];

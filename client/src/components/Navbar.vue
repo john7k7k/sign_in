@@ -390,23 +390,24 @@ process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
                 localStorage.setItem("DepartName", JSON.stringify(departname));
                 window.location.replace(`/select/instruction`);
             }
-          } catch (error) {
+          } 
+          catch (error) {
             //console.log(error);
           }
-          },
-},
-computed: {
-  screenWidth() {
-      return window.innerWidth;
+        },
     },
-  userLevelText() {
-    return this.userlevel();
+    computed: {
+      screenWidth() {
+          return window.innerWidth;
+        },
+      userLevelText() {
+        return this.userlevel();
+      }
+    },
+    created(){
+      this.fetchImage();
+    }
   }
-},
-created(){
-  this.fetchImage();
-}
-}
 </script>
 
 

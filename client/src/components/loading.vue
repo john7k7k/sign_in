@@ -1,31 +1,28 @@
 <template>
-    
-    <div class="loader ">
-      <span v-for="i in 7" :key="i" :style="{ animationDelay: i * 0.2 + 's' }"></span>
-    </div>
-    <div class="text-center burnword mb-4" >正在燒錄中</div>
-    <div  class=" text-center  text-red mb-4">燒錄中請勿將仿生魚關機!</div>
-    <svg v-show="false">
-      <filter id="gooey">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-        <feColorMatrix
-          type="matrix"
-          in="blur"
-          values="1 0 0 0 0
-                  0 1 0 0 0
-                  0 0 1 0 0
-                  0 0 0 10 -5"
-        />
-      </filter>
-    </svg>
-  </template>
-  
-  <script>
+  <div class="loader ">
+    <span v-for="i in 7" :key="i" :style="{ animationDelay: i * 0.2 + 's' }"></span>
+  </div>
+  <div class="text-center burnword mb-4" >正在燒錄中</div>
+  <div  class=" text-center  text-red mb-4">燒錄中請勿將仿生魚關機!</div>
+  <svg v-show="false">
+    <filter id="gooey">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+      <feColorMatrix
+        type="matrix"
+        in="blur"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 10 -5"
+      />
+    </filter>
+  </svg>
+</template>
+<script>
   export default {
     name: 'YourComponentName',
   };
   </script>
-  
   <style scoped>
   .loader {
     width: 300px;

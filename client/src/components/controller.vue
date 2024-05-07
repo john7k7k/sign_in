@@ -29,11 +29,9 @@
           </Modal>
     <Table v-if="!nodatatableshow" border :columns="columns" :data="datas">
         <template #ID="{ row,index }">
-            
-            <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.name }}</strong><Button   icon="md-create" size="small" @click="row.NameModal = true"></Button></p>
+          <p class="d-flex flex-no-wrap justify-space-between"><strong>{{ row.name }}</strong><Button   icon="md-create" size="small" @click="row.NameModal = true"></Button></p>
           <Modal v-model="row.NameModal" :title="'變更遙控器名稱 '" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
-                 
-              <v-list-item title="新遙控器名稱">
+            <v-list-item title="新遙控器名稱">
             <v-text-field
               v-model="changecontrolname[index]"
             ></v-text-field>
@@ -43,9 +41,9 @@
         <template #fish="{ row,index}">
           <p class="d-flex flex-no-wrap justify-space-between">{{ row.fish.substring(3) }}<Button   icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
           <Modal v-model="row.ActiveModal" :title="'變更' + row.name + ' 控制的魚ID'" :closable="false" @on-ok="changeControlActive(index)" @on-cancel="cancel" ok-text="變更">
-              <RadioGroup class="radio-group" v-model="controlfishid[index]">
-                <Radio v-for="id in NewFishId" :key="id" :label="id">{{ id.substring(3) }}</Radio>
-              </RadioGroup>           
+            <RadioGroup class="radio-group" v-model="controlfishid[index]">
+              <Radio v-for="id in NewFishId" :key="id" :label="id">{{ id.substring(3) }}</Radio>
+            </RadioGroup>           
           </Modal>
         </template>
         <template #location="{ row,index}">
@@ -77,13 +75,10 @@
     </Table>
     <Table  v-if="nodatatableshow"  :columns="nodatacolumns" :data="fallbackRow" border ></Table>
     </v-container>
-    
-    
   </template>
   
   <script>
 import axios from 'axios';
-
     export default {
       data() {
         return {
@@ -196,7 +191,6 @@ import axios from 'axios';
         }
       },
       computed: {
-        
   },
   created() {
     this.formNameMapping(this.instructionCode,this.InstructionName);
@@ -224,7 +218,6 @@ import axios from 'axios';
             const fish0 = "fish0" + this.poolsCode[i];
             const fish1 = "fish1" + this.poolsCode[i];
             const fish2 = "fish2" + this.poolsCode[i];
-
             const fish1Data = localStorage.getItem(fish1);
             const parsedFish1Data = JSON.parse(fish1Data);
             const fish0Data = localStorage.getItem(fish0);

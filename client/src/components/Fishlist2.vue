@@ -1,34 +1,30 @@
 <template>
   <v-container >
     <div class="font-weight-black d-flex justify-center text-white text-h4 fishList">仿生魚清單</div>
-    
-    
-    </v-container>
-    
-        <div class="searchdisplay">
-      <v-text-field
-        v-model="searchId"
-        append-icon="mdi-magnify"
-        label="搜尋ID"
-        hide-details
-        class="mb-2 mt-4 ml-7 text-white"
-        style="width: 200px;"
-        bg-color="rgba(255, 255, 255, 0.15)"
-      ></v-text-field>
-      <v-btn v-if="showBurnBtn"  @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
-      <v-dialog v-model="SearchBinmodal"  width="40%">
-        <v-card>
-          <v-card-text>
-            <div class="text-h6 ma-2">當前版本: {{BinName}}</div>
-            <div class="text-h6 ma-2" >上傳日期: {{BinTime}}</div>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" block @click="SearchBinmodal = false"
-              >關閉</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+  </v-container>
+  <div class="searchdisplay">
+    <v-text-field
+      v-model="searchId"
+      append-icon="mdi-magnify"
+      label="搜尋ID"
+      hide-details
+      class="mb-2 mt-4 ml-7 text-white"
+      style="width: 200px;"
+      bg-color="rgba(255, 255, 255, 0.15)"
+    ></v-text-field>
+    <v-btn v-if="showBurnBtn"  @click="fetchBin" size="large" class=" mr-8 mt-6 " >查看版本</v-btn>
+    <v-dialog v-model="SearchBinmodal"  width="40%">
+      <v-card>
+        <v-card-text>
+          <div class="text-h6 ma-2">當前版本: {{BinName}}</div>
+          <div class="text-h6 ma-2" >上傳日期: {{BinTime}}</div>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="SearchBinmodal = false"
+            >關閉</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
       <v-btn v-if="showBurnBtn" @click="Binmodal = true" size="large" class="ml-7 mr-8 mt-6" color="green-darken-3">上傳更新檔</v-btn>
       <Modal
           v-model="Binmodal"
@@ -53,9 +49,10 @@
           @on-cancel="cancel">
           
           <RadioGroup v-model="BurnFishId">
-            <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
-                <Radio v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Radio>
-              </div>
+            <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" >
+              <h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
+              <Radio v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Radio>
+            </div>
               </RadioGroup>
               <div  class=" text-center  text-red mb-4 mt-4 text-h7">在開始燒錄前，請確保仿生魚的電量高於30%以確保順利進行。</div>
           </Modal>
@@ -65,7 +62,6 @@
     :scrim="false"
     transition="dialog-bottom-transition"
   >
-    
   </v-dialog>
       <v-dialog
     v-model="dialognew"
@@ -91,7 +87,6 @@
         </v-toolbar-items>
       </v-toolbar>
       <v-list-subheader class="mx-4">基本資料</v-list-subheader>
-
       <v-row class="d-flex justify-space-around">
         <v-col>
           <v-list-item title="ID">
@@ -163,7 +158,7 @@
                 <div style="width: 30%; height: 30%; background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage1.png" width="100%" height="100%" ></v-img></div>   
               </Modal>
    </template>
-   <template #active="{ row}">
+   <template #active="{row}">
     <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button v-if="showBurnBtn"  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
     <Modal v-model="row.ActiveModal" :title="'變更 ' + row.id + ' 狀態'" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
         <RadioGroup class="radio-group" v-model="row.selectActive">
@@ -185,7 +180,6 @@
       <v-card>
         <div class="d-flex justify-center mt-2"><h3>歷史資料</h3></div>
         <v-card-text v-for="fish in fishdatas[i][id]" :key="fish">
-          
           <div>
             版本: {{ fish.version }} &nbsp; 時間: {{ formatDate(fish.time) }}
             &nbsp; 錯誤:{{ fish.err }} &nbsp; 狀態:{{fish.active}}
@@ -193,22 +187,17 @@
           <v-divider class="ma-2"></v-divider>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" block @click="fishdatas[i][row.id].show = false"
-            >關閉</v-btn
-          >
+          <v-btn color="primary" block @click="fishdatas[i][row.id].show = false">關閉</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
     <Button v-if="showBurnBtn"  type="error" size="small" @click="confirm(row.id)">刪除</Button>
     </template>
   </Table>
   <Table  v-if="!Tableshow[i]"  :columns="section === '003' ? (isMobileScreen ? nodatamobileColumnsfor003 : nodatacolumnsfor003) : (isMobileScreen ? nodatamobileColumns : nodatacolumns)" 
   :data="fallbackRow" class="ml-7 mr-7"></Table>
   </div>
-  
-  </template>
-
+</template>
 <style scoped>
 .fishList{
   margin-top: 7%;
@@ -592,7 +581,6 @@ import loading from '@/components/loading.vue';
       },
   },
       methods: {
-        
         handleCheckAll () {
                 if (this.indeterminate) {
                     this.checkAll = false;
@@ -694,8 +682,6 @@ import loading from '@/components/loading.vue';
               this.$Message.error('燒錄失敗');
           })
         }
-        
-
         },
         clearfishhour(){
           axios.post(
@@ -809,7 +795,6 @@ import loading from '@/components/loading.vue';
                 this.$Message.success('新增成功');
                 await this.loadnewdata();
                 location.reload();
-                
               }
               else{
                 this.dialog = false
@@ -903,7 +888,6 @@ import loading from '@/components/loading.vue';
                   this.error.push(errarray);
                   this.photoCode.push(photoarray);
                   this.swimtime.push(swimtimearray);
-  
                   let datas = this.FishId[i].map((item, index) => ({
                       id: this.FishId[i][index],
                       bc: this.bc[i][index],
@@ -1177,16 +1161,7 @@ import loading from '@/components/loading.vue';
               this.loading = false;
               this.$Message.error('變更照片失敗');
           })
+      },
     },
-      
-        
-    },
-    }
-  </script>
-  
-  
-
-
-
-
-  
+  }
+</script>

@@ -9,13 +9,13 @@ import FishDatalist from '../views/FishDatalist.vue'
 import SuSectionview from '../views/SignupSectionview.vue'
 import SelectInstruction from '../views/SelectInstruction.vue'
 import Controllerview from '../views/Controllerview.vue'
+import Testmaintenance from '../views/Testmaintenance-list.vue'
 const routes = [
   {
     name: "Nav",
     path: "/nav",
     component: Nav ,
     children:[
-    
     {
       name: "UserData",
       path: "/user", 
@@ -42,7 +42,11 @@ const routes = [
       path: "/controller", 
       component: Controllerview
     },
-    
+    {
+      name: "Testmaintenance",
+      path: "/test/testmaintenance", 
+      component: Testmaintenance
+    },
    ]
   },
   {

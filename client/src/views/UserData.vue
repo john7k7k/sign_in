@@ -15,7 +15,7 @@
     components: { EditUser},
     data: () => ({
       //
-    }),
+    })
   }
   </script>
   

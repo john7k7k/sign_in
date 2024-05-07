@@ -11,8 +11,7 @@
       </v-row>
     </div>
   </template>
-  
-  <script>
+<script>
   
   
   // Components
@@ -108,7 +107,6 @@
     height:100%;
     overflow-y: hidden;
     overflow: hidden;
+  }
 }
-}
-  
-  </style>
+</style>

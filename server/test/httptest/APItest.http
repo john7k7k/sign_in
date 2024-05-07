@@ -13,7 +13,7 @@ GET http://localhost:3000/api/v1/account/verify/?username=123456
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/api/v1/account/login
+POST https://pre.aifish.cc/api/v1/account/login
 Content-Type: application/json
 
 {
@@ -93,7 +93,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST http://localhost:3000/api/v1/fish/data/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTc2MzA0NSwiZXhwIjoxNzAxNzcyMDQ1fQ.ehAO1rdnXikyFZZxxwDxBnEVmE5KQHFliZ91BQovihs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNTA5NjIyNiwiZXhwIjoxNzE1MTA1MjI2fQ.AYoy43mSfOqTBxaU67cHBm7ErVjormT_Wu1op9HiDsI
 
 {
     "fishData": {
