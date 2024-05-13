@@ -108,7 +108,7 @@
           if (!this.form) return
           this.loading = true
           
-            axios.post(
+          axios.post(
             process.env.VUE_APP_SEVER+"/api/v1/account/sign_up",
             {
               "username":this.account,

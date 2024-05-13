@@ -1,4 +1,4 @@
-POST https://aifish.cc/api/v1/account/sign_up
+POST https://pre.aifish.cc/api/v1/account/sign_up
 Content-Type: application/json
 
 {

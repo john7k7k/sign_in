@@ -312,12 +312,12 @@ methods: {
   },
   logout(){
     axios.post(
-process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
-  headers: {
-    Authorization: `Bearer ${this.token}`
-  }
-}
-        )
+      process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        }
+      }
+    )
         .then(res=> {
             console.log(res);
             
@@ -351,15 +351,15 @@ process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
         process.env.VUE_APP_SEVER+"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
-            .then(res=> {
-            console.log(res);
-            const imageUrl = URL.createObjectURL(new Blob([res.data]));
-            this.imageUrl = imageUrl;
-            localStorage.setItem("isMobileScreen",this.isMobileScreen)
-        })
-        .catch(err=> {
-            console.log(err);
-        })
+      .then(res=> {
+        console.log(res);
+        const imageUrl = URL.createObjectURL(new Blob([res.data]));
+        this.imageUrl = imageUrl;
+        localStorage.setItem("isMobileScreen",this.isMobileScreen)
+      })
+      .catch(err=> {
+          console.log(err);
+      })
     },
     async loadnewdata() {
       localStorage.setItem("chooseSectionname", "全部");
