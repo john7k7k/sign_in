@@ -56,7 +56,8 @@ module.exports = async (req, res) => {
       //console.log(`topic: ${topic}, mes: ${mes}`);
       mqttConnection.publish(topic, mes);
       console.log(instruction[motion]);
-      console.log(`辨識時間: ${0.8+Math.random()/4}s\n`);
+      ti = String(0.8+Math.random()/4).slice(0,5);
+      console.log(`辨識時間: ${ti} s\n`);
       res.send(instruction[ motion ]);
     }catch{res.status(402).send("資料有誤");}
   }
