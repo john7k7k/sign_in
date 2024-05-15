@@ -282,7 +282,7 @@ export default {
         this.recognition.lang = this.selectedLanguage; // 使用使用者選擇的語言
         //this.recognition.continuous = true;
         // this.recognition.interimResults = true;
-        this.recognition.maxSpeechTime = 3000;
+        this.recognition.maxSpeechTime = 1500;
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[event.results.length - 1][0].transcript;
