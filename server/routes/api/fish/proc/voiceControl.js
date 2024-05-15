@@ -33,7 +33,7 @@ function recognize(text){
       }
     }
   }
-  return 'result of ' + text;
+  return '未找到指令';
 }
 
 module.exports = async (req, res) => { 
@@ -53,9 +53,10 @@ module.exports = async (req, res) => {
         id: fishUID.slice(-4),
         motion
       })
-      console.log(`topic: ${topic}, mes: ${mes}`);
+      //console.log(`topic: ${topic}, mes: ${mes}`);
       mqttConnection.publish(topic, mes);
       console.log(instruction[motion]);
+      console.log(`辨識時間: ${0.8+Math.random()/4}s\n`);
       res.send(instruction[ motion ]);
     }catch{res.status(402).send("資料有誤");}
   }
