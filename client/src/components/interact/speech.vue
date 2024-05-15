@@ -304,6 +304,7 @@ export default {
             } else {
                 // 如果未聽，則開始
                 this.icon = "mdi mdi-microphone-off";
+                this.command = "辨識中";
                 this.startSpeechRecognition();
             }
             },
@@ -313,7 +314,6 @@ export default {
             // 開始語音辨識
             this.recognition.start();
             this.recognitionResult = "辨識中";
-            this.command = "辨識中";
         },
         endSpeechRecognition(){
             this.isListening = false;
