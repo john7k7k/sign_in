@@ -2,13 +2,12 @@ const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
 const franc = import('franc');
 const { instruction, chineseKeyword, englishKeyword } = require('../../../../config/voiceKeyword.js')
-
+let lang = 'ch'
 function isletter(character) {
   return /^[a-zA-Z]$/.test(character);
 }
 
 function recognize(text){
-  let lang = 'ch'
   if(isletter(text[0])) {
     lang = 'eng';
   }
@@ -58,6 +57,6 @@ module.exports = async (req, res) => {
       console.log(instruction[motion]);
       ti = String(0.8+Math.random()/4).slice(0,5);
       console.log(`辨識時間: ${ti} s\n`);
-      res.send(instruction[ motion ]);
+      res.send(instruction[ motion ][lang == 'ch'?0:1]);
     }catch{res.status(402).send("資料有誤");}
   }

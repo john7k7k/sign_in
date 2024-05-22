@@ -439,15 +439,11 @@ export default {
         // 初始化語音辨
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
-<<<<<<< HEAD
         this.recognition.lang = this.selectedLanguage; // 使用使用者選擇的語言
         //this.recognition.continuous = true;
         // this.recognition.interimResults = true;
         this.recognition.maxSpeechTime = 1000;
-=======
         this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
-
->>>>>>> dev
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[event.results.length - 1][0].transcript;
@@ -469,7 +465,7 @@ export default {
             } else {
                 // 如果未聽，則開始
                 this.icon = "mdi mdi-microphone-off";
-                this.command = "辨識中";
+                this.command = this.commandWord[this.languageIndex];
                 this.startSpeechRecognition();
             }
             },
@@ -480,7 +476,7 @@ export default {
         // 開始語音辨識
         this.recognition.start();
             this.recognitionResult = this.commandWord[this.languageIndex];
-            this.command = this.commandWord[this.languageIndex];
+            //this.command = this.commandWord[this.languageIndex];
         },
         endSpeechRecognition(){
             this.isListening = false;

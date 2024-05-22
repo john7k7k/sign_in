@@ -1,11 +1,11 @@
 const instruction = {
-    "X":"停止",
-    "O":"前進",
-    "L":"左轉",
-    "R":"右轉",
-    "U":"往上",
-    "D":"往下",
-    "M":"平衡"
+    "X":["停止", 'stop'],
+    "O":["前進", 'go'],
+    "L":["左轉", 'turn left'],
+    "R":["右轉", 'turn right'],
+    "U":["往上", 'up'],
+    "D":["往下", 'down'],
+    "M":["平衡", 'balance']
 }
 
 const chineseKeyword = {
