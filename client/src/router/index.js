@@ -110,6 +110,11 @@ const routes = [
     path: "/interact",
     name: "interact",
     component: () => import("../views/john/Interact.vue"),
+  },
+  {
+    path: "/maintenance",
+    name: "Maintenance",
+    component: () => import("../views/Maintenance-list.vue"),
   }
 ]
 

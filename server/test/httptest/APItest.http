@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 POST https://pre.aifish.cc/api/v1/account/sign_up
+=======
+POST https://aifish.cc/api/v1/account/sign_up
+>>>>>>> dev
 Content-Type: application/json
 
 {
@@ -93,7 +97,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 ###
 POST https://pre.aifish.cc/api/v1/fish/data/
 Content-Type: application/json
+<<<<<<< HEAD
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxMzg3Mzg4NiwiZXhwIjoxNzEzODgyODg2fQ.ajegrCDtpPW0dmhugjkx9_gAdMLJTE0o_ESYnEZ_8TE
+=======
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNTA5NTk3NSwiZXhwIjoxNzE1MTA0OTc1fQ.jkWP-4pnwCYlwax9lke6CH7-zDx89bX7kh3aCYXy0_g
+>>>>>>> dev
 
 {
     "fishData": {
@@ -311,7 +319,8 @@ Content-Type: application/json
 }
 
 ###
-GET https://aifish.cc/api/v1/controller/
+
+GET https://pre.aifish.cc/api/v1/controller/
 Content-Type: application/json
 
 ###

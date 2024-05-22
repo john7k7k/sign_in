@@ -8,16 +8,21 @@ npm install//會自動下載所有所需的函式檔
 ### 查看網頁頁面
 ```
 cd .\aifiweb\client\  進到client資料夾
+到.env檔中 把VUE_APP_SEVER=""改成VUE_APP_SEVER="https://pre.aifish.cc"
 npm run serve  啟動頁面
 ```
 
 ### 前端上傳網頁準備
 ```
-1.npm run build //在client資料夾中進行，執行完回自動在public中產生index.html檔
-2.index.html檔中把<title>標題那行程式改成<link rel="icon" type="image/png" href="img/北科logo.ico">
+1.到.env檔中 把VUE_APP_SEVER="https://pre.aifish.cc"改成VUE_APP_SEVER=""
+2.npm run build //在client資料夾中進行，執行完回自動在public中產生index.html檔
+3.index.html檔中把<title>標題那行程式改成<link rel="icon" type="image/png" href="img/北科logo.ico">
         <title>仿生魚監控站</title>  
-3.上傳到github
-4.上傳伺服器
+4.git add .
+git commit -m "此次上傳的版本名稱"
+git branch //確認是否在dev 測試的要上傳到component分支
+git push 
+5.上傳伺服器
 ```
 
 ### 頁面程式架構
@@ -67,6 +72,7 @@ npm run serve  啟動頁面
 - [signup.vue](src/components/signup.vue) .................................................................................註冊輸入框物件
 - [SignupSection.vue](src/components/SignupSection.vue) ...............................................................註冊區域物件
 - [totaldataCard.vue](src/components/totaldataCard.vue) ...............................................................主頁物件
+- [maintenanceList.vue](src/components/maintenanceList.vue) ...............................................................維修清單物件
 
 - router
 - [index.js](src/router/index.js) .....................................................所有畫面的路由設定資訊
@@ -89,6 +95,7 @@ npm run serve  啟動頁面
 - [SignUp.vue](src/views/SignUp.vue) .....................................................註冊畫面
 - [SignupSectionview.vue](src/views/SignupSectionview.vue) .....................................................註冊區域畫面
 - [UserData.vue](src/views/UserData.vue) .....................................................個人資料畫面
+- [Maintenance-list](src/views/Maintenance-list) .....................................................維修清單畫面
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

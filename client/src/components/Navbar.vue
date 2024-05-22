@@ -20,6 +20,7 @@
             說明書下載
           </a>
       </v-btn>
+      <v-btn  v-if="signupSectionshow" value="maintenanceList" href="/maintenance" class="navbartext font-weight-bold">維修清單</v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
