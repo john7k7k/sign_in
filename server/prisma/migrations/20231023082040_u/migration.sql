@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `fish` ADD COLUMN `photoCode` INTEGER NOT NULL DEFAULT 0;

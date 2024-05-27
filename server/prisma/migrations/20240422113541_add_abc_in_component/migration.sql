@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `component` ADD COLUMN `abc` INTEGER NOT NULL DEFAULT 0;
