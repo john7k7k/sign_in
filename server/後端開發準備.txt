@@ -22,3 +22,9 @@ API開發流程:
     1. 設計模型
     2. 資料庫更新
     3. 讀寫資料庫(prisma)
+
+aifihzjyEkg[XnyYRA7}~1DXf4+F^IGTzlab314n
+
+
+sudo mysql -uroot -p 
+https://www.canva.com/design/DAF9T5eazdM/07bxDsgYrGoUraGYSz6TvQ/view?utm_content=DAF9T5eazdM&utm_campaign=designshare&utm_medium=link&utm_source=editor

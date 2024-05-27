@@ -26,7 +26,7 @@
     "vue-template-compiler": "^2.7.14"
   },
   "name": "web",
-  "description": "",
+  "description": "* 專案名稱: 智慧魚監控系統之網頁後端\r * 專案架構: \r     * 運行環境: Node.js\r     * API框架: Express.js \r     * 資料庫: MySQL\r * 專案目標: \r     * 智慧魚與客戶之間的通訊\r     * 遠端更新及控制智慧魚\r     * 保證傳輸安全性\r     * 保證資料庫安全性",
   "type": "commonjs",
   "version": "1.0.0",
   "main": "index.js",
@@ -43,5 +43,8 @@
   "bugs": {
     "url": "https://github.com/john7k7k/sign_in/issues"
   },
-  "homepage": "https://github.com/john7k7k/sign_in#readme"
+  "homepage": "https://github.com/john7k7k/sign_in#readme",
+  "directories": {
+    "test": "test"
+  }
 }
