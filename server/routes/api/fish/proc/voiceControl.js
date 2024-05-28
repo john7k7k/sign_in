@@ -38,8 +38,9 @@ function recognize(text){
 module.exports = async (req, res) => { 
     try{
       console.log(req.body);
-      const { fishUID } = req.body;
+      let { fishUID } = req.body;
       if(!fishUID) fishUID = '0023011';
+      console.log(fishUID)
       const motion = recognize(req.body.text);
       console.log(motion)
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
