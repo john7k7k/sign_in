@@ -38,15 +38,15 @@ function recognize(text){
 module.exports = async (req, res) => { 
     try{
       console.log(req.body);
-      const fishUID = '0023011'
-      //const section = '002001001';
+      //const fishUID = '0023011'
+      const { fishUID } = req.body;
       const motion = recognize(req.body.text);
       console.log(motion)
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
-      // const { location: section } = await prisma.fish.findUnique({
-      //   where: { fishUID }
-      // })
-      let section = '002001001';
+      const { location: section } = await prisma.fish.findUnique({
+        where: { fishUID }
+      })
+      //let section = '002001001';
       const topic = 'Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion';
       const mes =  JSON.stringify({
         id: fishUID.slice(-4),

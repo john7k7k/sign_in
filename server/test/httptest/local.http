@@ -1,5 +1,5 @@
 
-POST https://pre.aifish.cc/api/v1/account/sign_up
+POST  http://localhost:3000/api/v1/account/sign_up
 Content-Type: application/json
 
 {
@@ -10,11 +10,11 @@ Content-Type: application/json
     "level": 10
 }
 ###
-GET https://pre.aifish.cc/api/v1/account/verify/?username=123456
+GET  http://localhost:3000/api/v1/account/verify/?username=123456
 Content-Type: application/json
 
 ###
-POST https://pre.aifish.cc/api/v1/account/login
+POST  http://localhost:3000/api/v1/account/login
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
-POST https://pre.aifish.cc/api/v1/fish/assign
+POST  http://localhost:3000/api/v1/fish/assign
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA3MjAzOCwiZXhwIjoxNjk4MDgxMDM4fQ.Zd8sTqeHteLXwpuCB8ghAhnFN3pGBtvUIQYDaMv8R5U
 
@@ -32,7 +32,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/disassign
+POST  http://localhost:3000/api/v1/fish/disassign
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE0MTI3NCwiZXhwIjoxNzAxMTUwMjc0fQ.ONVF8RJx-WgAwzKsEKDy8MSjv9rmuGYMszm_nxpWA9Q
 
@@ -42,12 +42,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/account/delete_user
+POST  http://localhost:3000/api/v1/account/delete_user
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzQxNTc1NCwiZXhwIjoxNjkzNDI0NzU0fQ.CTi99ThcxnfZ5MOcaFyjqA6fODQ5nsK-x2niEWzgRNg
 
 ###
-POST https://pre.aifish.cc/api/v1/account/remove_user/
+POST  http://localhost:3000/api/v1/account/remove_user/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk3NDg4NiwiZXhwIjoxNjkyOTgzODg2fQ.9VrRSBOUu5VTRzEL2ZQRxGJ1SrmSnw6rNs922MbMZRs
 
@@ -55,17 +55,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "username": "abc"
 }
 ###
-GET https://pre.aifish.cc/api/v1/account
+GET  http://localhost:3000/api/v1/account
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODMyOTkyNiwiZXhwIjoxNzA4MzM4OTI2fQ.w5nbxVlQusSeC6v1VX8zLy9r1fP_Lg5f-dqQ1IfTxyI
 
 ###
-GET https://pre.aifish.cc/api/v1/account/list/?section=001
+GET  http://localhost:3000/api/v1/account/list/?section=001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2MTQ1MCwiZXhwIjoxNjk4MTcwNDUwfQ.ipQ489He7Lbtgq2Iw4vXGj2wjkPa2EzKdwPKgnIqE84
 
 ###
-POST https://pre.aifish.cc/api/v1/account/revise/level
+POST  http://localhost:3000/api/v1/account/revise/level
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEwMzk5OCwiZXhwIjoxNzAxMTEyOTk4fQ.zJul6WgECSGARIVJXr4U8eKf1OP17fuZLVJcA_V1UIE
 
@@ -74,7 +74,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newLevel": 10
 }
 ###
-POST https://pre.aifish.cc/api/v1/account/revise/section
+POST  http://localhost:3000/api/v1/account/revise/section
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEwNDEzMSwiZXhwIjoxNzAxMTEzMTMxfQ.S6PpnBcPK2hKDk3AmDuu15RAZdUui4WWnyjXX5bJChU
 
@@ -83,7 +83,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newSection": "999002001"
 }
 ###
-POST https://pre.aifish.cc/api/v1/fish/?section=999002001
+POST  http://localhost:3000/api/v1/fish/?section=999002001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEwNDk4MiwiZXhwIjoxNzAxMTEzOTgyfQ.gKN7mBA_5IQLFFz2Q90Si_7MrWs5QIACJf0V1phSUG8
 
@@ -92,7 +92,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/data/
+POST  http://localhost:3000/api/v1/fish/data/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNTA5NTk3NSwiZXhwIjoxNzE1MTA0OTc1fQ.jkWP-4pnwCYlwax9lke6CH7-zDx89bX7kh3aCYXy0_g
 
@@ -113,17 +113,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-GET https://pre.aifish.cc/api/v1/fish/table/?fishesUID=0023001
+GET  http://localhost:3000/api/v1/fish/table/?fishesUID=0023001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2Mzg0OCwiZXhwIjoxNjk4MTcyODQ4fQ.853qp8OqQSXpjBHKySn0wZel__vonQVb8GtTdItDL8E
 
 
 ###
-GET https://pre.aifish.cc/api/v1/fish/data/?fishesUID=0023002
+GET  http://localhost:3000/api/v1/fish/data/?fishesUID=0023002
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3NTcyMSwiZXhwIjoxNzE2ODg0NzIxfQ.gTvOT9tsbBSJ6o1uZ6RSLzpn_UZIpMBuyr8Y10CxtFQ
 ###
-GET https://pre.aifish.cc/api/v1/fish/history_data/?fishesUID=0023001&versions=1697002072:1698064041
+GET  http://localhost:3000/api/v1/fish/history_data/?fishesUID=0023001&versions=1697002072:1698064041
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE2Mzg0OCwiZXhwIjoxNjk4MTcyODQ4fQ.853qp8OqQSXpjBHKySn0wZel__vonQVb8GtTdItDL8E
 
@@ -147,7 +147,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/delete/
+POST  http://localhost:3000/api/v1/fish/delete/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5NzI2NzA1OSwiZXhwIjoxNjk3Mjc2MDU5fQ.qObweChHUn4SQLJImtS8ramb_8dmLLi0WkusTgFmBZk
 
@@ -155,14 +155,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "fishesUID": ["0023999"]
 }
 ###
-GET https://pre.aifish.cc/api/v1/video/?video_uid=1&section=002
+GET  http://localhost:3000/api/v1/video/?video_uid=1&section=002
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTkxMzc5MywiZXhwIjoxNjkxOTIyNzkzfQ.y2vpad0KlqtVWPELBdUGQ7eKYmaw0kY4BdprzMQV0LM
 
 ###
-GET https://pre.aifish.cc/home
+GET  http://localhost:3000/home
 Cookie:token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MTc2ODczMCwiZXhwIjoxNjkxNzc3NzMwfQ.x-S_txC02B18EY56ZIBeGvZTrN7GmibB491IVhV9ym0
 ###
-POST https://pre.aifish.cc/api/v1/instruction
+POST  http://localhost:3000/api/v1/instruction
 Content-Type: application/json
 
 {
@@ -172,7 +172,7 @@ Content-Type: application/json
     }
 }
 ###
-POST https://pre.aifish.cc/api/v1/depart
+POST  http://localhost:3000/api/v1/depart
 Content-Type: application/json
 
 {
@@ -185,7 +185,7 @@ Content-Type: application/json
     }
 }
 ###
-POST https://pre.aifish.cc/api/v1/pool
+POST  http://localhost:3000/api/v1/pool
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5MzEzMDUzNCwiZXhwIjoxNjkzMTM5NTM0fQ.vlz8hjB7zM2kIaHweRTO5RnDWuxLzdwIdw9Wyj_i-w0
 
@@ -202,7 +202,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     }
 }
 ###
-POST https://pre.aifish.cc/api/v1/fish/?section=002001001
+POST  http://localhost:3000/api/v1/fish/?section=002001001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
 
@@ -217,23 +217,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 ###
 
-POST https://pre.aifish.cc/api/v1/account/sticker
+POST  http://localhost:3000/api/v1/account/sticker
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NDk1NSwiZXhwIjoxNjkzNzYzOTU1fQ.k48udhky0SI6RR9pWmEhMYOR_Xb6a0t1a2bFOky_X5Y
 
 ###
-GET https://pre.aifish.cc/api/v1/account/sticker
+GET  http://localhost:3000/api/v1/account/sticker
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mjk1ODc0NSwiZXhwIjoxNjkyOTY3NzQ1fQ.j4zuDdyjJAVkhyejXS-TYSgNeJzY2M4mdFWxMBBbwCI
 
 ###
-GET https://pre.aifish.cc/api/v1/fish/photosURL
+GET  http://localhost:3000/api/v1/fish/photosURL
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTEzODcwNiwiZXhwIjoxNzAxMTQ3NzA2fQ.0WoJ5emqXm1_diL4I-HbSv0DyP8B9hLxlg64pY6L6Fc
 
 ###
-GET https://pre.aifish.cc/api/v1/section
+GET  http://localhost:3000/api/v1/section
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NzA3MSwiZXhwIjoxNjkzNzY2MDcxfQ.P9hvLCl44m561H2rWqMN9z6rwxJ4aX6gZYv_kIB5bb0
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/photo/change
+POST  http://localhost:3000/api/v1/fish/photo/change
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODE1MjU2MywiZXhwIjoxNjk4MTYxNTYzfQ.qwdd8_JDnm9r52joSG0xh-clTYixJBRp-Zc1VebReyw
 Content-Type: application/json
 
@@ -251,7 +251,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
     "newPool": "002001001"
 }
 ###
-POST https://pre.aifish.cc/api/v1/ota/burn
+POST  http://localhost:3000/api/v1/ota/burn
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE3MDEwNzM1ODAsImV4cCI6MTcwMTA4MjU4MH0.KV09E086JbD3B5xSwhebuGveJ35hfxP52nhhzwxrFME
 
@@ -261,22 +261,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 }
 
 ###
-GET https://pre.aifish.cc/api/v1/ota/bin
+GET  http://localhost:3000/api/v1/ota/bin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE5MDg1NiwiZXhwIjoxNzAxMTk5ODU2fQ.FWmPvcUXGH5_v1m_kD72PgGMC6u1__t_SgkBw-EYtow
 
 ###
-POST https://pre.aifish.cc/api/v1/ota/bin
+POST  http://localhost:3000/api/v1/ota/bin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5Mzc1NDk1NSwiZXhwIjoxNjkzNzYzOTU1fQ.k48udhky0SI6RR9pWmEhMYOR_Xb6a0t1a2bFOky_X5Y
 
 {
     "version": "v1.3.4test"
 }
 ###
-GET https://pre.aifish.cc/api/v1/fish/photos/?fishUID=0023001
+GET  http://localhost:3000/api/v1/fish/photos/?fishUID=0023001
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjEyMDM4MSwiZXhwIjoxNzAyMTI5MzgxfQ.owzVtNB0vXAC-DXvGESDIx3SRsCebDiVz00uJHDYVlU
 
 ###
-POST https://pre.aifish.cc/api/v1/account/reset_password
+POST  http://localhost:3000/api/v1/account/reset_password
 Content-Type: application/json
 
 {
@@ -285,7 +285,7 @@ Content-Type: application/json
     "password": "735434cae08df8e591c1549da88c6d87"
 }
 ###
-POST https://pre.aifish.cc/api/v1/account/reset_password_check
+POST  http://localhost:3000/api/v1/account/reset_password_check
 Content-Type: application/json
 
 {
@@ -304,7 +304,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/controller/delete
+POST  http://localhost:3000/api/v1/controller/delete
 Content-Type: application/json
 
 {
@@ -313,11 +313,11 @@ Content-Type: application/json
 
 ###
 
-GET https://pre.aifish.cc/api/v1/controller/
+GET  http://localhost:3000/api/v1/controller/
 Content-Type: application/json
 
 ###
-POST https://pre.aifish.cc/api/v1/controller/revise
+POST  http://localhost:3000/api/v1/controller/revise
 Content-Type: application/json
 
 {
@@ -341,16 +341,16 @@ Content-Type: application/json
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/reviseTime?fishUID=0023999
+POST  http://localhost:3000/api/v1/fish/reviseTime?fishUID=0023999
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTI0MzQ1MCwiZXhwIjoxNzAxMjUyNDUwfQ.-mR0Mfu3TV4kZ19fD9rBVgNaegYMADaFzUEl7Uso_XQ
 
 ###
-GET https://pre.aifish.cc/api/v1/fish/explore
+GET  http://localhost:3000/api/v1/fish/explore
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/voice
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+POST  http://localhost:3000/api/v1/fish/voice
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3ODY3OSwiZXhwIjoxNzE2ODg3Njc5fQ.OedyKwpAXZMCzQExhB8HXdYVJDkQ-Ts5RDNjKTkJOjI
 Content-Type: application/json
 
 {
@@ -359,7 +359,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/fish/nickName
+POST  http://localhost:3000/api/v1/fish/nickName
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3NTkzMiwiZXhwIjoxNzE2ODg0OTMyfQ.a688Yj5zW1uM9V4XVRo4Cd7_Dtf-I9ISApwaVxaB24s
 Content-Type: application/json
 
@@ -369,7 +369,7 @@ Content-Type: application/json
 }
 
 ###
-GET https://pre.aifish.cc/api/v1/component/
+GET  http://localhost:3000/api/v1/component/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
 Content-Type: application/json
 
@@ -378,7 +378,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/component/
+POST  http://localhost:3000/api/v1/component/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
 Content-Type: application/json
 
@@ -392,7 +392,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://pre.aifish.cc/api/v1/component/
+POST  http://localhost:3000/api/v1/component/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
 Content-Type: application/json
 
@@ -406,7 +406,7 @@ Content-Type: application/json
     }
 }
 ###
-POST https://pre.aifish.cc/api/v1/component/updateCom
+POST  http://localhost:3000/api/v1/component/updateCom
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
 Content-Type: application/json
 
