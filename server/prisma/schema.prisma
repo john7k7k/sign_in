@@ -101,4 +101,12 @@ model Controller{
   leave_auto Int
 }
 
-
+model Component {
+  dataID Int    @id @default(autoincrement())
+  id     String
+  type   String
+  local  String
+  hours  Float
+  state  String
+  time   Int
+}
