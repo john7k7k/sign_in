@@ -105,6 +105,6 @@ const process = async (req, res) => {
 
 
 module.exports = {
-    execute,
+    exeute,
     process
 }
