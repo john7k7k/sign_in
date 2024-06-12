@@ -15,7 +15,7 @@
         <div class="tital">{{ titalWord[languageIndex] }}</div>
         
     <div>
-      <label for="dropdown" style="color: white;" v-show="false">選擇控制魚的ID:</label>
+      <label for="dropdown" style="color: white;" v-show="true">選擇控制魚的ID:</label>
       <select id="dropdown" v-model="selectedfishUID" @change="handleChange">
         <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.label }}</option>
       </select>
