@@ -1,13 +1,28 @@
 <template>
     <div class="configureBackdrop" v-show="showBackdrop">
         <div class="startBox">
-            <v-btn   @click="changeLangWord" variant="flat" color="blue-darken-1" >繁中/En</v-btn>
-            <v-img src="../../assets/Fishbowl.png"  class="startImg"></v-img>
-            <div class="startWordCSS">
-                <p>{{ starttitalWord[languageIndex][0] }}</p>
-                <p>{{ starttitalWord[languageIndex][1] }}</p>
+            <div class="startBoxItem1">
+                <div class="startTital" :style="{ fontSize: languageIndex === 1 ? '40px' : '50px' }">{{ titalWord[languageIndex] }}</div>
             </div>
-            <v-btn class="startBtnCSS" @click="showBackdrop = false" variant="flat" color="teal-lighten-2"  >{{ startBtnWord[languageIndex] }}</v-btn>
+            <div class="startBoxItem2">
+                <div class="startWordCSS">
+                    <p>{{ starttitalWord[languageIndex][0] }}</p>
+                    <p>{{ starttitalWord[languageIndex][1] }}</p>
+                </div>
+                <v-btn class="startBtnCSS " @click="toggleMenu" variant="flat">
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{languageWord[languageIndex]}}</div>
+                    </v-btn>
+                    <div v-if="isMenuVisible" class="menu-container">
+                    <v-list>
+                        <v-list-item @click="selectLanguage('zh')">中文</v-list-item>
+                        <v-list-item @click="selectLanguage('en')">English</v-list-item>
+                    </v-list>
+                    </div>
+                <v-btn class="startBtnCSS"  @click="showBackdrop = false" variant="flat"  >
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{ChooseFishWord[languageIndex]}}</div></v-btn>
+                <v-btn class="startBtnCSS"  @click="showBackdrop = false" variant="flat"  >
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{ startBtnWord[languageIndex] }}</div></v-btn>
+            </div>
         </div>
     </div>
     <div class="box">
@@ -28,8 +43,12 @@
     </select>
     <br/>
     
-    <p  class="resultTital">{{ resultWord[languageIndex] }}</p>
-    <v-card class="resultcard"><div class="Resultsword">{{ command }}</div></v-card>
+    
+    <v-card class="resultcard">
+        <p  class="resultTital">{{ resultWord[languageIndex] }}</p>
+        <div class="Resultsword">{{ command }}</div>
+    </v-card>
+    <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
     <v-btn class="btn-bg text-white" @click="toggleSpeechRecognition"  :icon="icon" size="80"></v-btn>
     <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
     <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
@@ -73,11 +92,38 @@
     font-size: 25px;
     font-weight: bolder;
 }
-.startBtnCSS{
-    height: 10%;
-    width: 80%;
-    font-size: 25px;
+.startBtnCSS {
+    position: relative; 
+    display: inline-block; 
+    background-image: linear-gradient(to right, #add8e6, #ffffff, #ffcccc); 
+    border-radius: 20px; 
+    height: auto; 
+    width: auto; 
+    padding: 5px; 
     margin: auto;
+    cursor: pointer;
+    height: 8%;
+    width: 40%;
+    transition: background 0.3s, border 0.3s;
+}
+
+.startBtnCSScontainer {
+    background-image: linear-gradient(to right, #ccc7c7, #000000, #ccc7c7); 
+    border-radius: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white;
+    font-size: 18px;
+    font-weight:600;
+    letter-spacing: 4px;
+    padding: 10px 20px; 
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 2px; 
 }
 .box{
     width: 95%;
@@ -90,7 +136,19 @@
 .changeLanCSS{
     color: white;
 }
-
+.failresultWord{
+    color: #EF5350;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 2%;
+}
+.menu-container{
+    position: absolute;
+    width: 65%;
+    top: 75%;
+    z-index: 99;
+    
+}
 @media screen and  (min-width: 1681px){
     .tital{
     font-weight: bold;
@@ -100,14 +158,18 @@
 }
 .resultTital{
     color: white;
-    font-size: 40px;
-    margin-top: 6%;
+    font-size: 45px;
+    font-weight: 600;
 }
 .resultcard{
     width: 60%;
     height: 30%;
     border-radius: 20px;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.3));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
@@ -119,7 +181,10 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    height: 100%;
+    width: 90%;
+    height: 60%;
+    margin-top: 2%;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 .btn-bg{
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
@@ -151,13 +216,17 @@
 }
 .resultTital{
     color: white;
-    font-size: 25px;
-    margin-top: 3%;
+    font-size: 30px;
+    font-weight: 600;
 }
 .resultcard{
     width: 60%;
     height: 30%;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
@@ -170,7 +239,10 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    height: 100%;
+    width: 90%;
+    height: 50%;
+    margin-top: 5%;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 .btn-bg{
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
@@ -204,14 +276,18 @@
 }
 .resultTital{
     color: white;
-    font-size: 30px;
-    margin-top: 10%;
+    font-size: 35px;
+    font-weight: 600;
 }
 
 .resultcard{
     width: 75%;
     height: 30%;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
@@ -224,7 +300,10 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    height: 100%;
+    width: 90%;
+    height: 60%;
+    margin-top: 3%;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 .btn-bg{
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
@@ -241,15 +320,82 @@
 }
 }
 @media screen and (min-width: 401px) and (max-width: 600px){
+.startBtnCSS {
+    position: relative; 
+    display: inline-block; 
+    background-image: linear-gradient(to right, #91d1e6, #ffffff, #f8a3a3); 
+    border-radius: 25px; 
+    padding: 5px; 
+    margin: auto;
+    cursor: pointer;
+    height: 14.5%;
+    width: 65%;
+    margin: auto;
+    transition: background 0.3s, border 0.3s;
+}
+.startBtnCSScontainer {
+    background-image: linear-gradient(to right, #868383, #000000, #868383); 
+    border-radius: 25px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white;
+    font-weight:500;
+    letter-spacing: 2px;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 2.5px;
+}
+.configureBackdrop {
+background-image: url('../../assets/speechBackground.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: hidden;
+  z-index: 1; 
+}
 .startBox{
-    width: 75%;
-    height: 60%;
-    background-color: white;
-    border-radius: 20px;
+    width: 85%;
+    height: 80%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(0px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
     padding: 4%;
     display: flex;
+    margin-top: 10%;
     flex-direction: column;
-    align-items: end;
+}
+.startBoxItem1{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.startBoxItem2{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.startTital{
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
+    margin: 10%;
 }
 .startImg{
     margin: auto;
@@ -260,22 +406,13 @@
 .startWordCSS{
     width: 100%;
     height: 20%;
-    position: relative;
-    bottom: 10%;
+    color: #29B6F6;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     font-size: 20px;
     font-weight: bolder;
-}
-.startBtnCSS{
-    height: 10%;
-    width: 80%;
-    font-size: 25px;
-    margin: auto;
-    position: relative;
-    bottom: 5%;
 }
     .tital{
     font-weight: bold;
@@ -286,12 +423,22 @@
 .resultTital{
     color: white;
     font-size: 25px;
-    margin-top: 20%;
+    font-weight: 600;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 2%;
 }
 .resultcard{
     width: 90%;
-    height: 20%;
+    height: 15%;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
@@ -304,7 +451,10 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    height: 100%;
+    width: 90%;
+    height: 50%;
+    margin-top: 2%;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -322,15 +472,82 @@
 }
 }
 @media screen and (max-width: 400px) {
-    .startBox{
-    width: 75%;
-    height: 60%;
-    background-color: white;
-    border-radius: 20px;
+    .startBtnCSS {
+    position: relative; 
+    display: inline-block; 
+    background-image: linear-gradient(to right, #91d1e6, #ffffff, #f8a3a3); 
+    border-radius: 25px; 
+    padding: 5px; 
+    margin: auto;
+    cursor: pointer;
+    height: 14.5%;
+    width: 65%;
+    margin: auto;
+    transition: background 0.3s, border 0.3s;
+}
+.startBtnCSScontainer {
+    background-image: linear-gradient(to right, #868383, #000000, #868383); 
+    border-radius: 22px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white;
+    font-weight:500;
+    letter-spacing: 2px;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 2.5px;
+}
+.configureBackdrop {
+background-image: url('../../assets/speechBackground.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: hidden;
+  z-index: 1; 
+}
+.startBox{
+    width: 85%;
+    height: 80%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(0px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
     padding: 4%;
     display: flex;
+    margin-top: 10%;
     flex-direction: column;
-    align-items: end;
+}
+.startBoxItem1{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.startBoxItem2{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.startTital{
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 4%;
 }
 .startImg{
     margin: auto;
@@ -341,38 +558,39 @@
 .startWordCSS{
     width: 100%;
     height: 20%;
-    position: relative;
-    bottom: 10%;
+    color: #29B6F6;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bolder;
-}
-.startBtnCSS{
-    height: 10%;
-    width: 80%;
-    font-size: 25px;
-    margin: auto;
-    position: relative;
-    bottom: 5%;
 }
     .tital{
     font-weight: bold;
     margin-top: 30%;
-    font-size: 40px;
+    font-size: 45px;
     color: white;
 }
 .resultTital{
     color: white;
-    font-size: 20px;
-    margin-top: 20%;
+    font-size: 25px;
+    font-weight: 600;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 2%;
 }
 .resultcard{
     width: 90%;
-    height: 20%;
+    height: 15%;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
@@ -380,12 +598,15 @@
     margin-top: 3%;
 }
 .Resultsword{
-    font-size: 30px;
+    font-size: 35px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
-    height: 100%;
+    width: 90%;
+    height: 50%;
+    margin-top: 2%;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -396,10 +617,9 @@
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
     margin-top: 20%;
-    transform: scale(0.9);
   }
 .beginWord{
-    font-size:15px;
+    font-size:20px;
     margin-top: 3%;
 }
 }
@@ -412,7 +632,7 @@ export default {
     data() {
         return {
             showBackdrop:true,
-            starttitalWord:[["體驗語音操控的樂趣","讓你的聲音引導機器魚游動！"],["Start experiencing your voice","guiding the robotic fish to swim!"]],
+            starttitalWord:[["體驗語音操控的樂趣","讓聲音引導機器魚游動！"],["Start experiencing your voice","guiding the robotic fish to swim!"]],
             startBtnWord:["開始體驗","Start"],
             selectedfishUID: null,
             options: [
@@ -433,6 +653,11 @@ export default {
             startWord: ["開始辨識","Start recognition"],
             endWord: ["結束辨識","End recognition"],
             commandWord: ["辨識中","Identifying"],
+            failword:["辨識失敗，請再說一次","Recognition failed, please say again"],
+            isFail:false,
+            isMenuVisible: false,
+            languageWord:["選擇語言▼","Language▼"],
+            ChooseFishWord:["選擇魚▼","Choose fish▼"]
         };
     },
     mounted() {
@@ -455,8 +680,8 @@ export default {
             this.icon = "mdi mdi-microphone";
                 this.endSpeechRecognition();
             } else {
-                // 如果未聽，則開始
-                this.icon = "mdi mdi-microphone-off";
+                // 如果未聽，則開始mdi mdi-microphone-off
+                this.icon = "mdi mdi-stop";
                 this.startSpeechRecognition();
             }
             },
@@ -467,6 +692,7 @@ export default {
         this.recognition.start();
             this.recognitionResult = this.commandWord[this.languageIndex];
             this.command = this.commandWord[this.languageIndex];
+            this.isFail = false;
         },
         endSpeechRecognition(){
             this.isListening = false;
@@ -488,9 +714,17 @@ export default {
                 { headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }}
-            ).then(
-                ({data}) => this.command = data
-            )
+            ).then(({ data }) => {
+                if (data.includes("辨識失敗")) {
+                    this.isFail = true;
+                    this.command = "";
+                } else {
+                    this.command = data;
+                    this.isFail = false;
+                }
+            }).catch(error => {
+                console.error("Error submitting voice data:", error);
+            });
         },
         handleChange() {
             this.$emit('change', this.selectedOption);
@@ -527,11 +761,22 @@ export default {
             this.traverseAndFlatten(obj, flattenedObject);
             return flattenedObject;
         },
-        changeLangWord(){
-          if(this.languageIndex == 0){
+        toggleMenu() {
+            this.isMenuVisible = !this.isMenuVisible;
+        },
+    selectLanguage(language) {
+        this.isMenuVisible = false; 
+        if(language == 'zh'){
+            this.languageIndex = 0;
+          }else if(language == 'en'){
             this.languageIndex = 1;
-          }else this.languageIndex = 0;
-        }
+          }
+    },
+    // changeLangWord(){
+    //       if(this.languageIndex == 0){
+    //         this.languageIndex = 1;
+    //       }else this.languageIndex = 0;
+    //     }
     }
 };
 </script>
