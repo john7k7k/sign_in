@@ -425,5 +425,5 @@ GET https://pre.aifish.cc/api/v1/alivefish
 Content-Type: application/json
 
 {
-    "location": "002001002"
+    "location": "002001001"
 }
