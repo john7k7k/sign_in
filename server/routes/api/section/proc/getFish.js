@@ -23,7 +23,10 @@ async function getNonFaultyFishInPond(location, res) {
         }
       }
     });
+    console.log(fishInPond)
+    if(!fishInPond[0]||!fishInPond[0].fishData[0]) return res.send([]);
     const nonFaultyFish = fishInPond.filter(fish => fish.fishData[0] && fish.fishData[0].active==1);
+    if(!nonFaultyFish[0]) return res.send([]);
     fishPhotoName = {};
     nonFaultyFish.forEach(({ fishUID }) => {
         const dir = path.join(__dirname, `../../../../uploads/photos/fish/${fishUID}`);
@@ -31,6 +34,7 @@ async function getNonFaultyFishInPond(location, res) {
         fs.readdir(dir , (err, photos) => {
             console.log(photos)
             fishPhotoName[fishUID] = photos.at(-1)?path.join(dir, photos.at(-1)):'no image'
+            console.log(nonFaultyFish)
             if(fishUID === nonFaultyFish.at(-1).fishUID) return res.send(fishPhotoName);
         })
     })
