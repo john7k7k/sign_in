@@ -419,3 +419,11 @@ Content-Type: application/json
         "turn": 1939
     }
 }
+
+###
+POST https://pre.aifish.cc/api/v1/section/alivefish
+Content-Type: application/json
+
+{
+    "location": "002001001"
+}
