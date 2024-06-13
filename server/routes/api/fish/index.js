@@ -67,7 +67,7 @@ router.post('/reviseTime', verifyTokenBy('Header')(), reviseTime)
 
 router.get('/explore', verifyTokenBy('Header')(), fishExplore)
 
-router.post('/voice', verifyTokenBy('Header')(), voiceControl)
+router.post('/voice',  voiceControl)
 
 router.post('/nickname', verifyTokenBy('Header')(), nickName.setNickName)
 
