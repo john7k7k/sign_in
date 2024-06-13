@@ -24,7 +24,7 @@ Content-Type: application/json
 ###
 POST https://pre.aifish.cc/api/v1/fish/assign
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA3MjAzOCwiZXhwIjoxNjk4MDgxMDM4fQ.Zd8sTqeHteLXwpuCB8ghAhnFN3pGBtvUIQYDaMv8R5U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxODI5OTA0OSwiZXhwIjoxNzE4MzA4MDQ5fQ.PYtGvGiiD3IpNGzxFE8QEPS4CbortQkrCuYFMhPEFeM
 
 {
     "username": "1234",
@@ -425,5 +425,8 @@ GET https://pre.aifish.cc/api/v1/alivefish
 Content-Type: application/json
 
 {
-    "location": "002001001"
+    "location": "099001001"
 }
+###
+POST https://pre.aifish.cc/api/v1/fish/photos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxODI5OTA0OSwiZXhwIjoxNzE4MzA4MDQ5fQ.PYtGvGiiD3IpNGzxFE8QEPS4CbortQkrCuYFMhPEFeM
