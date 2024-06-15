@@ -26,6 +26,6 @@ async function getNonFaultyFishInPond(location) {
       }
     });
     const nonFaultyFish = fishInPond.filter(fish => fish.fishData[0] && fish.fishData[0].active==1);
-    return nonFaultyFish.map(({ fishUID, nickName }) => { fishUID, nickName });
+    return nonFaultyFish.map(({ fishUID, nickName }) => ({ fishUID, nickName }));
   }
   
