@@ -13,7 +13,8 @@ async function getNonFaultyFishInPond(location) {
     // 获取所有属于特定 pondId 的鱼
     const fishInPond = await prisma.fish.findMany({
       where: {
-        location
+        location,
+        exist: 1
       },
       include: {
         fishData: {
