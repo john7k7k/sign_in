@@ -112,6 +112,11 @@ const routes = [
     component: () => import("../views/john/Interact.vue"),
   },
   {
+    path: "/voicecontrol",
+    name: "InteractClient",
+    component: () => import("../views/john/Interact-client.vue"),
+  },
+  {
     path: "/maintenance",
     name: "Maintenance",
     component: () => import("../views/Maintenance-list.vue"),

@@ -156,15 +156,24 @@
     <Table v-show="Tableshow[i]" :border="true" :columns="section === '003' ? (isMobileScreen ? mobileColumnsfor003 : columnsfor003) : (isMobileScreen ? mobileColumns : columns)" 
     :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
-      <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
-      <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel">
+      <div class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong>
+        <div>
+          <Button  icon="md-images" size="small" @click="row.modal = true" class="mr-2"></Button>
+          <Button  icon="md-create" size="small" @click="row.NickNameModle = true"></Button>
+        </div>
+      </div>
+      <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel" ok-text="確定">
                 <input type="file" ref="fileInput" @change="selectfile" />
                 <div class="mt-4 font-weight-bold text-h6">上傳照片範例:</div>
                 <div style="width: 30%; height: 30%; background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage1.png" width="100%" height="100%" ></v-img></div>   
               </Modal>
+      <Modal v-model="row.NickNameModle" title="更改仿生魚暱稱" :closable="false" @on-ok="changeNickname(row.id)" @on-cancel="cancel" ok-text="確定">
+        <div class="mt-2 mb-2 font-weight-bold text-h6">輸入新暱稱:</div>
+        <Input v-model="fishNickname" placeholder="Enter" clearable style="width: 250px" />
+      </Modal>
    </template>
    <template #active="{ row}">
-    <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button v-if="showBurnBtn"  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
+    <div class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button v-if="showBurnBtn"  icon="md-build" size="small" @click="row.ActiveModal = true" class="mt-1"></Button></div>
     <Modal v-model="row.ActiveModal" :title="'變更 ' + row.id + ' 狀態'" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
         <RadioGroup class="radio-group" v-model="row.selectActive">
           <Radio class="radio" label="游動中">游動中</Radio>
@@ -175,7 +184,7 @@
   </template>
     <template #action="{ row }" v-if="section !='003'">
     <Button v-if="showBurnBtn" type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
-    <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel">
+    <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel" ok-text="確定">
       
         <RadioGroup v-model="row.section">
                 <Radio v-for="poolname in poolsCode" :key="poolname" :label="poolname" class="d-flex mt-3 ">{{ processSectionName(poolname) }}</Radio>
@@ -546,7 +555,7 @@ import loading from '@/components/loading.vue';
             burnerroword:"",
             burnerroshow:false,
             burnbtn:false,
-            
+            fishNickname:""
         }
       },
       async created() {
@@ -914,6 +923,7 @@ import loading from '@/components/loading.vue';
                       active: this.proccesactive(this.active[i][index]),
                       modal:false,
                       ActiveModal:false,
+                      NickNameModle:false,
                       selectActive: this.proccesactive(this.active[i][index]),
                       swimtime:this.secondToHour(this.swimtime[i][index]),
                       section:this.poolsCode[i]
@@ -1096,6 +1106,29 @@ import loading from '@/components/loading.vue';
               this.$Message.error('上傳失敗');
           })
       },
+    changeNickname(id){
+      axios.post(
+        process.env.VUE_APP_SEVER+"/api/v1/fish/nickName",
+            {
+              "fishUID": id,
+              "nickName": this.fishNickname
+            },
+            {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        }
+          )
+          .then(async res=> {
+              console.log(res);
+              this.$Message.success('變更狀態成功');
+              this.fishNickname = "";
+          })
+          .catch(err=> {
+              console.log(err);
+              this.$Message.error('變更狀態失敗');
+          })
+    },
     changeFishActive(fishdata,newActive){
       if(newActive == "游動中"){
         newActive = 1;

@@ -1,8 +1,20 @@
 <template>
+    <div class="ChoseFishBox" v-show="isChoseFish">
+        <div  class="ChoseFishItem1">
+            <label for="dropdown">選擇控制魚的ID:</label>
+            <v-btn color="white" icon="mdi mdi-close-thick" variant="text" @click="isChoseFish = false"></v-btn>
+        </div>
+        <div class="ChoseFishItem2">
+            <v-card v-for="(fishName,index) in this.fishnicknames" :key="fishName" class="ChoseFishcard" @click="selectFish(fishName)">
+                <v-img class="ChoseFishImg" height="80%" :src="fishurl[index]" ></v-img>
+                <v-card-title >{{ fishName }}</v-card-title>
+            </v-card>
+        </div>
+    </div>
     <div class="configureBackdrop" v-show="showBackdrop">
         <div class="startBox">
             <div class="startBoxItem1">
-                <div class="startTital" :style="{ fontSize: languageIndex === 1 ? '40px' : '50px' }">{{ titalWord[languageIndex] }}</div>
+                <div class="startTital" :style="{ fontSize: languageIndex === 1 ? '30px' : '40px' }">{{ titalWord[languageIndex] }}</div>
             </div>
             <div class="startBoxItem2">
                 <div class="startWordCSS">
@@ -18,13 +30,14 @@
                         <v-list-item @click="selectLanguage('en')">English</v-list-item>
                     </v-list>
                     </div>
-                <v-btn class="startBtnCSS"  @click="showBackdrop = false" variant="flat"  >
+                <v-btn class="startBtnCSS" @click="isChoseFish = true"  variant="flat"  >
                     <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{ChooseFishWord[languageIndex]}}</div></v-btn>
-                <v-btn class="startBtnCSS"  @click="showBackdrop = false" variant="flat"  >
+                <v-btn class="startBtnCSS"  @click="startVoiceRecognition" variant="flat"  >
                     <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{ startBtnWord[languageIndex] }}</div></v-btn>
             </div>
         </div>
     </div>
+    
     <div class="box">
         <v-btn variant="text" class="changeLan" @click="changeLangWord">繁中/En</v-btn>
         <div class="tital">{{ titalWord[languageIndex] }}</div>
@@ -147,7 +160,7 @@
     position: absolute;
     width: 65%;
     top: 75%;
-    z-index: 99;
+    z-index: 2;
     
 }
 .startBtnCSS {
@@ -162,6 +175,56 @@
     width: 65%;
     margin: auto;
     transition: background 0.3s, border 0.3s;
+}
+.ChoseFishBox {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/編輯魚畫面手機背景2.png');
+    background-size: cover;
+    background-position: top;
+    z-index: 5;
+}
+.ChoseFishItem1{
+    width: 100%;
+    height: 10%;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    padding: 5%;
+    justify-content: space-between;
+    align-items: center;
+}
+.ChoseFishItem2{
+    width: 100%;
+    height: 90%;
+    padding: 0 5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow-y: auto;
+}
+.ChoseFishcard{
+    width: 44%;
+    height: 35%;
+    margin: 1.5% 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-color: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+.ChoseFishImg{
+    object-fit: cover;
 }
 @media screen and  (min-width: 1681px){
 .configureBackdrop{
@@ -197,7 +260,7 @@
     position: absolute;
     width: 65%;
     top: 77%;
-    z-index: 99;
+    z-index: 2;
 }
     .tital{
     font-weight: bold;
@@ -270,11 +333,11 @@
     position: absolute;
     width: 65%;
     top: 77%;
-    z-index: 99;
+    z-index: 2;
 }
 .configureBackdrop{
     z-index: 1;
-    background-image: url('../../assets/speechBackground.jpg');
+    background-image: url('../../assets/語音互動電腦背景.jpg');
     background-size: cover;
     background-position: top;
     position: absolute;
@@ -624,8 +687,7 @@ background-image: url('../../assets/speechBackground.jpg');
 .startTital{
     color: white;
     font-weight: bold;
-    font-size: 25px;
-    margin: 1%;
+    margin: 0%;
 }
 .startImg{
     margin: auto;
@@ -729,7 +791,12 @@ export default {
             isFail:false,
             isMenuVisible: false,
             languageWord:["選擇語言▼","Language▼"],
-            ChooseFishWord:["選擇魚▼","Choose fish▼"]
+            ChooseFishWord:["選擇魚▼","Choose fish▼"],
+            initialChooseFishWord: ["選擇魚▼", "Choose fish▼"],
+            isChoseFish:false,
+            fishurl:[],
+            fishUIDs:[],
+            fishnicknames:[],
         };
     },
     mounted() {
@@ -782,10 +849,7 @@ export default {
                 {
                     text:this.recognitionResult,
                     fishUID: this.selectedfishUID
-                },
-                { headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }}
+                }
             ).then(({ data }) => {
                 if (data.includes("辨識失敗")) {
                     this.isFail = true;
@@ -801,13 +865,82 @@ export default {
         handleChange() {
             this.$emit('change', this.selectedOption);
         },
+        // async fetchOptions() {
+        //     this.options = Object.keys(this.flatten((await axios.get(
+        //     process.env.VUE_APP_SEVER+"/api/v1/alivefish", {"location": "002001001"}
+        //     )).data.fishesID)).map(id => ({value: id.slice(-7), label: id.slice(-4)}));
+        //     console.log(this.options);
+        // },
         async fetchOptions() {
-            this.options = Object.keys(this.flatten((await axios.get(
-            process.env.VUE_APP_SEVER+"/api/v1/account", { headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }}
-            )).data.fishesID)).map(id => ({value: id.slice(-7), label: id.slice(-4)}));
-            console.log(this.options);
+            try {
+                const response = await axios.get(
+                    process.env.VUE_APP_SEVER+"/api/v1/alivefish?location=002001001",
+                    {
+                    
+                }
+                );
+                console.log(response);
+                if (response.status === 200) {
+                    for (var i = 0; i < response.data.length; i++){
+                        this.fishUIDs.push(response.data[i].fishUID);
+                        this.fishnicknames.push(response.data[i].nickName);
+                    }
+                    for(var j=0; j<this.fishUIDs.length; j++){
+                        this.fetchImageSource(this.fishUIDs[j]);
+                    }
+                }
+                    
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        selectFish(fishName){
+            let index = this.fishnicknames.indexOf(fishName)
+            this.selectedfishUID = this.fishUIDs[index];
+            this.ChooseFishWord[this.languageIndex] = fishName;
+            this.isChoseFish = false;
+        },
+        async fetchImageSource(id) {
+            try {
+                const res = await axios.get(
+                    process.env.VUE_APP_SEVER+"/api/v1/fish/photos/?fishUID="+id, { responseType: 'blob'}
+                );
+                console.log(res);
+
+                if (res.data !== undefined) {
+                    this.fishurl.push(URL.createObjectURL(res.data));
+                }else{
+                id = parseInt(id.toString().slice(-4))
+                if (id === 3002 || id === 3009 || id === 3013) {
+                    this.fishurl.push(require("../../assets/新花色" + id + ".png"));
+                } else if (id <= 4000) {
+                    this.fishurl.push(require("../../assets/fishimage1.png"));
+                } else {
+                    this.fishurl.push(require("../../assets/海龜.png"));
+                }
+                }
+            } catch (err) {
+                id = parseInt(id.toString().slice(-4))
+                if (id === 3002 || id === 3009 || id === 3013) {
+                    this.fishurl.push(require("../../assets/新花色" + id + ".png"));
+                } else if (id <= 4000) {
+                    this.fishurl.push(require("../../assets/fishimage1.png"));
+                } else {
+                    this.fishurl.push(require("../../assets/海龜.png"));
+                }
+            }
+        },
+        startVoiceRecognition() {
+            if (JSON.stringify(this.ChooseFishWord) !== JSON.stringify(this.initialChooseFishWord)) {
+                this.showBackdrop = false;
+            } else {
+                if (this.languageIndex == 0) {
+                    this.$Message.error('請先選擇要控制的魚');
+                } else {
+                    this.$Message.error('Please select the fish you want to control first');
+                }
+            }
         },
         traverseAndFlatten(currentNode, target, flattenedKey) {
             for (var key in currentNode) {
@@ -840,8 +973,10 @@ export default {
         this.isMenuVisible = false; 
         if(language == 'zh'){
             this.languageIndex = 0;
+            this.languageWord[this.languageIndex] = "中文";
           }else if(language == 'en'){
             this.languageIndex = 1;
+            this.languageWord[this.languageIndex] = "English";
           }
     },
     // changeLangWord(){
