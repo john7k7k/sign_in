@@ -167,9 +167,10 @@
                 <div class="mt-4 font-weight-bold text-h6">上傳照片範例:</div>
                 <div style="width: 30%; height: 30%; background-color: black; border: 2px solid grey;"><v-img class="" src="../assets/fishimage1.png" width="100%" height="100%" ></v-img></div>   
               </Modal>
-      <Modal v-model="row.NickNameModle" title="更改仿生魚暱稱" :closable="false" @on-ok="changeNickname(row.id)" @on-cancel="cancel" ok-text="確定">
+      <Modal v-model="row.NickNameModle" :title="'變更 ' + row.id + ' 暱稱'"  :closable="false" @on-ok="changeNickname(row.id)" @on-cancel="cancel" ok-text="確定">
         <div class="mt-2 mb-2 font-weight-bold text-h6">輸入新暱稱:</div>
-        <Input v-model="fishNickname" placeholder="Enter" clearable style="width: 250px" />
+        <div>中文:<Input class="ml-3" v-model="ChfishNickname" placeholder="Enter" clearable style="width: 250px" /></div>
+        <div class="mt-3">英文:<Input class="ml-3" v-model="EnfishNickname" placeholder="Enter" clearable style="width: 250px" /></div>
       </Modal>
    </template>
    <template #active="{ row}">
@@ -555,7 +556,8 @@ import loading from '@/components/loading.vue';
             burnerroword:"",
             burnerroshow:false,
             burnbtn:false,
-            fishNickname:""
+            ChfishNickname:"",
+            EnfishNickname:""
         }
       },
       async created() {
@@ -1107,11 +1109,15 @@ import loading from '@/components/loading.vue';
           })
       },
     changeNickname(id){
+      if(this.ChfishNickname.trim() == "" || this.EnfishNickname.trim() == ""){
+        this.$Message.error('中文和英文暱稱不能為空');
+        return;
+      }
       axios.post(
         process.env.VUE_APP_SEVER+"/api/v1/fish/nickName",
             {
               "fishUID": id,
-              "nickName": this.fishNickname
+              "nickName": this.ChfishNickname+":"+this.EnfishNickname
             },
             {
           headers: {
@@ -1121,12 +1127,13 @@ import loading from '@/components/loading.vue';
           )
           .then(async res=> {
               console.log(res);
-              this.$Message.success('變更狀態成功');
-              this.fishNickname = "";
+              this.$Message.success('變更暱稱成功');
+              this.ChfishNickname = "";
+              this.EnfishNickname = "";
           })
           .catch(err=> {
               console.log(err);
-              this.$Message.error('變更狀態失敗');
+              this.$Message.error('變更暱稱失敗');
           })
     },
     changeFishActive(fishdata,newActive){
