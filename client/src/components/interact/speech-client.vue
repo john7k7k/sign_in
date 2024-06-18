@@ -926,6 +926,7 @@ export default {
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;
+            console.log( this.recognitionResult )
             this.submit();
         };
         this.recognition.onend = () => {
