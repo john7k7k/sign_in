@@ -736,13 +736,20 @@ export default {
         // 初始化語音辨
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
+        this.recognition.lang = this.selectedLanguage; // 使用使用者選擇的語言
+        //this.recognition.continuous = true;
+        // this.recognition.interimResults = true;
+        this.recognition.maxSpeechTime = 1000;
         this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
-
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
-            this.recognitionResult = event.results[0][0].transcript;
+            this.recognitionResult = event.results[event.results.length - 1][0].transcript;
+            console.log( this.recognitionResult);
             this.submit();
         };
+        this.recognition.onend = () => {
+            if(this.isListening) setTimeout(this.startSpeechRecognition.bind(this), 500);
+        }
     },
     methods: {
         toggleSpeechRecognition() {
