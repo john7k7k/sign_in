@@ -237,7 +237,7 @@
               const errData = localStorage.getItem("Erro");
               const fishActiveData = localStorage.getItem("Active");
               const photoData = localStorage.getItem("FishPhoto");
-              if (bcData && errData && fishActiveData && iddata && photoData) {
+              if (bcData && errData && fishActiveData && iddata) {
                   this.FishId = iddata.split(',').map(num => parseInt(num.toString().slice(-4)));
                   this.bc = bcData.split(',').map(Number);
                   this.err = errData.split(',').map(Number);

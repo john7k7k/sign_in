@@ -129,9 +129,9 @@
   background-color:  rgba(0, 0, 0, 0.8);
 }
 .navbar{
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 999; 
-  padding-bottom: 3%;
+  padding-bottom: 2%;
   position: fixed;
 }
 .navbartext{
