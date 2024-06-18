@@ -11,6 +11,9 @@ function recognize(text){
   if(isletter(text[0])) {
     lang = 'eng';
   }
+  else{
+    lang = 'ch';
+  }
   if(lang === 'eng'){
     text = text.toLowerCase();
     for(let control in  englishKeyword){
