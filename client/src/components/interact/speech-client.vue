@@ -930,7 +930,7 @@ export default {
             this.submit();
         };
         this.recognition.onend = () => {
-            this.startSpeechRecognition()
+            if(this.isListening) this.startSpeechRecognition()
         };
     },
     methods: {
