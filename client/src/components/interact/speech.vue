@@ -736,7 +736,6 @@ export default {
         // 初始化語音辨
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
-        this.recognition.lang = this.selectedLanguage; // 使用使用者選擇的語言
         //this.recognition.continuous = true;
         // this.recognition.interimResults = true;
         this.recognition.maxSpeechTime = 1000;
