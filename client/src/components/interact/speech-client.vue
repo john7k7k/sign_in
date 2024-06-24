@@ -922,7 +922,7 @@ export default {
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
         this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
-        this.recognition.maxSpeechTime = 500;
+        this.recognition.maxSpeechTime = 1000;
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;

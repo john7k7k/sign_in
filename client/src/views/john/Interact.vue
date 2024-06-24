@@ -6,7 +6,7 @@
 </template>
   
 <script>
-    import Speech from '@/components/interact/speech.vue';
+    import Speech from '@/components/interact/speech-client.vue';
     import navbar from '@/components/Navbar.vue'
     export default {
         name: 'speech',
