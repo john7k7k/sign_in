@@ -134,14 +134,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 {
     "fishControl":{
-        "led":{
-            "3013": "K2"
-        },
-        "motion":{
-            ""
-        },
         "mode":{
-            
+            "id":"0023001",
+            "mode":"a" //退出自動, 
         }
     }
 }

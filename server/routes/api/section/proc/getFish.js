@@ -3,10 +3,9 @@ const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 module.exports = async (req, res) => {
     const { location } = req.query;
     if(!location) return res.send([]);
-      const fish = await getNonFaultyFishInPond(location);
-      console.log(JSON.stringify(fish));
-      res.send(fish);
-
+    const fish = await getNonFaultyFishInPond(location);
+    console.log(JSON.stringify(fish));
+    res.send(fish);
 }
 
 async function getNonFaultyFishInPond(location) {
@@ -26,6 +25,6 @@ async function getNonFaultyFishInPond(location) {
       }
     });
     const nonFaultyFish = fishInPond.filter(fish => fish.fishData[0] && fish.fishData[0].active==1);
-    return nonFaultyFish.map(({ fishUID, nickName }) => ({ fishUID, nickName }));
+    return nonFaultyFish.map(({ fishUID, nickName }) => ({ fishUID, nickName, controlled:  global.controlling.includes(fishUID)}));
   }
   

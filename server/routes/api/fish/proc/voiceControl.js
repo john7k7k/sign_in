@@ -3,6 +3,8 @@ const mqttConnection = require('../../../../modules/util/mqtt');
 const franc = import('franc');
 const { instruction, chineseKeyword, englishKeyword } = require('../../../../config/voiceKeyword.js')
 let lang = 'ch'
+global.controlling = []
+
 function isletter(character) {
   return /^[a-zA-Z]$/.test(character);
 }
@@ -43,6 +45,8 @@ module.exports = async (req, res) => {
       console.log(req.body);
       let { fishUID } = req.body;
       if(!fishUID) fishUID = '0023011';
+      if(global.controlling.includes(fishUID)) return res.status(403).send('名魚有主');
+      global.controlling.push(fishUID);
       console.log(fishUID)
       const motion = recognize(req.body.text);
       console.log(motion)
