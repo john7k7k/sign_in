@@ -19,6 +19,7 @@ const reviseTime = require('./proc/reviseTime.js');
 const fishExplore = require('./proc/fishExplore.js');
 const voiceControl = require("./proc/voiceControl.js");
 const nickName = require("./proc/nickName.js");
+const voiceStart = require("./proc/voiceLock.js");
 
 router.post(`/`, verifyTokenBy('Header')(30), addFish);
 
@@ -71,6 +72,6 @@ router.post('/voice',  voiceControl)
 
 router.post('/nickname', verifyTokenBy('Header')(), nickName.setNickName)
 
-
+router.post('/voicestart',  voiceStart)
 
 module.exports = router;

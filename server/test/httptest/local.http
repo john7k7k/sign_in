@@ -348,15 +348,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 GET http://localhost:3000/api/v1/fish/explore
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k
 
-###
-POST http://localhost:3000/api/v1/fish/voice
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3OTAzOSwiZXhwIjoxNzE2ODg4MDM5fQ.MxsNWdsCfL0HVGJd3CM_gxbbV18DZmfhI1FZdcQz6wA
-Content-Type: application/json
 
-{
-    "fishUID": "0023002",
-    "text": "左偏"
-}
 
 ###
 POST http://localhost:3000/api/v1/fish/nickName
@@ -421,9 +413,26 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/v1/alivefish
+GET http://localhost:3000/api/v1/alivefish?location=002001001
+Content-Type: application/json
+
+###
+POST http://localhost:3000/api/v1/fish/voice
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3OTAzOSwiZXhwIjoxNzE2ODg4MDM5fQ.MxsNWdsCfL0HVGJd3CM_gxbbV18DZmfhI1FZdcQz6wA
 Content-Type: application/json
 
 {
-    "location": "002001003"
+    "fishUID": "0023002",
+    "text": "左偏"
+}
+
+###
+POST http://localhost:3000/api/v1/fish/voicestart
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwODU3MTc3MCwiZXhwIjoxNzA4NTgwNzcwfQ.CQUl3BbsUqD6acTqoL3hg2bQmSGyXit_aUDT73vc0qI
+Content-Type: application/json
+
+{
+    "fishUID": "0023002",
+    "section": "002001001"
+    //,"end": true
 }
