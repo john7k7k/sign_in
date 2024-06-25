@@ -24,7 +24,7 @@ Content-Type: application/json
 ###
 POST https://pre.aifish.cc/api/v1/fish/assign
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxODI5OTA0OSwiZXhwIjoxNzE4MzA4MDQ5fQ.PYtGvGiiD3IpNGzxFE8QEPS4CbortQkrCuYFMhPEFeM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTY5ODA3MjAzOCwiZXhwIjoxNjk4MDgxMDM4fQ.Zd8sTqeHteLXwpuCB8ghAhnFN3pGBtvUIQYDaMv8R5U
 
 {
     "username": "1234",
@@ -134,9 +134,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 
 {
     "fishControl":{
+        "led":{
+            "3013": "K2"
+        },
+        "motion":{
+            ""
+        },
         "mode":{
-            "id":"0023001",
-            "mode":"a" //退出自動, 
+            
         }
     }
 }
@@ -343,15 +348,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 GET https://pre.aifish.cc/api/v1/fish/explore
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMjM0OTIyMiwiZXhwIjoxNzAyMzU4MjIyfQ.Ih4_TxyKbMnxH9MqOpntwxasyOchlL66xfJD4eSAV6k
 
-###
-POST https://pre.aifish.cc/api/v1/fish/voice
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3OTAzOSwiZXhwIjoxNzE2ODg4MDM5fQ.MxsNWdsCfL0HVGJd3CM_gxbbV18DZmfhI1FZdcQz6wA
-Content-Type: application/json
 
-{
-    "fishUID": "0023002",
-    "text": "左偏"
-}
 
 ###
 POST https://pre.aifish.cc/api/v1/fish/nickName
@@ -409,15 +406,25 @@ Content-Type: application/json
     "type": "motor2",
     "data":{
         "id": "9",
-        "local": "fish.3002",
+        "local": "fish.3017",
         "errReason": "老舊",
         "turn": 1939
     }
 }
 
 ###
-GET https://pre.aifish.cc/api/v1/alivefish?location=099001001
+GET https://pre.aifish.cc/api/v1/alivefish?location=002001001
 Content-Type: application/json
+
+###
+POST https://pre.aifish.cc/api/v1/fish/voice
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNjg3OTAzOSwiZXhwIjoxNzE2ODg4MDM5fQ.MxsNWdsCfL0HVGJd3CM_gxbbV18DZmfhI1FZdcQz6wA
+Content-Type: application/json
+
+{
+    "fishUID": "0023017",
+    "text": "左偏"
+}
 
 ###
 POST https://pre.aifish.cc/api/v1/fish/voicestart
@@ -425,6 +432,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyM
 Content-Type: application/json
 
 {
-    "fishUID": 0023001,
-    "section": 002001001
+    "fishUID": "0023017",
+    "section": "002001001"
+    //,"end": true
 }
