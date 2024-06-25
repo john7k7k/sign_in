@@ -956,8 +956,8 @@ export default {
             Chfishnicknames:[],
             Enfishnicknames:[],
             ChosefishWord:["選擇想要控制的魚:","Select the fish you want to control:"],
-            countdownTime: 30000,
-            currentTime: 30000,
+            countdownTime: 30,
+            currentTime: 30,
             timer: null
         };
     },
