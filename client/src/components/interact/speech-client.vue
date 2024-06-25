@@ -5,11 +5,11 @@
             <v-btn color="white" class="ChoseFishLabel" icon="mdi mdi-close-thick" variant="text" @click="isChoseFish = false"></v-btn>
         </div>
         <div class="ChoseFishItem2">
-            <v-card v-show="this.languageIndex == 0" v-for="(fishName,index) in this.Chfishnicknames" :key="fishName" class="ChoseFishcard" @click="selectFish(fishName)">
+            <v-card v-show="this.languageIndex == 0" v-for="(fishName,index) in this.Chfishnicknames" :key="fishName" :class="fishStates[index]==false ?  'ChoseFishcard':'ControledFishcard'" @click="selectFish(fishName)">
                 <v-img class="ChoseFishImg" height="80%" :src="fishurl[index]" ></v-img>
                 <v-card-title >{{ fishName }}</v-card-title>
             </v-card>
-            <v-card v-show="this.languageIndex == 1" v-for="(fishName,index) in this.Enfishnicknames" :key="fishName" class="ChoseFishcard" @click="selectFish(fishName)">
+            <v-card v-show="this.languageIndex == 1" v-for="(fishName,index) in this.Enfishnicknames" :key="fishName" :class="fishStates[index]==false ?  'ChoseFishcard':'ControledFishcard'" @click="selectFish(fishName)">
                 <v-img class="ChoseFishImg" height="80%" :src="fishurl[index]" ></v-img>
                 <v-card-title >{{ fishName }}</v-card-title>
             </v-card>
@@ -43,7 +43,7 @@
     </div>
     
     <div class="box">
-        <v-btn variant="text" class="changeLan" @click="changeLangWord" v-show="false">繁中/En</v-btn>
+        <v-btn variant="text" class="changeLan" @click="EndVoiceRecognition" v-show="true">離開</v-btn>
         <div class="tital">{{ titalWord[languageIndex] }}</div>
         
     <div>
@@ -215,6 +215,20 @@
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     color: white;
+}
+.ControledFishcard{
+    width: 44%;
+    height: 35%;
+    margin: 1.5% 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    background-image: linear-gradient(to right bottom, rgba(255,0 , 0, 0.15), rgba(255,0 , 0, 0.01), rgba(255,0 , 0, 0.15));
+    background-color: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    color: grey;
 }
 .ChoseFishImg{
     object-fit: cover;
@@ -486,6 +500,14 @@ background-image: url('../../assets/speechBackground.jpg');
   overflow-y: hidden;
   z-index: 1; 
 }
+.changeLan{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    position: fixed;
+    right: 1%;
+    top: 9%;
+}
 .startBox{
     width: 85%;
     height: 80%;
@@ -583,6 +605,14 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 }
 @media screen and (min-width: 401px) and (max-width: 600px){
+.changeLan{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    position: fixed;
+    right: 1%;
+    top: 9%;
+}
 .startBtnCSS {
     position: relative; 
     display: inline-block; 
@@ -729,6 +759,14 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 }
 @media screen and (max-width: 400px) {
+.changeLan{
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    position: fixed;
+    right: 1%;
+    top: 9%;
+}
     .startBtnCSS {
     position: relative; 
     display: inline-block; 
@@ -912,9 +950,13 @@ export default {
             isChoseFish:false,
             fishurl:[],
             fishUIDs:[],
+            fishStates:[],
             Chfishnicknames:[],
             Enfishnicknames:[],
             ChosefishWord:["選擇想要控制的魚:","Select the fish you want to control:"],
+            countdownTime: 30000,
+            currentTime: 30000,
+            timer: null
         };
     },
     mounted() {
@@ -973,6 +1015,7 @@ export default {
                     fishUID: this.selectedfishUID
                 }
             ).then(({ data }) => {
+                this.resetTimer();
                 if (data.includes("辨識失敗")) {
                     this.isFail = true;
                     this.command = "";
@@ -1004,13 +1047,18 @@ export default {
                 console.log(response);
                 if (response.status === 200) {
                     for (var i = 0; i < response.data.length; i++){
+                        this.fishStates.push(response.data[i].controlled);
                         this.fishUIDs.push(response.data[i].fishUID);
                         let parts = response.data[i].nickName.split(":");
                         this.Chfishnicknames.push(parts[0]);
                         this.Enfishnicknames.push(parts[1]);
                     }
-                    for(var j=0; j<this.fishUIDs.length; j++){
-                        this.fetchImageSource(this.fishUIDs[j]);
+                    for (var j = 0; j < this.fishUIDs.length; j++) {
+                        (function(j) {
+                            setTimeout(function() {
+                                this.fetchImageSource(this.fishUIDs[j]);
+                            }.bind(this), j * 200);
+                        }).call(this, j);
                     }
                 }
                     
@@ -1026,9 +1074,18 @@ export default {
             }else{
                 index = this.Enfishnicknames.indexOf(fishName);
             }
-            this.selectedfishUID = this.fishUIDs[index];
-            this.ChooseFishWord[this.languageIndex] = fishName;
-            this.isChoseFish = false;
+            if(this.fishStates[index] == false){
+                this.selectedfishUID = this.fishUIDs[index];
+                this.ChooseFishWord[this.languageIndex] = fishName;
+                this.isChoseFish = false;
+            }else{
+                if(this.languageIndex == 0){
+                    this.$Message.error('此魚已被控制，不可選擇');
+                }else{
+                    this.$Message.error('This fish has been controlled and cannot be selected');
+                }
+            }
+            
         },
         async fetchImageSource(id) {
             try {
@@ -1063,6 +1120,26 @@ export default {
         startVoiceRecognition() {
             if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "選擇魚▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Choose fish▼")) {
                 this.showBackdrop = false;
+                axios.post(
+                    process.env.VUE_APP_SEVER+"/api/v1/fish/voicestart",
+                    {
+                        "fishUID": this.selectedfishUID,
+                        "section": "002001001"
+                        //,"end": true
+                    },
+                        {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                    }
+                    )
+                    .then(async res=> {
+                        console.log(res);
+                    })
+                    .catch(err=> {
+                        console.log(err);
+                    })
+                this.startTimer();
             } else {
                 if (this.languageIndex == 0) {
                     this.$Message.error('請先選擇要控制的魚');
@@ -1070,6 +1147,28 @@ export default {
                     this.$Message.error('Please select the fish you want to control first');
                 }
             }
+        },
+        EndVoiceRecognition() {
+                axios.post(
+                    process.env.VUE_APP_SEVER+"/api/v1/fish/voicestart",
+                    {
+                        "fishUID": this.selectedfishUID,
+                        "section": "002001001",
+                        "end": true
+                    },
+                        {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                    }
+                    )
+                    .then(async res=> {
+                        console.log(res);
+                        location.reload();
+                    })
+                    .catch(err=> {
+                        console.log(err);
+                    })
         },
         traverseAndFlatten(currentNode, target, flattenedKey) {
             for (var key in currentNode) {
@@ -1108,6 +1207,26 @@ export default {
             this.languageWord[this.languageIndex] = "English";
           }
     },
+    startTimer() {
+                    this.timer = setInterval(() => {
+                        if (this.currentTime > 0) {
+                            this.currentTime--;
+                        } else {
+                            location.reload();
+                        }
+                    }, 1000); 
+                },
+    resetTimer() {
+                    this.stopTimer();
+                    this.currentTime = this.countdownTime;
+                    this.startTimer();
+                },
+    stopTimer() {
+                    if (this.timer) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }
     // changeLangWord(){
     //       if(this.languageIndex == 0){
     //         this.languageIndex = 1;
