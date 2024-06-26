@@ -66,8 +66,8 @@
         <div class="Resultsword">{{ command }}</div>
     </v-card>
     <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <v-btn class="btn-bg text-white" @mousedown="startSpeechRecognition" 
-        @mouseup="endSpeechRecognition" @mouseleave="endSpeechRecognition"   :icon="icon" size="80"></v-btn>
+    <v-btn class="btn-bg text-white" @mousedown="startSpeechRecognition"   @touchstart="startSpeechRecognition" 
+        @mouseup="endSpeechRecognition" @mouseleave="endSpeechRecognition"  @touchend="endSpeechRecognition"  :icon="icon" size="80"></v-btn>
     <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
     <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
     </div>
