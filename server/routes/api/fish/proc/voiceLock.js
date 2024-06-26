@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
         if(end){
             mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
                 id: fishUID.slice(3),
-                mode: "A"
+                motion: "A"
             }));
             delete global.fishCount[fishUID];
             delete global.controlling[global.controlling.findIndex(fishUID_ => fishUID_===fishUID)];
@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
         global.controlling.push(fishUID);
         mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
             id: fishUID.slice(3),
-            mode: "a"
+            motion: "a"
         }));
         count(section, fishUID);
         res.sendStatus(200);
@@ -31,7 +31,7 @@ function count(section, fishUID) {
     if(global.fishCount[fishUID] > 30) {
         mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
             id: fishUID.slice(3),
-            mode: "A"
+            motion: "A"
         }));
         delete global.fishCount[fishUID];
         delete global.controlling[global.controlling.findIndex(fishUID_ => fishUID_===fishUID)];
