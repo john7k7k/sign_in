@@ -71,6 +71,8 @@
       @mousedown="startSpeechRecognition"
       @mouseup="endSpeechRecognition"
       @mouseleave="endSpeechRecognition"
+      @touchstart="startSpeechRecognition"
+      @touchend="endSpeechRecognition"
       :class="{ 'ripple-active': isListening }"
       :icon="icon"
       size="80"
