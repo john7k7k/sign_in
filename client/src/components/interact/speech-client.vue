@@ -43,9 +43,9 @@
     </div>
     
     <div class="box">
-        <v-btn variant="text" class="changeLan" @click="EndVoiceRecognition" v-show="true">離開</v-btn>
-        <div class="tital">{{ titalWord[languageIndex] }}</div>
-        
+        <v-btn variant="text" class="changeLan" @click="EndVoiceRecognition" v-show="true">{{ExitWord[languageIndex]}}</v-btn>
+        <!-- <div class="tital">{{ titalWord[languageIndex] }}</div> -->
+        <div class="tital">{{ChooseFishWord[languageIndex]}}</div>
     <div>
       <label for="dropdown" style="color: white;" v-show="false">選擇控制魚的ID:</label>
       <select id="dropdown" v-model="selectedfishUID" @change="handleChange">
@@ -66,13 +66,56 @@
         <div class="Resultsword">{{ command }}</div>
     </v-card>
     <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <v-btn class="btn-bg text-white" @mousedown="startSpeechRecognition" 
-        @mouseup="endSpeechRecognition" @mouseleave="endSpeechRecognition"   :icon="icon" size="80"></v-btn>
+    <v-btn
+      class="btn-bg text-white"
+      @mousedown="startSpeechRecognition"
+      @mouseup="endSpeechRecognition"
+      @mouseleave="endSpeechRecognition"
+      :class="{ 'ripple-active': isListening }"
+      :icon="icon"
+      size="80"
+    ></v-btn>
     <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
     <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
     </div>
 </template>
 <style scoped>
+.ripple-active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  border: 20px solid #FF5252;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: warn 1.3s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes warn {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.0;
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.0;
+  }
+}
 .configureBackdrop {
   position: fixed;
   display: flex;
@@ -947,6 +990,7 @@ export default {
             isMenuVisible: false,
             languageWord:["選擇語言▼","Language▼"],
             ChooseFishWord:["選擇魚▼","Choose fish▼"],
+            ExitWord:["退出","Exit"],
             initialChooseFishWord: ["選擇魚▼", "Choose fish▼"],
             isChoseFish:false,
             fishurl:[],
