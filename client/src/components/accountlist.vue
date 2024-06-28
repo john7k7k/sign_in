@@ -41,8 +41,7 @@
               @on-cancel="cancel">
               <RadioGroup v-model="row.selectsection">
                 <Radio label="全區"></Radio>
-                <Radio label="台北科大"></Radio>
-                <Radio label="海洋科技博物館"></Radio>
+                <Radio v-for="InsName in InstructionName" :key="InsName" :label="InsName"></Radio>
                 <Radio v-for="poolname in poolsCode" :key="poolname" :label="processSectionName(poolname)"></Radio>
               </RadioGroup>
           </Modal>
@@ -519,21 +518,50 @@ import axios from 'axios';
               this.$Message.error('變更權限失敗');
           })
       },
+      findKey(input) {
+        if (input.includes('-')) {
+          const [part1, part2] = input.split('-');
+          let firstKey = null;
+          for (const [key, value] of Object.entries(this.keyvalueMapping[0])) {
+            if (value === part1) {
+              firstKey = key;
+              break;
+            }
+          }
+
+          if (!firstKey) {
+            return "找不到Key";
+          }
+          let finalKey = null;
+          for (const [key, value] of Object.entries(this.keyvalueMapping[1])) {
+            if (value === part2 && key.startsWith(firstKey)) {
+              finalKey = key;
+              break;
+            }
+          }
+
+          if (!finalKey) {
+            return "找不到Key";
+          }
+
+          return finalKey;
+        } else {
+          for (const [key, value] of Object.entries(this.keyvalueMapping[0])) {
+            if (value === input) {
+              return key;
+            }
+          }
+          return "找不到Key";
+        }
+      },
       changesection(newsection,name){
         let section = "";
         if (newsection.startsWith("全區")) {
           section = "001" + newsection.substring(2);
-        }else if (newsection.startsWith("北科")) {
-          section = "002" + newsection.substring(2);
-        }else if(newsection.startsWith("台北科大")){
-          section = "002" + newsection.substring(4);
-        }else if (newsection.startsWith("海科")) {
-          section = "003" + newsection.substring(2);
-        }else if(newsection.startsWith("海洋科技博物館")){
-          section = "003" + newsection.substring(7);
-        }else{
-          section = "004" + newsection.substring(2);
+        }else {
+          section = this.findKey(newsection)
         }
+        if(section !== "找不到Key"){
         axios.post(
           process.env.VUE_APP_SEVER+"/api/v1/account/revise/section",
             {
@@ -558,6 +586,9 @@ import axios from 'axios';
               console.log(err);
               this.$Message.error('變更權限失敗');
           })
+        }else{
+          this.$Message.error('變更權限失敗');
+        }
         
       },
       confirm (name,index,num) {
