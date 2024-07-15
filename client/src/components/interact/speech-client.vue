@@ -42,37 +42,47 @@
         </div>
     </div>
     
-    <div class="box">
+    <div class="box" >
         <v-btn variant="text" class="changeLan" @click="EndVoiceRecognition" v-show="true">{{ExitWord[languageIndex]}}</v-btn>
         <!-- <div class="tital">{{ titalWord[languageIndex] }}</div> -->
         <div class="tital">{{ChooseFishWord[languageIndex]}}</div>
-    <div>
+    <!-- <div>
       <label for="dropdown" style="color: white;" v-show="false">選擇控制魚的ID:</label>
       <select id="dropdown" v-model="selectedfishUID" @change="handleChange">
         <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.label }}</option>
       </select>
-    </div>
-    <label for="languageSelect" style="color: white;" v-show="false">選擇語言:</label>
+    </div> -->
+    <!-- <label for="languageSelect" style="color: white;" v-show="false">選擇語言:</label>
     <select id="languageSelect" v-model="selectedLanguage" @change="changeLanguage" class="changeLanCSS" v-show="false">
       <option value="en-US" style="color: white;">英文</option>
       <option value="zh-CN" style="color: white;">中文</option>
-      <!-- 其他語言選項 -->
+      其他語言選項
     </select>
-    <br/>
-    
-    
+    <br/> -->
+    <v-card class="fishImgSize">
+        <v-img class="ChoseFishImg"  height="100%" :src="fishurl[fishImgIndex(ChooseFishWord[languageIndex])]" ></v-img>
+    </v-card>
     <v-card class="resultcard">
         <p  class="resultTital">{{ resultWord[languageIndex] }}</p>
         <div class="Resultsword">{{ command }}</div>
     </v-card>
     <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <v-btn
+    <p class="failresultWord">{{ this.recognitionResult }}</p>
+    <!-- <v-btn
       class="btn-bg text-white"
       @mousedown="startSpeechRecognition"
       @mouseup="endSpeechRecognition"
       @mouseleave="endSpeechRecognition"
       @touchstart="startSpeechRecognition"
       @touchend="endSpeechRecognition"
+      :class="{ 'ripple-active': isListening }"
+      :icon="icon"
+      size="80"
+    ></v-btn> -->
+    
+    <v-btn
+      class="btn-bg text-white"
+      @click="toggleSpeechRecognition"
       :class="{ 'ripple-active': isListening }"
       :icon="icon"
       size="80"
@@ -341,38 +351,41 @@
 }
     .tital{
     font-weight: bold;
-    margin-top: 8%;
+    margin-top: 6%;
     font-size: 60px;
     color: white;
 }
 .resultTital{
     color: white;
-    font-size: 45px;
+    font-size: 40px;
     font-weight: 600;
 }
+.fishImgSize{
+    background-color: rgba(0, 0, 0, 0); 
+    width: 15%;
+}
 .resultcard{
-    width: 60%;
-    height: 30%;
+    width: 40%;
+    height: 20%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2%;
+    padding: 1%;
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.3));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 1%;
 }
 .Resultsword{
-    font-size: 55px;
+    font-size: 45px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 60%;
-    margin-top: 2%;
+    height: 50%;
+    margin-top: 1%;
     background-color: rgba(255, 255, 255, 0.1);
 }
 .btn-bg{
@@ -381,11 +394,11 @@
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 6%;
+    margin-top: 1%;
   }
 .beginWord{
     font-size:25px;
-    margin-top: 1%;
+    margin-top: 0.5%;
 }
 }
 @media screen and  (min-width: 1025px) and (max-width: 1680px){
@@ -446,7 +459,7 @@
 }
     .tital{
     font-weight: bold;
-    margin-top: 8%;
+    margin-top: 6%;
     font-size: 45px;
     color: white;
 }
@@ -463,9 +476,13 @@
     font-size: 30px;
     font-weight: 600;
 }
+.fishImgSize{
+    background-color: rgba(0, 0, 0, 0); 
+    width: 15%;
+}
 .resultcard{
-    width: 60%;
-    height: 30%;
+    width: 35%;
+    height: 15%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -475,17 +492,15 @@
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 1%;
 }
 .Resultsword{
-    font-size: 35px;
+    font-size: 30px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 50%;
-    margin-top: 5%;
+    height: 70%;
     background-color: rgba(255, 255, 255, 0.1);
 }
 .btn-bg{
@@ -494,11 +509,11 @@
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 4%;
+    margin-top: 3%;
   }
 .beginWord{
     font-size:20px;
-    margin-top: 1%;
+    margin-top: 0.5%;
 }
 }
 @media screen and  (min-width: 601px) and (max-width: 1024px){
@@ -605,15 +620,19 @@ background-image: url('../../assets/speechBackground.jpg');
     font-size: 60px;
     color: white;
 }
+.fishImgSize{
+    background-color: rgba(0, 0, 0, 0); 
+    width: 30%;
+}
 .resultTital{
     color: white;
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 600;
 }
 
 .resultcard{
     width: 75%;
-    height: 30%;
+    height: 15%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -626,14 +645,14 @@ background-image: url('../../assets/speechBackground.jpg');
     margin-top: 1%;
 }
 .Resultsword{
-    font-size: 45px;
+    font-size: 40px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
     height: 60%;
-    margin-top: 3%;
+    margin-top: 1%;
     background-color: rgba(255, 255, 255, 0.1);
 }
 .btn-bg{
@@ -753,6 +772,10 @@ background-image: url('../../assets/speechBackground.jpg');
     font-size: 45px;
     color: white;
 }
+.fishImgSize{
+    background-color: rgba(0, 0, 0, 0); 
+    width: 40%;
+}
 .resultTital{
     color: white;
     font-size: 25px;
@@ -776,16 +799,16 @@ background-image: url('../../assets/speechBackground.jpg');
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 3%;
+    margin-top: 7%;
 }
 .Resultsword{
-    font-size: 35px;
+    font-size: 30px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 50%;
+    height: 45%;
     margin-top: 2%;
     background-color: rgba(255, 255, 255, 0.1);
 }
@@ -797,7 +820,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 20%;
+    margin-top: 8%;
   }
 .beginWord{
     font-size:20px;
@@ -906,9 +929,13 @@ background-image: url('../../assets/speechBackground.jpg');
     font-size: 45px;
     color: white;
 }
+.fishImgSize{
+    background-color: rgba(0, 0, 0, 0); 
+    width: 40%;
+}
 .resultTital{
     color: white;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
 }
 .failresultWord{
@@ -929,10 +956,10 @@ background-image: url('../../assets/speechBackground.jpg');
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 3%;
+    margin-top: 7%;
 }
 .Resultsword{
-    font-size: 35px;
+    font-size: 30px;
     color: white;
     justify-content: center;
     align-items: center;
@@ -950,7 +977,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 20%;
+    margin-top: 8%;
   }
 .beginWord{
     font-size:20px;
@@ -1040,7 +1067,7 @@ export default {
         
         // 開始語音辨識
         this.recognition.start();
-            this.recognitionResult = this.commandWord[this.languageIndex];
+            // this.recognitionResult = this.commandWord[this.languageIndex];
             this.command = this.commandWord[this.languageIndex];
             this.isFail = false;
         },
@@ -1134,6 +1161,15 @@ export default {
                 }
             }
             
+        },
+        fishImgIndex(fishName){
+            let index = null;
+            if(this.languageIndex == 0){
+                index = this.Chfishnicknames.indexOf(fishName);
+            }else{
+                index = this.Enfishnicknames.indexOf(fishName);
+            }
+            return index;
         },
         async fetchImageSource(id) {
             try {
