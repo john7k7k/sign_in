@@ -19,12 +19,12 @@ const chineseKeyword = {
 }
 const englishKeyword = {
   "X":['stop'],
-  "O":['forward'],
-  "L":['left'],
-  "R":['right'],
-  "U":['up','on'],
+  "O":['forward', 'howard', 'ward', 'food', 'word', 'world'],
+  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate'],
+  "R":['right', 'rice', 'bright'],
+  "U":['up','on', 'app', 'apple', 'pop'],
   "D":['down'],
-  "M":['balance','poise']
+  "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black']
 }
 
 module.exports = { instruction, chineseKeyword, englishKeyword }
