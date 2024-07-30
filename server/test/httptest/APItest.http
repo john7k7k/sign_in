@@ -423,7 +423,8 @@ Content-Type: application/json
 
 {
     "fishUID": "0023017",
-    "text": "左偏"
+    "text": "左偏",
+    "lang": "ch" //或者 "eng"
 }
 
 ###

@@ -2,20 +2,13 @@ const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
 const franc = import('franc');
 const { instruction, chineseKeyword, englishKeyword } = require('../../../../config/voiceKeyword.js')
-let lang = 'ch'
 
 
 function isletter(character) {
   return /^[a-zA-Z]$/.test(character);
 }
 
-function recognize(text){
-  if(isletter(text[0])) {
-    lang = 'eng';
-  }
-  else{
-    lang = 'ch';
-  }
+function recognize(text, lang){
   if(lang === 'eng'){
     text = text.toLowerCase();
     for(let control in  englishKeyword){
@@ -43,10 +36,18 @@ function recognize(text){
 module.exports = async (req, res) => { 
     try{
       console.log(req.body);
-      let { fishUID } = req.body;
+      let { fishUID, lang } = req.body;
       if(!fishUID) fishUID = '0023011';
+      if(!lang){
+        if(isletter(text[0])) {
+          lang = 'eng';
+        }
+        else{
+          lang = 'ch';
+        }
+      }
       console.log(fishUID)
-      const motion = recognize(req.body.text);
+      const motion = recognize(req.body.text, lang);
       console.log(motion)
       global.fishCount[fishUID] = 1;
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
