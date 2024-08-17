@@ -67,7 +67,7 @@
         <div class="Resultsword">{{ command }}</div>
     </v-card>
     <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <p class="failresultWord">{{ this.recognitionResult }}</p>
+    <!-- <p class="failresultWord">{{ this.recognitionResult }}</p>顯示測試回傳的字 -->
     <!-- <v-btn
       class="btn-bg text-white"
       @mousedown="startSpeechRecognition"
@@ -1221,6 +1221,8 @@ export default {
                     )
                     .then(async res=> {
                         console.log(res);
+                        this.startSpeechRecognition();
+                        this.endSpeechRecognition();
                     })
                     .catch(err=> {
                         console.log(err);
