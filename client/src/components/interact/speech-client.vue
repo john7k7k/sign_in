@@ -1030,7 +1030,8 @@ export default {
             ChosefishWord:["選擇想要控制的魚:","Select the fish you want to control:"],
             countdownTime: 30,
             currentTime: 30,
-            timer: null
+            timer: null,
+            lang:["ch","eng"]
         };
     },
     mounted() {
@@ -1087,7 +1088,8 @@ export default {
                 process.env.VUE_APP_SEVER+"/api/v1/fish/voice",
                 {
                     text:this.recognitionResult,
-                    fishUID: this.selectedfishUID
+                    fishUID: this.selectedfishUID,
+                    lang: this.lang[this.languageIndex]
                 }
             ).then(({ data }) => {
                 this.resetTimer();
