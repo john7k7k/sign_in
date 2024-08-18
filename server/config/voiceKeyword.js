@@ -1,6 +1,6 @@
 const instruction = {
     "X":["停止", 'stop'],
-    "O":["前進", 'go'],
+    "O":["前進", 'forward'],
     "L":["左轉", 'turn left'],
     "R":["右轉", 'turn right'],
     "U":["往上", 'up'],
@@ -19,11 +19,11 @@ const chineseKeyword = {
 }
 const englishKeyword = {
   "X":['stop'],
-  "O":['forward', 'howard', 'ward', 'food', 'word', 'world'],
+  "O":['forward', 'howard', 'ward', 'food', 'word', 'world', '狗', '我'],
   "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate'],
   "R":['right', 'rice', 'bright'],
-  "U":['up','on', 'app', 'apple', 'pop'],
-  "D":['down'],
+  "U":['up','on', 'app', 'apple', 'pop','婆'],
+  "D":['down','党','但','上', '塟','幹','較','掉','调','到','叫','屌'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black']
 }
 
