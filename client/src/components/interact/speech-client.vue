@@ -67,7 +67,7 @@
         <div class="Resultsword">{{ command }}</div>
     </v-card>
     <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <p class="failresultWord">{{ this.recognitionResult }}</p>
+    <!-- <p class="failresultWord">{{ this.recognitionResult }}</p>顯示測試回傳的字 -->
     <!-- <v-btn
       class="btn-bg text-white"
       @mousedown="startSpeechRecognition"
@@ -1030,7 +1030,8 @@ export default {
             ChosefishWord:["選擇想要控制的魚:","Select the fish you want to control:"],
             countdownTime: 30,
             currentTime: 30,
-            timer: null
+            timer: null,
+            lang:["ch","eng"]
         };
     },
     mounted() {
@@ -1087,7 +1088,8 @@ export default {
                 process.env.VUE_APP_SEVER+"/api/v1/fish/voice",
                 {
                     text:this.recognitionResult,
-                    fishUID: this.selectedfishUID
+                    fishUID: this.selectedfishUID,
+                    lang: this.lang[this.languageIndex]
                 }
             ).then(({ data }) => {
                 this.resetTimer();
@@ -1219,6 +1221,8 @@ export default {
                     )
                     .then(async res=> {
                         console.log(res);
+                        this.startSpeechRecognition();
+                        this.endSpeechRecognition();
                     })
                     .catch(err=> {
                         console.log(err);
