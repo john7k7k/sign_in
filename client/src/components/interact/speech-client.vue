@@ -1038,7 +1038,7 @@ export default {
         // 初始化語音辨
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
-        this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
+        this.recognition.lang = this.selectedLanguage[1]; // 使用使用者選擇的語言this.languageIndex
         this.recognition.maxSpeechTime = 1000;
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
@@ -1078,10 +1078,6 @@ export default {
             this.recognition.stop();
             this.recognition.onresult;
 
-        },
-        changeLanguage() {
-        // 使用者改變語言時更新辨識的語言設定
-        this.recognition.lang = this.selectedLanguage;
         },
         submit(){
             axios.post(
@@ -1294,6 +1290,7 @@ export default {
             this.languageIndex = 1;
             this.languageWord[this.languageIndex] = "English";
           }
+        this.recognition.lang = this.selectedLanguage[this.languageIndex];
     },
     startTimer() {
                     this.timer = setInterval(() => {
