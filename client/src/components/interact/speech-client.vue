@@ -1123,7 +1123,7 @@ export default {
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
         };
-        this.startSpeech();
+        this.startSpeechRecognition();
         this.endSpeechRecognition();
     },
     methods: {
