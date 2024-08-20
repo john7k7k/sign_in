@@ -1118,13 +1118,13 @@ export default {
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;
             console.log( this.recognitionResult )
-             this.submit();
+            if(!this.test) this.submit();
         };
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
         };
-        // this.startSpeechRecognition();
-        // this.endSpeechRecognition();
+        this.startSpeechRecognition();
+        this.endSpeechRecognition();
     },
     methods: {
         toggleSpeechRecognition() {
