@@ -1140,19 +1140,18 @@ export default {
             }
             },
         startSpeechRecognition() {
-            this.isListening = true;
-            
+            if(!this.isListening){
+                this.isListening = true;
+                this.command = this.commandWord[this.languageIndex];
+            }
             // 開始語音辨識
             this.recognition.start();
             // this.recognitionResult = this.commandWord[this.languageIndex];
-            this.command = this.commandWord[this.languageIndex];
-            this.isFail = false;
         },
         endSpeechRecognition(){
             this.isListening = false;
             this.command = "";
             this.recognition.stop();
-            if(!this.test) this.recognition.onresult;
 
         },
         submit(){
