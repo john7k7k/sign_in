@@ -1118,13 +1118,13 @@ export default {
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;
             console.log( this.recognitionResult )
-            this.submit();
+            if(!this.test) this.submit();
         };
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
         };
-        // this.startSpeechRecognition();
-        // this.endSpeechRecognition();
+        this.startSpeechRecognition();
+        this.endSpeechRecognition();
     },
     methods: {
         toggleSpeechRecognition() {
@@ -1152,7 +1152,7 @@ export default {
             this.isListening = false;
             this.command = "";
             this.recognition.stop();
-            this.recognition.onresult;
+            if(!this.test) this.recognition.onresult;
 
         },
         submit(){
@@ -1388,11 +1388,6 @@ export default {
                         this.timer = null;
                     }
                 }
-    // changeLangWord(){
-    //       if(this.languageIndex == 0){
-    //         this.languageIndex = 1;
-    //       }else this.languageIndex = 0;
-    //     }
     }
 };
 </script>
