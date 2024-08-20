@@ -1098,7 +1098,8 @@ export default {
             countdownTime: 30,
             currentTime: 30,
             timer: null,
-            lang:["ch","eng"]
+            lang:["ch","eng"],
+            test:true,
         };
     },
     mounted() {
@@ -1117,12 +1118,12 @@ export default {
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;
             console.log( this.recognitionResult )
-            this.submit();
+            if(!this.test) this.submit();
         };
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
         };
-        this.startSpeechRecognition();
+        this.startSpeech();
         this.endSpeechRecognition();
     },
     methods: {
@@ -1275,6 +1276,7 @@ export default {
             }
         },
         startVoiceRecognition() {
+            this.test = false;
             if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "選擇魚▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Choose fish▼")) {
                 this.showBackdrop = false;
                 axios.post(
