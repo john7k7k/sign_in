@@ -18,12 +18,12 @@ const chineseKeyword = {
   "M":['平','衡','橫', '凌', '海', '評','你']
 }
 const englishKeyword = {
-  "X":['stop'],
-  "O":['forward', 'howard', 'ward', 'food', 'word', 'world', '狗', '我'],
-  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate'],
-  "R":['right', 'rice', 'bright'],
-  "U":['up','on', 'app', 'apple', 'pop','婆'],
-  "D":['down','党','但','上', '塟','幹','較','掉','调','到','叫','屌'],
+  "X":['stop','star'],
+  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go'],
+  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late'],
+  "R":['right', 'rice', 'bright','@'],
+  "U":['up','on', 'app', 'apple', 'pop'],
+  "D":['down','dell'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black']
 }
 

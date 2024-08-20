@@ -1098,7 +1098,8 @@ export default {
             countdownTime: 30,
             currentTime: 30,
             timer: null,
-            lang:["ch","eng"]
+            lang:["ch","eng"],
+            test:true,
         };
     },
     mounted() {
@@ -1122,8 +1123,8 @@ export default {
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
         };
-        this.startSpeechRecognition();
-        this.endSpeechRecognition();
+        // this.startSpeechRecognition();
+        // this.endSpeechRecognition();
     },
     methods: {
         toggleSpeechRecognition() {
@@ -1139,10 +1140,10 @@ export default {
             }
             },
         startSpeechRecognition() {
-        this.isListening = true;
-        
-        // 開始語音辨識
-        this.recognition.start();
+            this.isListening = true;
+            
+            // 開始語音辨識
+            this.recognition.start();
             // this.recognitionResult = this.commandWord[this.languageIndex];
             this.command = this.commandWord[this.languageIndex];
             this.isFail = false;
@@ -1153,10 +1154,6 @@ export default {
             this.recognition.stop();
             this.recognition.onresult;
 
-        },
-        changeLanguage() {
-        // 使用者改變語言時更新辨識的語言設定
-        this.recognition.lang = this.selectedLanguage;
         },
         submit(){
             axios.post(
@@ -1280,6 +1277,7 @@ export default {
         },
         startVoiceRecognition() {
             if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "選擇魚▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Choose fish▼")) {
+                this.test = false;
                 this.showBackdrop = false;
                 axios.post(
                     process.env.VUE_APP_SEVER+"/api/v1/fish/voicestart",
@@ -1368,6 +1366,7 @@ export default {
             this.languageIndex = 1;
             this.languageWord[this.languageIndex] = "English";
           }
+        this.recognition.lang = this.selectedLanguage[this.languageIndex];
     },
     startTimer() {
                     this.timer = setInterval(() => {
