@@ -87,11 +87,78 @@
       :icon="icon"
       size="80"
     ></v-btn>
+    <!-- 輝光效果<button class="btn-bg text-white"
+    @click="toggleSpeechRecognition"
+    :class="[ isListening ? 'ripple-active' : 'glow-on-hover' ]" type="button"><v-icon :icon="icon"></v-icon></button> -->
     <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
     <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
     </div>
 </template>
 <style scoped>
+
+.glow-on-hover {
+    width: 80px; /* 調整為與 <v-btn> 相同的寬度 */
+    height: 80px; /* 調整為與 <v-btn> 相同的高度 */
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 50%; /* 確保按鈕是圓形 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 1; /* 持續顯示輝光效果 */
+    transition: opacity .3s ease-in-out;
+    border-radius: 50%; /* 確保輝光效果是圓形 */
+}
+
+.glow-on-hover:active {
+    color: #000;
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 50%; /* 確保陰影是圓形 */
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+
+
+
+
 .ripple-active::after {
   content: '';
   position: absolute;
@@ -99,7 +166,7 @@
   left: 50%;
   width: 300%;
   height: 300%;
-  border: 20px solid #FF5252;
+  border: 30px solid #FF5252;
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   animation: warn 1.3s ease-out infinite;
@@ -1038,8 +1105,14 @@ export default {
         // 初始化語音辨
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
-        this.recognition.lang = this.selectedLanguage[1]; // 使用使用者選擇的語言this.languageIndex
-        this.recognition.maxSpeechTime = 1000;
+        this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (isSafari) {
+            this.recognition.maxSpeechTime = 500; 
+        } else {
+            this.recognition.maxSpeechTime = 1000; 
+        }
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;
@@ -1049,6 +1122,8 @@ export default {
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
         };
+        this.startSpeechRecognition();
+        this.endSpeechRecognition();
     },
     methods: {
         toggleSpeechRecognition() {
@@ -1217,8 +1292,7 @@ export default {
                     )
                     .then(async res=> {
                         console.log(res);
-                        this.startSpeechRecognition();
-                        this.endSpeechRecognition();
+                        
                     })
                     .catch(err=> {
                         console.log(err);
