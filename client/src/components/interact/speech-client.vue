@@ -1107,17 +1107,25 @@ export default {
         this.fetchOptions();
         this.recognition = new window.webkitSpeechRecognition();
         this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        
-        if (isSafari) {
-            this.recognition.maxSpeechTime = 500; 
-        } else {
-            this.recognition.maxSpeechTime = 1000; 
-        }
+        this.recognition.interimResults = true;
+        //const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        // this.recognition.continuous = true;
+        // if (isSafari) {
+        //     this.recognition.maxSpeechTime = 500;
+            
+        // } else {
+        //     this.recognition.maxSpeechTime = 1000; 
+        // }
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
             this.recognitionResult = event.results[0][0].transcript;
-            console.log( this.recognitionResult )
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                if (event.results[i].isFinal) {
+                    console.log('最終結果：', event.results[i][0].transcript);
+                } else {
+                    console.log('臨時結果：', event.results[i][0].transcript);
+                }
+            }
             if(!this.test) this.submit();
         };
         this.recognition.onend = () => {
