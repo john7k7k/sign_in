@@ -22,7 +22,7 @@ const englishKeyword = {
   "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call'],
   "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex'],
   "R":['right', 'rice', 'bright','@','rise','light'],
-  "U":['up','on', 'app', 'apple', 'pop','op'],
+  "U":['up','on', 'app', 'apple', 'pop'],
   "D":['down','dell','tong','dumb'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace']
 }
