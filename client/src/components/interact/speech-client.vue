@@ -1118,13 +1118,14 @@ export default {
         // }
         // 設定辨識事件的處理函數
         this.recognition.onresult = event => {
-            this.recognitionResult = event.results[0][0].transcript;
+            
             for (let i = event.resultIndex; i < event.results.length; i++) {
                 if (event.results[i].isFinal) {
                     console.log('最終結果：', event.results[i][0].transcript);
                 } else {
                     console.log('臨時結果：', event.results[i][0].transcript);
                 }
+                this.recognitionResult = event.results[i][0].transcript;
             }
             if(!this.test && this.recognitionResult!=='') this.submit();
         };
