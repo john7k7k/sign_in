@@ -18,13 +18,13 @@ const chineseKeyword = {
   "M":['平','衡','橫', '凌', '海', '評','你']
 }
 const englishKeyword = {
-  "X":['stop','star'],
-  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go'],
-  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late'],
-  "R":['right', 'rice', 'bright','@'],
-  "U":['up','on', 'app', 'apple', 'pop'],
-  "D":['down','dell'],
-  "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black']
+  "X":['stop','star','set'],
+  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call'],
+  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex'],
+  "R":['right', 'rice', 'bright','@','rise','light'],
+  "U":['up','on', 'app', 'apple', 'pop','op'],
+  "D":['down','dell','tong','dumb'],
+  "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace']
 }
 
 module.exports = { instruction, chineseKeyword, englishKeyword }
