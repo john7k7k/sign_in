@@ -12,7 +12,7 @@ const chineseKeyword = {
   "O":['前', '進', '走','田','恬','天'],
   "L":['左','佐','都','周'],
   "R":['右','又','佑','修','幼','柚'],
-  "U":['上','水面','抬','浮','尚','尙'],
+  "U":['上','水面','抬','浮','尚','尙','站'],
   "D":['下', '底','夏','嚇','厦','加'],
   "X":['停','廷','庭','亭','靜','定','紫', '仔','紙','紙','致'],
   "M":['平','衡','橫', '凌', '海', '評','你']
@@ -22,7 +22,7 @@ const englishKeyword = {
   "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call'],
   "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex'],
   "R":['right', 'rice', 'bright','@','rise','light'],
-  "U":['up','on', 'app', 'apple', 'pop','opera'],
+  "U":['up', 'app', 'apple', 'pop','opera'],
   "D":['down','dell','tong','dumb'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace']
 }
