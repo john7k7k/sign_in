@@ -1140,12 +1140,10 @@ export default {
             }
             },
         startSpeechRecognition() {
-            if(!this.isListening){
-                this.isListening = true;
-                this.command = this.commandWord[this.languageIndex];
-            }
+            this.isListening = true;
             // 開始語音辨識
             this.recognition.start();
+            this.command = this.commandWord[this.languageIndex];
             // this.recognitionResult = this.commandWord[this.languageIndex];
         },
         endSpeechRecognition(){
