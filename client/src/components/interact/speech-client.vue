@@ -1127,7 +1127,7 @@ export default {
                 }
                 this.recognitionResult = event.results[i][0].transcript;
             }
-            if(!this.test && this.recognitionResult!=='') this.submit();
+            if(!this.test) this.submit();
         };
         this.recognition.onend = () => {
             if(this.isListening) this.startSpeechRecognition()
