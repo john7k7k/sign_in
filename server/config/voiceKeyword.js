@@ -19,11 +19,11 @@ const chineseKeyword = {
 }
 const englishKeyword = {
   "X":['stop','star','set'],
-  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call','for'],
+  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call','for','what'],
   "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex'],
   "R":['right', 'rice', 'bright','@','rise','light'],
   "U":['up', 'app', 'apple', 'pop','opera'],
-  "D":['down','dell','tong','dumb','done','dou','no'],
+  "D":['down','tong','dumb','done','dou','no','dial','tell','de'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace']
 }
 
