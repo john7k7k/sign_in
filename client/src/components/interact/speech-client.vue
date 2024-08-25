@@ -67,7 +67,9 @@
         <div class="Resultsword">{{ command }}</div>
     </v-card>
     <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <!-- <p class="failresultWord">{{ this.recognitionResult }}</p>顯示測試回傳的字 -->
+    <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
+    <p class="failresultWord" v-if="isSafari">最終結果:{{ resultwordFinal }}</p>
+    <p class="failresultWord" v-if="!isSafari">最終:{{ recognitionResult }}</p>
     <!-- <v-btn
       class="btn-bg text-white"
       @mousedown="startSpeechRecognition"
@@ -1100,6 +1102,10 @@ export default {
             timer: null,
             lang:["ch","eng"],
             test:true,
+            resultwordFinal:"",
+            resultTem:"",
+            isSafari:false,
+
         };
     },
     mounted() {
@@ -1108,9 +1114,10 @@ export default {
         this.recognition = new window.webkitSpeechRecognition();
         this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
         
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
         //this.recognition.continuous = true;
-        if (isSafari) {
+        if (this.isSafari) {
             this.recognition.interimResults = true;
             
         } else {
@@ -1122,8 +1129,10 @@ export default {
             for (let i = event.resultIndex; i < event.results.length; i++) {
                 if (event.results[i].isFinal) {
                     console.log('最終結果：', event.results[i][0].transcript);
+                    this.resultwordFinal = event.results[i][0].transcript;
                 } else {
                     console.log('臨時結果：', event.results[i][0].transcript);
+                    this.resultTem = event.results[i][0].transcript;
                 }
                 this.recognitionResult = event.results[i][0].transcript;
             }
@@ -1153,7 +1162,6 @@ export default {
             // 開始語音辨識
             this.recognition.start();
             this.command = this.commandWord[this.languageIndex];
-            // this.recognitionResult = this.commandWord[this.languageIndex];
         },
         endSpeechRecognition(){
             this.isListening = false;
