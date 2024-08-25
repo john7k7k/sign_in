@@ -7,7 +7,7 @@ const section = require('./section');
 const ota = require('./ota');
 const controller = require('./controller');
 const component = require('./component');
-const stream = require('./stream');
+//const stream = require('./stream');
 router.use(`/account`, account)
    
 router.use(`/fish`, fish)
