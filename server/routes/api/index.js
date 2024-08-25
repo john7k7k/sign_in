@@ -20,6 +20,6 @@ router.use('/controller', controller)
 
 router.use('/component', component)
 
-router.use('/stream', stream)
+//router.use('/stream', stream)
 
 module.exports = router;
