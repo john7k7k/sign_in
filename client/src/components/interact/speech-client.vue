@@ -1142,7 +1142,6 @@ export default {
             if(this.isListening) this.startSpeechRecognition()
         };
         this.startSpeechRecognition();
-        this.endSpeechRecognition();
     },
     methods: {
         toggleSpeechRecognition() {
