@@ -20,7 +20,7 @@ function recognize(text, lang){
     }
   }
   else{
-    for(word of text){
+    for(word of text.split("").reverse().join("")){
       for(let control in  chineseKeyword){
         for(let keyword of chineseKeyword[control]){
           if(keyword === word){

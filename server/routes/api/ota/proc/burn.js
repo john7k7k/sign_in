@@ -64,7 +64,7 @@ const execute = async (req,res,next) => {
             if(!fishFrp.conf) return res.status(503).send(`${req.body.fishesUID}不在線`)
             ports = fishFrp.conf.remote_port
             
-            const bash = `remote_flash.sh 4.216.216.249 ${ports}`;
+            const bash = `remote_flash.sh 4.216.216.249 ${ports}`; //d:\ntut\mf\webn\web\server\script\fish-eyes.exe get -h
             //const bash = `test.sh`
             console.log(bash)
             console.log(`start flash`);

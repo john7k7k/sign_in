@@ -23,6 +23,7 @@ const get = (req, res) => {
         if(err) return res.status(403).send('錯誤');
         res.sendFile(path.join(dir,photos.at(-1)));
     })
+    
 }
 
 const remove = (req, res) => {
