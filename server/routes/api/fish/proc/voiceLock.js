@@ -20,6 +20,10 @@ module.exports = async (req, res) => {
             id: fishUID.slice(3),
             motion: "a"
         }));
+        mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
+            id: fishUID.slice(3),
+            motion: "3"
+        }));
         count(section, fishUID);
         res.sendStatus(200);
     //}catch{res.status(402).send("資料有誤");}
