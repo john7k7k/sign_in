@@ -10,6 +10,10 @@ module.exports = async (req, res) => {
                 id: fishUID.slice(3),
                 motion: "A"
             }));
+            setTimeout(()=>{mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
+                id: fishUID.slice(3),
+                motion: "2"
+            }));}, 500);
             delete global.fishCount[fishUID];
             delete global.controlling[global.controlling.findIndex(fishUID_ => fishUID_===fishUID)];
             return res.send('已放生')
