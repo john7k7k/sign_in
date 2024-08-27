@@ -8,6 +8,7 @@ const getSection = require('./proc/getSection');
 const deletePool = require('./proc/deletePool');
 const deleteInstruction = require('./proc/deleteInstruction');
 const deleteDapart = require('./proc/deleteDapart');
+const alivefish = require('./proc/getFish.js');
 
 router.post(`/pool`, addPool)
    
@@ -22,5 +23,7 @@ router.delete(`/pool`, deletePool)
 router.delete(`/instruction`, deleteInstruction)
 
 router.delete('/depart', deleteDapart)
+
+router.get(`/alivefish`, alivefish)
 
 module.exports = router;

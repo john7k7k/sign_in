@@ -22,6 +22,7 @@ model User {
 }
 
 model Fish {
+<<<<<<< HEAD
   fishUID   String     @id
   location  String
   exist     Int
@@ -31,6 +32,18 @@ model Fish {
   fishAble  FishAble[]
   version   String     @default("")
   nickName  String     @default("")
+=======
+  fishUID String @id
+  location String
+  exist Int
+  photoCode Int @default(0)
+  pool Pool @relation(fields: [location], references: [id], onDelete: Cascade)
+  fishData FishData[]
+  fishAble FishAble[]
+  version String @default("")
+  nickName String @default("")
+  
+>>>>>>> 0db41ed8feae040c2a5514084b347cec0ce74688
 }
 
 model FishAble {
@@ -103,6 +116,7 @@ model Controller {
 }
 
 model Component {
+<<<<<<< HEAD
   dataID Int    @id @default(autoincrement())
   id     String
   type   String
@@ -110,6 +124,15 @@ model Component {
   hours  Float
   state  String
   time   Int
+=======
+  dataID Int @id @default(autoincrement())
+  id String
+  type String
+  local String
+  hours Float
+  errReason String
+  time Int
+>>>>>>> 0db41ed8feae040c2a5514084b347cec0ce74688
 }
 
 model Motor {
@@ -118,6 +141,11 @@ model Motor {
   local     String
   hours     Float
   errReason String
+<<<<<<< HEAD
   time      Int
   turn      Int
+=======
+  time Int
+  turn Int
+>>>>>>> 0db41ed8feae040c2a5514084b347cec0ce74688
 }

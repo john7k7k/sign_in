@@ -18,10 +18,12 @@ const get = (req, res) => {
     const dir = path.join(__dirname, `../../../../uploads/photos/fish/${req.query.fishUID}`);
     console.log(dir)
     fs.readdir(dir , (err, photos) => {
-        console.log(photos)
-        if(err) return res.sendStatus(403);
+        if(!photos) return res.send('fishUID 未找到');
+        if(!photos.at(-1)) return res.send('no image');
+        if(err) return res.status(403).send('錯誤');
         res.sendFile(path.join(dir,photos.at(-1)));
     })
+    
 }
 
 const remove = (req, res) => {

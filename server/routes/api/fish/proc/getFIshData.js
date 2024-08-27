@@ -22,6 +22,7 @@ module.exports = async (req, res) => {
         });
         datas[fish.location][fish.fishUID] = fish.fishData[0];
         datas[fish.location][fish.fishUID].photoCode = fish.photoCode;
+        datas[fish.location][fish.fishUID].nickName = fish.nickName;
       })
       res.send(datas);
     }catch{res.sendStatus(500);}

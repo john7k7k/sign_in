@@ -12,8 +12,8 @@ module.exports = async function(req, res) {
         const userTable = await prisma.user.findMany();
         for (let user of userTable) {
             if (req.body.username === user.username) {
-            res.status(403).send('帳號已存在')
-            return;
+                res.status(403).send('帳號已存在')
+                return;
             }
         }
         await prisma.user.create({

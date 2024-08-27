@@ -20,6 +20,7 @@
             說明書下載
           </a>
       </v-btn>
+      <v-btn  v-if="signupSectionshow" value="maintenanceList" href="/maintenance" class="navbartext font-weight-bold">維修清單</v-btn>
       <v-btn  value="out" @click="logout"   class="navbartext font-weight-bold text-white">登出</v-btn>
     </div>
     <v-spacer ></v-spacer>
@@ -128,9 +129,9 @@
   background-color:  rgba(0, 0, 0, 0.8);
 }
 .navbar{
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 999; 
-  padding-bottom: 3%;
+  padding-bottom: 2%;
   position: fixed;
 }
 .navbartext{
@@ -312,12 +313,12 @@ methods: {
   },
   logout(){
     axios.post(
-process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
-  headers: {
-    Authorization: `Bearer ${this.token}`
-  }
-}
-        )
+      process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        }
+      }
+    )
         .then(res=> {
             console.log(res);
             
@@ -351,15 +352,15 @@ process.env.VUE_APP_SEVER+"/api/v1/account/logout",{},{
         process.env.VUE_APP_SEVER+"/api/v1/account/sticker", { responseType: 'blob', headers: {
         Authorization: `Bearer ${this.token}`
       }}) 
-            .then(res=> {
-            console.log(res);
-            const imageUrl = URL.createObjectURL(new Blob([res.data]));
-            this.imageUrl = imageUrl;
-            localStorage.setItem("isMobileScreen",this.isMobileScreen)
-        })
-        .catch(err=> {
-            console.log(err);
-        })
+      .then(res=> {
+        console.log(res);
+        const imageUrl = URL.createObjectURL(new Blob([res.data]));
+        this.imageUrl = imageUrl;
+        localStorage.setItem("isMobileScreen",this.isMobileScreen)
+      })
+      .catch(err=> {
+          console.log(err);
+      })
     },
     async loadnewdata() {
       localStorage.setItem("chooseSectionname", "全部");

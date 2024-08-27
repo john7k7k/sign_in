@@ -45,14 +45,14 @@ export class Swiper{
         this.a = this.classList.pop();
         this.classList.unshift(this.a);
         this.__move(this.classList);
-        this.incrementMoveCount();
+        //this.incrementMoveCount();
     }
 
     __rightMove() {
         this.a = this.classList.shift();
         this.classList.push(this.a);
         this.__move(this.classList);
-        this.incrementMoveCount();
+        //this.incrementMoveCount();
     }
 
     incrementMoveCount() {

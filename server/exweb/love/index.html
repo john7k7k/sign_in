@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Love</title>
+<link href="favicon.ico" rel="shortcut icon" />
+<meta property="og:title" content="禮物!">
+<meta property="og:description" content="要仔細地看完喔">
+
+<style>
+body{
+  overflow: hidden;
+  margin: 0;
+}
+#envelope {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.envelope-img {
+  width: 200px;
+}
+.envelope-open {
+  animation: openEnvelope 0.5s forwards;
+}
+@keyframes openEnvelope {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  10% {
+    transform: translate(-50%, -50%) rotate(-5deg);
+  }
+  20% {
+    transform: translate(-50%, -50%) rotate(-10deg);
+  }
+  30% {
+    transform: translate(-50%, -50%) rotate(-15deg);
+  }
+  40% {
+    transform: translate(-50%, -50%) rotate(-20deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(-25deg);
+  }
+  60% {
+    transform: translate(-50%, -50%) rotate(-30deg);
+  }
+  70% {
+    transform: translate(-50%, -50%) rotate(-35deg);
+  }
+  80% {
+    transform: translate(-50%, -50%) rotate(-40deg);
+  }
+  90% {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-50deg);
+  }
+}
+.envelope-content {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+.envelope-content p {
+  color: #c70012;
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  line-height: 36px;
+  opacity: 0;
+  transition: opacity 0.9s linear 0s;
+}
+.heart-background {
+  display: none;
+}
+</style>
+
+</head>
+<body>
+<div id="envelope">
+  <img class="envelope-img" src="envelope.png" alt="Envelope">
+</div>
+<div id="envelopeContent" class="envelope-content">
+  <h1 id="h1"></h1>
+  
+  <h1>	給芸芸的一封信</h1>
+  <h2 >---------------------------------------------------------------------------------------</h2>
+<p>又過了一天 今天也很想妳</p>
+<p>剛收到妳給我的禮物時 </p>
+<p>我真的感受到了你的用心</p>
+<p>我其實每天都想見到妳</p>
+<p>也想跟妳出去逛逛街 吃美食</p>
+<p>想跟妳說...</p>
+<p>你的想像 我一定會努力實現!</p>
+<p>我想跟妳一直一直幸福地走下去</p>
+<p>你願不願意 跟著我走下去呢?</p>
+<p>Yeah Yeah Yeah 我脫單啦!!!</p>
+</div>
+<canvas></canvas> 
+<div class="heart-background"></div>
+
+<script>
+var envelope = document.getElementById("envelope");
+var envelopeContent = document.getElementById("envelopeContent");
+var heartBackground = document.querySelector(".heart-background");
+let clicked = false;
+envelope.addEventListener("click", function() {
+	
+  envelope.classList.add("envelope-open");
+  envelopeContent.style.display = "block";
+  showLines();
+  heartBackground.style.display = "block";
+});
+
+var canvas = document.querySelector("canvas"),
+  ctx = canvas.getContext("2d");
+
+var ww,wh;
+
+function onResize(){
+  ww = canvas.width = window.innerWidth;
+  wh = canvas.height = window.innerHeight;
+}
+
+ctx.strokeStyle = "red";
+ctx.shadowBlur = 25;
+ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+
+var precision = 100;
+var hearts = [];
+var mouseMoved = false;
+function onMove(e){
+  mouseMoved = true;
+  if(e.type === "touchmove"){
+    hearts.push(new Heart(e.touches[0].clientX, e.touches[0].clientY));
+    hearts.push(new Heart(e.touches[0].clientX, e.touches[0].clientY));
+  }
+  else{
+    hearts.push(new Heart(e.clientX, e.clientY));
+    hearts.push(new Heart(e.clientX, e.clientY));
+  }
+}
+
+var Heart = function(x,y){
+  this.x = x || Math.random()*ww;
+  this.y = y || Math.random()*wh;
+  this.size = Math.random()*2 + 1;
+  this.shadowBlur = Math.random() * 10;
+  this.speedX = (Math.random()+0.2-0.6) * 8;
+  this.speedY = (Math.random()+0.2-0.6) * 8;
+  this.speedSize = Math.random()*0.05 + 0.01;
+  this.opacity = 1;
+  this.vertices = [];
+  for (var i = 0; i < precision; i++) {
+    var step = (i / precision - 0.5) * (Math.PI * 2);
+    var vector = {
+      x : (15 * Math.pow(Math.sin(step), 3)),
+      y : -(13 * Math.cos(step) - 5 * Math.cos(2 * step) - 2 * Math.cos(3 * step) - Math.cos(4 * step)) 
+    }
+    this.vertices.push(vector);
+  }
+}
+
+Heart.prototype.draw = function(){
+  this.size -= this.speedSize;
+  this.x += this.speedX;
+  this.y += this.speedY;
+  ctx.save();
+  ctx.translate(-1000,this.y);
+  ctx.scale(this.size, this.size);
+  ctx.beginPath();
+  for (var i = 0; i < precision; i++) {
+    var vector = this.vertices[i];
+    ctx.lineTo(vector.x, vector.y);
+  }
+  ctx.globalAlpha = this.size;
+  ctx.shadowBlur = Math.round((3 - this.size) * 10);
+  ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+  ctx.shadowOffsetX = this.x + 1000;
+  ctx.globalCompositeOperation = "screen"
+  ctx.closePath();
+  ctx.fill()
+  ctx.restore();
+};
+
+
+function render(a){
+  requestAnimationFrame(render);
+
+  if(clicked) hearts.push(new Heart())
+  ctx.clearRect(0,0,ww,wh);
+  for (var i = 0; i < hearts.length; i++) {
+    hearts[i].draw();
+    if(hearts[i].size <= 0){
+      hearts.splice(i,1);
+      i--;
+    }
+  }
+}
+
+
+onResize();
+window.addEventListener("mousemove", onMove);
+window.addEventListener("touchmove", onMove);
+window.addEventListener("resize", onResize);
+requestAnimationFrame(render);
+
+function showLines() {
+  var paragraphs = envelopeContent.querySelectorAll("p");
+  var index = 0;
+  var interval = setInterval(function() {
+    paragraphs[index].style.display = "block";
+    paragraphs[index].style.opacity = 1;
+    index++;
+    if (index >= paragraphs.length -1) {
+      clearInterval(interval);
+    }
+  }, 2000);
+  setTimeout(() => {
+	let con = confirm("確定跟強強一直走下去嗎?");
+	if(con){
+		clicked = true;
+		paragraphs[index].style.display = "block";
+    	paragraphs[index].style.opacity = 1;
+	}
+  },20000)
+}
+</script>
+
+</body>
+</html>

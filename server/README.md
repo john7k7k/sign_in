@@ -282,7 +282,12 @@ API測試文件: [APItest.http](httptest/APItest.http)
     - [db.js](db.js) .......................................................................................資料庫測試腳本
     - [test.js](test/test.js)......................................................................................開發測試用
 ## Link
-[線上簡報](https://www.canva.com/design/DAF9T5eazdM/07bxDsgYrGoUraGYSz6TvQ/view?utm_content=DAF9T5eazdM&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+[後端簡報](https://www.canva.com/design/DAF9T5eazdM/07bxDsgYrGoUraGYSz6TvQ/view?utm_content=DAF9T5eazdM&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+
+[資料庫](https://www.canva.com/design/DAGEz7w77G8/e3o321-qg1c5ZLpjAGGvng/view?utm_content=DAGEz7w77G8&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+
+[網站資料串接](https://www.canva.com/design/DAGFB2eXKQ4/yhRx7Xsy8OjJTbIEgHq8Vw/view?utm_content=DAGFB2eXKQ4&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+
 ## develop diary
 * README版本: 2
 * 未開發功能:
