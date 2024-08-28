@@ -7,7 +7,8 @@ const section = require('./section');
 const ota = require('./ota');
 const controller = require('./controller');
 const component = require('./component');
-//const stream = require('./stream');
+const stream = require('./stream');
+
 router.use(`/account`, account)
    
 router.use(`/fish`, fish)
@@ -20,6 +21,6 @@ router.use('/controller', controller)
 
 router.use('/component', component)
 
-//router.use('/stream', stream)
+router.use('/stream', stream)
 
 module.exports = router;
