@@ -853,7 +853,7 @@ try {
   this.needfixnum.push(0);
 }
 },
-async SaveIndividualData(i,level,route){
+async SaveIndividualData(i,level,route){  //level是游動中、待機中、維修中的分別
   localStorage.setItem("route",route);
 if (level === 0) {
   await this.RefreshDatas(i);

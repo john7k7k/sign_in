@@ -19,11 +19,11 @@ const chineseKeyword = {
 }
 const englishKeyword = {
   "X":['stop','star','set'],
-  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call','for','what'],
-  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex'],
-  "R":['right', 'rice', 'bright','@','rise','light'],
+  "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call','for','what','bored'],
+  "L":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex','lanter','later'],
+  "R":['right', 'rice', 'bright','@','rise','light','writer'],
   "U":['up', 'app', 'apple', 'pop','opera'],
-  "D":['down','tong','dumb','done','dou','no','dial','tell','de'],
+  "D":['down','tong','dumb','done','dou','no','dial','tell','de','song'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace']
 }
 
