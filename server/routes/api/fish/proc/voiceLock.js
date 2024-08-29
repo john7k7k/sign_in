@@ -8,8 +8,12 @@ module.exports = async (req, res) => {
         if(end){
             mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
                 id: fishUID.slice(3),
-                motion: "A"
+                motion: "2"
             }));
+            setTimeout(()=>{mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
+                id: fishUID.slice(3),
+                motion: "A"
+            }));}, 3000);
             delete global.fishCount[fishUID];
             delete global.controlling[global.controlling.findIndex(fishUID_ => fishUID_===fishUID)];
             return res.send('已放生')
@@ -20,6 +24,10 @@ module.exports = async (req, res) => {
             id: fishUID.slice(3),
             motion: "a"
         }));
+        setTimeout(()=>{mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
+            id: fishUID.slice(3),
+            motion: "3"
+        }));}, 1000);
         count(section, fishUID);
         res.sendStatus(200);
     //}catch{res.status(402).send("資料有誤");}
@@ -31,8 +39,12 @@ function count(section, fishUID) {
     if(global.fishCount[fishUID] > 30) {
         mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
             id: fishUID.slice(3),
-            motion: "A"
+            motion: "2"
         }));
+        setTimeout(()=>{mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
+            id: fishUID.slice(3),
+            motion: "A"
+        }));}, 3000);
         delete global.fishCount[fishUID];
         delete global.controlling[global.controlling.findIndex(fishUID_ => fishUID_===fishUID)];
         return;
