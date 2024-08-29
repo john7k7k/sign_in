@@ -1,10 +1,10 @@
 const instruction = {
     "X":["停止", 'stop'],
     "O":["前進", 'forward'],
-    "L":["左轉", 'turn left'],
-    "R":["右轉", 'turn right'],
-    "L2":["左轉", 'turn left'],
-    "R2":["右轉", 'turn right'],
+    "L":["舊左轉", 'turn left'],
+    "R":["舊右轉", 'turn right'],
+    "L2":["新左轉", 'turn left'],
+    "R2":["新右轉", 'turn right'],
     "U":["往上", 'up'],
     "D":["往下", 'down'],
     "M":["平衡", 'balance']
