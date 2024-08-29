@@ -3,6 +3,8 @@ const instruction = {
     "O":["前進", 'forward'],
     "L":["左轉", 'turn left'],
     "R":["右轉", 'turn right'],
+    "L2":["左轉", 'turn left'],
+    "R2":["右轉", 'turn right'],
     "U":["往上", 'up'],
     "D":["往下", 'down'],
     "M":["平衡", 'balance']
