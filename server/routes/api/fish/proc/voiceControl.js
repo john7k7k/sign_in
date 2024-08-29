@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
       const topic = 'Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion';
       const mes =  JSON.stringify({
         id: fishUID.slice(-4),
-        motion:"R2"
+        motion
       })
       //console.log(`topic: ${topic}, mes: ${mes}`);
       mqttConnection.publish(topic, mes);
