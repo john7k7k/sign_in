@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
         where: { fishUID }
       })
       //let section = '002001001';
-      if(fishUID.slice(-4) !== 3004){ //臨時添加 之後可刪除
+      if(fishUID.slice(-4) !== '3004'){ //臨時添加 之後可刪除
         if(motion == "R2") motion = "R"
         else if(motion == "L2") motion = "L"
       } 
