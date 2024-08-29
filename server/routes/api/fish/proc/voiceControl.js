@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
         }
       }
       console.log(fishUID)
-      const motion = recognize(req.body.text, lang);
+      let motion = recognize(req.body.text, lang);
       console.log(motion)
       global.fishCount[fishUID] = 1;
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
