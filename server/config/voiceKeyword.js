@@ -12,7 +12,7 @@ const instruction = {
 
 const chineseKeyword = {
   "O":['前', '進', '走','田','恬','天','千'],
-  "L2":['左','佐','都','周'],
+  "L2":['左','佐','都','周','卓','茁'],
   "R2":['右','又','佑','修','幼','柚'],
   "U":['上','水面','抬','浮','尚','尙','站'],
   "D":['下', '底','夏','嚇','厦','加'],
@@ -24,7 +24,7 @@ const englishKeyword = {
   "O":['forward', 'howard', 'ward', 'food', 'word', 'world','wilson','wood',' worth','go','full','water','cold','call','for','what','bored'],
   "L2":['left', 'let', 'laft', 'last', 'best', 'live', 'plate','life','late','next','laugh','lex','lanter','later'],
   "R2":['right', 'rice', 'bright','@','rise','light','writer'],
-  "U":['up', 'app', 'apple', 'pop','opera'],
+  "U":['up', 'app', 'apple', 'pop','opera','copper'],
   "D":['down','tong','dumb','done','dou','no','dial','tell','de','song'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace']
 }
