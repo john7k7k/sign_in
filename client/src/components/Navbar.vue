@@ -11,7 +11,7 @@
       <v-btn  v-if="userlistshow" value="accountdata" href="/account/list" class="navbartext font-weight-bold">帳號清單</v-btn>
       <v-btn  v-if="signupSectionshow" value="signupsection" href="/sign/up/pool" class="navbartext font-weight-bold">註冊機構/水池</v-btn>
       <v-btn   value="controller" href="/controller" class="navbartext font-weight-bold">遙控器設定</v-btn>
-      <v-btn   value="interact" href="/interact" class="navbartext font-weight-bold">機器魚互動</v-btn>
+      <!-- <v-btn   value="interact" href="/interact" class="navbartext font-weight-bold">機器魚互動</v-btn> -->
       <v-btn class="navbartext font-weight-bold text-white">
           <a href="https://drive.google.com/file/d/16AKFrf10owAX6DQfb5hW09uFfF4uR9VL/view?usp=drive_link" 
             download="仿生機器魚智慧監控系統說明書.pdf" 
@@ -103,13 +103,14 @@
           route to = "/controller"
           class="text-white"
         ></v-list-item>
-        <v-list-item
+        <!-- <v-list-item
+          v-if="SelectSectionshow"
           prepend-icon="mdi mdi-clipboard-text-search-outline"
           title="機器魚互動"
           value="interact"
           route to = "/interact"
           class="text-white"
-        ></v-list-item>
+        ></v-list-item> -->
       <v-list-item
         prepend-icon="mdi-export"
         title="登出"

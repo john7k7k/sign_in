@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
         }
       }
       console.log(fishUID)
-      const motion = recognize(req.body.text, lang);
+      let motion = recognize(req.body.text, lang);
       console.log(motion)
       global.fishCount[fishUID] = 1;
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
@@ -55,6 +55,10 @@ module.exports = async (req, res) => {
         where: { fishUID }
       })
       //let section = '002001001';
+      if(fishUID.slice(-4) !== '3004'){ //臨時添加 之後可刪除
+        if(motion == "R2") motion = "R"
+        else if(motion == "L2") motion = "L"
+      } 
       const topic = 'Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion';
       const mes =  JSON.stringify({
         id: fishUID.slice(-4),
