@@ -13,6 +13,14 @@
       <section id="about" class="section">
         <h2>自我簡介</h2>
         <img src="@/assets/about.jpg" alt="自我簡介圖片">
+        <li><strong>我是</strong>: 鄭子強</li>
+          <li><strong>職業</strong>: 開發仿生機器魚、兼職程式講師</li>
+          <li><strong>教育背景</strong>: 
+            <ul>
+              <li>NTUT EE</li>
+              <li>國立嘉義高工 電機科</li>
+            </ul>
+          </li>
         <p>{{ aboutText }}</p>
         
       </section>
@@ -71,6 +79,7 @@ export default {
   }
 };
 </script>
+
 
 <style>
 /* 基础样式 */
@@ -145,14 +154,37 @@ nav ul li a:hover {
 .section h2 {
   color: #4CAF50;
   font-size: 2rem;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-.section p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  color: #666;
+/* 自我简介列表样式 */
+section#about ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: left; /* 左对齐列表项 */
+}
+
+section#about li {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 10px;
+  color: #333;
+  padding-left: 20%;
+  position: relative;
+  text-align: left;
+}
+
+section#about li::before {
+  content: '•';
+  color: #4CAF50;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1.5em;
+}
+
+section#about ul li {
+  padding-left: 15%;
 }
 
 /* 图片样式 */
@@ -188,4 +220,3 @@ nav ul li a:hover {
   }
 }
 </style>
-@/assets/text/about1.js@/assets/text/life.js

@@ -1,1 +1,1 @@
-module.exports = `畢業存一桶金，35歲財富自由，帶妳去happy`
+module.exports = `健身練出腹肌，畢業存一桶金，35歲財富自由`

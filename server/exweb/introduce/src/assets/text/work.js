@@ -1,1 +1,1 @@
-module.exports = '收集未成年裸照、A片'
+module.exports = '目前在開發穩定游動模式，有點爆肝...'
