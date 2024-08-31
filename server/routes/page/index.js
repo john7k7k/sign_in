@@ -19,7 +19,7 @@ router.get('/resume', (req, res) => {
 });
 
 router.get('/introduce', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../exweb/introduce/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../../exweb/introduce/pub/index.html'));
 });
 
 router.get('/toYunyun', (req, res) => {
