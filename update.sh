@@ -8,7 +8,7 @@ SSH_KEY="/path/to/your/private/key"
 
 REMOTE_COMMANDS="
 cd aifish_web/sign_in/;
-git pull;
+sudo git pull;
 sudo pm2 restart 0;
 "
 
