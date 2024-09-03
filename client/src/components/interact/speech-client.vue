@@ -43,59 +43,51 @@
     </div>
     
     <div class="box" >
-        <v-btn variant="text" class="changeLan" @click="EndVoiceRecognition" v-show="true">{{ExitWord[languageIndex]}}</v-btn>
-        <!-- <div class="tital">{{ titalWord[languageIndex] }}</div> -->
+        <v-btn variant="text" class="exitBtn mdi mdi-exit-to-app" @click="EndVoiceRecognition">{{ExitWord[languageIndex]}}</v-btn>
+        
         <div class="tital">{{ChooseFishWord[languageIndex]}}</div>
-    <!-- <div>
-      <label for="dropdown" style="color: white;" v-show="false">選擇控制魚的ID:</label>
-      <select id="dropdown" v-model="selectedfishUID" @change="handleChange">
-        <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.label }}</option>
-      </select>
-    </div> -->
-    <!-- <label for="languageSelect" style="color: white;" v-show="false">選擇語言:</label>
-    <select id="languageSelect" v-model="selectedLanguage" @change="changeLanguage" class="changeLanCSS" v-show="false">
-      <option value="en-US" style="color: white;">英文</option>
-      <option value="zh-CN" style="color: white;">中文</option>
-      其他語言選項
-    </select>
-    <br/> -->
-    <v-card class="fishImgSize">
-        <v-img class="ChoseFishImg"  height="100%" :src="fishurl[fishImgIndex(ChooseFishWord[languageIndex])]" ></v-img>
-    </v-card>
-    <v-card class="resultcard">
-        <p  class="resultTital">{{ resultWord[languageIndex] }}</p>
-        <div class="Resultsword">{{ command }}</div>
-    </v-card>
-    <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-    <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
-    <p class="failresultWord" v-if="isSafari">最終結果:{{ resultwordFinal }}</p>
-    <p class="failresultWord" v-if="!isSafari">最終:{{ recognitionResult }}</p>
-    <!-- <v-btn
-      class="btn-bg text-white"
-      @mousedown="startSpeechRecognition"
-      @mouseup="endSpeechRecognition"
-      @mouseleave="endSpeechRecognition"
-      @touchstart="startSpeechRecognition"
-      @touchend="endSpeechRecognition"
-      :class="{ 'ripple-active': isListening }"
-      :icon="icon"
-      size="80"
-    ></v-btn> -->
-    
-    <v-btn
-      class="btn-bg text-white"
-      @click="toggleSpeechRecognition"
-      :class="{ 'ripple-active': isListening }"
-      :icon="icon"
-      size="80"
-    ></v-btn>
-    <!-- 輝光效果<button class="btn-bg text-white"
-    @click="toggleSpeechRecognition"
-    :class="[ isListening ? 'ripple-active' : 'glow-on-hover' ]" type="button"><v-icon :icon="icon"></v-icon></button> -->
-    <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
-    <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
+        
+        <v-card class="fishImgSize">
+            <v-img class="ChoseFishImg"  height="100%" :src="fishurl[fishImgIndex(ChooseFishWord[languageIndex])]" ></v-img>
+        </v-card>
+        <v-card class="resultcard">
+            <p  class="resultTital">{{ resultWord[languageIndex] }}</p>
+            <div class="Resultsword">{{ command }}</div>
+        </v-card>
+        <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
+        <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
+        <p class="failresultWord" v-if="isSafari">最終結果:{{ resultwordFinal }}</p>
+        <p class="failresultWord" v-if="!isSafari">最終:{{ recognitionResult }}</p>
+        <p class="instructionWordCss" v-if="languageIndex === 0">指令表:</p>
+        <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止</p>
+        <p class="instructionWordCss" v-if="languageIndex === 0">往上、往下、平衡</p>
+        <p class="instructionWordCss" v-if="languageIndex === 1">Commands:</p>
+        <p class="instructionWordCss" v-if="languageIndex === 1">Forward/Go、Turn left、Turn right</p>
+        <p class="instructionWordCss" v-if="languageIndex === 1">Stop、Up、Down、Balance</p>
+        <!-- <v-btn
+        class="btn-bg text-white"
+        @mousedown="startSpeechRecognition"
+        @mouseup="endSpeechRecognition"
+        @mouseleave="endSpeechRecognition"
+        @touchstart="startSpeechRecognition"
+        @touchend="endSpeechRecognition"
+        :class="{ 'ripple-active': isListening }"
+        :icon="icon"
+        size="80"
+        ></v-btn> -->
+        
+        <v-btn class="btn-bg text-white" @click="toggleSpeechRecognition" :class="{ 'ripple-active': isListening }"
+        :icon="icon" size="80"></v-btn>
+        <!-- 輝光效果<button class="btn-bg text-white"
+        @click="toggleSpeechRecognition"
+        :class="[ isListening ? 'ripple-active' : 'glow-on-hover' ]" type="button"><v-icon :icon="icon"></v-icon></button> -->
+        <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
+        <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
     </div>
 </template>
+
+
+
 <style scoped>
 
 .glow-on-hover {
@@ -272,7 +264,14 @@
     color: #EF5350;
     font-size: 18px;
     font-weight: 600;
-    margin-top: 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.instructionWordCss{
+    color:white;
+    font-size: 19px;
+    font-weight: 600;
+    margin-top: 0.3%;
 }
 .menu-container{
     position: absolute;
@@ -532,9 +531,10 @@
     font-size: 45px;
     color: white;
 }
-.changeLan{
+.exitBtn{
     color: white;
-    font-size: 18px;
+    /* font-size: 18px; */
+    font-size: 22px;
     font-weight: bold;
     position: fixed;
     right: 1%;
@@ -578,7 +578,7 @@
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 3%;
+    margin-top: 2%;
   }
 .beginWord{
     font-size:20px;
@@ -630,7 +630,7 @@ background-image: url('../../assets/speechBackground.jpg');
   overflow-y: hidden;
   z-index: 1; 
 }
-.changeLan{
+.exitBtn{
     color: white;
     font-size: 20px;
     font-weight: bold;
@@ -731,7 +731,7 @@ background-image: url('../../assets/speechBackground.jpg');
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
     transform: scale(1.2);
-    margin-top: 15%;
+    margin-top: 14%;
   }
 .beginWord{
     font-size:25px;
@@ -739,7 +739,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 }
 @media screen and (min-width: 401px) and (max-width: 600px){
-.changeLan{
+.exitBtn{
     color: white;
     font-size: 20px;
     font-weight: bold;
@@ -850,12 +850,6 @@ background-image: url('../../assets/speechBackground.jpg');
     font-size: 25px;
     font-weight: 600;
 }
-.failresultWord{
-    color: #EF5350;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 2%;
-}
 .resultcard{
     width: 90%;
     height: 15%;
@@ -889,7 +883,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 8%;
+    margin-top: 7%;
   }
 .beginWord{
     font-size:20px;
@@ -897,7 +891,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 }
 @media screen and (max-width: 400px) {
-.changeLan{
+.exitBtn{
     color: white;
     font-size: 17px;
     font-weight: bold;
@@ -1007,12 +1001,6 @@ background-image: url('../../assets/speechBackground.jpg');
     font-size: 20px;
     font-weight: 600;
 }
-.failresultWord{
-    color: #EF5350;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 2%;
-}
 .resultcard{
     width: 90%;
     height: 15%;
@@ -1046,7 +1034,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 8%;
+    margin-top: 7%;
   }
 .beginWord{
     font-size:20px;
@@ -1083,7 +1071,7 @@ export default {
             startWord: ["開始辨識","Start recognition"],
             endWord: ["結束辨識","End recognition"],
             commandWord: ["辨識中","Identifying"],
-            failword:["辨識失敗，請再說一次","Recognition failed, please say again"],
+            failword:["辨識失敗，請再說一次","Recognition failed,please say again"],
             isFail:false,
             isMenuVisible: false,
             languageWord:["選擇語言▼","Language▼"],
