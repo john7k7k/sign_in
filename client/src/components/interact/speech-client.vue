@@ -419,7 +419,7 @@
 }
     .tital{
     font-weight: bold;
-    margin-top: 6%;
+    margin-top: 4%;
     font-size: 60px;
     color: white;
 }
@@ -527,7 +527,7 @@
 }
     .tital{
     font-weight: bold;
-    margin-top: 6%;
+    margin-top: 4%;
     font-size: 45px;
     color: white;
 }
@@ -685,7 +685,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
     .tital{
     font-weight: bold;
-    margin-top: 18%;
+    margin-top: 15%;
     font-size: 60px;
     color: white;
 }
@@ -837,7 +837,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
     .tital{
     font-weight: bold;
-    margin-top: 30%;
+    margin-top: 15%;
     font-size: 45px;
     color: white;
 }
@@ -988,7 +988,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
     .tital{
     font-weight: bold;
-    margin-top: 30%;
+    margin-top: 15%;
     font-size: 45px;
     color: white;
 }
@@ -1077,7 +1077,6 @@ export default {
             languageWord:["選擇語言▼","Language▼"],
             ChooseFishWord:["選擇魚▼","Choose fish▼"],
             ExitWord:["退出","Exit"],
-            initialChooseFishWord: ["選擇魚▼", "Choose fish▼"],
             isChoseFish:false,
             fishurl:[],
             fishUIDs:[],
