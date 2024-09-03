@@ -837,7 +837,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
     .tital{
     font-weight: bold;
-    margin-top: 15%;
+    margin-top: 10%;
     font-size: 45px;
     color: white;
 }
@@ -988,7 +988,7 @@ background-image: url('../../assets/speechBackground.jpg');
 }
     .tital{
     font-weight: bold;
-    margin-top: 15%;
+    margin-top: 10%;
     font-size: 45px;
     color: white;
 }
