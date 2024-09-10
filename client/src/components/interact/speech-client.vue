@@ -1003,7 +1003,7 @@ background-image: url('../../assets/speechBackground.jpg');
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 6%;
+    margin-top: 7%;
 }
 .Resultsword{
     font-size: 25px;
@@ -1035,7 +1035,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 11%;
+    margin-top: 14%;
   }
 .beginWord{
     font-size:20px;
