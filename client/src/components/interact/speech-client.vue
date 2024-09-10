@@ -1035,7 +1035,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 14%;
+    margin-top: 13%;
   }
 .beginWord{
     font-size:20px;
