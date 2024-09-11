@@ -7,11 +7,15 @@
         <div class="ChoseFishItem2">
             <v-card v-show="this.languageIndex == 0" v-for="(fishName,index) in this.Chfishnicknames" :key="fishName" :class="fishStates[index]==false ?  'ChoseFishcard':'ControledFishcard'" @click="selectFish(fishName)">
                 <v-img class="ChoseFishImg" height="80%" :src="fishurl[index]" ></v-img>
-                <v-card-title >{{ fishName }}</v-card-title>
+                <v-card-title class="ChoseFishName" :style="{ letterSpacing:languageIndex === 1 ? '0px' : '' }">{{ fishName }}</v-card-title>
             </v-card>
             <v-card v-show="this.languageIndex == 1" v-for="(fishName,index) in this.Enfishnicknames" :key="fishName" :class="fishStates[index]==false ?  'ChoseFishcard':'ControledFishcard'" @click="selectFish(fishName)">
                 <v-img class="ChoseFishImg" height="80%" :src="fishurl[index]" ></v-img>
-                <v-card-title >{{ fishName }}</v-card-title>
+                <v-card-title class="ChoseFishName" :style="{ letterSpacing:languageIndex === 1 ? '0px' : '' }">{{ fishName }}</v-card-title>
+            </v-card>
+            <v-card v-show="isOdd"  class="empty" >
+                <v-img class="ChoseFishImg" height="80%" :src="fishurl[0]" ></v-img>
+                <v-card-title class="ChoseFishName" :style="{ letterSpacing:languageIndex === 1 ? '0px' : '' }">{{  }}</v-card-title>
             </v-card>
         </div>
     </div>
@@ -26,7 +30,7 @@
                     <p>{{ starttitalWord[languageIndex][1] }}</p>
                 </div>
                 <v-btn class="startBtnCSS " @click="toggleMenu" variant="flat">
-                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{languageWord[languageIndex]}}</div>
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px',letterSpacing:languageIndex === 1 ? '0px' : '' }">{{languageWord[languageIndex]}}</div>
                     </v-btn>
                     <div v-if="isMenuVisible" class="menu-container">
                     <v-list>
@@ -35,35 +39,41 @@
                     </v-list>
                     </div>
                 <v-btn class="startBtnCSS" @click="isChoseFish = true"  variant="flat"  >
-                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{ChooseFishWord[languageIndex]}}</div></v-btn>
-                <v-btn class="startBtnCSS"  @click="startVoiceRecognition" variant="flat"  >
-                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px' }">{{ startBtnWord[languageIndex] }}</div></v-btn>
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px',letterSpacing:languageIndex === 1 ? '0px' : '' }">{{ChooseFishWord[languageIndex]}}</div></v-btn>
+                <v-btn class="BlueBtnCSS"  @click="startVoiceRecognition" variant="flat"  >
+                    <div class="BlueBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px',letterSpacing:languageIndex === 1 ? '0px' : '' }">{{ startBtnWord[languageIndex] }}</div></v-btn>
             </div>
         </div>
     </div>
     
     <div class="box" >
-        <v-btn variant="text" class="exitBtn mdi mdi-exit-to-app" @click="EndVoiceRecognition">{{ExitWord[languageIndex]}}</v-btn>
-        
+        <div class="ExitBox">
+            <v-btn icon="mdi mdi-exit-to-app" size="40" class="Exitbtn-bg text-white" @click="EndVoiceRecognition"></v-btn>
+            <p variant="text" class="ExitwordCSS" >{{ExitWord[languageIndex]}}</p>
+        </div>
         <div class="tital">{{ChooseFishWord[languageIndex]}}</div>
         
         <v-card class="fishImgSize">
             <v-img class="ChoseFishImg"  height="100%" :src="fishurl[fishImgIndex(ChooseFishWord[languageIndex])]" ></v-img>
         </v-card>
         <v-card class="resultcard">
-            <p  class="resultTital">{{ resultWord[languageIndex] }}</p>
-            <div class="Resultsword">{{ command }}</div>
+            <p  class="resultTital" :style="{ fontSize: languageIndex === 1 ? '22px' : '' ,letterSpacing:languageIndex === 1 ? '0px' : ''
+            }">{{ resultWord[languageIndex] }}</p>
+            <div class="Resultsword" :style="commandStyle">{{ command }}</div>
+            <p class="failresultWord" :style="failStyle">{{ failword[languageIndex] }}</p>
+            <p class="instructionWordCss" v-if="languageIndex === 0">指令表:</p>
+            <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止、往上、往下、平衡</p>
+            <p class="instructionWordCss" v-if="languageIndex === 1">Commands:</p>
+            <p class="instructionWordCss" v-if="languageIndex === 1">Forward/Go、Turn left、Turn right</p>
+            <p class="instructionWordCss" v-if="languageIndex === 1">Stop、Up、Down、Balance</p>
         </v-card>
-        <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p>
-        <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
+        <!-- <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p> -->
+        <!-- <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
         <p class="failresultWord" v-if="isSafari">最終結果:{{ resultwordFinal }}</p>
-        <p class="failresultWord" v-if="!isSafari">最終:{{ recognitionResult }}</p>
-        <p class="instructionWordCss" v-if="languageIndex === 0">指令表:</p>
-        <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止</p>
-        <p class="instructionWordCss" v-if="languageIndex === 0">往上、往下、平衡</p>
-        <p class="instructionWordCss" v-if="languageIndex === 1">Commands:</p>
-        <p class="instructionWordCss" v-if="languageIndex === 1">Forward/Go、Turn left、Turn right</p>
-        <p class="instructionWordCss" v-if="languageIndex === 1">Stop、Up、Down、Balance</p>
+        <p class="failresultWord" v-if="!isSafari">最終:{{ recognitionResult }}</p> -->
+        <!-- <p class="instructionWordCss" v-if="languageIndex === 0">往上、往下、平衡</p>
+         -->
+        
         <!-- <v-btn
         class="btn-bg text-white"
         @mousedown="startSpeechRecognition"
@@ -89,7 +99,34 @@
 
 
 <style scoped>
-
+.green-text {
+  color: #00C853;
+}
+.ExitBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 15%;
+    height: 15%;
+    position: fixed;
+    top: 4%;
+    right: 4%;
+}
+.ExitwordCSS{
+    font-size: 16px;
+    color: white;
+    position: relative;
+    top: 3%;
+    letter-spacing: 2px;
+    font-weight:bold;
+}
+.Exitbtn-bg{
+  font-size: 16px;
+  background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
+  background-color: rgba(255, 255, 255, 0.05); 
+  border: 3px solid rgba(255, 255, 255, 0.5);
+}
 .glow-on-hover {
     width: 80px; /* 調整為與 <v-btn> 相同的寬度 */
     height: 80px; /* 調整為與 <v-btn> 相同的高度 */
@@ -226,7 +263,7 @@
     padding: 5px; 
     margin: auto;
     cursor: pointer;
-    height: 8%;
+    height: 14%;
     width: 40%;
     transition: background 0.3s, border 0.3s;
 }
@@ -247,15 +284,19 @@
     left: 0;
     right: 0;
     bottom: 0;
+    letter-spacing: 6px;
     margin: 2px; 
 }
 .box{
-    width: 95%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     margin: auto;
     align-items: center;
+    background-image: url('../../assets/語音系統主頁背景.jpg');
+    background-size: cover;
+    background-position: top;
 }
 .changeLanCSS{
     color: white;
@@ -264,14 +305,12 @@
     color: #EF5350;
     font-size: 18px;
     font-weight: 600;
-    margin-top: 1%;
-    margin-bottom: 1%;
+    margin-top: 1.5%;
+    margin-bottom: 1.2%;
 }
 .instructionWordCss{
-    color:white;
-    font-size: 19px;
-    font-weight: 600;
-    margin-top: 0.3%;
+    color:#CFD8DC;
+    font-size: 15px;
 }
 .menu-container{
     position: absolute;
@@ -293,6 +332,37 @@
     margin: auto;
     transition: background 0.3s, border 0.3s;
 }
+.BlueBtnCSS{
+    position: relative; 
+    display: inline-block; 
+    background-color: #2979FF; 
+    border-radius: 25px; 
+    padding: 5px; 
+    margin: auto;
+    cursor: pointer;
+    height: 14.5%;
+    width: 65%;
+    margin: auto;
+    transition: background 0.3s, border 0.3s;
+}
+.BlueBtnCSScontainer {
+    border-radius: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white;
+    font-size: 18px;
+    font-weight:600;
+    letter-spacing: 4px;
+    padding: 10px 20px; 
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    letter-spacing: 6px;
+    margin: 2px; 
+}
 .ChoseFishBox {
     position: fixed;
     display: flex;
@@ -301,7 +371,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/編輯魚畫面手機背景2.png');
+    background-image: url('../../assets/新選擇魚背景圖.jpg');
     background-size: cover;
     background-position: top;
     z-index: 5;
@@ -317,37 +387,54 @@
     justify-content: space-between;
     align-items: center;
 }
-.ChoseFishItem2{
+.ChoseFishItem2 {
     width: 100%;
     height: 90%;
-    padding: 0 5%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center; 
     overflow-y: auto;
 }
-.ChoseFishcard{
-    width: 44%;
-    height: 35%;
-    margin: 1.5% 3%;
+
+.ChoseFishcard {
+    width: 40%;
+    height: 28%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 20px;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
-    background-color: rgba(255, 255, 255, 0.1); 
+    border-radius: 15px;
+    margin: 3% 3%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1));
+    background-color: rgba(144, 118, 118, 0.1); 
     backdrop-filter: blur(1px);
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
     color: white;
 }
-.ControledFishcard{
-    width: 44%;
-    height: 35%;
-    margin: 1.5% 3%;
+
+.empty{
+    width: 40%;
+    height: 28%;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
+    margin:3% 3%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15));
+    background-color: rgba(144, 118, 118, 0.1); 
+    backdrop-filter: blur(1px);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    visibility: hidden;
+}
+
+.ControledFishcard{
+    width: 40%;
+    height: 28%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    margin: 3% 3%;
     background-image: linear-gradient(to right bottom, rgba(255,0 , 0, 0.15), rgba(255,0 , 0, 0.01), rgba(255,0 , 0, 0.15));
     background-color: rgba(255, 255, 255, 0.1); 
     backdrop-filter: blur(1px);
@@ -356,13 +443,20 @@
 }
 .ChoseFishImg{
     object-fit: cover;
+    position: relative;
+    bottom: 3%;
+}
+.ChoseFishName{
+    position: relative;
+    bottom: 7%;
+    letter-spacing: 6px;
 }
 @media screen and  (min-width: 1681px){
 .ChoseFishLabel{
     font-size: 30px;
 }
 .ChoseFishBox {
-    background-image: url('../../assets/編輯魚bg.jpg');
+    background-image: url('../../assets/新選擇魚背景圖.jpg');
 }
     .configureBackdrop{
     z-index: 1;
@@ -382,8 +476,12 @@
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(0px);
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     padding: 3%;
+    position: relative;
+    bottom: 1%;
+    border-radius: 25px;
+
     display: flex;
 }
     .startBoxItem1{
@@ -407,6 +505,10 @@
     height: 8%;
     width: 35%;
 }
+.BlueBtnCSS {
+    height: 8%;
+    width: 35%;
+}
 .startTital{
     display: none;
 }
@@ -419,42 +521,55 @@
 }
     .tital{
     font-weight: bold;
-    margin-top: 4%;
+    margin-top: 2%;
     font-size: 60px;
     color: white;
 }
-.resultTital{
-    color: white;
-    font-size: 40px;
-    font-weight: 600;
-}
 .fishImgSize{
     background-color: rgba(0, 0, 0, 0); 
-    width: 15%;
+    width: 13%;
+}
+.resultTital{
+    color: white;
+    font-size: 35px;
+    font-weight: 600;
+    margin: 0.25% 0;
+    letter-spacing: 8px;
 }
 .resultcard{
-    width: 40%;
-    height: 20%;
+    width: 90%;
+    height: 30%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1%;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.3));
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
 }
 .Resultsword{
-    font-size: 45px;
+    font-size: 30px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 50%;
+    height: 25%;
+    margin-top: 2%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.instructionWordCss{
+    font-size: 22px;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 25px;
+    font-weight: 600;
     margin-top: 1%;
-    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 1%;
 }
 .btn-bg{
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
@@ -471,7 +586,7 @@
 }
 @media screen and  (min-width: 1025px) and (max-width: 1680px){
     .ChoseFishBox {
-    background-image: url('../../assets/編輯魚bg.jpg');
+    background-image: url('../../assets/新選擇魚背景圖.jpg');
 }
 .startBox{
     width: 85%;
@@ -479,8 +594,11 @@
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(0px);
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     padding: 3%;
+    border-radius: 25px;
+    position: relative;
+    bottom: 1%;
     display: flex;
 }
     .startBoxItem1{
@@ -501,6 +619,10 @@
     justify-content: center;
 }
 .startBtnCSS {
+    height: 8%;
+    width: 35%;
+}
+.BlueBtnCSS {
     height: 8%;
     width: 35%;
 }
@@ -527,50 +649,55 @@
 }
     .tital{
     font-weight: bold;
-    margin-top: 4%;
+    margin-top: 2%;
     font-size: 45px;
     color: white;
 }
-.exitBtn{
-    color: white;
-    /* font-size: 18px; */
-    font-size: 22px;
-    font-weight: bold;
-    position: fixed;
-    right: 1%;
-    top: 11.5%;
+.fishImgSize{
+    background-color: rgba(0, 0, 0, 0); 
+    width: 13%;
 }
 .resultTital{
     color: white;
-    font-size: 30px;
+    font-size: 27px;
     font-weight: 600;
-}
-.fishImgSize{
-    background-color: rgba(0, 0, 0, 0); 
-    width: 15%;
+    margin: 0.25% 0;
+    letter-spacing: 8px;
 }
 .resultcard{
-    width: 35%;
-    height: 15%;
+    width: 90%;
+    height: 30%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1%;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
 }
 .Resultsword{
-    font-size: 30px;
+    font-size: 25px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 70%;
-    background-color: rgba(255, 255, 255, 0.1);
+    height: 40%;
+    margin-top: 1%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.instructionWordCss{
+    font-size: 20px;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
 .btn-bg{
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
@@ -613,7 +740,12 @@
     left: 0;
     right: 0;
     bottom: 0;
+    letter-spacing: 6px;
     margin: 2.5px;
+}
+.BlueBtnCSS {
+    height: 14.5%;
+    width: 65%;
 }
 .configureBackdrop {
 background-image: url('../../assets/speechBackground.jpg');
@@ -630,24 +762,19 @@ background-image: url('../../assets/speechBackground.jpg');
   overflow-y: hidden;
   z-index: 1; 
 }
-.exitBtn{
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    position: fixed;
-    right: 1%;
-    top: 9%;
-}
 .startBox{
     width: 85%;
     height: 80%;
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(0px);
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     padding: 4%;
     display: flex;
     margin-top: 10%;
+    border-radius: 25px;
+    position: relative;
+    bottom: 1%;
     flex-direction: column;
 }
 .startBoxItem1{
@@ -695,34 +822,46 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 .resultTital{
     color: white;
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 600;
+    margin: 0.5% 0;
+    letter-spacing: 8px;
 }
-
 .resultcard{
-    width: 75%;
-    height: 15%;
+    width: 90%;
+    height: 25%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1%;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 1%;
+    margin-top: 4%;
 }
 .Resultsword{
-    font-size: 40px;
+    font-size: 28px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 60%;
-    margin-top: 1%;
-    background-color: rgba(255, 255, 255, 0.1);
+    height: 25%;
+    margin-top: 2%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.instructionWordCss{
+    font-size: 20px;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 2%;
+    margin-bottom: 1%;
 }
 .btn-bg{
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
@@ -739,14 +878,6 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 }
 @media screen and (min-width: 401px) and (max-width: 600px){
-.exitBtn{
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    position: fixed;
-    right: 1%;
-    top: 9%;
-}
 .startBtnCSS {
     position: relative; 
     display: inline-block; 
@@ -755,10 +886,14 @@ background-image: url('../../assets/speechBackground.jpg');
     padding: 5px; 
     margin: auto;
     cursor: pointer;
-    height: 14.5%;
+    height: 15.5%;
     width: 65%;
     margin: auto;
     transition: background 0.3s, border 0.3s;
+}
+.BlueBtnCSS{
+    height: 15.5%;
+    width: 65%;
 }
 .startBtnCSScontainer {
     background-image: linear-gradient(to right, #868383, #000000, #868383); 
@@ -774,6 +909,7 @@ background-image: url('../../assets/speechBackground.jpg');
     left: 0;
     right: 0;
     bottom: 0;
+    letter-spacing: 6px;
     margin: 2.5px;
 }
 .configureBackdrop {
@@ -797,10 +933,13 @@ background-image: url('../../assets/speechBackground.jpg');
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(0px);
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     padding: 4%;
     display: flex;
     margin-top: 10%;
+    border-radius: 25px;
+    position: relative;
+    bottom: 1%;
     flex-direction: column;
 }
 .startBoxItem1{
@@ -849,31 +988,44 @@ background-image: url('../../assets/speechBackground.jpg');
     color: white;
     font-size: 25px;
     font-weight: 600;
+    margin: 0.5% 0;
+    letter-spacing: 8px;
 }
 .resultcard{
     width: 90%;
-    height: 15%;
+    height: 25%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1%;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     margin-top: 7%;
 }
 .Resultsword{
-    font-size: 30px;
+    font-size: 25px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 45%;
+    height: 25%;
     margin-top: 2%;
-    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.instructionWordCss{
+    font-size: 17.5px;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 19px;
+    font-weight: 600;
+    margin-top: 2%;
+    margin-bottom: 1%;
 }
 
 
@@ -883,7 +1035,7 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 7%;
+    margin-top: 13%;
   }
 .beginWord{
     font-size:20px;
@@ -891,14 +1043,6 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 }
 @media screen and (max-width: 400px) {
-.exitBtn{
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-    position: fixed;
-    right: 1%;
-    top: 9%;
-}
     .startBtnCSS {
     position: relative; 
     display: inline-block; 
@@ -907,10 +1051,14 @@ background-image: url('../../assets/speechBackground.jpg');
     padding: 5px; 
     margin: auto;
     cursor: pointer;
-    height: 13%;
+    height: 14%;
     width: 60%;
     margin: auto;
     transition: background 0.3s, border 0.3s;
+}
+.BlueBtnCSS{
+    height: 14%;
+    width: 60%;
 }
 .startBtnCSScontainer {
     background-image: linear-gradient(to right, #868383, #000000, #868383); 
@@ -926,6 +1074,7 @@ background-image: url('../../assets/speechBackground.jpg');
     left: 0;
     right: 0;
     bottom: 0;
+    letter-spacing: 6px;
     margin: 2.5px;
 }
 .configureBackdrop {
@@ -949,10 +1098,13 @@ background-image: url('../../assets/speechBackground.jpg');
     background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(0px);
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     padding: 4%;
     display: flex;
     margin-top: 10%;
+    border-radius: 25px;
+    position: relative;
+    bottom: 1%;
     flex-direction: column;
 }
 .startBoxItem1{
@@ -998,33 +1150,46 @@ background-image: url('../../assets/speechBackground.jpg');
 }
 .resultTital{
     color: white;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
+    margin: 0.5% 0;
+    letter-spacing: 8px;
 }
 .resultcard{
     width: 90%;
-    height: 15%;
+    height: 30%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1%;
-    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.15));
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin-top: 7%;
+
 }
 .Resultsword{
-    font-size: 30px;
+    font-size: 20px;
     color: white;
     justify-content: center;
     align-items: center;
     display: flex;
     width: 90%;
-    height: 50%;
+    height: 25%;
     margin-top: 2%;
-    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.instructionWordCss{
+    font-size: 15px;
+}
+.failresultWord{
+    color: #EF5350;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 2%;
+    margin-bottom: 1%;
 }
 
 
@@ -1034,10 +1199,10 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     font-size: 30px;
-    margin-top: 7%;
+    margin-top: 5%;
   }
 .beginWord{
-    font-size:20px;
+    font-size:18px;
     margin-top: 3%;
 }
 }
@@ -1074,8 +1239,8 @@ export default {
             failword:["辨識失敗，請再說一次","Recognition failed,please say again"],
             isFail:false,
             isMenuVisible: false,
-            languageWord:["選擇語言▼","Language▼"],
-            ChooseFishWord:["選擇魚▼","Choose fish▼"],
+            languageWord:["語言▼","Language▼"],
+            ChooseFishWord:["魚隻▼","Fish▼"],
             ExitWord:["退出","Exit"],
             isChoseFish:false,
             fishurl:[],
@@ -1092,12 +1257,26 @@ export default {
             resultwordFinal:"",
             resultTem:"",
             isSafari:false,
+            isOdd:false,
 
         };
+    },
+    computed: {
+        commandStyle() {
+        return (this.command !== '辨識中' && this.command !== 'Identifying') 
+            ? { color: '#00E676' } 
+            : {};
+        },
+        failStyle() {
+        return this.isFail 
+            ? { visibility: 'visible' } 
+            : { visibility: 'hidden' };
+        }
     },
     mounted() {
         // 初始化語音辨
         this.fetchOptions();
+        this.isOdd = this.Chfishnicknames.length % 2 == 0;
         this.recognition = new window.webkitSpeechRecognition();
         this.recognition.lang = this.selectedLanguage[this.languageIndex]; // 使用使用者選擇的語言
         
