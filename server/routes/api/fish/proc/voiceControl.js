@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
         }
       }
       console.log(fishUID)
-      fs.watchFile(path.join(__dirname,'../../../../config/keywordRecord.txt'), req.body.text+',');
+      fs.writeFile(path.join(__dirname,'../../../../config/keywordRecord.txt'), req.body.text+',');
       
       let motion = recognize(req.body.text, lang);
       
