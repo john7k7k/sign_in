@@ -39,6 +39,7 @@ function count(section, fishUID) {
     if(!global.fishCount[fishUID]) global.fishCount[fishUID] = 1;
     global.fishCount[fishUID] = global.fishCount[fishUID]+1;
     if(global.fishCount[fishUID] > 30) {
+        record();
         mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
             id: fishUID.slice(3),
             motion: "2"
