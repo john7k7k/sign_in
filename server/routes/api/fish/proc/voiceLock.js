@@ -62,7 +62,8 @@ async function record(poolID){
             id: poolID
         }
     })).mac)
-    records += 1;
+    if(!records) records = 0
+    else records += 1;
     records = String(records)
     console.log(records)
     await prisma.pool.update({
