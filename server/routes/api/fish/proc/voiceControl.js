@@ -74,5 +74,5 @@ module.exports = async (req, res) => {
       ti = String(0.8+Math.random()/4).slice(0,5);
       console.log(`辨識時間: ${ti} s\n`);
       res.send(instruction[ motion ][lang == 'ch'?0:1]);
-    }catch{res.status(402).send("資料有誤");}
+    }catch(e){console.log(e);res.status(402).send("資料有誤");}
   }
