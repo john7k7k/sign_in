@@ -1,4 +1,5 @@
 const mqttConnection = require('../../../../modules/util/mqtt');
+const { prisma } = require('../../../../modules/util/myPrisma');
 global.controlling = [];
 global.fishCount = {};
 
@@ -6,6 +7,7 @@ module.exports = async (req, res) => {
     //try{
         const { fishUID, section, end } = req.body; //取得參數
         if(end){
+            record(section)
             mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
                 id: fishUID.slice(3),
                 motion: "2"
@@ -53,3 +55,44 @@ function count(section, fishUID) {
         count(section, fishUID)
     }, 1000)
 }
+
+async function record(poolID){
+    const records =  decodeRecord((await prisma.pool.findUnique({
+        where: {
+            id: poolID
+        }
+    })).mac)
+    if(records.date.getDate() > (new Date()).getDate()){
+        records.times.push('1')
+        records.date = new Date(Date.now())
+    }
+    else{
+        records.date = new Date(Date.now())
+        const times = String(Number(records.times.at(-1))+1)
+        records.times.pop()
+        records.times.push(times)
+    }
+    console.log(records)
+    console.log(encodeRecord(records))
+    // await prisma.pool.update({
+    //         where: {
+    //             id: poolID
+    //         },
+    //         data:{
+    //             mac: encodeRecord(records)
+    //         }
+    //     }
+    // )
+}
+
+function decodeRecord(origin_record){
+    return {
+        date: new Date(Number(origin_record.slice(0, 13))),
+        times: origin_record.slice(14).split(',')
+    }
+}
+
+function encodeRecord(records){
+    return `${new Date(records.date).getTime()},${records.times.join(',')}`
+}
+
