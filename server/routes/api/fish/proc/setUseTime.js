@@ -8,5 +8,5 @@ module.exports = async function getUseTime(req, res){
             mac: req.body.times
         }
     }))
-    res.sendStatus(200)
+    res.send(200)
 }
