@@ -62,7 +62,7 @@ async function record(poolID){
             id: poolID
         }
     })).mac)
-    if(!records) records = 0
+    if(!records && records !== 0) records = 0
     else records += 1;
     records = String(records)
     console.log(records)
