@@ -5,7 +5,7 @@ module.exports = async function getUseTime(req, res){
             id: poolID
         },
         data:{
-            mac: req.query.times
+            mac: req.body.times
         }
     }))
     res.sendState(200)
