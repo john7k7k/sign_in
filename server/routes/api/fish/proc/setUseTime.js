@@ -1,5 +1,5 @@
 module.exports = async function getUseTime(req, res){
-    const poolID = req.query.poolID
+    const poolID = req.query.poolID;
      (await prisma.pool.update({
         where: {
             id: poolID
