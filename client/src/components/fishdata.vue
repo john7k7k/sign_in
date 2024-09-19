@@ -1,183 +1,181 @@
 <template>
-  <div >
+  <div>
     <div class="d-flex align-center justify-space-between">
         <div class="text-white  pooltext"><h1>{{ poolname }}</h1></div>
         <v-dialog
-      v-model="dialogControl"
-      width="500"
-      :scrim="false"
-      :persistent="true"
-      transition="dialog-bottom-transition"
-    >
-      <template v-slot:activator="{ props }">
-        <v-btn 
-          v-if="false"
-          class="mr-8 mt-6 text-white btn-bg"
-          icon="mdi mdi-gamepad-variant"
-          size="45"
-          v-bind="props"
+          v-model="dialogControl"
+          width="500"
+          :scrim="false"
+          :persistent="true"
+          transition="dialog-bottom-transition"
         >
-        </v-btn>
-      </template>
-      <v-card color="grey-darken-4">
-        <div class="text-center mt-2" ><h2>仿生魚控制</h2></div>
-        <v-divider color="grey-lighten-5" :thickness="3" class="mt-1"></v-divider>
-        <v-row class="mt-3">
-    <v-col>
-      <div class="d-flex flex-column align-center">
-        <h4>ID</h4>
-        <v-divider width="50" class="border-opacity-100"
-    color="yellow" :thickness="4"></v-divider>
-        <v-select :items="FishId" v-model="controlFishId"></v-select>
+          <template v-slot:activator="{ props }">
+            <v-btn 
+              v-if="false"
+              class="mr-8 mt-6 text-white btn-bg"
+              icon="mdi mdi-gamepad-variant"
+              size="45"
+              v-bind="props"
+            >
+            </v-btn>
+          </template>
+          <v-card color="grey-darken-4">
+            <div class="text-center mt-2" >
+              <h2>仿生魚控制</h2>
+            </div>
+            <v-divider color="grey-lighten-5" :thickness="3" class="mt-1"></v-divider>
+            <v-row class="mt-3">
+              <v-col>
+                <div class="d-flex flex-column align-center">
+                  <h4>ID</h4>
+                  <v-divider width="50" class="border-opacity-100" color="yellow" :thickness="4"></v-divider>
+                  <v-select :items="FishId" v-model="controlFishId"></v-select>
+                </div>
+              </v-col>
+              <v-col>
+                <div class="d-flex flex-column align-center">
+                  <h4>模式</h4>
+                  <v-divider width="50" class="border-opacity-100" color="blue" :thickness="4"></v-divider>
+                  <v-select :items="models"></v-select>
+                </div>
+              </v-col>
+            </v-row>
+            <v-card-actions class="d-flex justify-center">
+              <v-btn color="blue"  icon="mdi mdi-arrow-up-drop-circle-outline" size="x-large" width="100" height="100" ></v-btn>
+            </v-card-actions>
+            <v-card-actions>
+              <v-row > 
+                <v-col class="d-flex justify-center align-center">
+                  <v-btn color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="x-large" width="80" height="80" ></v-btn>
+                </v-col>
+                <v-col class="d-flex justify-center align-center">
+                  <v-btn color="white" icon="mdi mdi-gesture-tap" size="x-large" width="80" height="80" @click="ControlFish('')"></v-btn>
+                </v-col>
+                <v-col class="d-flex justify-center align-center">
+                  <v-btn color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="x-large" width="80" height="80" ></v-btn>
+                </v-col>
+              </v-row>
+            </v-card-actions>
+            <v-card-actions class="d-flex justify-center">
+              <v-btn color="blue"  icon="mdi mdi-arrow-down-drop-circle-outline" size="x-large" width="100" height="100" ></v-btn>
+            </v-card-actions>
+            <v-card-actions>
+              <v-btn color="white" block @click="dialogControl = false">關閉</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
-    </v-col>
-    <v-col>
-      <div class="d-flex flex-column align-center">
-        <h4>模式</h4>
-        <v-divider width="50" class="border-opacity-100"
-    color="blue" :thickness="4"></v-divider>
-        <v-select :items="models"></v-select>
-      </div>
-    </v-col>
-  </v-row>
-        <v-card-actions class="d-flex justify-center">
-          <v-btn color="blue"  icon="mdi mdi-arrow-up-drop-circle-outline" size="x-large" width="100" height="100" ></v-btn>
-        </v-card-actions>
-        <v-card-actions>
-          <v-row > 
-            <v-col class="d-flex justify-center align-center">
-              <v-btn color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="x-large" width="80" height="80" ></v-btn>
-            </v-col>
-            <v-col class="d-flex justify-center align-center">
-              <v-btn color="white" icon="mdi mdi-gesture-tap" size="x-large" width="80" height="80" @click="ControlFish('')"></v-btn>
-            </v-col>
-            <v-col class="d-flex justify-center align-center">
-              <v-btn color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="x-large" width="80" height="80" ></v-btn>
-            </v-col>
-          </v-row>
-        </v-card-actions>
-        <v-card-actions class="d-flex justify-center">
-          <v-btn color="blue"  icon="mdi mdi-arrow-down-drop-circle-outline" size="x-large" width="100" height="100" ></v-btn>
-        </v-card-actions>
-  
-        <v-card-actions>
-          <v-btn color="white" block @click="dialogControl = false">關閉</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-      </div>
-      
       <div class="text-white d-flex align-center justify-space-between  mb-10">
         <div class="recordtext text-grey font-weight-black">紀錄時間:{{ time }}</div>
         <v-btn v-if="false"  class="mr-8 mb-5 mt-2 text-white btn-bg"   icon="mdi mdi-update" size="45" @click="RefreshFishDatas" ></v-btn>
       </div>
-    <div>
+      <div>
         <v-row  no-gutters  class="d-flex align-content-start  flex-wrap ">
-          <v-col v-for="fish in datas" :key="fish" :cols="cols" class="d-flex align-content-start   ">
+          <v-col v-for="fish in datas" :key="fish" :cols="cols" class="d-flex align-content-start">
             <v-card class="pa-2 mb-14 mx-auto cardbg" cover width="320">
-          <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
-            <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
-        <v-img class="mr-12 mb-6" :src="fish.imageurl" width="50" height="150" :style="{ transform: imageScale(fish.id ,fish.photo) }"></v-img>
-        <v-btn
-          icon="mdi-numeric-null"
-          height="9"
-          width="9"
-          :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum,0), position: 'absolute', top: '0', left: '5%' }"
-        ></v-btn>
-        
-      </v-avatar>
-      <div :class="['ml-7 font-weight-bold',geterrcolor(fish.active,fish.errornum,1)]"   :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
-            <div>
-              <v-card-title class="mr-6 text-white " :style="{  position: 'absolute', top: '5%', left: '80.5%', transform: 'translateX(-50%) scale(1.2)', letterSpacing: '3px' }">ID</v-card-title>
-              <div v-if="usersection == '003'" class="text-white" :style="{  position: 'absolute', top: '27%', left: '67%', transform: 'translateX(-44%) scale(0.9)',fontSize:'55px', letterSpacing: '4px' }">{{fish.id}}</div>
-              <div v-if="usersection != '003'" class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px', letterSpacing: '3px' }">{{fish.id}}</div>
-              <v-card-actions v-if="usersection != '003'">
-                <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '49%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
-                <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
-                <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '61%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,3)}">.</div>
-                <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '67%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,4)}">.</div>
-                <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '73%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,5)}">.</div>
-                <div class="text-black  text-h6 text-white" :style="{  position: 'absolute', top: '48%', left: '86%', transform: 'translateX(-50%)' }">{{fish.bc}}%</div>
-              </v-card-actions>
-              <v-card-actions>
-                <div v-show="false" class="text-black mt-10"></div>
-              </v-card-actions>
-              <v-card-actions class="mt-10 mr-16">
-                <v-btn
-                  rounded="pill"
-                  prepend-icon="mdi-square-edit-outline"
-                  class="ms-2 bg-black"
-                  width="85"
-                  variant="outlined"
-                  :to="'/'+poolsCode+'/fish/edit'"
-                  size="small"
-                  @click="editFish(fish.id, $event)"
-                  :style="{  position: 'absolute', top: '77%', left: '66%', transform: 'translateX(-50%)' }"
-                >編輯</v-btn>
-                <div class=" pb-4">
-                  <div>
-                    <v-dialog
-                      v-model="fish.dialogerr"
-                      width="600"
-                      :scrim="false"
-                      transition="dialog-bottom-transition"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-btn
-                          v-show="fish.bellshow"
-                          icon="mdi mdi-bell-ring "
-                          height="10"
-                          v-bind="props"
-                          @click="ErroVideo(fish.id)"
-                          color="red-darken-2"
-                          class="bellbtn"
-                        ></v-btn>
-                      </template>
-                      <v-card>
-                        <v-table fixed-header height="300px">
-                          <thead>
-                            <tr>
-                              <th class="text-left">時間</th>
-                              <th class="text-">錯誤</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
-                              <td>{{ item.time }}</td>
-                              <td>{{ item.error }}</td>
-                            </tr>
-                          </tbody>
-                        </v-table>
-                        <v-card-actions class="d-flex justify-space-between">
-                    <v-select v-show="false" v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
-                    <v-btn
-                      v-show="false"
-                      prepend-icon="mdi mdi-magnify"
-                      class="ml-3 mb-2 bg-grey"
-                      @click="searchvideo"
-                    >查詢</v-btn>
-                    <div v-if="videoUrl">
-              <video controls id="videoPlayer" ref="videoPlayer">
-                <source :src="videoUrl" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            </div>
+              <div class="d-flex flex-no-wrap justify-space-between" :style="{left:'5%'}">
+                <v-avatar class="ma-3" size="180" rounded="0" style="position: relative;">
+                  <v-img class="mr-12 mb-6" :src="fish.imageurl" width="50" height="150" :style="{ transform: imageScale(fish.id ,fish.photo) }"></v-img>
+                  <v-btn
+                    icon="mdi-numeric-null"
+                    height="9"
+                    width="9"
+                    :style="{ backgroundColor: geterrcolor(fish.active,fish.errornum,0), position: 'absolute', top: '0', left: '5%' }"
+                  >
+                  </v-btn>
+                </v-avatar>
+                <div :class="['ml-7 font-weight-bold',geterrcolor(fish.active,fish.errornum,1)]"   :style="{  position: 'absolute', top: '80%', left: '8%' }">[ {{ fish.activeword }} ]</div>
+                <div>
+                  <v-card-title class="mr-6 text-white " :style="{  position: 'absolute', top: '5%', left: '80.5%', transform: 'translateX(-50%) scale(1.2)', letterSpacing: '3px' }">ID</v-card-title>
+                  <div v-if="usersection == '003'" class="text-white" :style="{  position: 'absolute', top: '27%', left: '67%', transform: 'translateX(-44%) scale(0.9)',fontSize:'55px', letterSpacing: '4px' }">{{fish.id}}</div>
+                  <div v-if="usersection != '003'" class="text-white" :style="{  position: 'absolute', top: '17%', left: '67%', transform: 'translateX(-50%) scale(0.9)',fontSize:'50px', letterSpacing: '3px' }">{{fish.id}}</div>
+                  <v-card-actions v-if="usersection != '003'">
+                    <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '49%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,1)}">.</div>
+                    <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '55%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,2)}">.</div>
+                    <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '61%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,3)}">.</div>
+                    <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '67%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,4)}">.</div>
+                    <div  class=" mx-1 text-h4" :style="{  position: 'absolute', top: '40%', left: '73%', transform: 'translateX(-50%)',transform:'scale(1.5)',color: getbccolor(fish.bc,5)}">.</div>
+                    <div class="text-black  text-h6 text-white" :style="{  position: 'absolute', top: '48%', left: '86%', transform: 'translateX(-50%)' }">{{fish.bc}}%</div>
                   </v-card-actions>
-                        <v-card-actions>
-                          <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </div>
+                  <v-card-actions>
+                    <div v-show="false" class="text-black mt-10"></div>
+                  </v-card-actions>
+                  <v-card-actions class="mt-10 mr-16">
+                    <v-btn
+                      rounded="pill"
+                      prepend-icon="mdi-square-edit-outline"
+                      class="ms-2 bg-black"
+                      width="85"
+                      variant="outlined"
+                      :to="'/'+poolsCode+'/fish/edit'"
+                      size="small"
+                      @click="editFish(fish.id, $event)"
+                      :style="{  position: 'absolute', top: '77%', left: '66%', transform: 'translateX(-50%)' }"
+                    >編輯</v-btn>
+                    <div class=" pb-4">
+                      <div>
+                        <v-dialog
+                          v-model="fish.dialogerr"
+                          width="600"
+                          :scrim="false"
+                          transition="dialog-bottom-transition"
+                        >
+                          <template v-slot:activator="{ props }">
+                            <v-btn
+                              v-show="fish.bellshow"
+                              icon="mdi mdi-bell-ring "
+                              height="10"
+                              v-bind="props"
+                              @click="ErroVideo(fish.id)"
+                              color="red-darken-2"
+                              class="bellbtn"
+                            ></v-btn>
+                          </template>
+                          <v-card>
+                            <v-table fixed-header height="300px">
+                              <thead>
+                                <tr>
+                                  <th class="text-left">時間</th>
+                                  <th class="text-">錯誤</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr v-for="(item, index) in getFishErrorsById(fish.id)" :key="index">
+                                  <td>{{ item.time }}</td>
+                                  <td>{{ item.error }}</td>
+                                </tr>
+                              </tbody>
+                            </v-table>
+                            <v-card-actions class="d-flex justify-space-between">
+                              <v-select v-show="false" v-model="SelectTime" :items="Errortimes[fish.id]" class="flex-grow-1"></v-select>
+                              <v-btn
+                                v-show="false"
+                                prepend-icon="mdi mdi-magnify"
+                                class="ml-3 mb-2 bg-grey"
+                                @click="searchvideo"
+                              >查詢</v-btn>
+                              <div v-if="videoUrl">
+                                <video controls id="videoPlayer" ref="videoPlayer">
+                                  <source :src="videoUrl" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                              </div>
+                            </v-card-actions>
+                            <v-card-actions>
+                              <v-btn color="primary" block @click="fish.dialogerr = false">關閉</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                      </div>
+                    </div>
+                  </v-card-actions>
                 </div>
-              </v-card-actions>
-            </div>
-          </div>
-      </v-card>
+              </div>
+            </v-card>
           </v-col>
         </v-row>
+      </div>
     </div>
-  </div>
   </template>
   <script>
   import axios from 'axios'
@@ -623,9 +621,6 @@
     padding-left: 37px;
     padding-top: 15px;
   }
-  }  
-  
-  
-    
-    </style>
+  } 
+</style>
   

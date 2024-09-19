@@ -1,6 +1,5 @@
 <template>
   <v-app   class="App">
-    
     <v-main class="main">
       <meta name=”viewport” content="width=device-width, initial-scale=1.0">
       <link rel="icon" type="image/png" href="img/NTUT-Logo.png">
@@ -9,7 +8,6 @@
     </v-main >
   </v-app>
 </template>
-
 <script>
 
 export default {
@@ -37,5 +35,3 @@ export default {
   height: auto;
 }
 </style>
-
-

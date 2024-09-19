@@ -175,12 +175,15 @@
       bottom: 4%;
   }
 }
-@media screen and  (min-width: 601px) and (max-width: 1024px){
+@media screen and  (min-width: 501px) and (max-width: 1024px){
 }
-@media screen and (min-width: 401px) and (max-width: 600px){
+@media screen and (min-width: 401px) and (max-width: 500px){
 }
-@media screen and (max-width: 400px) {}
-	@media screen and  (min-width: 1681px){
+@media screen and (max-width: 400px) {
+
+}
+@media screen and  (min-width: 1681px){
+
 }
 @media screen and  (min-width: 1025px) and (max-width: 1680px){
 }
@@ -231,7 +234,5 @@
   }
   
 }
-
-  
   </style>
   

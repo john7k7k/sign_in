@@ -63,12 +63,12 @@
     transition="dialog-bottom-transition"
   >
   </v-dialog>
-      <v-dialog
-    v-model="dialognew"
-    width="1024"
-    :scrim="false"
-    transition="dialog-bottom-transition"
-  >
+    <v-dialog
+      v-model="dialognew"
+      width="1024"
+      :scrim="false"
+      transition="dialog-bottom-transition"
+    >
     <template v-slot:activator="{ props }">
       <v-btn class="ml-7 mr-8 mt-6"
         color="light-blue-darken-4 "
@@ -108,24 +108,23 @@
   </v-dialog> 
 </div> 
 <v-btn v-if="showBurnBtn" @click="clearmodal = true" size="large" class="ml-7 mr-8 mt-6 " color="orange-darken-3">歸零</v-btn>
-      <Modal
-          v-model="clearmodal"
-          title="游動時數歸零"
-          :closable="false"
-          ok-text="歸零"
-          @on-ok="clearfishhour"
-          @on-cancel="cancel">
-          <Checkbox
-            :indeterminate="indeterminate"
-            :model-value="checkAll"
-            @click.prevent="handleCheckAllforclear">全部</Checkbox>
-          <CheckboxGroup v-model="ClearFishId">
-            <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
-                <Checkbox v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Checkbox>
-              </div>
-        </CheckboxGroup>
-        
-          </Modal>
+<Modal
+  v-model="clearmodal"
+  title="游動時數歸零"
+  :closable="false"
+  ok-text="歸零"
+  @on-ok="clearfishhour"
+  @on-cancel="cancel">
+  <Checkbox
+    :indeterminate="indeterminate"
+    :model-value="checkAll"
+    @click.prevent="handleCheckAllforclear">全部</Checkbox>
+  <CheckboxGroup v-model="ClearFishId">
+    <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-black text-h8" ><h3 class="mb-2 ">{{ processSectionName(poolname) }}</h3>
+      <Checkbox v-for="id in FishId[i]" :key="id" :label="id">{{ id.substring(3) }}</Checkbox>
+    </div>
+  </CheckboxGroup>
+</Modal>
           <v-dialog width="300px" v-model="dialogOpen" persistent>
       
         <template v-slot:default="{ isActive }">
@@ -148,8 +147,7 @@
         </template>
       </v-dialog>
     <div v-for="(poolname,i) in poolsCode" :key="poolname" class="mt-4 mb-2 text-white text-h6" ><h3 class="mb-2 ml-7">{{ processSectionName(poolname) }}</h3>
-    <Table v-show="Tableshow[i]" :border="true" :columns="section === '003' ? (isMobileScreen ? mobileColumnsfor003 : columnsfor003) : (isMobileScreen ? mobileColumns : columns)" 
-    :data="filteredData(i)" class="ml-7 mr-7">
+    <Table v-show="Tableshow[i]" :border="true" :columns="section === '003' ? (isMobileScreen ? mobileColumnsfor003 : columnsfor003) : (isMobileScreen ? mobileColumns : columns)" :data="filteredData(i)" class="ml-7 mr-7">
     <template #id="{ row }">
       <p class="d-flex flex-no-wrap justify-space-between "><strong>{{ row.id.slice(-4) }}</strong><Button  icon="md-images" size="small" @click="row.modal = true"></Button></p>
       <Modal v-model="row.modal" title="上傳仿生魚照片" :closable="false" @on-ok="uploadImage(row.id)" @on-cancel="cancel">
@@ -159,19 +157,22 @@
               </Modal>
    </template>
    <template #active="{row}">
-    <p class="d-flex flex-no-wrap justify-space-between">{{ row.active }}<Button v-if="showBurnBtn"  icon="md-create" size="small" @click="row.ActiveModal = true"></Button></p>
+    <p class="d-flex flex-no-wrap justify-space-between">
+      {{ row.active }}
+      <Button v-if="showBurnBtn"  icon="md-create" size="small" @click="row.ActiveModal = true">
+      </Button>
+    </p>
     <Modal v-model="row.ActiveModal" :title="'變更 ' + row.id + ' 狀態'" :closable="false" @on-ok="changeFishActive(row,row.selectActive)" @on-cancel="cancel">
-        <RadioGroup class="radio-group" v-model="row.selectActive">
-          <Radio class="radio" label="游動中">游動中</Radio>
-          <Radio class="radio" label="待機中">待機中</Radio>
-          <Radio class="radio" label="維修中">維修中</Radio>
-        </RadioGroup>           
+      <RadioGroup class="radio-group" v-model="row.selectActive">
+        <Radio class="radio" label="游動中">游動中</Radio>
+        <Radio class="radio" label="待機中">待機中</Radio>
+        <Radio class="radio" label="維修中">維修中</Radio>
+      </RadioGroup>           
     </Modal>
   </template>
     <template #action="{ row }" v-if="section !='003'">
     <Button v-if="showBurnBtn" type="primary" size="small" @click="fishdatas[i][row.id].show = true" class="mr-2">變更</Button>
     <Modal v-model="fishdatas[i][row.id].show" :title="'變更 ' + row.id + ' 水池'" :closable="false" @on-ok="changefishpool(row.id,row.section)" @on-cancel="cancel">
-      
         <RadioGroup v-model="row.section">
                 <Radio v-for="poolname in poolsCode" :key="poolname" :label="poolname" class="d-flex mt-3 ">{{ processSectionName(poolname) }}</Radio>
               </RadioGroup>         
@@ -246,7 +247,7 @@
 }
 </style>
   
-  <script>
+<script>
 import axios from 'axios';
 import loading from '@/components/loading.vue';
 /*function TranActive(active) {
@@ -579,7 +580,7 @@ import loading from '@/components/loading.vue';
       numericRule() {
         return (v) => /^\d+$/.test(v) || '只能输入数字'; 
       },
-  },
+     },
       methods: {
         handleCheckAll () {
                 if (this.indeterminate) {
@@ -854,9 +855,7 @@ import loading from '@/components/loading.vue';
                           }
                       }
                   );
-  
                   console.log(response);
-  
                   let vertionarray = [];
                   let timearray = [];
                   let activearray = [];
@@ -959,7 +958,6 @@ import loading from '@/components/loading.vue';
             }
           }
         );
-
         console.log(response);
         if (response.status === 200) {
           for (var i = 0; i < this.poolsCode.length; i++) {

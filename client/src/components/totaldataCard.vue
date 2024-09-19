@@ -1,11 +1,10 @@
 <template>
   <div class="Swiper" >
       <div class="father1">
-        
       <v-card v-if="poolsName.length <1" cover class="three" width="60%" min-height="230"   :style="{ backgroundImage: `url(${poolsdata[1].imageurl})`, backgroundSize: 'cover', backgroundPosition:'center', }">
         <div class="notyet-bg2-overlay">
             <div class="text-white text-center   font-weight-black" style="letter-spacing: 3px; margin-top: 80px; font-size: 25px;">水池尚未開放</div>
-            <div class="text-white text-center    font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
+            <div class="text-white text-center   font-weight-black" style="font-size: 8px;">The pool is not open yet</div>
           </div>
       </v-card>
       <div v-if="poolsName.length == 1" >
@@ -49,8 +48,7 @@
             <div  class="cellphonerecordtext  text-blue-grey-lighten-1  mr-2 mb-2 mt-4"> 紀錄時間:{{ time }} </div>
             <div class="d-flex align-center justify-space-between">
     <v-card-title  ></v-card-title>
-    
-      <v-btn class="  refreshbtn-bg text-white mr-1"  icon="mdi-refresh" size="small" @click="refreshnew" :disabled="isRefreshing"></v-btn>
+    <v-btn class="  refreshbtn-bg text-white mr-1"  icon="mdi-refresh" size="small" @click="refreshnew" :disabled="isRefreshing"></v-btn>
   </div>
       <div>
         <v-row  no-gutters>
@@ -68,8 +66,6 @@
         <v-btn class="mb-2 mt-1 btn-bg text-white"  :icon="n.icon " :to="'/' + poolsCode[centerIndex] + '/'+ n.linetext + '/fish' " @click="SaveIndividualData(centerIndex,n.level,'/'+n.linetext)"></v-btn>
         </v-col>
       </v-row>
-      
-      
       <v-row  no-gutters>
       <v-col v-for="n in links[centerIndex]" :key="n"   class=" d-flex align-center justify-center mt-1 ">
         <v-btn class="needbcbtn-bg mt-4" rounded="xl" size="small" prepend-icon="mdi-battery-charging-10"  v-show="n.alertbcbutton" @click="SaveIndividualData(centerIndex,4,'/needcharge')" :to="'/' + poolsName[centerIndex] + '/' + 'needcharge' + '/fish'"
@@ -265,10 +261,8 @@
 .Swiper{
   display: flex;
   width: 100%;
-  height: 100%;
-  
+  height: 100%; 
 }
-
 .father1{
   display: flex;
   flex-direction: column;
@@ -517,7 +511,6 @@
   height: 100%;
   flex-direction: column;
 }
-
 .father1{
   display: flex;
   flex-direction: column;
@@ -776,7 +769,6 @@ try {
             },
           }
         );
-        
         console.log(response);
         const responseData = JSON.stringify(response.data[this.poolsCode[i]]);
         const parsedResponseData = JSON.parse(responseData);
@@ -803,7 +795,6 @@ try {
         let chargenum = 0 ;
         let fixnum = 0;
         for (let a = 0; a < this.FishIdNow[i]; a++) {
-          
           if (bcdata[a] < "20") chargenum += 1;
           if ( errdata[a] !== 0) fixnum += 1;
         }
@@ -832,7 +823,6 @@ try {
         localStorage.setItem("Active", this.active[i]);
         if (!this.isRefreshing) {
           this.isRefreshing = true;
-
           setTimeout(() => {
             this.isRefreshing = false;
           }, 1000); 
@@ -885,7 +875,8 @@ if(level === 1){
   localStorage.setItem("Erro", errdatas);
   localStorage.setItem("Active", activedatas);
   localStorage.setItem("FishPhoto", photodatas);
-}  else if (level === 2){
+}
+else if (level === 2){
   const fish0Data = localStorage.getItem(fish0);
   const parsedFish0Data = JSON.parse(fish0Data);
   this.FishId[i].push(...parsedFish0Data)

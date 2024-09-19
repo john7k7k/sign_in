@@ -1,374 +1,440 @@
 module.exports = [
     [//電路板WB
       { 
-        elementid:'WB-001',
+        elementid:'WB-0001',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'WB-002',
+        elementid:'WB-0002',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'WB-008',
+        elementid:'WB-0008',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'WB-010',
+        elementid:'WB-0010',
         fishid:1089,
         active:0
       },
     ],
     [//魚眼FE
       { 
-        elementid:'FE-001',
+        elementid:'FE-0001',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'FE-004',
+        elementid:'FE-0004',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'FE-006',
+        elementid:'FE-0006',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'FE-009',
+        elementid:'FE-0009',
         fishid:1089,
         active:0
       },
     ],
     [//LED
       { 
-        elementid:'LED-002',
+        elementid:'LED-0002',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'LED-003',
+        elementid:'LED-0003',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'LED-010',
+        elementid:'LED-0010',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'LED-012',
+        elementid:'LED-0012',
         fishid:1089,
         active:0
       },
     ],
     [//光遮斷開關PI
       { 
-        elementid:'PI-004',
+        elementid:'PI-0004',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'PI-007',
+        elementid:'PI-0007',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'PI-008',
+        elementid:'PI-0008',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'PI-009',
+        elementid:'PI-0009',
         fishid:5190,
         active:0
       },
     ],
     [//紅外線感測器IS
       { 
-        elementid:'IS-007',
+        elementid:'IS-0007',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'IS-010',
+        elementid:'IS-0010',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'IS-011',
+        elementid:'IS-0011',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'IS-016',
+        elementid:'IS-0016',
         fishid:1089,
         active:0
       },
     ],
     [//重心馬達GM
       { 
-        elementid:'GM-004',
+        elementid:'GM-0004',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'GM-006',
+        elementid:'GM-0006',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'GM-009',
+        elementid:'GM-0009',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'GM-011',
+        elementid:'GM-0011',
         fishid:5190,
         active:0
       },
     ],
     [//電池BAT
       { 
-        elementid:'BAT-001',
+        elementid:'BAT-0001',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'BAT-003',
+        elementid:'BAT-0003',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'BAT-005',
+        elementid:'BAT-0005',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'BAT-008',
+        elementid:'BAT-0008',
         fishid:6377,
         active:0
       },
     ],
     [//XM馬達
       { 
-        elementid:'XM-003',
+        elementid:'XM-0003',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'XM-006',
+        elementid:'XM-0006',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'XM-011',
+        elementid:'XM-0011',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'XM-012',
+        elementid:'XM-0012',
         fishid:1089,
         active:0
       },
     ],
     [//LORA
       { 
-        elementid:'LORA-007',
+        elementid:'LORA-0007',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'LORA-009',
+        elementid:'LORA-0009',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'LORA-010',
+        elementid:'LORA-0010',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'LORA-013',
+        elementid:'LORA-0013',
         fishid:6377,
         active:0
       },
     ],
     [//無線充電WC
       { 
-        elementid:'WC-003',
+        elementid:'WC-0003',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'WC-006',
+        elementid:'WC-0006',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'WC-009',
+        elementid:'WC-0009',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'WC-010',
+        elementid:'WC-0010',
         fishid:2467,
         active:0
       },
     ],
     [//FM
       { 
-        elementid:'FM-001',
+        elementid:'FM-0001',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'FM-009',
+        elementid:'FM-0009',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'FM-012',
+        elementid:'FM-0012',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'FM-014',
+        elementid:'FM-0014',
         fishid:1089,
         active:0
       },
     ],
     [//魚頭FH
       { 
-        elementid:'FH-004',
+        elementid:'FH-0004',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'FH-005',
+        elementid:'FH-0005',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'FH-008',
+        elementid:'FH-0008',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'FH-012',
+        elementid:'FH-0012',
         fishid:1089,
         active:0
       },
     ],
     [//第一關節FJ
       { 
-        elementid:'FJ-004',
+        elementid:'FJ-0004',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'FJ-005',
+        elementid:'FJ-0005',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'FJ-008',
+        elementid:'FJ-0008',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'FJ-012',
+        elementid:'FJ-0012',
         fishid:1089,
         active:0
       },
     ],
     [//第一關節馬達外殼FS
       { 
-        elementid:'FS-001',
+        elementid:'FS-0001',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'FS-003',
+        elementid:'FS-0003',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'FS-008',
+        elementid:'FS-0008',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'FS-010',
+        elementid:'FS-0010',
         fishid:6377,
         active:0
       },
     ],
     [//第二關節SJ
       { 
-        elementid:'SJ-001',
+        elementid:'SJ-0001',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'SJ-011',
+        elementid:'SJ-0011',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'SJ-012',
+        elementid:'SJ-0012',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'SJ-014',
+        elementid:'SJ-0014',
         fishid:2467,
         active:0
       },
     ],
     [//第二關節馬達外殼SS
       { 
-        elementid:'SS-001',
+        elementid:'SS-0001',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'SS-003',
+        elementid:'SS-0003',
         fishid:2467,
         active:0
       },
       { 
-        elementid:'SS-007',
+        elementid:'SS-0007',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'SS-008',
+        elementid:'SS-0008',
+        fishid:5190,
+        active:0
+      },
+    ],
+    [//樹梅派
+      { 
+        elementid:'RBP-0002',
+        fishid:2467,
+        active:0
+      },
+      { 
+        elementid:'RBP-0007',
+        fishid:5190,
+        active:0
+      },
+      { 
+        elementid:'RBP-0009',
+        fishid:6377,
+        active:0
+      },
+      { 
+        elementid:'RBP-0010',
+        fishid:1089,
+        active:0
+      },
+    ],
+    [//SG90馬達SG
+      { 
+        elementid:'SG-0003',
+        fishid:6377,
+        active:0
+      },
+      { 
+        elementid:'SG-0004',
+        fishid:1089,
+        active:0
+      },
+      { 
+        elementid:'SG-0007',
+        fishid:5190,
+        active:0
+      },
+      { 
+        elementid:'SG-0011',
+        fishid:2467,
+        active:0
+      },
+    ],
+    [//POGO
+      { 
+        elementid:'POGO-0001',
+        fishid:6377,
+        active:0
+      },
+      { 
+        elementid:'POGO-0006',
+        fishid:2467,
+        active:0
+      },
+      { 
+        elementid:'POGO-0007',
+        fishid:1089,
+        active:0
+      },
+      { 
+        elementid:'POGO-0014',
         fishid:5190,
         active:0
       },
     ],
     [//魚尾蓋FT
       { 
-        elementid:'FT-002',
+        elementid:'FT-0002',
         fishid:5190,
         active:0
       },
       { 
-        elementid:'FT-004',
+        elementid:'FT-0004',
         fishid:6377,
         active:0
       },
       { 
-        elementid:'FT-006',
+        elementid:'FT-0006',
         fishid:1089,
         active:0
       },
       { 
-        elementid:'FT-012',
+        elementid:'FT-0012',
         fishid:2467,
         active:0
       },

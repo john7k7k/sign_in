@@ -10,6 +10,7 @@ import SuSectionview from '../views/SignupSectionview.vue'
 import SelectInstruction from '../views/SelectInstruction.vue'
 import Controllerview from '../views/Controllerview.vue'
 import Testmaintenance from '../views/Testmaintenance-list.vue'
+import VideoPicture from '../views/videopicture.vue'
 const routes = [
   {
     name: "Nav",
@@ -21,7 +22,6 @@ const routes = [
       path: "/user", 
       component: UserData
     },
-    
     {
       name: "Accountlist",
       path: "/account/list", 
@@ -46,6 +46,11 @@ const routes = [
       name: "Testmaintenance",
       path: "/test/testmaintenance", 
       component: Testmaintenance
+    },
+    {
+      name: "VideoPicture",
+      path: "/test/videopicture",
+      component: VideoPicture
     },
    ]
   },

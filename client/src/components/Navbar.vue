@@ -156,13 +156,13 @@
 @media screen and (min-width: 1680px){
   .item2{
   font-size: 20px;
-}
+  }
 .navbartext{
   font-size: 20px;
-}
-
+  }
 }
 @media screen and  (min-width: 1025px) and (max-width: 1680px){
+  
 }
 @media screen and  (min-width: 601px) and (max-width: 1024px){
   .box{
@@ -256,7 +256,7 @@ mounted() {
   },
 methods: {
   updateScreenSize() {
-        this.isMobileScreen = window.innerWidth <= 1300; //小於1300 navbar有些選項會跳行 所以用手機模式取代
+        this.isMobileScreen = window.innerWidth <= 1025; //小於1300 navbar有些選項會跳行 所以用手機模式取代
         if (this.isMobileScreen) {
         this.desktopKey += 1;
       }
