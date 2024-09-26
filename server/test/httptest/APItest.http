@@ -426,7 +426,20 @@ Content-Type: application/json
         "errReason": "資7",
         "turn": 6
     } 
+}
 ###
-GET http://localhost:3000/api/v1/stream/getStatus
+GET http://localhost:3000/api/v1/stream/getPhoto
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcxNTg2ODcxMywiZXhwIjoxNzE1ODc3NzEzfQ.ju9Fiob_SiImjNc51_ADgGFMiwWtftDDf3BTgVNtFfA
+
+{
+    
+    "fishNumber":"3019"  
+
+}
+###
+GET http://localhost:3000/api/v1/stream/sendPhotoTest
+
+###
+GET http://localhost:3000/api/v1/stream/execTest
+Content-Type: application/json
+
