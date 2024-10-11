@@ -58,6 +58,7 @@ model Bin{
   id Int @id @default(autoincrement())
   time Int
   version String @unique
+  message String @default("")
 }
 
 model Pool{
