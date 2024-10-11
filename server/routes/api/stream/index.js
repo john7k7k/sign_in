@@ -7,7 +7,7 @@ const sendPhiotoTest = require('./proc/sendPhotoTest');
 
 
 router.get(`/getPhoto`, getPhoto);
-router.get(`/execTest`, execTest);
+router.use(`/execTest`, execTest);
 router.get(`/sendPhotoTest`, sendPhiotoTest);
 
 

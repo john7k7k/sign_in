@@ -26,7 +26,7 @@ const get = async (req, res) => {
     take: 1,
     orderBy: { time: 'desc' }
   });
-  res.send(bins)
+  res.send(bins);
 }
 
 const preProcess = async (req, res, next) => {
