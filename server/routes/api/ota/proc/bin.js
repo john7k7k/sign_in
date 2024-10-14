@@ -17,7 +17,7 @@ const uploadBin = multer({
 })
 
 const get = async (req, res) => {
-  fs.readdir(path.join(__dirname, `../../../../uploads/ota`), () => { })
+  // fs.readdir(path.join(__dirname, `../../../../uploads/ota`), () => { })
   const bins = await prisma.bin.findMany({
     select: {
       version: true,

@@ -49,7 +49,7 @@ const execute = async (req, res, next) => {
       cwd: path.join(__dirname, '/sh', '/flash')
     };
 
-    const apiUrl = 'https://frp.aifishf.cc/api/proxy/tcp'; // 替换为实际的API端点
+    const apiUrl = 'https://frp.aifishf.cc/api/proxy/tcp';
     let ports = 0;
     let data = 0;
     await axios.get(apiUrl)
