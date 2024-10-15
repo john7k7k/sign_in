@@ -7,102 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  userID           Int        @id @default(autoincrement())
-  username         String     @unique
-  email            String
-  passcode         String
-  level            Int
-  section          String
-  fishAble         FishAble[]
-  registrationTime Int
-  exist            Int
-  verify           Int
-  verifyCode       String?
-}
-
-model Fish {
-  fishUID   String     @id
-  location  String
-  exist     Int
-  photoCode Int        @default(0)
-  pool      Pool       @relation(fields: [location], references: [id], onDelete: Cascade)
-  fishData  FishData[]
-  fishAble  FishAble[]
-  version   String     @default("")
-  nickName  String     @default("")
-}
-
-model FishAble {
+model bin {
   id      Int    @id @default(autoincrement())
-  user    User   @relation(fields: [userID], references: [userID], onDelete: Cascade)
-  userID  Int
-  fish    Fish   @relation(fields: [fishUID], references: [fishUID], onDelete: Cascade)
-  fishUID String
-
-  @@unique([userID, fishUID])
-}
-
-model FishData {
-  dataID           Int    @id @default(autoincrement())
-  fish             Fish   @relation(fields: [fishUID], references: [fishUID], onDelete: Cascade)
-  fishUID          String
-  time             Int
-  bc               Float
-  err              Int
-  active           Int
-  version          String
-  accumulationTime Int    @default(0)
-}
-
-model Bin {
-  id      Int    @id @default(autoincrement())
+  version String @unique(map: "Bin_version_key")
   time    Int
-  version String @unique
+  message String @default("")
 }
 
-model Pool {
-  id       String @id
-  location String
-  name     String
-  mac      String
-  fish     Fish[]
-  depart   Depart @relation(fields: [location], references: [id], onDelete: Cascade)
-}
-
-model Depart {
-  id          String      @id
-  location    String
-  name        String
-  pool        Pool[]
-  instruction Instruction @relation(fields: [location], references: [id], onDelete: Cascade)
-}
-
-model Instruction {
-  id     String   @id
-  name   String
-  depart Depart[]
-}
-
-model Controller {
-  id          String @id
-  name        String @default("新遙控器")
-  fish        String
-  location    String
-  exist       Int
-  forward     Int
-  left        Int
-  right       Int
-  floating    Int
-  diving      Int
-  middle      Int
-  switch_mode Int
-  led         Int
-  auto        Int
-  leave_auto  Int
-}
-
-model Component {
+model component {
   dataID Int    @id @default(autoincrement())
   id     String
   type   String
@@ -112,12 +24,87 @@ model Component {
   time   Int
 }
 
-model Motor {
-  dataID    Int    @id @default(autoincrement())
-  id        String
-  local     String
-  hours     Float
-  errReason String
-  time      Int
-  turn      Int
+model controller {
+  id          String @id
+  fish        String
+  exist       Int
+  auto        Int
+  diving      Int
+  floating    Int
+  forward     Int
+  leave_auto  Int
+  led         Int
+  left        Int
+  middle      Int
+  right       Int
+  switch_mode Int
+  location    String
+  name        String @default("新遙控器")
+}
+
+model depart {
+  id       String @id
+  location String
+  name     String
+
+  @@index([location], map: "Depart_location_fkey")
+}
+
+model fish {
+  fishUID   String @id
+  location  String
+  exist     Int
+  version   String @default("")
+  photoCode Int    @default(0)
+
+  @@index([location], map: "Fish_location_fkey")
+}
+
+model fishable {
+  id      Int    @id @default(autoincrement())
+  userID  Int
+  fishUID String
+
+  @@unique([userID, fishUID], map: "FishAble_userID_fishUID_key")
+  @@index([fishUID], map: "FishAble_fishUID_fkey")
+}
+
+model fishdata {
+  dataID           Int    @id @default(autoincrement())
+  fishUID          String
+  time             Int
+  bc               Float
+  err              Int
+  active           Int
+  version          String
+  accumulationTime Int    @default(0)
+
+  @@index([fishUID], map: "FishData_fishUID_fkey")
+}
+
+model instruction {
+  id   String @id
+  name String
+}
+
+model pool {
+  id       String @id
+  location String
+  name     String
+  mac      String
+
+  @@index([location], map: "Pool_location_fkey")
+}
+
+model user {
+  userID           Int     @id @default(autoincrement())
+  username         String  @unique(map: "User_username_key")
+  email            String
+  passcode         String
+  level            Int
+  section          String
+  registrationTime Int
+  exist            Int
+  verify           Int
+  verifyCode       String?
 }
