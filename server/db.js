@@ -1,4 +1,4 @@
-
+require('dotenv').config(); // 加载环境变量
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const fs = require('fs');

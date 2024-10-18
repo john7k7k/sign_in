@@ -16,25 +16,14 @@ const uploadBin = multer({
   })
 })
 
-const get = async (req, res) => {
-  // fs.readdir(path.join(__dirname, `../../../../uploads/ota`), () => { })
-  const bins = await prisma.bin.findMany({
-    select: {
-      version: true,
-      time: true
-    },
-    take: 1,
-    orderBy: { time: 'desc' }
-  });
-  res.send(bins);
-}
 
 const preProcess = async (req, res, next) => {
   try {
     await prisma.bin.create({
       data: {
         time: req.time,
-        version: req.body.version
+        version: req.body.version,
+        message: req.body.message
       }
     })
   } catch (err) { res.status(403).send('版本名已存在'); return }
@@ -51,6 +40,5 @@ const process = async (req, res) => {
 module.exports = {
   uploadBin,
   preProcess,
-  process,
-  get
+  process
 }

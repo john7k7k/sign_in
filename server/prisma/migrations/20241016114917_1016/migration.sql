@@ -22,7 +22,6 @@ CREATE TABLE `Fish` (
     `exist` INTEGER NOT NULL,
     `photoCode` INTEGER NOT NULL DEFAULT 0,
     `version` VARCHAR(191) NOT NULL DEFAULT '',
-    `nickName` VARCHAR(191) NOT NULL DEFAULT '',
 
     PRIMARY KEY (`fishUID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -56,6 +55,7 @@ CREATE TABLE `Bin` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `time` INTEGER NOT NULL,
     `version` VARCHAR(191) NOT NULL,
+    `message` VARCHAR(191) NOT NULL DEFAULT '',
 
     UNIQUE INDEX `Bin_version_key`(`version`),
     PRIMARY KEY (`id`)
@@ -118,19 +118,6 @@ CREATE TABLE `Component` (
     `hours` DOUBLE NOT NULL,
     `state` VARCHAR(191) NOT NULL,
     `time` INTEGER NOT NULL,
-
-    PRIMARY KEY (`dataID`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Motor` (
-    `dataID` INTEGER NOT NULL AUTO_INCREMENT,
-    `id` VARCHAR(191) NOT NULL,
-    `local` VARCHAR(191) NOT NULL,
-    `hours` DOUBLE NOT NULL,
-    `errReason` VARCHAR(191) NOT NULL,
-    `time` INTEGER NOT NULL,
-    `turn` INTEGER NOT NULL,
 
     PRIMARY KEY (`dataID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

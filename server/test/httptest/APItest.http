@@ -428,7 +428,12 @@ Content-Type: application/json
     } 
 }
 ###
-GET https://pre.aifish.cc/api/v1/ota/bin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTcwMTE5MDg1NiwiZXhwIjoxNzAxMTk5ODU2fQ.FWmPvcUXGH5_v1m_kD72PgGMC6u1__t_SgkBw-EYtow
+DELETE http://localhost:3000/api/v1/ota/deleteBin
+Content-Type: application/json
+
+{
+    "time":1729258023,
+    "version":"1.0.2"
+}
 ###
-GET http://localhost:3000/api/v1/stream/dbtest
+GET http://localhost:3000/api/v1/ota/bin
