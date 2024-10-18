@@ -1,105 +1,107 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
-  url  = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
-model User{
-  userID Int @id @default(autoincrement())
-  username String @unique
-  email String
-  passcode String
-  level Int
-  section String
-  fishAble FishAble[]
+model User {
+  userID           Int        @id @default(autoincrement())
+  username         String     @unique
+  email            String
+  passcode         String
+  level            Int
+  section          String
+  fishAble         FishAble[]
   registrationTime Int
-  exist Int
-  verify Int
-  verifyCode String?
+  exist            Int
+  verify           Int
+  verifyCode       String?
 }
 
 model Fish {
-  fishUID String @id
-  location String
-  exist Int
-  photoCode Int @default(0)
-  pool Pool @relation(fields: [location], references: [id], onDelete: Cascade)
-  fishData FishData[]
-  fishAble FishAble[]
-  version String @default("")
+  fishUID   String     @id
+  location  String
+  exist     Int
+  photoCode Int        @default(0)
+  pool      Pool       @relation(fields: [location], references: [id], onDelete: Cascade)
+  fishData  FishData[]
+  fishAble  FishAble[]
+  version   String     @default("")
 }
 
-model FishAble{
-  id Int @id @default(autoincrement())
-  user User @relation(fields: [userID],references: [userID], onDelete: Cascade)
-  userID Int
-  fish Fish @relation(fields: [fishUID],references: [fishUID], onDelete: Cascade)
+model FishAble {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userID], references: [userID], onDelete: Cascade)
+  userID  Int
+  fish    Fish   @relation(fields: [fishUID], references: [fishUID], onDelete: Cascade)
   fishUID String
-  @@unique([userID,fishUID])
+
+  @@unique([userID, fishUID])
 }
 
-model FishData{
-  dataID Int @id @default(autoincrement())
-  fish Fish @relation(fields: [fishUID],references: [fishUID], onDelete: Cascade)
-  fishUID String
-  time Int
-  bc Float
-  err Int
-  active Int
+model FishData {
+  dataID           Int    @id @default(autoincrement())
+  fish             Fish   @relation(fields: [fishUID], references: [fishUID], onDelete: Cascade)
+  fishUID          String
+  time             Int
+  bc               Float
+  err              Int
+  active           Int
+  version          String
+  accumulationTime Int    @default(0)
+}
+
+model Bin {
+  id      Int    @id @default(autoincrement())
+  time    Int
   version String
-  accumulationTime Int @default(0)
-}
-
-model Bin{
-  id Int @id @default(autoincrement())
-  time Int
-  version String @unique
   message String @default("")
+
+  @@unique([time, version])
 }
 
-model Pool{
-  id String @id
+model Pool {
+  id       String @id
   location String
-  name String
-  mac String
-  fish Fish[]
-  depart Depart @relation(fields: [location], references: [id], onDelete: Cascade)
+  name     String
+  mac      String
+  fish     Fish[]
+  depart   Depart @relation(fields: [location], references: [id], onDelete: Cascade)
 }
 
-model Depart{
-  id String @id
-  location String
-  name String
-  pool Pool[] 
+model Depart {
+  id          String      @id
+  location    String
+  name        String
+  pool        Pool[]
   instruction Instruction @relation(fields: [location], references: [id], onDelete: Cascade)
 }
 
-model Instruction{
-  id String @id
-  name String
+model Instruction {
+  id     String   @id
+  name   String
   depart Depart[]
 }
 
-model Controller{
-  id String @id
-  name String @default("新遙控器")
-  fish String
-  location String
-  exist Int
-  forward Int
-  left Int
-  right Int
-  floating Int
-  diving Int
-  middle Int
+model Controller {
+  id          String @id
+  name        String @default("新遙控器")
+  fish        String
+  location    String
+  exist       Int
+  forward     Int
+  left        Int
+  right       Int
+  floating    Int
+  diving      Int
+  middle      Int
   switch_mode Int
-  led Int
-  auto Int
-  leave_auto Int
+  led         Int
+  auto        Int
+  leave_auto  Int
 }
 
 model Component {
