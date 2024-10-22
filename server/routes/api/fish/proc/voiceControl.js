@@ -2,7 +2,8 @@ const { prisma } =  require('../../../../modules/util/myPrisma.js') ;
 const mqttConnection = require('../../../../modules/util/mqtt');
 const franc = import('franc');
 const { instruction, chineseKeyword, englishKeyword } = require('../../../../config/voiceKeyword.js')
-
+const fs = require('fs')
+const path = require('path')
 
 function isletter(character) {
   return /^[a-zA-Z]$/.test(character);
@@ -35,7 +36,7 @@ function recognize(text, lang){
 
 module.exports = async (req, res) => { 
     try{
-      console.log(req.body);
+      //console.log(req.body);
       let { fishUID, lang } = req.body;
       if(!fishUID) fishUID = '0023011';
       if(!lang){
@@ -47,7 +48,10 @@ module.exports = async (req, res) => {
         }
       }
       console.log(fishUID)
+      fs.appendFile(path.join(__dirname,'../../../../config/keywordRecord.txt'), req.body.text+',',()=>{});
+      
       let motion = recognize(req.body.text, lang);
+      
       console.log(motion)
       global.fishCount[fishUID] = 1;
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
@@ -55,10 +59,10 @@ module.exports = async (req, res) => {
         where: { fishUID }
       })
       //let section = '002001001';
-      if(fishUID.slice(-4) !== '3004'){ //臨時添加 之後可刪除
-        if(motion == "R2") motion = "R"
-        else if(motion == "L2") motion = "L"
-      } 
+      // if(fishUID.slice(-4) !== '3004'){ //臨時添加 之後可刪除
+      //   if(motion == "R2") motion = "R"
+      //   else if(motion == "L2") motion = "L"
+      // } 
       const topic = 'Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion';
       const mes =  JSON.stringify({
         id: fishUID.slice(-4),
@@ -70,5 +74,5 @@ module.exports = async (req, res) => {
       ti = String(0.8+Math.random()/4).slice(0,5);
       console.log(`辨識時間: ${ti} s\n`);
       res.send(instruction[ motion ][lang == 'ch'?0:1]);
-    }catch{res.status(402).send("資料有誤");}
+    }catch(e){console.log(e);res.status(402).send("資料有誤");}
   }

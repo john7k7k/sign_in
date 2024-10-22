@@ -1,4 +1,5 @@
 const mqttConnection = require('../../../../modules/util/mqtt');
+const { prisma } = require('../../../../modules/util/myPrisma');
 global.controlling = [];
 global.fishCount = {};
 
@@ -6,6 +7,7 @@ module.exports = async (req, res) => {
     //try{
         const { fishUID, section, end } = req.body; //取得參數
         if(end){
+            record(section)
             mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
                 id: fishUID.slice(3),
                 motion: "2"
@@ -37,6 +39,7 @@ function count(section, fishUID) {
     if(!global.fishCount[fishUID]) global.fishCount[fishUID] = 1;
     global.fishCount[fishUID] = global.fishCount[fishUID]+1;
     if(global.fishCount[fishUID] > 30) {
+        record();
         mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + 'motion', JSON.stringify({
             id: fishUID.slice(3),
             motion: "2"
@@ -52,4 +55,25 @@ function count(section, fishUID) {
     setTimeout(()=>{
         count(section, fishUID)
     }, 1000)
+}
+
+async function record(poolID){
+    let records =  Number((await prisma.pool.findUnique({
+        where: {
+            id: poolID
+        }
+    })).mac)
+    if(!records && records !== 0) records = 0
+    else records += 1;
+    records = String(records)
+    console.log(records)
+    await prisma.pool.update({
+            where: {
+                id: poolID
+            },
+            data:{
+                mac: records
+            }
+        }
+    )
 }

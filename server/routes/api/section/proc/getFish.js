@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
     const { location } = req.query;
     if(!location) return res.send([]);
     const fish = await getNonFaultyFishInPond(location);
-    console.log(JSON.stringify(fish));
+    //console.log(JSON.stringify(fish));
     res.send(fish);
 }
 

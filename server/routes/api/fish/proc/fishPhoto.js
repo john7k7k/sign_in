@@ -16,7 +16,7 @@ const upload = multer({
 
 const get = (req, res) => {
     const dir = path.join(__dirname, `../../../../uploads/photos/fish/${req.query.fishUID}`);
-    console.log(dir)
+    // console.log(dir)
     fs.readdir(dir , (err, photos) => {
         if(!photos) return res.send('fishUID 未找到');
         if(!photos.at(-1)) return res.send('no image');
@@ -28,7 +28,7 @@ const get = (req, res) => {
 
 const remove = (req, res) => {
     const dir = path.join(__dirname, `../../../../uploads/photos/fish/${req.query.fishUID}`);
-    console.log(dir)
+    // console.log(dir)
     fs.unlink(dir + req.body.addTime , (err, photos) => {
         res.sendStatus(200);
     })
@@ -44,9 +44,9 @@ const getURL = async (req, res) => {
     const fishPhotoName = {};
     fishesUID.forEach(fishUID => {
         const dir = path.join(__dirname, `../../../../uploads/photos/fish/${fishUID}`);
-        console.log(dir)
+        // console.log(dir)
         fs.readdir(dir , (err, photos) => {
-            console.log(photos)
+            // console.log(photos)
             fishPhotoName[fishUID] = photos
             if(fishUID === fishesUID.at(-1)) return res.send(fishPhotoName);
         })
@@ -56,7 +56,7 @@ const getURL = async (req, res) => {
 module.exports = {
     upload,
     process: (req, res) => {
-        console.log(req.file);
+        // console.log(req.file);
         res.sendStatus(200)
     },
     get,
