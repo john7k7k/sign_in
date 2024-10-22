@@ -1320,6 +1320,9 @@ export default {
         },
         toggleSpeechRecognition() {
             this.playErrorSound();
+            if (navigator.vibrate) {
+                navigator.vibrate(200);  // 震動 200 毫秒
+            }
             if (this.isListening) {
                 // 如果正在聽，則停止
                 
@@ -1355,6 +1358,9 @@ export default {
                 this.resetTimer();
                 if (data.includes("辨識失敗")) {
                     this.playErrorSound();
+                    if (navigator.vibrate) {
+                        navigator.vibrate(200);  // 震動 200 毫秒
+                    }
                     this.isFail = true;
                     this.command = "";
                 } else {
