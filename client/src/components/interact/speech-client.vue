@@ -1273,7 +1273,7 @@ export default {
             : { visibility: 'hidden' };
         }
     },
-    mounted() {
+    created() {
         // 初始化語音辨
         this.fetchOptions();
         this.isOdd = this.Chfishnicknames.length % 2 == 0;
@@ -1310,6 +1310,14 @@ export default {
         this.startSpeechRecognition();
     },
     methods: {
+        readCommands() {
+            if (navigator.vibrate) {
+                navigator.vibrate(200); // 震動 200 毫秒
+            }
+            const commands = "您可以使用以下控制指令：前進、後退、左轉、右轉";
+            const utterance = new SpeechSynthesisUtterance(commands);
+            window.speechSynthesis.speak(utterance);
+        },
         toggleSpeechRecognition() {
             if (this.isListening) {
                 // 如果正在聽，則停止
@@ -1345,6 +1353,12 @@ export default {
             ).then(({ data }) => {
                 this.resetTimer();
                 if (data.includes("辨識失敗")) {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(200); 
+                    }
+                    const commands = "辨識失敗";
+                    const utterance = new SpeechSynthesisUtterance(commands);
+                    window.speechSynthesis.speak(utterance);
                     this.isFail = true;
                     this.command = "";
                 } else {
