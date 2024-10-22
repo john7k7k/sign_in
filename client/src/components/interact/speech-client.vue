@@ -1353,8 +1353,7 @@ export default {
             ).then(({ data }) => {
                 this.resetTimer();
                 if (data.includes("辨識失敗")) {
-                    const audio = new Audio(require('../../assets/error.wav'));
-                    audio.play();
+                    this.playErrorSound();
                     this.isFail = true;
                     this.command = "";
                 } else {
@@ -1363,6 +1362,12 @@ export default {
                 }
             }).catch(error => {
                 console.error("Error submitting voice data:", error);
+            });
+        },
+        playErrorSound() {
+            const audio = new Audio(require('../../assets/error.wav'));
+            audio.play().catch(error => {
+            console.error('音效播放失敗', error);
             });
         },
         handleChange() {
