@@ -1319,6 +1319,7 @@ export default {
             window.speechSynthesis.speak(utterance);
         },
         toggleSpeechRecognition() {
+            this.playErrorSound();
             if (this.isListening) {
                 // 如果正在聽，則停止
                 
