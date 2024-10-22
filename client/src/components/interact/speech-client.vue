@@ -1353,12 +1353,8 @@ export default {
             ).then(({ data }) => {
                 this.resetTimer();
                 if (data.includes("辨識失敗")) {
-                    if (navigator.vibrate) {
-                        navigator.vibrate(200); 
-                    }
-                    const commands = "辨識失敗";
-                    const utterance = new SpeechSynthesisUtterance(commands);
-                    window.speechSynthesis.speak(utterance);
+                    const audio = new Audio(require('../../assets/error.wav'));
+                    audio.play();
                     this.isFail = true;
                     this.command = "";
                 } else {
