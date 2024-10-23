@@ -16,6 +16,7 @@
     "dotenv": "^16.3.1",
     "normalize.css": "^8.0.1",
     "roboto-fontface": "*",
+    "tone": "^15.0.4",
     "view-ui-plus": "^1.3.14",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",

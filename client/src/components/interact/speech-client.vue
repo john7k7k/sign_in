@@ -1210,7 +1210,7 @@ background-image: url('../../assets/speechBackground.jpg');
 
 <script>
 import axios from 'axios';
-
+import * as Tone from 'tone';
 export default {
     data() {
         return {
@@ -1273,6 +1273,14 @@ export default {
             : { visibility: 'hidden' };
         }
     },
+    mounted() {
+        document.addEventListener('click', () => {
+            Tone.start().then(() => {
+            console.log("Audio context unlocked");
+        });
+        });
+    },
+
     created() {
         // 初始化語音辨
         this.fetchOptions();
@@ -1357,9 +1365,11 @@ export default {
             ).then(({ data }) => {
                 this.resetTimer();
                 if (data.includes("辨識失敗")) {
-                    this.playErrorSound();
+                    Tone.start().then(() => {
+                        this.playErrorSound();
+                    });
                     if (navigator.vibrate) {
-                        navigator.vibrate(200);  // 震動 200 毫秒
+                        navigator.vibrate(200);  
                     }
                     this.isFail = true;
                     this.command = "";
@@ -1372,10 +1382,20 @@ export default {
             });
         },
         playErrorSound() {
-            const audio = new Audio(require('../../assets/error.wav'));
-            audio.play().catch(error => {
-            console.error('音效播放失敗', error);
-            });
+            const synth = new Tone.Synth({
+                oscillator: {
+                type: 'triangle'  // 使用 triangle 波形
+                },
+                envelope: {
+                attack: 0.1,
+                decay: 0.2,
+                sustain: 0.5,
+                release: 0.8
+                }
+            }).toDestination();
+            const now = Tone.now();
+            synth.triggerAttackRelease("C3", "8n", now);      
+            synth.triggerAttackRelease("G2", "8n", now + 0.2); 
         },
         handleChange() {
             this.$emit('change', this.selectedOption);
