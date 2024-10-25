@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
         const { fishControl } = req.body; //取得參數
         const { section } = req.query;
         const { id } = fishControl.motion;
-        const fishUID = section.section.slice(0,3) + id;
+        const fishUID = section.slice(0,3) + id;
         global.fishCount[fishUID] = 0;
         for(key in fishControl){
             const fish_string = JSON.stringify(fishControl[key]); //轉換為json字串
