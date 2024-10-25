@@ -64,7 +64,7 @@
             <div class="Resultsword" :style="commandStyle">{{ command }}</div>
             <p class="failresultWord" :style="failStyle">{{ failword[languageIndex] }}</p>
             <p class="instructionWordCss" v-if="languageIndex === 0">指令表:</p>
-            <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止、上潛、下潛</p>
+            <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止、往上、往下</p>
             <p class="instructionWordCss" v-if="languageIndex === 1">Commands:</p>
             <p class="instructionWordCss" v-if="languageIndex === 1">Forward/Go、Turn left、Turn right</p>
             <p class="instructionWordCss" v-if="languageIndex === 1">Stop、Up、Down</p>
@@ -78,13 +78,13 @@
                 <v-row>  
                     <v-col class="btnBox">
                         <v-btn class="handCotrolbtn mr-16"   color="blue"  icon="mdi mdi-trending-down" size="60" @mousedown="ControlFish('D',false)" @mouseup="ControlFish('X',true)" 
-                            @touchstart="ControlFish('D',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '下潛'  || handControlCommand[languageIndex] == 'Down'}"></v-btn>
+                            @touchstart="ControlFish('D',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往下'  || handControlCommand[languageIndex] == 'Down'}"></v-btn>
                         <p class="handCotrolword mr-16">{{ handDown[languageIndex] }}</p>
                     </v-col>
                     <v-col cols="1.5"></v-col>
                     <v-col class="btnBox">
                         <v-btn class="handCotrolbtn ml-16" color="blue"  icon="mdi mdi-trending-up" size="60" @mousedown="ControlFish('U',false)" @mouseup="ControlFish('X',true)" 
-                            @touchstart="ControlFish('U',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '上潛'  || handControlCommand[languageIndex] == 'Up'}"></v-btn>
+                            @touchstart="ControlFish('U',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往上'  || handControlCommand[languageIndex] == 'Up'}"></v-btn>
                         <p class="handCotrolword ml-16">{{ handUp[languageIndex] }}</p>
                     </v-col>
                 </v-row>
@@ -118,7 +118,7 @@
         <!-- <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
         <p class="failresultWord" v-if="isSafari">最終結果:{{ resultwordFinal }}</p>
         <p class="failresultWord" v-if="!isSafari">最終:{{ recognitionResult }}</p> -->
-        <!-- <p class="instructionWordCss" v-if="languageIndex === 0">上潛、下潛、平衡</p>
+        <!-- <p class="instructionWordCss" v-if="languageIndex === 0">往上、往下、平衡</p>
          -->
         
         <!-- <v-btn
@@ -818,13 +818,15 @@
 }
 .handControlcard{
     width: 90%;
-    height: 50%;
+    height: 60%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items:center;
     padding: 1%;
     background-color: rgba(255, 255, 255, 0); 
+    position: relative;
+    bottom: 7%;
 }
 .Handresultcard{
     width: 85%;
@@ -1620,8 +1622,8 @@ export default {
             handControlCommand:["指令","Command"],
             isControlling:false,
             handFoward:["前進","Foward"],
-            handUp:["上潛","Up"],
-            handDown:["下潛","Down"],
+            handUp:["往上","Up"],
+            handDown:["往下","Down"],
             handLeft:["左轉","Left"],
             handStop:["停止","Stop"],
             handRight:["右轉","Right"],
@@ -1957,11 +1959,11 @@ export default {
                     else if(move === "O" && !end) this.handControlCommand[this.languageIndex] = "前進";
                     else if(move === "X" && !end) this.handControlCommand[this.languageIndex] = "停止";
                     else if(move === "U"){
-                        if(!end) this.handControlCommand[this.languageIndex] = "上潛";
+                        if(!end) this.handControlCommand[this.languageIndex] = "往上";
                         this.ControlFish("O",true);
                     } 
                     else if(move === "D"){
-                        if(!end) this.handControlCommand[this.languageIndex] = "下潛";
+                        if(!end) this.handControlCommand[this.languageIndex] = "往下";
                         this.ControlFish("O",true);
                     } 
                   }else{
