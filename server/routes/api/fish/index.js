@@ -44,7 +44,7 @@ router.get(`/data`, verifyTokenBy('Header')(50, false), getFishData);
 router.get(`/history_data`, verifyTokenBy('Header')(50, false), getHistoryData);
 
 //此API可控制fish (LED,action,mode)
-router.post(`/control`, verifyTokenBy('Header')(60), fishControl)
+router.post(`/control`,  fishControl)
 
 router.post(`/delete`, verifyTokenBy('Header')(30, false),  fishDelete)
 

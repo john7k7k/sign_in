@@ -11,7 +11,6 @@
     >
       <template v-slot:activator="{ props }">
         <v-btn 
-          v-if="false"
           class="mr-8 mt-6 text-white btn-bg"
           icon="mdi mdi-gamepad-variant"
           size="45"
