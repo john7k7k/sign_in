@@ -4,6 +4,9 @@ module.exports = async (req, res) => {
     try{
         const { fishControl } = req.body; //取得參數
         const { section } = req.query;
+        const { id } = fishControl.motion;
+        const fishUID = section.section.slice(0,3) + id;
+        global.fishCount[fishUID] = 0;
         for(key in fishControl){
             const fish_string = JSON.stringify(fishControl[key]); //轉換為json字串
             mqttConnection.publish('Fish/control/' +  section.slice(0,3) + section.slice(3,6) +section.slice(6) + '/'  + key,fish_string);
