@@ -7,8 +7,8 @@ REMOTE_PORT="22"
 SSH_KEY="/path/to/your/private/key" 
 
 REMOTE_COMMANDS="
-sudo git checkout master;
 cd aifish_web/sign_in/;
+sudo git checkout master;
 sudo git pull;
 sudo pm2 restart 0;
 "
