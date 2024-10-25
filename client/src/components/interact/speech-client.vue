@@ -536,7 +536,7 @@
 .ChoseFishImg{
     object-fit: cover;
     position: relative;
-    bottom: 3%;
+    bottom: 5%;
 }
 .ChoseFishName{
     position: relative;
@@ -1254,7 +1254,7 @@ background-image: url('../../assets/speechBackground.jpg');
     align-items: center;
     padding: 1%;
     position: relative;
-    bottom: 3.5%;
+    bottom: 4%;
     background-color: rgba(255, 255, 255, 0); 
 }
 .Handresultcard{
@@ -1474,7 +1474,7 @@ background-image: url('../../assets/speechBackground.jpg');
     flex-direction: column;
     align-items: center;
     position: relative;
-    bottom: 3.5%;
+    bottom: 4%;
     background-color: rgba(255, 255, 255, 0); 
 }
 .Handresultcard{
