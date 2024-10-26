@@ -30,7 +30,7 @@
                     <p>{{ starttitalWord[languageIndex][1] }}</p>
                 </div>
                 <v-btn class="startBtnCSS " @click="toggleMenu" variant="flat">
-                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px',letterSpacing:languageIndex === 1 ? '0px' : '' }">{{languageWord[languageIndex]}}</div>
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '16px',letterSpacing:languageIndex === 1 ? '0px' : '1px' }">{{languageWord[languageIndex]}}</div>
                     </v-btn>
                     <div v-if="isMenuVisible" class="menu-container">
                     <v-list>
@@ -1595,7 +1595,7 @@ export default {
             failword:["辨識失敗，請再說一次","Recognition failed,please say again"],
             isFail:false,
             isMenuVisible: false,
-            languageWord:["語言▼","Language▼"],
+            languageWord:["Language▼","Language▼"],
             ChooseFishWord:["魚隻▼","Fish▼"],
             ExitWord:["退出","Exit"],
             isChoseFish:false,
@@ -1618,7 +1618,7 @@ export default {
             handControlicon:"mdi mdi-controller-classic-outline",
             handcontrolWord:["控制","Control"],
             voicecontrolWord:["語音","Voice"],
-            handControlTitle:["點擊按鈕開始操作","Click the button to get started"],
+            handControlTitle:["長按按鈕開始操作","Hold the button to get started"],
             handControlCommand:["指令","Command"],
             isControlling:false,
             handFoward:["前進","Foward"],
@@ -1854,7 +1854,7 @@ export default {
             }
         },
         startVoiceRecognition() {
-            if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "選擇魚▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Choose fish▼")) {
+            if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "魚隻▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Fish▼")) {
                 this.test = false;
                 this.showBackdrop = false;
                 axios.post(
