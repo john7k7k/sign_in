@@ -77,28 +77,28 @@
             <v-card-actions>
                 <v-row>  
                     <v-col class="btnBox">
-                        <v-btn class="handCotrolbtn mr-16"   color="blue"  icon="mdi mdi-trending-down" size="60" @mousedown="ControlFish('D',false)" @mouseup="ControlFish('X',true)" 
-                            @touchstart="ControlFish('D',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往下'  || handControlCommand[languageIndex] == 'Down'}"></v-btn>
+                        <v-btn class="handCotrolbtn mr-16"   color="blue"  icon="mdi mdi-trending-down" size="60" @mousedown="startTimerControl('D',false)" @mouseup="stopTimerControl('X',true)" 
+                            @touchstart="startTimerControl('D',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往下'  || handControlCommand[languageIndex] == 'Down'}"></v-btn>
                         <p class="handCotrolword mr-16">{{ handDown[languageIndex] }}</p>
                     </v-col>
                     <v-col cols="1.5"></v-col>
                     <v-col class="btnBox">
-                        <v-btn class="handCotrolbtn ml-16" color="blue"  icon="mdi mdi-trending-up" size="60" @mousedown="ControlFish('U',false)" @mouseup="ControlFish('X',true)" 
-                            @touchstart="ControlFish('U',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往上'  || handControlCommand[languageIndex] == 'Up'}"></v-btn>
+                        <v-btn class="handCotrolbtn ml-16" color="blue"  icon="mdi mdi-trending-up" size="60" @mousedown="startTimerControl('U',false)" @mouseup="stopTimerControl('X',true)" 
+                            @touchstart="startTimerControl('U',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往上'  || handControlCommand[languageIndex] == 'Up'}"></v-btn>
                         <p class="handCotrolword ml-16">{{ handUp[languageIndex] }}</p>
                     </v-col>
                 </v-row>
             </v-card-actions>
             <v-card-actions class="btnBox">
-            <v-btn class="handCotrolbtn " color="yellow"  icon="mdi mdi-arrow-up-drop-circle-outline" size="60" @mousedown="ControlFish('O',false)" @mouseup="ControlFish('X',true)" 
-                @touchstart="ControlFish('O',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '前進'  || handControlCommand[languageIndex] == 'Foward'}"></v-btn>
+            <v-btn class="handCotrolbtn " color="yellow"  icon="mdi mdi-arrow-up-drop-circle-outline" size="60" @mousedown="startTimerControl('O',false)" @mouseup="stopTimerControl('X',true)" 
+                @touchstart="startTimerControl('O',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '前進'  || handControlCommand[languageIndex] == 'Foward'}"></v-btn>
                 <p class="handCotrolword">{{ handFoward[languageIndex] }}</p>
             </v-card-actions>
             <v-card-actions>
             <v-row> 
                 <v-col class="btnBox">
-                    <v-btn class="handCotrolbtn mx-1" color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="60" @mousedown="ControlFish('L',false)" @mouseup="ControlFish('X',true)" 
-                        @touchstart="ControlFish('L',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling && handControlCommand[languageIndex] == '左轉'  || handControlCommand[languageIndex] == 'Left'}"></v-btn>
+                    <v-btn class="handCotrolbtn mx-1" color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="60" @mousedown="startTimerControl('L',false)" @mouseup="stopTimerControl('X',true)" 
+                        @touchstart="startTimerControl('L',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling && handControlCommand[languageIndex] == '左轉'  || handControlCommand[languageIndex] == 'Left'}"></v-btn>
                     <p class="handCotrolword">{{ handLeft[languageIndex] }}</p>
                 </v-col>
                 <v-col class="btnBox">
@@ -107,8 +107,8 @@
                     <p class="handCotrolword">{{ handStop[languageIndex] }}</p>
                 </v-col>
                 <v-col class="btnBox">
-                    <v-btn class="handCotrolbtn mx-1" color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="60" @mousedown="ControlFish('R',false)" @mouseup="ControlFish('X',true)" 
-                        @touchstart="ControlFish('R',false)" @touchend="ControlFish('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '右轉'  || handControlCommand[languageIndex] == 'Right'}"></v-btn>
+                    <v-btn class="handCotrolbtn mx-1" color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="60" @mousedown="startTimerControl('R',false)" @mouseup="stopTimerControl('X',true)" 
+                        @touchstart="startTimerControl('R',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '右轉'  || handControlCommand[languageIndex] == 'Right'}"></v-btn>
                     <p class="handCotrolword">{{ handRight[languageIndex] }}</p>
                 </v-col>
             </v-row>
@@ -1627,6 +1627,7 @@ export default {
             handLeft:["左轉","Left"],
             handStop:["停止","Stop"],
             handRight:["右轉","Right"],
+            controlTimeout: null,
 
         };
     },
@@ -1926,6 +1927,18 @@ export default {
                     }
                 }
             }
+        },
+        startTimerControl(move,end) {
+            clearTimeout(this.controlTimeout);
+            this.ControlFish(move, end);
+            this.controlTimeout = setTimeout(() => {
+                this.ControlFish(move, end);
+            }, 1000);
+        },
+        stopTimerControl(move,end) {
+            this.ControlFish(move, end);
+            clearTimeout(this.controlTimeout);
+            this.controlTimeout = null;
         },
         ControlFish(move,end) {
           if(move == "X"){
