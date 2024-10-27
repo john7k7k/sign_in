@@ -585,8 +585,8 @@ import loading from '@/components/loading.vue';
               return this.data[index];
             } else if(this.data[index]){
               return this.data[index].filter(item => {
-                const itemId = item.id.toString(); 
-                return itemId.includes(this.searchId.toLowerCase());
+                const itemId = item.id.toString().slice(-4); 
+                return itemId.includes(this.searchId);
               });
             }else{
               return [];

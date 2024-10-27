@@ -30,7 +30,7 @@
                     <p>{{ starttitalWord[languageIndex][1] }}</p>
                 </div>
                 <v-btn class="startBtnCSS " @click="toggleMenu" variant="flat">
-                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '19px',letterSpacing:languageIndex === 1 ? '0px' : '' }">{{languageWord[languageIndex]}}</div>
+                    <div class="startBtnCSScontainer" :style="{ fontSize: languageIndex === 1 ? '16px' : '16px',letterSpacing:languageIndex === 1 ? '0px' : '1px' }">{{languageWord[languageIndex]}}</div>
                     </v-btn>
                     <div v-if="isMenuVisible" class="menu-container">
                     <v-list>
@@ -45,27 +45,74 @@
             </div>
         </div>
     </div>
-    
-    <div class="box" >
-        <div class="ExitBox">
+    <div class="ExitBox">
             <v-btn icon="mdi mdi-exit-to-app" size="40" class="Exitbtn-bg text-white" @click="EndVoiceRecognition"></v-btn>
             <p variant="text" class="ExitwordCSS" >{{ExitWord[languageIndex]}}</p>
+            <v-btn class="Exitbtn-bg text-white mt-2" @click="togglehandcontrol" :icon="handControlicon" size="40"></v-btn>
+            <p v-show="!handControl"  variant="text" class="ExitwordCSS" >{{handcontrolWord[languageIndex]}}</p>
+            <p v-show="handControl" variant="text" class="ExitwordCSS" >{{voicecontrolWord[languageIndex]}}</p>
         </div>
+    <div class="box" >
         <div class="tital">{{ChooseFishWord[languageIndex]}}</div>
         
         <v-card class="fishImgSize">
             <v-img class="ChoseFishImg"  height="100%" :src="fishurl[fishImgIndex(ChooseFishWord[languageIndex])]" ></v-img>
         </v-card>
-        <v-card class="resultcard">
+        <v-card class="resultcard" v-show="!handControl">
             <p  class="resultTital" :style="{ fontSize: languageIndex === 1 ? '22px' : '' ,letterSpacing:languageIndex === 1 ? '0px' : ''
             }">{{ resultWord[languageIndex] }}</p>
             <div class="Resultsword" :style="commandStyle">{{ command }}</div>
             <p class="failresultWord" :style="failStyle">{{ failword[languageIndex] }}</p>
             <p class="instructionWordCss" v-if="languageIndex === 0">指令表:</p>
-            <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止、往上、往下、平衡</p>
+            <p class="instructionWordCss" v-if="languageIndex === 0">前進、左轉、右轉、停止、往上、往下</p>
             <p class="instructionWordCss" v-if="languageIndex === 1">Commands:</p>
             <p class="instructionWordCss" v-if="languageIndex === 1">Forward/Go、Turn left、Turn right</p>
-            <p class="instructionWordCss" v-if="languageIndex === 1">Stop、Up、Down、Balance</p>
+            <p class="instructionWordCss" v-if="languageIndex === 1">Stop、Up、Down</p>
+        </v-card>
+        <v-card class="handControlcard" v-show="handControl">
+            <v-card-actions class="Handresultcard">
+                <p class="handCotrolTital" :style="{ fontSize: languageIndex === 1 ? '18px' : '19px',letterSpacing:languageIndex === 1 ? '0px' : '' }">{{ handControlTitle[languageIndex] }}</p>
+                <p class="handCotrolCommands">{{ handControlCommand[languageIndex] }}</p>
+            </v-card-actions>
+            <v-card-actions>
+                <v-row>  
+                    <v-col class="btnBox">
+                        <v-btn class="handCotrolbtn mr-16"   color="blue"  icon="mdi mdi-trending-down" size="60" @mousedown="startTimerControl('D',false)" @mouseup="stopTimerControl('X',true)" 
+                            @touchstart="startTimerControl('D',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往下'  || handControlCommand[languageIndex] == 'Down'}"></v-btn>
+                        <p class="handCotrolword mr-16">{{ handDown[languageIndex] }}</p>
+                    </v-col>
+                    <v-col cols="1.5"></v-col>
+                    <v-col class="btnBox">
+                        <v-btn class="handCotrolbtn ml-16" color="blue"  icon="mdi mdi-trending-up" size="60" @mousedown="startTimerControl('U',false)" @mouseup="stopTimerControl('X',true)" 
+                            @touchstart="startTimerControl('U',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '往上'  || handControlCommand[languageIndex] == 'Up'}"></v-btn>
+                        <p class="handCotrolword ml-16">{{ handUp[languageIndex] }}</p>
+                    </v-col>
+                </v-row>
+            </v-card-actions>
+            <v-card-actions class="btnBox">
+            <v-btn class="handCotrolbtn " color="yellow"  icon="mdi mdi-arrow-up-drop-circle-outline" size="60" @mousedown="startTimerControl('O',false)" @mouseup="stopTimerControl('X',true)" 
+                @touchstart="startTimerControl('O',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '前進'  || handControlCommand[languageIndex] == 'Foward'}"></v-btn>
+                <p class="handCotrolword">{{ handFoward[languageIndex] }}</p>
+            </v-card-actions>
+            <v-card-actions>
+            <v-row> 
+                <v-col class="btnBox">
+                    <v-btn class="handCotrolbtn mx-1" color="yellow" icon="mdi mdi-arrow-left-drop-circle-outline" size="60" @mousedown="startTimerControl('L',false)" @mouseup="stopTimerControl('X',true)" 
+                        @touchstart="startTimerControl('L',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling && handControlCommand[languageIndex] == '左轉'  || handControlCommand[languageIndex] == 'Left'}"></v-btn>
+                    <p class="handCotrolword">{{ handLeft[languageIndex] }}</p>
+                </v-col>
+                <v-col class="btnBox">
+                    <v-btn class="handCotrolbtn mx-1" color="white" icon="mdi mdi-stop-circle-outline" size="60" @mousedown="ControlFish('X',false)" @mouseup="ControlFish('X',true)" 
+                        @touchstart="ControlFish('X',false)" @touchend="ControlFish('X',true)"></v-btn>
+                    <p class="handCotrolword">{{ handStop[languageIndex] }}</p>
+                </v-col>
+                <v-col class="btnBox">
+                    <v-btn class="handCotrolbtn mx-1" color="yellow" icon="mdi mdi-arrow-right-drop-circle-outline" size="60" @mousedown="startTimerControl('R',false)" @mouseup="stopTimerControl('X',true)" 
+                        @touchstart="startTimerControl('R',false)" @touchend="stopTimerControl('X',true)" :class="{ 'HandControlripple-active': isControlling  && handControlCommand[languageIndex] == '右轉'  || handControlCommand[languageIndex] == 'Right'}"></v-btn>
+                    <p class="handCotrolword">{{ handRight[languageIndex] }}</p>
+                </v-col>
+            </v-row>
+            </v-card-actions>
         </v-card>
         <!-- <p  class="failresultWord" v-show="isFail">{{ failword[languageIndex] }}</p> -->
         <!-- <p class="failresultWord" v-if="isSafari">臨時結果：{{ resultTem }}</p>
@@ -87,12 +134,12 @@
         ></v-btn> -->
         
         <v-btn class="btn-bg text-white" @click="toggleSpeechRecognition" :class="{ 'ripple-active': isListening }"
-        :icon="icon" size="80"></v-btn>
+        :icon="icon" size="80" v-if="!handControl"></v-btn>
         <!-- 輝光效果<button class="btn-bg text-white"
         @click="toggleSpeechRecognition"
         :class="[ isListening ? 'ripple-active' : 'glow-on-hover' ]" type="button"><v-icon :icon="icon"></v-icon></button> -->
-        <div v-show="!isListening" style="color: white;" class="beginWord">{{ startWord[languageIndex] }}</div>
-        <div v-show="isListening" style="color: white;" class="beginWord">{{ endWord[languageIndex] }}</div>
+        <div v-show="!isListening & !handControl" style="color: white;" class="beginWord" >{{ startWord[languageIndex] }}</div>
+        <div v-show="isListening & !handControl" style="color: white;" class="beginWord" >{{ endWord[languageIndex] }}</div>
     </div>
 </template>
 
@@ -122,10 +169,43 @@
     font-weight:bold;
 }
 .Exitbtn-bg{
-  font-size: 16px;
+  font-size: 14px;
   background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.2));
   background-color: rgba(255, 255, 255, 0.05); 
   border: 3px solid rgba(255, 255, 255, 0.5);
+}
+.btnBox{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.UpandDownBox{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+
+}
+.handCotrolbtn{
+    font-size: 30px;
+}
+.handCotrolCommands{
+    font-size: 23px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    color: white;
+}
+.handCotrolword{
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;
+    bottom: 5%;
+    user-select: none;
 }
 .glow-on-hover {
     width: 80px; /* 調整為與 <v-btn> 相同的寬度 */
@@ -188,7 +268,19 @@
 
 
 
-
+.HandControlripple-active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  border: 15px solid #08f948;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: warn 1.3s ease-out infinite;
+  pointer-events: none;
+}
 
 .ripple-active::after {
   content: '';
@@ -444,7 +536,7 @@
 .ChoseFishImg{
     object-fit: cover;
     position: relative;
-    bottom: 3%;
+    bottom: 5%;
 }
 .ChoseFishName{
     position: relative;
@@ -548,6 +640,53 @@
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    bottom: 20%;
+}
+.Handresultcard{
+    width: 85%;
+    height: 45%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.handCotrolTital{
+    color: white;
+    font-size: 30px;
+    position: relative;
+    bottom: 3%;
+    letter-spacing: 2px;
+}
+.handCotrolCommands{
+    font-size: 26px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    color: #00E676;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 90%;
+    height: 45%;
+    margin-top: 2%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+.handControlcard{
+    width: 100%;
+    height: 50%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
+    background-color: rgba(255, 255, 255, 0); 
 }
 .Resultsword{
     font-size: 30px;
@@ -676,6 +815,52 @@
     background-color: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.handControlcard{
+    width: 90%;
+    height: 60%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    padding: 1%;
+    background-color: rgba(255, 255, 255, 0); 
+    position: relative;
+    bottom: 7%;
+}
+.Handresultcard{
+    width: 85%;
+    height: 35%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.handCotrolTital{
+    color: white;
+    font-size: 27px;
+    position: relative;
+    bottom: 4%;
+    letter-spacing: 2px;
+}
+.handCotrolCommands{
+    font-size: 24px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    color: #00E676;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 90%;
+    height: 55%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 .Resultsword{
     font-size: 25px;
@@ -841,6 +1026,63 @@ background-image: url('../../assets/speechBackground.jpg');
     border: 3px solid rgba(255, 255, 255, 0.2);
     margin-top: 4%;
 }
+.handControlcard{
+    width: 100%;
+    height: 60%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
+    background-color: rgba(255, 255, 255, 0); 
+}
+.Handresultcard{
+    width: 85%;
+    height: 25%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1%;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.handCotrolTital{
+    color: white;
+    font-size: 25px;
+    position: relative;
+    bottom: 4%;
+    letter-spacing: 2px;
+}
+.handCotrolCommands{
+    font-size: 22px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    color: #00E676;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 90%;
+    height: 45%;
+    margin-top: 2%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+.handCotrolbtn{
+    font-size: 32px;
+}
+.handCotrolword{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    position: relative;
+    letter-spacing: 2px;
+    bottom: 5%;
+    user-select: none;
+}
 .Resultsword{
     font-size: 28px;
     color: white;
@@ -1004,6 +1246,63 @@ background-image: url('../../assets/speechBackground.jpg');
     backdrop-filter: blur(1px);
     border: 3px solid rgba(255, 255, 255, 0.2);
     margin-top: 7%;
+}
+.handControlcard{
+    width: 100%;
+    height: 60%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
+    position: relative;
+    bottom: 4%;
+    background-color: rgba(255, 255, 255, 0); 
+}
+.Handresultcard{
+    width: 85%;
+    height: 23%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.handCotrolTital{
+    color: white;
+    font-size: 22px;
+    position: relative;
+    bottom: 6%;
+    letter-spacing: 2px;
+}
+.handCotrolCommands{
+    font-size: 20px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    color: #00E676;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 90%;
+    height: 45%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+.handCotrolbtn{
+    font-size: 26px;
+}
+.handCotrolword{
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    letter-spacing: 2px;
+    bottom: 6%;
+    user-select: none;
 }
 .Resultsword{
     font-size: 25px;
@@ -1169,6 +1468,63 @@ background-image: url('../../assets/speechBackground.jpg');
     border: 3px solid rgba(255, 255, 255, 0.2);
 
 }
+.handControlcard{
+    width: 100%;
+    height: 53%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    bottom: 4%;
+    background-color: rgba(255, 255, 255, 0); 
+}
+.Handresultcard{
+    width: 85%;
+    height: 22%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12));
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(1px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+.handCotrolTital{
+    color: white;
+    font-size: 20px;
+    position: relative;
+    bottom: 5%;
+    letter-spacing: 2px;
+    
+}
+.handCotrolCommands{
+    font-size: 18px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    color: #00E676;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 90%;
+    height: 45%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+.handCotrolbtn{
+    font-size: 28px;
+}
+.handCotrolword{
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    letter-spacing: 2px;
+    bottom: 4%;
+    user-select: none;
+}
 .Resultsword{
     font-size: 20px;
     color: white;
@@ -1210,7 +1566,7 @@ background-image: url('../../assets/speechBackground.jpg');
 
 <script>
 import axios from 'axios';
-
+import * as Tone from 'tone';
 export default {
     data() {
         return {
@@ -1239,7 +1595,7 @@ export default {
             failword:["辨識失敗，請再說一次","Recognition failed,please say again"],
             isFail:false,
             isMenuVisible: false,
-            languageWord:["語言▼","Language▼"],
+            languageWord:["Language▼","Language▼"],
             ChooseFishWord:["魚隻▼","Fish▼"],
             ExitWord:["退出","Exit"],
             isChoseFish:false,
@@ -1258,6 +1614,20 @@ export default {
             resultTem:"",
             isSafari:false,
             isOdd:false,
+            handControl:false,
+            handControlicon:"mdi mdi-controller-classic-outline",
+            handcontrolWord:["控制","Control"],
+            voicecontrolWord:["語音","Voice"],
+            handControlTitle:["長按按鈕開始操作","Hold the button to get started"],
+            handControlCommand:["指令","Command"],
+            isControlling:false,
+            handFoward:["前進","Foward"],
+            handUp:["往上","Up"],
+            handDown:["往下","Down"],
+            handLeft:["左轉","Left"],
+            handStop:["停止","Stop"],
+            handRight:["右轉","Right"],
+            controlTimeout: null,
 
         };
     },
@@ -1273,7 +1643,8 @@ export default {
             : { visibility: 'hidden' };
         }
     },
-    mounted() {
+
+    created() {
         // 初始化語音辨
         this.fetchOptions();
         this.isOdd = this.Chfishnicknames.length % 2 == 0;
@@ -1311,6 +1682,7 @@ export default {
     },
     methods: {
         toggleSpeechRecognition() {
+            this.playErrorSound();
             if (this.isListening) {
                 // 如果正在聽，則停止
                 
@@ -1321,7 +1693,18 @@ export default {
                 this.icon = "mdi mdi-stop";
                 this.startSpeechRecognition();
             }
-            },
+        },
+        togglehandcontrol(){
+            if(!this.handControl){
+                this.toggleSpeechRecognition();
+                this.handControlicon = "mdi mdi-account-voice";
+                this.handControl = true;
+            }else{
+                this.toggleSpeechRecognition();
+                this.handControlicon = "mdi mdi-controller-classic-outline";
+                this.handControl = false;
+            }
+        },
         startSpeechRecognition() {
             this.isListening = true;
             // 開始語音辨識
@@ -1345,6 +1728,7 @@ export default {
             ).then(({ data }) => {
                 this.resetTimer();
                 if (data.includes("辨識失敗")) {
+                    this.playErrorSound();
                     this.isFail = true;
                     this.command = "";
                 } else {
@@ -1354,6 +1738,22 @@ export default {
             }).catch(error => {
                 console.error("Error submitting voice data:", error);
             });
+        },
+        playErrorSound() {
+            const synth = new Tone.Synth({
+                oscillator: {
+                type: 'triangle'  // 使用 triangle 波形
+                },
+                envelope: {
+                attack: 0.1,
+                decay: 0.2,
+                sustain: 0.5,
+                release: 0.8
+                }
+            }).toDestination();
+            const now = Tone.now();
+            synth.triggerAttackRelease("C3", "8n", now);      
+            synth.triggerAttackRelease("G2", "8n", now + 0.2); 
         },
         handleChange() {
             this.$emit('change', this.selectedOption);
@@ -1455,7 +1855,7 @@ export default {
             }
         },
         startVoiceRecognition() {
-            if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "選擇魚▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Choose fish▼")) {
+            if ((this.languageIndex == 0 && this.ChooseFishWord[0] !== "魚隻▼") || (this.languageIndex == 1 && this.ChooseFishWord[1] !== "Fish▼")) {
                 this.test = false;
                 this.showBackdrop = false;
                 axios.post(
@@ -1527,6 +1927,81 @@ export default {
                     }
                 }
             }
+        },
+        startTimerControl(move,end) {
+            clearTimeout(this.controlTimeout);
+            this.ControlFish(move, end);
+            this.controlTimeout = setTimeout(() => {
+                this.ControlFish(move, end);
+            }, 1000);
+        },
+        stopTimerControl(move,end) {
+            this.ControlFish(move, end);
+            clearTimeout(this.controlTimeout);
+            this.controlTimeout = null;
+        },
+        ControlFish(move,end) {
+          if(move == "X"){
+            this.isControlling = false;
+          }else{
+            this.isControlling = true;
+          }
+          this.resetTimer();
+          axios.post(
+                  process.env.VUE_APP_SEVER+"/api/v1/fish/control/?section=002001001",{
+                    "fishControl":{
+                        "led":{
+                        },
+                        "motion":{
+                            "id": this.selectedfishUID.slice(-4),
+                            "motion": move
+                        }
+                    }
+              },{
+            headers: {
+              Authorization: `Bearer ${this.token}`
+            }
+          }
+            )
+            .then(res=> {
+                console.log(res);
+                if(res.status == 200){
+                  if(this.languageIndex == 0){
+                    if(move === "L" && !end) this.handControlCommand[this.languageIndex] = "左轉";
+                    else if(move === "R" && !end) this.handControlCommand[this.languageIndex] = "右轉";
+                    else if(move === "O" && !end) this.handControlCommand[this.languageIndex] = "前進";
+                    else if(move === "X" && !end) this.handControlCommand[this.languageIndex] = "停止";
+                    else if(move === "U"){
+                        if(!end) this.handControlCommand[this.languageIndex] = "往上";
+                        this.ControlFish("O",true);
+                    } 
+                    else if(move === "D"){
+                        if(!end) this.handControlCommand[this.languageIndex] = "往下";
+                        this.ControlFish("O",true);
+                    } 
+                  }else{
+                    if(move == "L" && !end) this.handControlCommand[this.languageIndex] = "Left";
+                    else if(move == "R" && !end) this.handControlCommand[this.languageIndex] = "Right";
+                    else if(move == "O" && !end) this.handControlCommand[this.languageIndex] = "Foward";
+                    else if(move == "X" && !end) this.handControlCommand[this.languageIndex] = "Stop";
+                    else if(move == "U") {
+                        if(!end) this.handControlCommand[this.languageIndex] = "Up";
+                        this.ControlFish("O",true);
+                    } 
+                    else if(move == "D") {
+                        if(!end) this.handControlCommand[this.languageIndex] = "Down";
+                        this.ControlFish("O",true);
+                    } 
+                  }
+                }else{
+                    if(this.languageIndex == 0) this.handControlCommand[this.languageIndex] = "控制失敗";
+                    else this.handControlCommand[this.languageIndex] = "Control error";
+                }
+            })
+            .catch(err=> {
+                console.log(err);
+                this.$Message.error('控制失敗');
+            })
         },
         flatten(obj) {
             var flattenedObject = {};
