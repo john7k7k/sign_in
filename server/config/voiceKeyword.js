@@ -9,7 +9,7 @@ const instruction = {
     "D":["往下", 'down'],
     "M":["平衡", 'balance'],
     "G":["轉圈", 'circle'],
-    "l":["迴轉"]
+    "l":["迴轉", 'u-turn']
 }
 
 const chineseKeyword = {
