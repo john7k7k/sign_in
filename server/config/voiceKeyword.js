@@ -8,7 +8,8 @@ const instruction = {
     "U":["往上", 'up'],
     "D":["往下", 'down'],
     "M":["平衡", 'balance'],
-    "RO":["轉圈", 'circle']
+    "G":["轉圈", 'circle'],
+    "l":["迴轉"]
 }
 
 const chineseKeyword = {
@@ -19,7 +20,8 @@ const chineseKeyword = {
   "D":['下', '底','夏','嚇','厦','加'],
   "X":['停','廷','庭','亭','靜','定','紫', '仔','紙','紙','致'],
   "M":['平','衡','橫', '凌', '海', '評','你'],
-  "RO":['圈']
+  "G":['圈'],
+  "l":["迴,'回"]
 }
 const englishKeyword = {
   "X":['stop','star','set'],
@@ -29,7 +31,8 @@ const englishKeyword = {
   "U":['up', 'app', 'apple', 'pop','opera','copper'],
   "D":['down','tong','dumb','done','dou','no','dial','tell','de','song'],
   "M":['balance','poise', 'ballet', 'alan', 'blanc', 'silence', 'black','paris','pay','bad','palace'],
-  "RO":['circle']
+  "G":['circle', 'rotate', 'rotion'],
+  "l":["around", "u-turn", "turn"]
 }
 
 module.exports = { instruction, chineseKeyword, englishKeyword }
