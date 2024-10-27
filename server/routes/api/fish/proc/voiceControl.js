@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
       let { fishUID, lang } = req.body;
       if(!fishUID) fishUID = '0023011';
       if(!lang){
-        if(isletter(text[0])) {
+        if(isletter(req.body.text[0])) {
           lang = 'eng';
         }
         else{
@@ -52,7 +52,6 @@ module.exports = async (req, res) => {
       console.log(req.body.text)
       let motion = recognize(req.body.text, lang);
       
-      console.log(motion)
       global.fishCount[fishUID] = 1;
       if(motion.length > 4) return res.send('辨識失敗, 找不到合適的指令');
       const { location: section } = await prisma.fish.findUnique({
