@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
       }
       console.log(fishUID)
       fs.appendFile(path.join(__dirname,'../../../../config/keywordRecord.txt'), req.body.text+',',()=>{});
-      
+      console.log(req.body.text)
       let motion = recognize(req.body.text, lang);
       
       console.log(motion)
