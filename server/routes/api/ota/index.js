@@ -8,9 +8,9 @@ const deleteBin = require('./proc/deleteBin')
 
 router.get('/bin', getBinVersion);
 
-router.delete('/deleteBin', deleteBin)
+router.delete('/bin', deleteBin)
 
-router.post('/bin', bin.uploadBin.single('bin'), bin.preProcess, bin.process);
+router.post('/bin', bin.uploadBin.single('bin'), bin.preProcess);
 
 router.post('/burn', burn.execute, burn.process);
 

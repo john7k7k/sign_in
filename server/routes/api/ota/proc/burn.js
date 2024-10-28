@@ -38,10 +38,10 @@ const awaitMqtt = (req, res) => {
 
 const execute = async (req, res, next) => {
   if (!req.body.fishesUID[0]) return res.status(403).send('請選擇一條魚')
-  const { time, version } = (await prisma.bin.findMany({
-    take: 1,
-    orderBy: { time: 'desc' }
-  }))[0]
+  // const { time, version } = (await prisma.bin.findMany({
+  //   take: 1,
+  //   orderBy: { time: 'desc' }
+  // }))[0]
   const otaBinName = path.join(__dirname, `sh/flash/aifi_core_stm32_MPU_loopTest_20230920.bin`);
   fs.rename(path.join(__dirname, `../../../../uploads/ota/${req.time + '_' + req.body.version}`), otaBinName, async () => {
     const binName = `${time}_${version}`;
