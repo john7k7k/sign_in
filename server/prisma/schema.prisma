@@ -59,8 +59,6 @@ model Bin {
   time    Int
   version String
   message String @default("")
-
-  @@unique([time, version])
 }
 
 model Pool {
