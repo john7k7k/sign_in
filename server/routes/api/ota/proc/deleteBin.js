@@ -3,7 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async (req, res) => {
-  const { time, version } = req.body;
+  const time = parseInt(req.query.time, 10); // 10 表示以十进制解析
+  const { version } = req.query;
+
 
   if (!time || !version) {
     return res.status(400).json({ error: '參數不完整' });

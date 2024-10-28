@@ -428,12 +428,7 @@ Content-Type: application/json
     } 
 }
 ###
-DELETE https://pre.aifish.cc/api/v1/ota/bin
+DELETE http://localhost:3000/api/v1/ota/bin?time=1729680943&version=123
 Content-Type: application/json
-
-{
-    "time":1729680747,
-    "version":"123"
-}
 ###
-GET  https://pre.aifish.cc/api/v1/ota/bin
+GET  http://localhost:3000/api/v1/ota/bin
