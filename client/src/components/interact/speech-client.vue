@@ -161,11 +161,11 @@
     right: 4%;
 }
 .ExitwordCSS{
-    font-size: 16px;
+    font-size: 14px;
     color: white;
     position: relative;
     top: 3%;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-weight:bold;
 }
 .Exitbtn-bg{
@@ -1616,8 +1616,8 @@ export default {
             isOdd:false,
             handControl:false,
             handControlicon:"mdi mdi-controller-classic-outline",
-            handcontrolWord:["控制","Control"],
-            voicecontrolWord:["語音","Voice"],
+            handcontrolWord:["手控","Manual control"],
+            voicecontrolWord:["音控","Sound control"],
             handControlTitle:["長按按鈕開始操作","Hold the button to get started"],
             handControlCommand:["指令","Command"],
             isControlling:false,
