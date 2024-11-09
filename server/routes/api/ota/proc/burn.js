@@ -38,17 +38,13 @@ const awaitMqtt = (req, res) => {
 
 const execute = async (req, res, next) => {
   if (!req.body.fishesUID[0]) return res.status(403).send('請選擇一條魚')
-  // const { time, version } = (await prisma.bin.findMany({
-  //   take: 1,
-  //   orderBy: { time: 'desc' }
-  // }))[0]
   const otaBinName = path.join(__dirname, `sh/flash/aifi_core_stm32_MPU_loopTest_20230920.bin`);
+  await fs.copyFile(path.join(__dirname, `../../../../uploads/ota/${req.body.time + '_' + req.body.version}`), otaBinName, () => {
+  })
   fs.rename(path.join(__dirname, `../../../../uploads/ota/${req.time + '_' + req.body.version}`), otaBinName, async () => {
-    const binName = `${time}_${version}`;
     const options = {
       cwd: path.join(__dirname, '/sh', '/flash')
     };
-
     const apiUrl = 'https://frp.aifishf.cc/api/proxy/tcp';
     let ports = 0;
     let data = 0;

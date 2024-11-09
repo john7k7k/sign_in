@@ -432,3 +432,14 @@ DELETE http://localhost:3000/api/v1/ota/bin?time=1729680943&version=123
 Content-Type: application/json
 ###
 GET  http://localhost:3000/api/v1/ota/bin
+
+###
+POST http://localhost:3000/api/v1/ota/burn
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE3MDEwNzM1ODAsImV4cCI6MTcwMTA4MjU4MH0.KV09E086JbD3B5xSwhebuGveJ35hfxP52nhhzwxrFME
+
+{
+    "fishesUID": "0023001",
+    "version": "123",
+    "time":"1729680990"
+}
