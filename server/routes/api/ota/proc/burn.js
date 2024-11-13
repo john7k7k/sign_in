@@ -51,7 +51,7 @@ const execute = async (req, res, next) => {
     });
     console.log('bin檔成功複製');
   } catch (err) {
-    console.error(`複製檔案失敗，錯誤: ${err.message}`);
+    console.error(`bin複製失敗,錯誤: ${err.message}`);
     return res.status(500).send('無此bin檔');
   }
 
