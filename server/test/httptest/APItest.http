@@ -256,7 +256,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMyIsImlhdCI6MTczMzMxOTg1MiwiZXhwIjoxNzMzMzI4ODUyfQ.e254IZvPMWgYCMYuvB8aiPhS5nz65r1BkEbR0tRyzGg
 
 {
-    "fishesUID": ["0023032"],
+    "fishesUID": "0023032",
     "version": "test_2"
 }
 
