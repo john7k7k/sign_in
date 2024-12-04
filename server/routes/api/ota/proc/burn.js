@@ -22,7 +22,7 @@ const awaitMqtt = (req ,res) => {
             const options = { cwd: path.join(__dirname, 'sh/flash/') }
             console.log(`start flash`);
             exec(bash, options,  (err, stdout, stderr) => {
-                if(err) { console.log("錯誤"+err);return res.status(500).send('燒錄時發生問題')}
+                if(err) { console.log("錯誤"+err);return res.status(500).send('燒錄時發生問題:' + err)}
                 console.log('輸出'+stdout);
                 res.status(200).send("燒錄成功");
             })
@@ -37,7 +37,7 @@ const awaitMqtt = (req ,res) => {
 }
 
 const execute = async (req,res,next) => {
-    if(!req.body.fishesUID[0]) return res.status(403).send('請選擇一條魚')
+    if(!req.body.fishesUID) return res.status(403).send('請選擇一條魚')
     const { time, version } = (await prisma.bin.findMany({
         take: 1,
         orderBy: { time: 'desc' }
@@ -58,7 +58,7 @@ const execute = async (req,res,next) => {
             console.log('成功取得資料:', response.data);
             data = response.data
             //console.log(data.proxies[0].conf);
-            fishFrp = data.proxies.find(fishesFrp => fishesFrp.name === `ssh-fish-${req.body.fishesUID[0].slice(3)}-pizero`);
+            fishFrp = data.proxies.find(fishesFrp => fishesFrp.name === `ssh-fish-${req.body.fishesUID.slice(3)}-pizero`);
             if(!fishFrp) return res.status(503).send(`沒有${req.body.fishesUID}`)
             console.log(fishFrp)
             if(!fishFrp.conf) return res.status(503).send(`${req.body.fishesUID}不在線`)
@@ -78,7 +78,7 @@ const execute = async (req,res,next) => {
         .catch(error => {
             // 處理錯誤
             const topic = `Ota/fishid`;
-            const message = { id: req.body.fishesUID[0].slice(3) }
+            const message = { id: req.body.fishesUID.slice(3) }
             mqttConnection.publish(topic, JSON.stringify(message));
             console.log(`publiced: ${topic}, message: ${JSON.stringify(message)}`);
             global.awaitMqttTime = 0;
