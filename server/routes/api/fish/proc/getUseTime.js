@@ -1,10 +1,11 @@
 module.exports = async function getUseTime(req, res){
-    const poolID = req.query.poolID
-    const data = (await prisma.pool.findUnique({
-        where: {
-            id: poolID
-        }
-    })).mac
-    console.log(data)
-    res.send(data)
+    const { times } = req.query;
+    if(!times) res.send(1217);
+    // const data = (await prisma.pool.findUnique({
+    //     where: {
+    //         id: poolID
+    //     }
+    // })).mac
+    //console.log(data)
+    else res.send(times);
 }
